@@ -1,65 +1,320 @@
 import { DurableObject } from "cloudflare:workers";
 
-/**
- * Welcome to Cloudflare Workers! This is your first Durable Objects application.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your Durable Object in action
- * - Run `npm run deploy` to publish your application
- *
- * Bind resources to your worker in `wrangler.jsonc`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/durable-objects
- */
+export interface Env {
+	BOGGLE_ROOM: DurableObjectNamespace<BoggleRoom>;
+	ASSETS: Fetcher;
+}
 
+type Board = string[][];
 
-/** A Durable Object's behavior is defined in an exported Javascript class */
-export class MyDurableObject extends DurableObject {
-	/**
-	 * The constructor is invoked once upon creation of the Durable Object, i.e. the first call to
-	 * 	`DurableObjectStub::get` for a given identifier (no-op constructors can be omitted)
-	 *
-	 * @param ctx - The interface for interacting with Durable Object state
-	 * @param env - The interface to reference bindings declared in wrangler.jsonc
-	 */
-	constructor(ctx: DurableObjectState, env: Env) {
-		super(ctx, env);
+type ClientMessage =
+	| {
+	type: "join";
+	name: string;
+}
+	| {
+	type: "startGame";
+};
+
+type ServerMessage =
+	| {
+	type: "connected";
+	roomId: string;
+}
+	| {
+	type: "system";
+	text: string;
+}
+	| {
+	type: "players";
+	players: string[];
+}
+	| {
+	type: "gameStarted";
+	board: Board;
+	startedAt: number;
+	durationSeconds: number;
+};
+
+function json(data: unknown, init: ResponseInit = {}) {
+	return new Response(JSON.stringify(data, null, 2), {
+		...init,
+		headers: {
+			"content-type": "application/json; charset=utf-8",
+			...init.headers,
+		},
+	});
+}
+
+function getRoomIdFromUrl(url: URL) {
+	const roomId = url.pathname.replace(/^\/ws\//, "").trim();
+
+	if (!roomId || roomId.includes("/")) {
+		return null;
 	}
 
-	/**
-	 * The Durable Object exposes an RPC method sayHello which will be invoked when a Durable
-	 *  Object instance receives a request from a Worker via the same method invocation on the stub
-	 *
-	 * @param name - The name provided to a Durable Object instance from a Worker
-	 * @returns The greeting to be sent back to the Worker
-	 */
-	async sayHello(name: string): Promise<string> {
-		return `Hello, ${name}!`;
-	}
+	return roomId.toUpperCase();
 }
 
 export default {
-	/**
-	 * This is the standard fetch handler for a Cloudflare Worker
-	 *
-	 * @param request - The request submitted to the Worker from the client
-	 * @param env - The interface to reference bindings declared in wrangler.jsonc
-	 * @param ctx - The execution context of the Worker
-	 * @returns The response to be sent back to the client
-	 */
-	async fetch(request, env, ctx): Promise<Response> {
-		// Create a stub to open a communication channel with the Durable Object
-		// instance named "foo".
-		//
-		// Requests from all Workers to the Durable Object instance named "foo"
-		// will go to a single remote Durable Object instance.
-		const stub = env.MY_DURABLE_OBJECT.getByName("foo");
+	async fetch(request: Request, env: Env): Promise<Response> {
+		const url = new URL(request.url);
 
-		// Call the `sayHello()` RPC method on the stub to invoke the method on
-		// the remote Durable Object instance.
-		const greeting = await stub.sayHello("world");
+		if (url.pathname === "/api/health") {
+			return json({
+				ok: true,
+				service: "boggle-multi",
+			});
+		}
 
-		return new Response(greeting);
+		if (url.pathname.startsWith("/ws/")) {
+			const roomId = getRoomIdFromUrl(url);
+
+			if (!roomId) {
+				return new Response("Room invalide", { status: 400 });
+			}
+
+			const id = env.BOGGLE_ROOM.idFromName(roomId);
+			const stub = env.BOGGLE_ROOM.get(id);
+
+			const headers = new Headers(request.headers);
+			headers.set("X-Room-Name", roomId);
+
+			const roomRequest = new Request(request, {
+				headers,
+			});
+
+			return stub.fetch(roomRequest);
+		}
+
+		return env.ASSETS.fetch(request);
 	},
-} satisfies ExportedHandler<Env>;
+};
+
+export class BoggleRoom extends DurableObject {
+	private roomId = "";
+	private board: Board | null = null;
+	private startedAt: number | null = null;
+	private durationSeconds = 180;
+
+	constructor(ctx: DurableObjectState, env: Env) {
+		super(ctx, env);
+		this.roomId = ctx.id.toString();
+	}
+
+	async fetch(request: Request): Promise<Response> {
+		const roomName = request.headers.get("X-Room-Name");
+
+		if (roomName) {
+			this.roomId = roomName;
+		}
+
+		const upgradeHeader = request.headers.get("Upgrade");
+
+		if (upgradeHeader !== "websocket") {
+			return new Response("Cette route attend une connexion WebSocket.", {
+				status: 426,
+			});
+		}
+
+		const pair = new WebSocketPair();
+		const client = pair[0];
+		const server = pair[1];
+
+		this.ctx.acceptWebSocket(server);
+
+		server.serializeAttachment({
+			name: "joueur",
+		});
+
+		this.send(server, {
+			type: "connected",
+			roomId: this.roomId,
+		});
+
+		this.broadcast({
+			type: "system",
+			text: "Un joueur a rejoint la room.",
+		});
+
+		this.broadcastPlayers();
+
+		if (this.board && this.startedAt) {
+			this.send(server, {
+				type: "gameStarted",
+				board: this.board,
+				startedAt: this.startedAt,
+				durationSeconds: this.durationSeconds,
+			});
+		}
+
+		return new Response(null, {
+			status: 101,
+			webSocket: client,
+		});
+	}
+
+	async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+		if (typeof message !== "string") {
+			return;
+		}
+
+		let data: ClientMessage;
+
+		try {
+			data = JSON.parse(message);
+		} catch {
+			this.send(ws, {
+				type: "system",
+				text: "Message JSON invalide.",
+			});
+
+			return;
+		}
+
+		if (data.type === "join") {
+			const name = data.name.trim().slice(0, 30) || "joueur";
+
+			ws.serializeAttachment({ name });
+
+			this.broadcast({
+				type: "system",
+				text: `${name} a rejoint la partie.`,
+			});
+
+			this.broadcastPlayers();
+
+			if (this.board && this.startedAt) {
+				this.send(ws, {
+					type: "gameStarted",
+					board: this.board,
+					startedAt: this.startedAt,
+					durationSeconds: this.durationSeconds,
+				});
+			}
+
+			return;
+		}
+
+		if (data.type === "startGame") {
+			const name = this.getPlayerName(ws);
+
+			this.board = generateBoard();
+			this.startedAt = Date.now();
+			this.durationSeconds = 180;
+
+			this.broadcast({
+				type: "system",
+				text: `${name} a lancé une nouvelle partie.`,
+			});
+
+			this.broadcast({
+				type: "gameStarted",
+				board: this.board,
+				startedAt: this.startedAt,
+				durationSeconds: this.durationSeconds,
+			});
+
+			return;
+		}
+	}
+
+	async webSocketClose(ws: WebSocket) {
+		const name = this.getPlayerName(ws);
+
+		this.broadcast({
+			type: "system",
+			text: `${name} a quitté la room.`,
+		});
+
+		this.broadcastPlayers();
+	}
+
+	async webSocketError(ws: WebSocket) {
+		this.broadcastPlayers();
+	}
+
+	private getPlayerName(ws: WebSocket) {
+		const attachment = ws.deserializeAttachment() as { name?: string } | null;
+
+		return attachment?.name ?? "joueur";
+	}
+
+	private send(ws: WebSocket, message: ServerMessage) {
+		try {
+			ws.send(JSON.stringify(message));
+		} catch {
+			// socket fermée
+		}
+	}
+
+	private broadcast(message: ServerMessage) {
+		for (const ws of this.ctx.getWebSockets()) {
+			this.send(ws, message);
+		}
+	}
+
+	private broadcastPlayers() {
+		const players = [...this.ctx.getWebSockets()].map((ws) =>
+			this.getPlayerName(ws)
+		);
+
+		this.broadcast({
+			type: "players",
+			players,
+		});
+	}
+}
+
+function generateBoard(): Board {
+	const letters = [
+		"A", "A", "A", "A", "A", "A", "A", "A", "A",
+		"E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E",
+		"I", "I", "I", "I", "I", "I", "I",
+		"O", "O", "O", "O", "O",
+		"U", "U", "U", "U",
+		"Y",
+
+		"B", "B",
+		"C", "C", "C", "C",
+		"D", "D", "D",
+		"F", "F",
+		"G", "G",
+		"H",
+		"J",
+		"K",
+		"L", "L", "L", "L", "L",
+		"M", "M", "M",
+		"N", "N", "N", "N", "N", "N",
+		"P", "P", "P",
+		"Q",
+		"R", "R", "R", "R", "R", "R",
+		"S", "S", "S", "S", "S", "S",
+		"T", "T", "T", "T", "T", "T",
+		"V", "V",
+		"W",
+		"X",
+		"Z",
+	];
+
+	const board: Board = [];
+
+	for (let row = 0; row < 4; row++) {
+		const line: string[] = [];
+
+		for (let col = 0; col < 4; col++) {
+			line.push(randomItem(letters));
+		}
+
+		board.push(line);
+	}
+
+	return board;
+}
+
+function randomItem<T>(items: T[]): T {
+	const array = new Uint32Array(1);
+	crypto.getRandomValues(array);
+
+	return items[array[0] % items.length];
+}

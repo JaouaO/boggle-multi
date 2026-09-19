@@ -1,20 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Hello, World!</title>
-	</head>
-	<body>
-		<h1 id="heading"></h1>
-		<p>This page comes from a static asset stored at `public/index.html` as configured in `wrangler.jsonc`.</p>
-		<script>
-			fetch('/message')
-				.then((resp) => resp.text())
-				.then((text) => {
-					const h1 = document.getElementById('heading');
-					h1.textContent = text;
-				});
-		</script>
-	</body>
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Boggle multi — grille partagée</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			font-family: system-ui, sans-serif;
+			max-width: 760px;
+			margin: 40px auto;
+			padding: 0 16px;
+			line-height: 1.5;
+		}
+
+		input,
+		button {
+			font: inherit;
+			padding: 8px 10px;
+		}
+
+		button {
+			cursor: pointer;
+		}
+
+		.row {
+			display: flex;
+			gap: 8px;
+			margin: 8px 0;
+			flex-wrap: wrap;
+		}
+
+		.row input {
+			flex: 1;
+			min-width: 160px;
+		}
+
+		#board {
+			display: grid;
+			grid-template-columns: repeat(4, 64px);
+			gap: 8px;
+			margin: 24px 0;
+		}
+
+		.cell {
+			width: 64px;
+			height: 64px;
+			display: grid;
+			place-items: center;
+			border: 2px solid #222;
+			border-radius: 10px;
+			font-size: 32px;
+			font-weight: 700;
+			background: #f5f5f5;
+		}
+
+		#log {
+			margin-top: 20px;
+			padding: 12px;
+			border: 1px solid #ddd;
+			min-height: 180px;
+			background: #fafafa;
+			white-space: pre-wrap;
+		}
+
+		#status {
+			font-weight: 700;
+		}
+	</style>
+</head>
+<body>
+<h1>Boggle multi — grille partagée</h1>
+
+<p id="status">Non connecté</p>
+
+<div class="row">
+	<input id="room" value="TEST" placeholder="Room">
+	<input id="name" value="Fred" placeholder="Nom">
+	<button id="connect">Connexion</button>
+</div>
+
+<div class="row">
+	<button id="start" disabled>Lancer une grille aléatoire</button>
+</div>
+
+<h2>Joueurs</h2>
+<ul id="players"></ul>
+
+<h2>Grille</h2>
+<div id="board"></div>
+
+<h2>Journal</h2>
+<div id="log"></div>
+
+<script>
+	let socket = null;
+
+	const roomInput = document.querySelector("#room");
+	const nameInput = document.querySelector("#name");
+	const connectButton = document.querySelector("#connect");
+	const startButton = document.querySelector("#start");
+	const statusElement = document.querySelector("#status");
+	const playersElement = document.querySelector("#players");
+	const boardElement = document.querySelector("#board");
+	const log = document.querySelector("#log");
+
+	function addLog(text) {
+		log.textContent += text + "\n";
+		log.scrollTop = log.scrollHeight;
+	}
+
+	function send(data) {
+		if (!socket || socket.readyState !== WebSocket.OPEN) {
+			addLog("Socket non connectée.");
+			return;
+		}
+
+		socket.send(JSON.stringify(data));
+	}
+
+	function renderPlayers(players) {
+		playersElement.innerHTML = "";
+
+		for (const player of players) {
+			const li = document.createElement("li");
+			li.textContent = player;
+			playersElement.appendChild(li);
+		}
+	}
+
+	function renderBoard(board) {
+		boardElement.innerHTML = "";
+
+		for (const row of board) {
+			for (const letter of row) {
+				const cell = document.createElement("div");
+				cell.className = "cell";
+				cell.textContent = letter;
+				boardElement.appendChild(cell);
+			}
+		}
+	}
+
+	connectButton.addEventListener("click", () => {
+		const roomId = roomInput.value.trim() || "TEST";
+		const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+		const url = `${protocol}//${location.host}/ws/${encodeURIComponent(roomId)}`;
+
+		socket = new WebSocket(url);
+
+		socket.addEventListener("open", () => {
+			statusElement.textContent = `Connecté à la room ${roomId}`;
+			startButton.disabled = false;
+
+			addLog(`Connecté à ${url}`);
+
+			send({
+				type: "join",
+				name: nameInput.value.trim() || "joueur",
+			});
+		});
+
+		socket.addEventListener("message", (event) => {
+			const data = JSON.parse(event.data);
+
+			if (data.type === "connected") {
+				addLog(`Room connectée : ${data.roomId}`);
+				return;
+			}
+
+			if (data.type === "system") {
+				addLog(`[système] ${data.text}`);
+				return;
+			}
+
+			if (data.type === "players") {
+				renderPlayers(data.players);
+				return;
+			}
+
+			if (data.type === "gameStarted") {
+				renderBoard(data.board);
+
+				const startDate = new Date(data.startedAt);
+				addLog(
+					`Nouvelle grille reçue. Début officiel : ${startDate.toLocaleTimeString()} — durée : ${data.durationSeconds}s`
+				);
+
+				return;
+			}
+		});
+
+		socket.addEventListener("close", () => {
+			statusElement.textContent = "Déconnecté";
+			startButton.disabled = true;
+			addLog("Connexion fermée.");
+		});
+
+		socket.addEventListener("error", () => {
+			addLog("Erreur WebSocket.");
+		});
+	});
+
+	startButton.addEventListener("click", () => {
+		send({
+			type: "startGame",
+		});
+	});
+</script>
+</body>
 </html>
