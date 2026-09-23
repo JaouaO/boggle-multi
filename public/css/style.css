@@ -71,3 +71,23 @@ button:disabled {
 	white-space: pre-wrap;
 	overflow: auto;
 }
+
+.game-panel {
+	margin: 20px 0;
+	padding: 16px;
+	border: 1px solid #ddd;
+	border-radius: 12px;
+	background: #fafafa;
+}
+
+.game-status {
+	margin: 0 0 8px;
+	font-weight: 700;
+}
+
+.timer {
+	margin: 0;
+	font-size: 40px;
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
+}

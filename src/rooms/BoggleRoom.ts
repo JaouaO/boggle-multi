@@ -1,13 +1,21 @@
 import { DurableObject } from "cloudflare:workers";
 import { generateBoard } from "../game/board";
+import {
+	DEFAULT_GAME_DURATION_SECONDS,
+	getGameEndTime,
+	isGameFinished,
+	type GameStatus,
+} from "../game/game-state";
 import type { Board, Env } from "../shared/types";
 import type { ClientMessage, ServerMessage } from "../shared/messages";
 
 export class BoggleRoom extends DurableObject {
 	private roomId = "";
+	private status: GameStatus = "waiting";
 	private board: Board | null = null;
 	private startedAt: number | null = null;
-	private durationSeconds = 180;
+	private endedAt: number | null = null;
+	private durationSeconds = DEFAULT_GAME_DURATION_SECONDS;
 
 	constructor(ctx: DurableObjectState, env: Env) {
 		super(ctx, env);
@@ -50,15 +58,7 @@ export class BoggleRoom extends DurableObject {
 		});
 
 		this.broadcastPlayers();
-
-		if (this.board && this.startedAt) {
-			this.send(server, {
-				type: "gameStarted",
-				board: this.board,
-				startedAt: this.startedAt,
-				durationSeconds: this.durationSeconds,
-			});
-		}
+		this.sendCurrentGameState(server);
 
 		return new Response(null, {
 			status: 101,
@@ -67,6 +67,8 @@ export class BoggleRoom extends DurableObject {
 	}
 
 	async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+		this.endGameIfNeeded();
+
 		if (typeof message !== "string") {
 			return;
 		}
@@ -95,38 +97,13 @@ export class BoggleRoom extends DurableObject {
 			});
 
 			this.broadcastPlayers();
-
-			if (this.board && this.startedAt) {
-				this.send(ws, {
-					type: "gameStarted",
-					board: this.board,
-					startedAt: this.startedAt,
-					durationSeconds: this.durationSeconds,
-				});
-			}
+			this.sendCurrentGameState(ws);
 
 			return;
 		}
 
 		if (data.type === "startGame") {
-			const name = this.getPlayerName(ws);
-
-			this.board = generateBoard();
-			this.startedAt = Date.now();
-			this.durationSeconds = 180;
-
-			this.broadcast({
-				type: "system",
-				text: `${name} a lancé une nouvelle partie.`,
-			});
-
-			this.broadcast({
-				type: "gameStarted",
-				board: this.board,
-				startedAt: this.startedAt,
-				durationSeconds: this.durationSeconds,
-			});
-
+			await this.startGame(ws);
 			return;
 		}
 	}
@@ -144,6 +121,130 @@ export class BoggleRoom extends DurableObject {
 
 	async webSocketError() {
 		this.broadcastPlayers();
+	}
+
+	async alarm() {
+		this.endGameIfNeeded(true);
+	}
+
+	private async startGame(ws: WebSocket) {
+		const name = this.getPlayerName(ws);
+
+		if (this.status === "playing" && !this.hasCurrentGameFinished()) {
+			this.send(ws, {
+				type: "system",
+				text: "Une partie est déjà en cours.",
+			});
+
+			return;
+		}
+
+		this.status = "playing";
+		this.board = generateBoard();
+		this.startedAt = Date.now();
+		this.endedAt = null;
+		this.durationSeconds = DEFAULT_GAME_DURATION_SECONDS;
+
+		await this.ctx.storage.setAlarm(
+			getGameEndTime(this.startedAt, this.durationSeconds)
+		);
+
+		this.broadcast({
+			type: "system",
+			text: `${name} a lancé une nouvelle partie.`,
+		});
+
+		this.broadcast({
+			type: "gameStarted",
+			status: "playing",
+			board: this.board,
+			startedAt: this.startedAt,
+			durationSeconds: this.durationSeconds,
+		});
+	}
+
+	private endGameIfNeeded(force = false) {
+		if (this.status !== "playing") {
+			return;
+		}
+
+		if (!this.board || !this.startedAt) {
+			return;
+		}
+
+		if (!force && !this.hasCurrentGameFinished()) {
+			return;
+		}
+
+		this.status = "ended";
+		this.endedAt = Date.now();
+
+		this.broadcast({
+			type: "system",
+			text: "La partie est terminée.",
+		});
+
+		this.broadcast({
+			type: "gameEnded",
+			status: "ended",
+			board: this.board,
+			startedAt: this.startedAt,
+			durationSeconds: this.durationSeconds,
+			endedAt: this.endedAt,
+		});
+	}
+
+	private hasCurrentGameFinished() {
+		if (!this.startedAt) {
+			return false;
+		}
+
+		return isGameFinished(this.startedAt, this.durationSeconds);
+	}
+
+	private sendCurrentGameState(ws: WebSocket) {
+		if (this.status === "playing") {
+			this.endGameIfNeeded();
+		}
+
+		if (
+			this.status === "playing" &&
+			this.board &&
+			this.startedAt
+		) {
+			this.send(ws, {
+				type: "gameStarted",
+				status: "playing",
+				board: this.board,
+				startedAt: this.startedAt,
+				durationSeconds: this.durationSeconds,
+			});
+
+			return;
+		}
+
+		if (
+			this.status === "ended" &&
+			this.board &&
+			this.startedAt &&
+			this.endedAt
+		) {
+			this.send(ws, {
+				type: "gameEnded",
+				status: "ended",
+				board: this.board,
+				startedAt: this.startedAt,
+				durationSeconds: this.durationSeconds,
+				endedAt: this.endedAt,
+			});
+
+			return;
+		}
+
+		this.send(ws, {
+			type: "gameStatus",
+			status: this.status,
+		});
 	}
 
 	private getPlayerName(ws: WebSocket) {

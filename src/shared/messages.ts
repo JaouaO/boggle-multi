@@ -1,3 +1,4 @@
+import type { GameStatus } from "../game/game-state";
 import type { Board } from "./types";
 
 export type ClientMessage =
@@ -23,8 +24,21 @@ export type ServerMessage =
 	players: string[];
 }
 	| {
+	type: "gameStatus";
+	status: GameStatus;
+}
+	| {
 	type: "gameStarted";
+	status: "playing";
 	board: Board;
 	startedAt: number;
 	durationSeconds: number;
+}
+	| {
+	type: "gameEnded";
+	status: "ended";
+	board: Board;
+	startedAt: number;
+	durationSeconds: number;
+	endedAt: number;
 };
