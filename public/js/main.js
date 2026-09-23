@@ -4,6 +4,10 @@ import { renderBoard } from "./ui/board-ui.js";
 import { renderPlayers } from "./ui/players-ui.js";
 import { addLog } from "./ui/log-ui.js";
 import {
+	renderFoundWords,
+	setWordFeedback,
+} from "./ui/words-ui.js";
+import {
 	renderTimer,
 	startLocalTimer,
 	stopLocalTimer,
@@ -21,9 +25,32 @@ const timerElement = document.querySelector("#timer");
 const playersElement = document.querySelector("#players");
 const boardElement = document.querySelector("#board");
 const logElement = document.querySelector("#log");
+const wordForm = document.querySelector("#word-form");
+const wordInput = document.querySelector("#word-input");
+const wordSubmitButton = document.querySelector("#word-submit");
+const wordFeedbackElement = document.querySelector("#word-feedback");
+const foundWordsElement = document.querySelector("#found-words");
 
 connectButton.addEventListener("click", connectToRoom);
 startButton.addEventListener("click", startGame);
+wordForm.addEventListener("submit", submitWord);
+function submitWord(event) {
+	event.preventDefault();
+
+	const word = wordInput.value.trim();
+
+	if (!word) {
+		return;
+	}
+
+	send({
+		type: "submitWord",
+		word,
+	});
+
+	wordInput.value = "";
+	wordInput.focus();
+}
 
 resetGameUiToWaiting();
 
@@ -134,15 +161,55 @@ function handleServerMessage(data) {
 		return;
 	}
 
+	if (data.type === "wordAccepted") {
+		handleWordAccepted(data);
+		return;
+	}
+
+	if (data.type === "wordRejected") {
+		handleWordRejected(data);
+		return;
+	}
+
 	addLog(logElement, `Message serveur inconnu : ${JSON.stringify(data)}`);
 }
+function handleWordAccepted(data) {
+	state.score = data.score;
+	state.foundWords = [
+		...state.foundWords,
+		{
+			word: data.word,
+			points: data.points,
+		},
+	];
 
+	renderFoundWords(foundWordsElement, state.foundWords);
+	setWordFeedback(
+		wordFeedbackElement,
+		`${data.word} accepté : +${data.points} point(s)`
+	);
+}
+
+function handleWordRejected(data) {
+	setWordFeedback(
+		wordFeedbackElement,
+		`${data.word || "Mot"} refusé : ${data.reason}`
+	);
+}
 function handleGameStarted(data) {
 	state.gameStatus = "playing";
 	state.board = data.board;
 	state.startedAt = data.startedAt;
 	state.endedAt = null;
 	state.durationSeconds = data.durationSeconds;
+	state.foundWords = [];
+	state.score = 0;
+
+	renderFoundWords(foundWordsElement, state.foundWords);
+	setWordFeedback(wordFeedbackElement, "");
+
+	wordInput.disabled = false;
+	wordSubmitButton.disabled = false;
 
 	renderBoard(boardElement, data.board);
 	updateGameStatus("playing");
@@ -182,6 +249,9 @@ function handleGameEnded(data) {
 
 	const endDate = new Date(data.endedAt);
 
+	wordInput.disabled = true;
+	wordSubmitButton.disabled = true;
+
 	addLog(
 		logElement,
 		`Partie terminée à ${endDate.toLocaleTimeString()}.`
@@ -198,6 +268,15 @@ function updateGameStatus(status) {
 		state.startedAt = null;
 		state.endedAt = null;
 		state.durationSeconds = DEFAULT_DURATION_SECONDS;
+
+		state.foundWords = [];
+		state.score = 0;
+
+		renderFoundWords(foundWordsElement, state.foundWords);
+		setWordFeedback(wordFeedbackElement, "");
+
+		wordInput.disabled = true;
+		wordSubmitButton.disabled = true;
 
 		boardElement.innerHTML = "";
 		renderTimer(timerElement, DEFAULT_DURATION_SECONDS);
@@ -219,6 +298,8 @@ function updateGameStatus(status) {
 
 		gameStatusElement.textContent = "Partie terminée";
 		startButton.disabled = !state.socket;
+		wordInput.disabled = true;
+		wordSubmitButton.disabled = true;
 
 		return;
 	}
@@ -236,4 +317,12 @@ function resetGameUiToWaiting() {
 	renderTimer(timerElement, DEFAULT_DURATION_SECONDS);
 
 	startButton.disabled = !state.socket;
+	state.foundWords = [];
+	state.score = 0;
+
+	renderFoundWords(foundWordsElement, state.foundWords);
+	setWordFeedback(wordFeedbackElement, "");
+
+	wordInput.disabled = true;
+	wordSubmitButton.disabled = true;
 }

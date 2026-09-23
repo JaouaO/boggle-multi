@@ -8,4 +8,7 @@ export const state = {
 	startedAt: null,
 	endedAt: null,
 	durationSeconds: null,
+
+	foundWords: [],
+	score: 0,
 };

@@ -91,3 +91,22 @@ button:disabled {
 	font-weight: 800;
 	font-variant-numeric: tabular-nums;
 }
+
+.word-feedback {
+	min-height: 24px;
+	font-weight: 700;
+}
+
+.found-words {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding: 0;
+	list-style: none;
+}
+
+.found-words li {
+	padding: 4px 8px;
+	border-radius: 999px;
+	background: #eeeeee;
+}

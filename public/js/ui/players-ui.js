@@ -3,7 +3,13 @@ export function renderPlayers(playersElement, players) {
 
 	for (const player of players) {
 		const li = document.createElement("li");
-		li.textContent = player;
+
+		if (typeof player === "string") {
+			li.textContent = player;
+		} else {
+			li.textContent = `${player.name} — ${player.score} pt — ${player.wordCount} mot(s)`;
+		}
+
 		playersElement.appendChild(li);
 	}
 }

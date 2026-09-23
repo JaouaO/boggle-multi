@@ -1,5 +1,5 @@
 import type { GameStatus } from "../game/game-state";
-import type { Board } from "./types";
+import type { Board, Player } from "./types";
 
 export type ClientMessage =
 	| {
@@ -8,6 +8,10 @@ export type ClientMessage =
 }
 	| {
 	type: "startGame";
+}
+	| {
+	type: "submitWord";
+	word: string;
 };
 
 export type ServerMessage =
@@ -21,7 +25,7 @@ export type ServerMessage =
 }
 	| {
 	type: "players";
-	players: string[];
+	players: Player[];
 }
 	| {
 	type: "gameStatus";
@@ -41,4 +45,15 @@ export type ServerMessage =
 	startedAt: number;
 	durationSeconds: number;
 	endedAt: number;
+}
+	| {
+	type: "wordAccepted";
+	word: string;
+	points: number;
+	score: number;
+}
+	| {
+	type: "wordRejected";
+	word: string;
+	reason: string;
 };
