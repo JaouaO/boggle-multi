@@ -1,5 +1,7 @@
 import { DurableObject } from "cloudflare:workers";
-import { isWordOnBoard, normalizeWord } from "../engine/solver";
+import { isKnownWord } from "../engine/dictionary";
+import { normalizeWord } from "../engine/normalization";
+import { isWordOnBoard } from "../engine/solver";
 import { generateBoard } from "../game/board";
 import {
 	DEFAULT_GAME_DURATION_SECONDS,
@@ -241,6 +243,16 @@ export class BoggleRoom extends DurableObject {
 				type: "wordRejected",
 				word,
 				reason: "Mot déjà trouvé.",
+			});
+
+			return;
+		}
+
+		if (!isKnownWord(word)) {
+			this.send(ws, {
+				type: "wordRejected",
+				word,
+				reason: "Ce mot n’est pas dans le dictionnaire.",
 			});
 
 			return;
