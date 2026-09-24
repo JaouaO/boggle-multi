@@ -1,14 +1,14 @@
 export const state = {
-	socket: null,
-	roomId: null,
-	playerName: null,
-
-	gameStatus: "waiting",
-	board: null,
-	startedAt: null,
-	endedAt: null,
-	durationSeconds: null,
-
-	foundWords: [],
-	score: 0,
+  socket: null,
+  roomId: null,
+  playerName: "",
+  gameStatus: "waiting",
+  board: null,
+  startedAt: null,
+  endedAt: null,
+  durationSeconds: 180,
+  foundWords: [],
+  score: 0,
+  solutionsStats: null,
+  solutionCellWords: [],
 };

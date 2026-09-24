@@ -1,13 +1,25 @@
 export type Board = string[][];
 
-export interface Player {
-	id: string;
-	name: string;
-	score: number;
-	wordCount: number;
-}
+export type BoardPosition = {
+  row: number;
+  col: number;
+};
 
-export interface Env {
-	BOGGLE_ROOM: DurableObjectNamespace;
-	ASSETS: Fetcher;
-}
+export type BoardSolution = {
+  word: string;
+  score: number;
+  path: BoardPosition[];
+  cells: BoardPosition[];
+};
+
+export type Player = {
+  id: string;
+  name: string;
+  score: number;
+  wordCount: number;
+};
+
+export type Env = {
+  BOGGLE_ROOM: DurableObjectNamespace;
+  ASSETS: Fetcher;
+};
