@@ -13,9 +13,8 @@ import {
   stopLocalTimer,
 } from "./ui/timer-ui.js";
 import {
-  renderHelpSummary,
-  resetHelpPanel,
-  showCellHelp,
+  getNextHelpLevel,
+  renderHelpPanel,
 } from "./ui/help-ui.js";
 
 const DEFAULT_DURATION_SECONDS = 180;
@@ -229,15 +228,28 @@ function handleSolutionsStats(data) {
 }
 
 function handleBoardCellClick({ row, col, letter }) {
+  if (state.helpLevel < 2) {
+    return;
+  }
+
   const words = state.solutionCellWords?.[row]?.[col] || [];
 
-  showCellHelp(boardElement, {
+  state.selectedHelpCell = {
     row,
     col,
     letter,
     words,
-    foundWords: getFoundWordList(),
-  });
+  };
+
+  refreshHelpDisplay();
+}
+
+function changeHelpLevel() {
+  state.helpLevel = getNextHelpLevel(state.helpLevel);
+  state.selectedHelpCell = null;
+
+  refreshHelpDisplay();
+  renderCurrentBoardWithHelp();
 }
 
 function handleGameStarted(data) {
@@ -250,14 +262,15 @@ function handleGameStarted(data) {
   state.score = 0;
   state.solutionCellWords = [];
   state.solutionsStats = null;
+  state.selectedHelpCell = null;
 
-  resetHelpPanel(boardElement);
   renderFoundWords(foundWordsElement, state.foundWords);
   setWordFeedback(wordFeedbackElement, "");
 
   wordInput.disabled = false;
   wordSubmitButton.disabled = false;
 
+  refreshHelpDisplay();
   renderCurrentBoardWithHelp();
   updateGameStatus("playing");
 
@@ -306,23 +319,17 @@ function handleGameEnded(data) {
 }
 
 function refreshHelpDisplay() {
-  if (!state.solutionsStats) {
-    resetHelpPanel(boardElement);
-    return;
-  }
-
-  renderHelpSummary(
-    boardElement,
-    {
-      totalWords: state.solutionsStats.totalWords,
-      maxScore: state.solutionsStats.maxScore,
-      solveDurationMs: state.solutionsStats.solveDurationMs,
-    },
-    {
+  renderHelpPanel(boardElement, {
+    helpLevel: state.helpLevel,
+    stats: state.solutionsStats,
+    progress: {
       foundWords: state.foundWords.length,
       foundScore: state.score,
-    }
-  );
+    },
+    selectedCell: state.selectedHelpCell,
+    foundWords: getFoundWordList(),
+    onHelpLevelChange: changeHelpLevel,
+  });
 }
 
 function renderCurrentBoardWithHelp() {
@@ -330,6 +337,8 @@ function renderCurrentBoardWithHelp() {
     onCellClick: handleBoardCellClick,
     cellCounts: state.solutionsStats?.cellCounts || [],
     foundCellCounts: createFoundCellCounts(),
+    showCounts: state.helpLevel >= 1,
+    canClickCells: state.helpLevel >= 2,
   });
 }
 
@@ -364,10 +373,11 @@ function updateGameStatus(status) {
     state.score = 0;
     state.solutionCellWords = [];
     state.solutionsStats = null;
+    state.selectedHelpCell = null;
 
     renderFoundWords(foundWordsElement, state.foundWords);
     setWordFeedback(wordFeedbackElement, "");
-    resetHelpPanel(boardElement);
+    refreshHelpDisplay();
 
     wordInput.disabled = true;
     wordSubmitButton.disabled = true;
@@ -415,10 +425,11 @@ function resetGameUiToWaiting() {
   state.score = 0;
   state.solutionCellWords = [];
   state.solutionsStats = null;
+  state.selectedHelpCell = null;
 
   renderFoundWords(foundWordsElement, state.foundWords);
   setWordFeedback(wordFeedbackElement, "");
-  resetHelpPanel(boardElement);
+  refreshHelpDisplay();
 
   wordInput.disabled = true;
   wordSubmitButton.disabled = true;

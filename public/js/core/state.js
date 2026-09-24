@@ -11,4 +11,6 @@ export const state = {
   score: 0,
   solutionsStats: null,
   solutionCellWords: [],
+  helpLevel: 0,
+  selectedHelpCell: null,
 };

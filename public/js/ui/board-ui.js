@@ -5,6 +5,9 @@ export function renderBoard(boardElement, board, options = {}) {
     return;
   }
 
+  const showCounts = Boolean(options.showCounts);
+  const canClickCells = Boolean(options.canClickCells);
+
   boardElement.style.display = "grid";
   boardElement.style.gridTemplateColumns = `repeat(${board[0]?.length || 0}, minmax(48px, 1fr))`;
   boardElement.style.gap = "0.5rem";
@@ -24,10 +27,14 @@ export function renderBoard(boardElement, board, options = {}) {
 
       cell.style.position = "relative";
       cell.style.minHeight = "56px";
-      cell.style.cursor = "pointer";
+      cell.style.cursor = canClickCells ? "pointer" : "default";
 
-      if (possibleCount !== null) {
+      if (showCounts && possibleCount !== null) {
         cell.title = `${foundCount}/${possibleCount} mot(s) trouvé(s)/possible(s)`;
+      } else if (canClickCells) {
+        cell.title = "Cliquez pour voir les mots possibles avec cette lettre.";
+      } else {
+        cell.title = "";
       }
 
       const letterElement = document.createElement("span");
@@ -36,7 +43,7 @@ export function renderBoard(boardElement, board, options = {}) {
 
       cell.appendChild(letterElement);
 
-      if (possibleCount !== null) {
+      if (showCounts && possibleCount !== null) {
         const countElement = document.createElement("span");
         countElement.className = "board-count";
         countElement.textContent = `${foundCount}/${possibleCount}`;
@@ -49,13 +56,15 @@ export function renderBoard(boardElement, board, options = {}) {
         cell.appendChild(countElement);
       }
 
-      cell.addEventListener("click", () => {
-        options.onCellClick?.({
-          row,
-          col,
-          letter,
+      if (canClickCells) {
+        cell.addEventListener("click", () => {
+          options.onCellClick?.({
+            row,
+            col,
+            letter,
+          });
         });
-      });
+      }
 
       boardElement.appendChild(cell);
     }
