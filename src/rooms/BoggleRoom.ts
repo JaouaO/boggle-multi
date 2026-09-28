@@ -16,7 +16,7 @@ import {
   GameStatus,
 } from "../game/game-state";
 import { scoreWord } from "../game/scoring";
-import { Board, BoardSolution, Env, Player } from "../shared/types";
+import { Board, BoardSolution, Env, GameMode, Player } from "../shared/types";
 import { ClientMessage, ServerMessage } from "../shared/messages";
 
 const ROOM_STATE_KEY = "roomState";
@@ -30,6 +30,7 @@ type PlayerAttachment = {
 
 type StoredRoomState = {
   status: GameStatus;
+  mode: GameMode;
   board: Board | null;
   startedAt: number | null;
   endedAt: number | null;
@@ -41,6 +42,7 @@ type StoredRoomState = {
 export class BoggleRoom extends DurableObject {
   private roomId = "";
   private status: GameStatus = "waiting";
+  private mode: GameMode = "timed";
   private board: Board | null = null;
   private startedAt: number | null = null;
   private endedAt: number | null = null;
@@ -142,7 +144,7 @@ export class BoggleRoom extends DurableObject {
     }
 
     if (data.type === "startGame") {
-      await this.startGame(ws);
+      await this.startGame(ws, data.mode ?? "timed", data.board);
       return;
     }
 
@@ -172,20 +174,39 @@ export class BoggleRoom extends DurableObject {
     await this.endGameIfNeeded(true);
   }
 
-  private async startGame(ws: WebSocket) {
+  private async startGame(ws: WebSocket, mode: GameMode, customBoard?: Board) {
     const name = this.getPlayerName(ws);
 
-    if (this.status === "playing" && !this.hasCurrentGameFinished()) {
+    if (
+      this.status === "playing" &&
+      this.mode === "timed" &&
+      !this.hasCurrentGameFinished()
+    ) {
       this.send(ws, {
         type: "system",
-        text: "Une partie est déjà en cours.",
+        text: "Une partie chronométrée est déjà en cours.",
+      });
+
+      return;
+    }
+
+    const board =
+      customBoard && customBoard.length > 0
+        ? this.normalizeCustomBoard(customBoard)
+        : generateBoard();
+
+    if (!board) {
+      this.send(ws, {
+        type: "system",
+        text: "Grille personnalisée invalide : utilisez une grille carrée de 3 à 5 lettres par côté.",
       });
 
       return;
     }
 
     this.status = "playing";
-    this.board = generateBoard();
+    this.mode = mode;
+    this.board = board;
 
     const solveStartedAt = Date.now();
     this.solutions = findAllWordsOnBoard(this.board);
@@ -193,24 +214,33 @@ export class BoggleRoom extends DurableObject {
 
     this.startedAt = Date.now();
     this.endedAt = null;
-    this.durationSeconds = DEFAULT_GAME_DURATION_SECONDS;
+    this.durationSeconds =
+      this.mode === "timed" ? DEFAULT_GAME_DURATION_SECONDS : 0;
 
     this.resetAllPlayersForNewGame();
 
     await this.saveRoomState();
 
-    await this.ctx.storage.setAlarm(
-      getGameEndTime(this.startedAt, this.durationSeconds)
-    );
+    if (this.mode === "timed") {
+      await this.ctx.storage.setAlarm(
+        getGameEndTime(this.startedAt, this.durationSeconds)
+      );
+    } else {
+      await this.ctx.storage.deleteAlarm();
+    }
 
     this.broadcast({
       type: "system",
-      text: `${name} a lancé une nouvelle partie.`,
+      text:
+        this.mode === "timed"
+          ? `${name} a lancé une nouvelle partie chronométrée.`
+          : `${name} a lancé un mode solution sans timer.`,
     });
 
     this.broadcast({
       type: "gameStarted",
       status: "playing",
+      mode: this.mode,
       board: this.board,
       startedAt: this.startedAt,
       durationSeconds: this.durationSeconds,
@@ -218,6 +248,42 @@ export class BoggleRoom extends DurableObject {
 
     this.broadcastSolutionStats();
     this.broadcastPlayers();
+  }
+
+  private normalizeCustomBoard(board: Board) {
+    if (!Array.isArray(board)) {
+      return null;
+    }
+
+    const size = board.length;
+
+    if (size < 3 || size > 5) {
+      return null;
+    }
+
+    const normalizedBoard: Board = [];
+
+    for (const row of board) {
+      if (!Array.isArray(row) || row.length !== size) {
+        return null;
+      }
+
+      const normalizedRow: string[] = [];
+
+      for (const cell of row) {
+        const normalizedLetter = normalizeWord(String(cell))[0];
+
+        if (!normalizedLetter) {
+          return null;
+        }
+
+        normalizedRow.push(normalizedLetter);
+      }
+
+      normalizedBoard.push(normalizedRow);
+    }
+
+    return normalizedBoard;
   }
 
   private async submitWord(ws: WebSocket, rawWord: string) {
@@ -321,6 +387,10 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
+    if (this.mode === "solution") {
+      return;
+    }
+
     if (!this.board || !this.startedAt) {
       return;
     }
@@ -342,6 +412,7 @@ export class BoggleRoom extends DurableObject {
     this.broadcast({
       type: "gameEnded",
       status: "ended",
+      mode: this.mode,
       board: this.board,
       startedAt: this.startedAt,
       durationSeconds: this.durationSeconds,
@@ -353,6 +424,10 @@ export class BoggleRoom extends DurableObject {
   }
 
   private hasCurrentGameFinished() {
+    if (this.mode === "solution") {
+      return false;
+    }
+
     if (!this.startedAt) {
       return false;
     }
@@ -369,6 +444,7 @@ export class BoggleRoom extends DurableObject {
       this.send(ws, {
         type: "gameStarted",
         status: "playing",
+        mode: this.mode,
         board: this.board,
         startedAt: this.startedAt,
         durationSeconds: this.durationSeconds,
@@ -388,6 +464,7 @@ export class BoggleRoom extends DurableObject {
       this.send(ws, {
         type: "gameEnded",
         status: "ended",
+        mode: this.mode,
         board: this.board,
         startedAt: this.startedAt,
         durationSeconds: this.durationSeconds,
@@ -414,6 +491,7 @@ export class BoggleRoom extends DurableObject {
 
     if (stored) {
       this.status = stored.status;
+      this.mode = stored.mode ?? "timed";
       this.board = stored.board;
       this.startedAt = stored.startedAt;
       this.endedAt = stored.endedAt;
@@ -434,6 +512,7 @@ export class BoggleRoom extends DurableObject {
   private async saveRoomState() {
     const roomState: StoredRoomState = {
       status: this.status,
+      mode: this.mode,
       board: this.board,
       startedAt: this.startedAt,
       endedAt: this.endedAt,

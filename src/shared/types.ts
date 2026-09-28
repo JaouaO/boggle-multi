@@ -1,5 +1,7 @@
 export type Board = string[][];
 
+export type GameMode = "timed" | "solution";
+
 export type BoardPosition = {
   row: number;
   col: number;

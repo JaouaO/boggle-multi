@@ -5,6 +5,7 @@ export const state = {
   playerName: "",
   players: [],
   gameStatus: "waiting",
+  gameMode: "timed",
   board: null,
   startedAt: null,
   endedAt: null,
@@ -16,4 +17,10 @@ export const state = {
   helpLevel: 0,
   selectedHelpCell: null,
   endScreenVisible: false,
+  selectedPath: [],
+  selectedWord: "",
+  isDraggingLetters: false,
+  dragPath: [],
+  dragMoved: false,
+  suppressNextCellClick: false,
 };

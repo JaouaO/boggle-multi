@@ -20,6 +20,8 @@ import {
   hideEndScreen,
   renderEndScreen,
 } from "./ui/end-screen-ui.js";
+import { renderModeControls } from "./ui/mode-ui.js";
+import { renderMouseInputPanel } from "./ui/mouse-input-ui.js";
 
 const DEFAULT_DURATION_SECONDS = 180;
 
@@ -40,8 +42,20 @@ const wordFeedbackElement = document.querySelector("#word-feedback");
 const foundWordsElement = document.querySelector("#found-words");
 
 connectButton.addEventListener("click", connectToRoom);
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", startRandomTimedGame);
 wordForm.addEventListener("submit", submitWord);
+
+startButton.textContent = "Lancer une grille aléatoire";
+
+renderModePanel();
+
+renderMouseInputPanel(wordForm, {
+  word: "",
+  onSubmit: submitSelectedWord,
+  onClear: clearSelectedLetters,
+});
+
+resetGameUiToWaiting();
 
 function submitWord(event) {
   event.preventDefault();
@@ -58,10 +72,23 @@ function submitWord(event) {
   });
 
   wordInput.value = "";
+  clearSelectedLetters();
   wordInput.focus();
 }
 
-resetGameUiToWaiting();
+function submitSelectedWord() {
+  if (!state.selectedWord || state.selectedWord.length < 3) {
+    return;
+  }
+
+  send({
+    type: "submitWord",
+    word: state.selectedWord,
+  });
+
+  wordInput.value = "";
+  clearSelectedLetters();
+}
 
 function connectToRoom() {
   const roomId = roomInput.value.trim() || "TEST";
@@ -125,9 +152,18 @@ function connectToRoom() {
   });
 }
 
-function startGame() {
+function startRandomTimedGame() {
   send({
     type: "startGame",
+    mode: "timed",
+  });
+}
+
+function startSolutionMode(board) {
+  send({
+    type: "startGame",
+    mode: "solution",
+    board,
   });
 }
 
@@ -211,6 +247,7 @@ function handleWordAccepted(data) {
     `${data.word} accepté : +${data.points} point(s)`
   );
 
+  clearSelectedLetters();
   refreshHelpDisplay();
   renderCurrentBoardWithHelp();
 }
@@ -243,10 +280,168 @@ function handleSolutionsStats(data) {
 }
 
 function handleBoardCellClick({ row, col, letter }) {
+  if (state.suppressNextCellClick) {
+    state.suppressNextCellClick = false;
+    return;
+  }
+
+  if (state.gameStatus !== "playing") {
+    return;
+  }
+
+  if (state.helpLevel >= 2) {
+    updateHelpCell({ row, col, letter });
+    return;
+  }
+
+  addClickedLetterToSelection({ row, col, letter });
+}
+
+function handleCellHelpClick({ row, col, letter }) {
   if (state.helpLevel < 2) {
     return;
   }
 
+  updateHelpCell({ row, col, letter });
+}
+
+function handleCellPointerDown({ row, col, letter }) {
+  if (state.gameStatus !== "playing") {
+    return;
+  }
+
+  state.isDraggingLetters = true;
+  state.dragMoved = false;
+  state.dragPath = [{ row, col, letter }];
+
+  updateWordInputFromPath(state.dragPath);
+  renderCurrentBoardWithHelp();
+  renderMousePanel();
+}
+
+function handleCellPointerEnter({ row, col, letter }) {
+  if (!state.isDraggingLetters) {
+    return;
+  }
+
+  const cell = { row, col, letter };
+  const lastCell = state.dragPath[state.dragPath.length - 1];
+
+  if (!lastCell) {
+    state.dragPath = [cell];
+    return;
+  }
+
+  if (isSameCell(cell, lastCell)) {
+    return;
+  }
+
+  const existingIndex = state.dragPath.findIndex((selectedCell) =>
+    isSameCell(cell, selectedCell)
+  );
+
+  if (existingIndex >= 0) {
+    if (existingIndex < state.dragPath.length - 1) {
+      state.dragMoved = true;
+      state.dragPath = state.dragPath.slice(0, existingIndex + 1);
+
+      updateWordInputFromPath(state.dragPath);
+      renderCurrentBoardWithHelp();
+      renderMousePanel();
+    }
+
+    return;
+  }
+
+  if (!areAdjacentCells(cell, lastCell)) {
+    return;
+  }
+
+  state.dragMoved = true;
+  state.dragPath = [...state.dragPath, cell];
+
+  updateWordInputFromPath(state.dragPath);
+  renderCurrentBoardWithHelp();
+  renderMousePanel();
+}
+
+function handleCellPointerUp({ row, col, letter }) {
+  if (!state.isDraggingLetters) {
+    return;
+  }
+
+  const draggedWord = pathToWord(state.dragPath);
+  const wasDragSelection = state.dragMoved;
+
+  state.isDraggingLetters = false;
+  state.suppressNextCellClick = true;
+
+  if (wasDragSelection && draggedWord.length >= 3) {
+    state.selectedPath = state.dragPath;
+    state.selectedWord = draggedWord;
+    submitSelectedWord();
+    state.dragPath = [];
+    state.dragMoved = false;
+    return;
+  }
+
+  state.dragPath = [];
+  state.dragMoved = false;
+
+  if (!wasDragSelection && state.helpLevel >= 2) {
+    updateHelpCell({ row, col, letter });
+    updateWordInputFromPath(state.selectedPath);
+    renderCurrentBoardWithHelp();
+    renderMousePanel();
+    return;
+  }
+
+  if (!wasDragSelection) {
+    addClickedLetterToSelection({ row, col, letter });
+    return;
+  }
+
+  updateWordInputFromPath(state.selectedPath);
+  renderCurrentBoardWithHelp();
+  renderMousePanel();
+}
+
+function addClickedLetterToSelection(cell) {
+  const lastCell = state.selectedPath[state.selectedPath.length - 1];
+
+  if (!lastCell) {
+    state.selectedPath = [cell];
+    updateSelectedWordFromPath();
+    return;
+  }
+
+  if (isSameCell(cell, lastCell)) {
+    state.selectedPath = state.selectedPath.slice(0, -1);
+    updateSelectedWordFromPath();
+    return;
+  }
+
+  const existingIndex = state.selectedPath.findIndex((selectedCell) =>
+    isSameCell(cell, selectedCell)
+  );
+
+  if (existingIndex >= 0) {
+    state.selectedPath = state.selectedPath.slice(0, existingIndex + 1);
+    updateSelectedWordFromPath();
+    return;
+  }
+
+  if (!areAdjacentCells(cell, lastCell)) {
+    state.selectedPath = [cell];
+    updateSelectedWordFromPath();
+    return;
+  }
+
+  state.selectedPath = [...state.selectedPath, cell];
+  updateSelectedWordFromPath();
+}
+
+function updateHelpCell({ row, col, letter }) {
   const words = state.solutionCellWords?.[row]?.[col] || [];
 
   state.selectedHelpCell = {
@@ -259,6 +454,43 @@ function handleBoardCellClick({ row, col, letter }) {
   refreshHelpDisplay();
 }
 
+function updateSelectedWordFromPath() {
+  state.selectedWord = pathToWord(state.selectedPath);
+  wordInput.value = state.selectedWord;
+  renderCurrentBoardWithHelp();
+  renderMousePanel();
+}
+
+function updateWordInputFromPath(path) {
+  const word = pathToWord(path);
+  wordInput.value = word;
+}
+
+function clearSelectedLetters() {
+  state.selectedPath = [];
+  state.selectedWord = "";
+  state.dragPath = [];
+  state.dragMoved = false;
+  state.isDraggingLetters = false;
+  state.suppressNextCellClick = false;
+
+  wordInput.value = "";
+  renderCurrentBoardWithHelp();
+  renderMousePanel();
+}
+
+function pathToWord(path) {
+  return path.map((cell) => cell.letter).join("");
+}
+
+function areAdjacentCells(a, b) {
+  return Math.abs(a.row - b.row) <= 1 && Math.abs(a.col - b.col) <= 1;
+}
+
+function isSameCell(a, b) {
+  return a.row === b.row && a.col === b.col;
+}
+
 function changeHelpLevel() {
   state.helpLevel = getNextHelpLevel(state.helpLevel);
   state.selectedHelpCell = null;
@@ -269,6 +501,7 @@ function changeHelpLevel() {
 
 function handleGameStarted(data) {
   state.gameStatus = "playing";
+  state.gameMode = data.mode ?? "timed";
   state.board = data.board;
   state.startedAt = data.startedAt;
   state.endedAt = null;
@@ -279,6 +512,12 @@ function handleGameStarted(data) {
   state.solutionsStats = null;
   state.selectedHelpCell = null;
   state.endScreenVisible = false;
+  state.selectedPath = [];
+  state.selectedWord = "";
+  state.dragPath = [];
+  state.dragMoved = false;
+  state.isDraggingLetters = false;
+  state.suppressNextCellClick = false;
 
   hideEndScreen();
   renderFoundWords(foundWordsElement, state.foundWords);
@@ -289,35 +528,49 @@ function handleGameStarted(data) {
 
   refreshHelpDisplay();
   renderCurrentBoardWithHelp();
+  renderMousePanel();
   updateGameStatus("playing");
 
-  startButton.disabled = true;
+  renderModePanel();
 
-  startLocalTimer({
-    timerElement,
-    startedAt: data.startedAt,
-    durationSeconds: data.durationSeconds,
-    onEnd: () => {
-      updateGameStatus("ended");
-    },
-  });
+  if (state.gameMode === "timed") {
+    startButton.disabled = true;
+
+    startLocalTimer({
+      timerElement,
+      startedAt: data.startedAt,
+      durationSeconds: data.durationSeconds,
+      onEnd: () => {
+        updateGameStatus("ended");
+      },
+    });
+  } else {
+    stopLocalTimer();
+    renderTimer(timerElement, 0);
+    timerElement.textContent = "Mode solution";
+    startButton.disabled = false;
+  }
 
   const startDate = new Date(data.startedAt);
 
   addLog(
     logElement,
-    `Nouvelle grille reçue. Début officiel : ${startDate.toLocaleTimeString()} — durée : ${data.durationSeconds}s`
+    state.gameMode === "timed"
+      ? `Nouvelle grille chronométrée reçue. Début officiel : ${startDate.toLocaleTimeString()} — durée : ${data.durationSeconds}s`
+      : `Mode solution lancé à ${startDate.toLocaleTimeString()}.`
   );
 }
 
 function handleGameEnded(data) {
   state.gameStatus = "ended";
+  state.gameMode = data.mode ?? "timed";
   state.board = data.board;
   state.startedAt = data.startedAt;
   state.endedAt = data.endedAt;
   state.durationSeconds = data.durationSeconds;
   state.endScreenVisible = true;
 
+  clearSelectedLetters();
   renderCurrentBoardWithHelp();
   renderTimer(timerElement, 0);
   stopLocalTimer();
@@ -331,11 +584,20 @@ function handleGameEnded(data) {
   wordSubmitButton.disabled = true;
 
   renderCurrentEndScreen();
+  renderModePanel();
 
   addLog(
     logElement,
     `Partie terminée à ${endDate.toLocaleTimeString()}.`
   );
+}
+
+function renderModePanel() {
+  renderModeControls(startButton, {
+    visible: state.gameStatus !== "playing",
+    disabled: !state.socket,
+    onStartSolution: startSolutionMode,
+  });
 }
 
 function refreshHelpDisplay() {
@@ -353,12 +615,28 @@ function refreshHelpDisplay() {
 }
 
 function renderCurrentBoardWithHelp() {
+  const activePath = state.isDraggingLetters ? state.dragPath : state.selectedPath;
+
   renderBoard(boardElement, state.board, {
     onCellClick: handleBoardCellClick,
+    onCellHelpClick: handleCellHelpClick,
+    onCellPointerDown: handleCellPointerDown,
+    onCellPointerEnter: handleCellPointerEnter,
+    onCellPointerUp: handleCellPointerUp,
     cellCounts: state.solutionsStats?.cellCounts || [],
     foundCellCounts: createFoundCellCounts(),
+    selectedCells: activePath.map((cell) => `${cell.row}:${cell.col}`),
     showCounts: state.helpLevel >= 1,
-    canClickCells: state.helpLevel >= 2,
+    canShowCellHelp: state.helpLevel >= 2,
+    canClickCells: state.gameStatus === "playing",
+  });
+}
+
+function renderMousePanel() {
+  renderMouseInputPanel(wordForm, {
+    word: state.isDraggingLetters ? pathToWord(state.dragPath) : state.selectedWord,
+    onSubmit: submitSelectedWord,
+    onClear: clearSelectedLetters,
   });
 }
 
@@ -405,10 +683,16 @@ function updateGameStatus(status) {
     state.solutionsStats = null;
     state.selectedHelpCell = null;
     state.endScreenVisible = false;
+    state.selectedPath = [];
+    state.selectedWord = "";
+    state.dragPath = [];
+    state.dragMoved = false;
+    state.isDraggingLetters = false;
 
     renderFoundWords(foundWordsElement, state.foundWords);
     setWordFeedback(wordFeedbackElement, "");
     refreshHelpDisplay();
+    renderMousePanel();
     hideEndScreen();
 
     wordInput.disabled = true;
@@ -419,13 +703,17 @@ function updateGameStatus(status) {
 
     gameStatusElement.textContent = "En attente de lancement";
     startButton.disabled = !state.socket;
+    renderModePanel();
 
     return;
   }
 
   if (status === "playing") {
-    gameStatusElement.textContent = "Partie en cours";
-    startButton.disabled = true;
+    gameStatusElement.textContent =
+      state.gameMode === "solution" ? "Mode solution" : "Partie en cours";
+
+    startButton.disabled = state.gameMode === "timed";
+    renderModePanel();
     return;
   }
 
@@ -434,6 +722,7 @@ function updateGameStatus(status) {
 
     gameStatusElement.textContent = "Partie terminée";
     startButton.disabled = !state.socket;
+    renderModePanel();
     wordInput.disabled = true;
     wordSubmitButton.disabled = true;
 
@@ -443,6 +732,7 @@ function updateGameStatus(status) {
 
 function resetGameUiToWaiting() {
   state.gameStatus = "waiting";
+  state.gameMode = "timed";
   state.board = null;
   state.startedAt = null;
   state.endedAt = null;
@@ -453,16 +743,24 @@ function resetGameUiToWaiting() {
   renderTimer(timerElement, DEFAULT_DURATION_SECONDS);
 
   startButton.disabled = !state.socket;
+  renderModePanel();
   state.foundWords = [];
   state.score = 0;
   state.solutionCellWords = [];
   state.solutionsStats = null;
   state.selectedHelpCell = null;
   state.endScreenVisible = false;
+  state.selectedPath = [];
+  state.selectedWord = "";
+  state.dragPath = [];
+  state.dragMoved = false;
+  state.isDraggingLetters = false;
+  state.suppressNextCellClick = false;
 
   renderFoundWords(foundWordsElement, state.foundWords);
   setWordFeedback(wordFeedbackElement, "");
   refreshHelpDisplay();
+  renderMousePanel();
   hideEndScreen();
 
   wordInput.disabled = true;
