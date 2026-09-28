@@ -18,6 +18,7 @@ export type ServerMessage =
   | {
       type: "connected";
       roomId: string;
+      playerId: string;
     }
   | {
       type: "system";

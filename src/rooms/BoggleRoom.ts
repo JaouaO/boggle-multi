@@ -76,11 +76,15 @@ export class BoggleRoom extends DurableObject {
     const server = pair[1];
 
     this.ctx.acceptWebSocket(server);
-    server.serializeAttachment(this.createDefaultPlayerAttachment());
+
+    const playerAttachment = this.createDefaultPlayerAttachment();
+
+    server.serializeAttachment(playerAttachment);
 
     this.send(server, {
       type: "connected",
       roomId: this.roomId,
+      playerId: playerAttachment.id,
     });
 
     this.broadcast({

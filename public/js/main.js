@@ -16,6 +16,10 @@ import {
   getNextHelpLevel,
   renderHelpPanel,
 } from "./ui/help-ui.js";
+import {
+  hideEndScreen,
+  renderEndScreen,
+} from "./ui/end-screen-ui.js";
 
 const DEFAULT_DURATION_SECONDS = 180;
 
@@ -137,6 +141,7 @@ function send(data) {
 
 function handleServerMessage(data) {
   if (data.type === "connected") {
+    state.playerId = data.playerId;
     addLog(logElement, `Room connectée : ${data.roomId}`);
     return;
   }
@@ -147,7 +152,13 @@ function handleServerMessage(data) {
   }
 
   if (data.type === "players") {
+    state.players = data.players;
     renderPlayers(playersElement, data.players);
+
+    if (state.endScreenVisible) {
+      renderCurrentEndScreen();
+    }
+
     return;
   }
 
@@ -221,6 +232,10 @@ function handleSolutionsStats(data) {
     renderCurrentBoardWithHelp();
   }
 
+  if (state.endScreenVisible) {
+    renderCurrentEndScreen();
+  }
+
   addLog(
     logElement,
     `Solutions calculées : ${data.totalWords} mot(s), ${data.maxScore} point(s) max, calcul en ${data.solveDurationMs} ms.`
@@ -263,7 +278,9 @@ function handleGameStarted(data) {
   state.solutionCellWords = [];
   state.solutionsStats = null;
   state.selectedHelpCell = null;
+  state.endScreenVisible = false;
 
+  hideEndScreen();
   renderFoundWords(foundWordsElement, state.foundWords);
   setWordFeedback(wordFeedbackElement, "");
 
@@ -299,6 +316,7 @@ function handleGameEnded(data) {
   state.startedAt = data.startedAt;
   state.endedAt = data.endedAt;
   state.durationSeconds = data.durationSeconds;
+  state.endScreenVisible = true;
 
   renderCurrentBoardWithHelp();
   renderTimer(timerElement, 0);
@@ -311,6 +329,8 @@ function handleGameEnded(data) {
 
   wordInput.disabled = true;
   wordSubmitButton.disabled = true;
+
+  renderCurrentEndScreen();
 
   addLog(
     logElement,
@@ -339,6 +359,16 @@ function renderCurrentBoardWithHelp() {
     foundCellCounts: createFoundCellCounts(),
     showCounts: state.helpLevel >= 1,
     canClickCells: state.helpLevel >= 2,
+  });
+}
+
+function renderCurrentEndScreen() {
+  renderEndScreen(boardElement, {
+    players: state.players,
+    currentPlayerId: state.playerId,
+    maxScore: state.solutionsStats?.maxScore ?? 0,
+    totalWords: state.solutionsStats?.totalWords ?? 0,
+    durationSeconds: state.durationSeconds,
   });
 }
 
@@ -374,10 +404,12 @@ function updateGameStatus(status) {
     state.solutionCellWords = [];
     state.solutionsStats = null;
     state.selectedHelpCell = null;
+    state.endScreenVisible = false;
 
     renderFoundWords(foundWordsElement, state.foundWords);
     setWordFeedback(wordFeedbackElement, "");
     refreshHelpDisplay();
+    hideEndScreen();
 
     wordInput.disabled = true;
     wordSubmitButton.disabled = true;
@@ -426,10 +458,12 @@ function resetGameUiToWaiting() {
   state.solutionCellWords = [];
   state.solutionsStats = null;
   state.selectedHelpCell = null;
+  state.endScreenVisible = false;
 
   renderFoundWords(foundWordsElement, state.foundWords);
   setWordFeedback(wordFeedbackElement, "");
   refreshHelpDisplay();
+  hideEndScreen();
 
   wordInput.disabled = true;
   wordSubmitButton.disabled = true;

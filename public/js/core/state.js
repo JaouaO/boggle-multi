@@ -1,7 +1,9 @@
 export const state = {
   socket: null,
+  playerId: null,
   roomId: null,
   playerName: "",
+  players: [],
   gameStatus: "waiting",
   board: null,
   startedAt: null,
@@ -13,4 +15,5 @@ export const state = {
   solutionCellWords: [],
   helpLevel: 0,
   selectedHelpCell: null,
+  endScreenVisible: false,
 };
