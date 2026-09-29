@@ -22,6 +22,7 @@ import {
 } from "./ui/end-screen-ui.js";
 import { renderModeControls } from "./ui/mode-ui.js";
 import { renderMouseInputPanel } from "./ui/mouse-input-ui.js";
+import { setupAppLayout } from "./ui/layout-ui.js";
 
 const DEFAULT_DURATION_SECONDS = 180;
 
@@ -54,6 +55,8 @@ renderMouseInputPanel(wordForm, {
   onSubmit: submitSelectedWord,
   onClear: clearSelectedLetters,
 });
+
+setupAppLayout();
 
 resetGameUiToWaiting();
 
@@ -601,7 +604,7 @@ function renderModePanel() {
 }
 
 function refreshHelpDisplay() {
-  renderHelpPanel(boardElement, {
+  renderHelpPanel(wordForm, {
     helpLevel: state.helpLevel,
     stats: state.solutionsStats,
     progress: {
