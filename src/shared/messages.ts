@@ -1,5 +1,5 @@
 import { GameStatus } from "../game/game-state";
-import { Board, GameMode, Player } from "./types";
+import { Board, GameMode, GameOptions, Player } from "./types";
 
 export type ClientMessage =
   | {
@@ -10,6 +10,10 @@ export type ClientMessage =
       type: "startGame";
       mode?: GameMode;
       board?: Board;
+      options?: Partial<GameOptions>;
+    }
+  | {
+      type: "endGame";
     }
   | {
       type: "submitWord";
@@ -38,6 +42,7 @@ export type ServerMessage =
       type: "gameStarted";
       status: "playing";
       mode: GameMode;
+      gameOptions: GameOptions;
       board: Board;
       startedAt: number;
       durationSeconds: number;
@@ -46,6 +51,7 @@ export type ServerMessage =
       type: "gameEnded";
       status: "ended";
       mode: GameMode;
+      gameOptions: GameOptions;
       board: Board;
       startedAt: number;
       durationSeconds: number;
@@ -61,6 +67,9 @@ export type ServerMessage =
       type: "wordRejected";
       word: string;
       reason: string;
+      reasonCode?: "invalid" | "duplicate" | "taken" | "tooShort" | "notPlaying" | "boardUnavailable";
+      penalty?: number;
+      score?: number;
     }
   | {
       type: "solutionsStats";

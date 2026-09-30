@@ -82,6 +82,7 @@ function syncLayout() {
   const statusPanel = ensurePanel(center, "play-status-panel", "Partie");
   moveNode("#game-status", statusPanel);
   moveNode("#timer", statusPanel);
+  moveNode("#end-game", statusPanel);
 
   moveDirect("#board", center);
   moveDirect("#word-form", center);

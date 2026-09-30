@@ -16,33 +16,57 @@ import {
   GameStatus,
 } from "../game/game-state";
 import { scoreWord } from "../game/scoring";
-import { Board, BoardSolution, Env, GameMode, Player } from "../shared/types";
+import { Board, BoardSolution, Env, GameMode, GameOptions, Player } from "../shared/types";
 import { ClientMessage, ServerMessage } from "../shared/messages";
 
 const ROOM_STATE_KEY = "roomState";
+
+const DEFAULT_GAME_OPTIONS: GameOptions = {
+  durationMode: "timer",
+  durationSeconds: DEFAULT_GAME_DURATION_SECONDS,
+  uniqueWords: false,
+  penalizeInvalidWords: false,
+  invalidWordPenalty: 1,
+  maxHelpLevel: 3,
+  targetScoreMode: "percentOfMaxScore",
+  targetScorePercent: 70,
+  targetScore: 50,
+  soundEnabled: true,
+  masterVolume: 0.65,
+  visualEffectsEnabled: true,
+};
 
 type PlayerAttachment = {
   id: string;
   name: string;
   foundWords: string[];
+  invalidWords: string[];
   score: number;
+};
+
+type FoundWordOwner = {
+  playerId: string;
+  playerName: string;
 };
 
 type StoredRoomState = {
   status: GameStatus;
   mode: GameMode;
+  gameOptions: GameOptions;
   board: Board | null;
   startedAt: number | null;
   endedAt: number | null;
   durationSeconds: number;
   solutions: BoardSolution[];
   solveDurationMs: number;
+  globalFoundWords: [string, FoundWordOwner][];
 };
 
 export class BoggleRoom extends DurableObject {
   private roomId = "";
   private status: GameStatus = "waiting";
   private mode: GameMode = "timed";
+  private gameOptions: GameOptions = { ...DEFAULT_GAME_OPTIONS };
   private board: Board | null = null;
   private startedAt: number | null = null;
   private endedAt: number | null = null;
@@ -50,6 +74,7 @@ export class BoggleRoom extends DurableObject {
   private loaded = false;
   private solutions: BoardSolution[] = [];
   private solveDurationMs = 0;
+  private globalFoundWords = new Map<string, FoundWordOwner>();
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -144,7 +169,12 @@ export class BoggleRoom extends DurableObject {
     }
 
     if (data.type === "startGame") {
-      await this.startGame(ws, data.mode ?? "timed", data.board);
+      await this.startGame(ws, data.mode ?? "timed", data.board, data.options);
+      return;
+    }
+
+    if (data.type === "endGame") {
+      await this.endGameIfNeeded(true);
       return;
     }
 
@@ -174,7 +204,12 @@ export class BoggleRoom extends DurableObject {
     await this.endGameIfNeeded(true);
   }
 
-  private async startGame(ws: WebSocket, mode: GameMode, customBoard?: Board) {
+  private async startGame(
+    ws: WebSocket,
+    mode: GameMode,
+    customBoard?: Board,
+    options?: Partial<GameOptions>
+  ) {
     const name = this.getPlayerName(ws);
 
     if (
@@ -206,6 +241,7 @@ export class BoggleRoom extends DurableObject {
 
     this.status = "playing";
     this.mode = mode;
+    this.gameOptions = this.normalizeGameOptions(mode, options);
     this.board = board;
 
     const solveStartedAt = Date.now();
@@ -215,13 +251,16 @@ export class BoggleRoom extends DurableObject {
     this.startedAt = Date.now();
     this.endedAt = null;
     this.durationSeconds =
-      this.mode === "timed" ? DEFAULT_GAME_DURATION_SECONDS : 0;
+      this.mode === "timed" && this.gameOptions.durationMode === "timer"
+        ? this.gameOptions.durationSeconds
+        : 0;
 
     this.resetAllPlayersForNewGame();
+    this.globalFoundWords.clear();
 
     await this.saveRoomState();
 
-    if (this.mode === "timed") {
+    if (this.mode === "timed" && this.gameOptions.durationMode === "timer") {
       await this.ctx.storage.setAlarm(
         getGameEndTime(this.startedAt, this.durationSeconds)
       );
@@ -232,15 +271,18 @@ export class BoggleRoom extends DurableObject {
     this.broadcast({
       type: "system",
       text:
-        this.mode === "timed"
-          ? `${name} a lancé une nouvelle partie chronométrée.`
-          : `${name} a lancé un mode solution sans timer.`,
+        this.mode === "solution"
+          ? `${name} a lancé un mode solution sans timer.`
+          : this.gameOptions.durationMode === "timer"
+            ? `${name} a lancé une nouvelle partie chronométrée.`
+            : `${name} a lancé une nouvelle partie sans timer.`,
     });
 
     this.broadcast({
       type: "gameStarted",
       status: "playing",
       mode: this.mode,
+      gameOptions: this.gameOptions,
       board: this.board,
       startedAt: this.startedAt,
       durationSeconds: this.durationSeconds,
@@ -248,6 +290,123 @@ export class BoggleRoom extends DurableObject {
 
     this.broadcastSolutionStats();
     this.broadcastPlayers();
+  }
+
+  private normalizeGameOptions(
+    mode: GameMode,
+    options?: Partial<GameOptions>
+  ): GameOptions {
+    if (mode === "solution") {
+      return {
+        ...DEFAULT_GAME_OPTIONS,
+        durationMode: "noTimer",
+        durationSeconds: 0,
+        maxHelpLevel: 3,
+        soundEnabled: options?.soundEnabled !== false,
+        masterVolume: this.clampVolume(
+          options?.masterVolume ?? DEFAULT_GAME_OPTIONS.masterVolume
+        ),
+        visualEffectsEnabled: options?.visualEffectsEnabled !== false,
+      };
+    }
+
+    const durationMode =
+      options?.durationMode === "noTimer" || options?.durationMode === "targetScore"
+        ? options.durationMode
+        : "timer";
+
+    const durationSeconds = this.clampDurationSeconds(
+      options?.durationSeconds ?? DEFAULT_GAME_DURATION_SECONDS
+    );
+
+    return {
+      durationMode,
+      durationSeconds,
+      uniqueWords: Boolean(options?.uniqueWords),
+      penalizeInvalidWords: Boolean(options?.penalizeInvalidWords),
+      invalidWordPenalty: this.clampPenalty(
+        options?.invalidWordPenalty ?? DEFAULT_GAME_OPTIONS.invalidWordPenalty
+      ),
+      maxHelpLevel: this.clampHelpLevel(
+        options?.maxHelpLevel ?? DEFAULT_GAME_OPTIONS.maxHelpLevel
+      ),
+      targetScoreMode:
+        options?.targetScoreMode === "fixedScore" ? "fixedScore" : "percentOfMaxScore",
+      targetScorePercent: this.clampTargetScorePercent(
+        options?.targetScorePercent ?? DEFAULT_GAME_OPTIONS.targetScorePercent
+      ),
+      targetScore: this.clampTargetScore(
+        options?.targetScore ?? DEFAULT_GAME_OPTIONS.targetScore
+      ),
+      soundEnabled: options?.soundEnabled !== false,
+      masterVolume: this.clampVolume(
+        options?.masterVolume ?? DEFAULT_GAME_OPTIONS.masterVolume
+      ),
+      visualEffectsEnabled: options?.visualEffectsEnabled !== false,
+    };
+  }
+
+  private clampDurationSeconds(value: number) {
+    if (!Number.isFinite(value)) {
+      return DEFAULT_GAME_DURATION_SECONDS;
+    }
+
+    return Math.min(3600, Math.max(15, Math.round(value)));
+  }
+
+  private clampPenalty(value: number) {
+    if (!Number.isFinite(value)) {
+      return DEFAULT_GAME_OPTIONS.invalidWordPenalty;
+    }
+
+    return Math.min(10, Math.max(1, Math.round(value)));
+  }
+
+  private clampHelpLevel(value: number) {
+    if (!Number.isFinite(value)) {
+      return DEFAULT_GAME_OPTIONS.maxHelpLevel;
+    }
+
+    return Math.min(3, Math.max(0, Math.round(value)));
+  }
+
+  private clampTargetScorePercent(value: number) {
+    if (!Number.isFinite(value)) {
+      return DEFAULT_GAME_OPTIONS.targetScorePercent;
+    }
+
+    return Math.min(100, Math.max(1, Math.round(value)));
+  }
+
+  private clampTargetScore(value: number) {
+    if (!Number.isFinite(value)) {
+      return DEFAULT_GAME_OPTIONS.targetScore;
+    }
+
+    return Math.min(9999, Math.max(1, Math.round(value)));
+  }
+
+  private clampVolume(value: number) {
+    if (!Number.isFinite(value)) {
+      return DEFAULT_GAME_OPTIONS.masterVolume;
+    }
+
+    return Math.min(1, Math.max(0, value));
+  }
+
+  private getMaxScore() {
+    return this.solutions.reduce((total, solution) => total + solution.score, 0);
+  }
+
+  private getTargetScore() {
+    if (this.gameOptions.targetScoreMode === "fixedScore") {
+      return this.gameOptions.targetScore;
+    }
+
+    return Math.max(
+      1,
+      Math.ceil((this.getMaxScore() * this.gameOptions.targetScorePercent) / 100)
+    );
   }
 
   private normalizeCustomBoard(board: Board) {
@@ -297,6 +456,7 @@ export class BoggleRoom extends DurableObject {
         type: "wordRejected",
         word,
         reason: "Aucune partie n’est en cours.",
+        reasonCode: "notPlaying",
       });
 
       return;
@@ -307,6 +467,7 @@ export class BoggleRoom extends DurableObject {
         type: "wordRejected",
         word,
         reason: "La grille n’est pas disponible.",
+        reasonCode: "boardUnavailable",
       });
 
       return;
@@ -317,6 +478,7 @@ export class BoggleRoom extends DurableObject {
         type: "wordRejected",
         word,
         reason: "Le mot doit contenir au moins 3 lettres.",
+        reasonCode: "tooShort",
       });
 
       return;
@@ -327,40 +489,41 @@ export class BoggleRoom extends DurableObject {
         type: "wordRejected",
         word,
         reason: "Mot déjà trouvé.",
+        reasonCode: "duplicate",
       });
 
       return;
     }
 
-    if (!isKnownWord(word)) {
-      this.send(ws, {
-        type: "wordRejected",
-        word,
-        reason: "Ce mot n’est pas dans le dictionnaire.",
-      });
+    if (this.gameOptions.uniqueWords) {
+      const owner = this.globalFoundWords.get(word);
 
+      if (owner && owner.playerId !== attachment.id) {
+        this.send(ws, {
+          type: "wordRejected",
+          word,
+          reason: `Mot déjà trouvé par ${owner.playerName}.`,
+          reasonCode: "taken",
+        });
+
+        return;
+      }
+    }
+
+    if (!isKnownWord(word)) {
+      this.rejectInvalidWord(ws, word, "Ce mot n’est pas dans le dictionnaire.");
       return;
     }
 
     if (!isWordOnBoard(word, this.board)) {
-      this.send(ws, {
-        type: "wordRejected",
-        word,
-        reason: "Ce mot n’est pas formable sur la grille.",
-      });
-
+      this.rejectInvalidWord(ws, word, "Ce mot n’est pas formable sur la grille.");
       return;
     }
 
     const points = scoreWord(word);
 
     if (points <= 0) {
-      this.send(ws, {
-        type: "wordRejected",
-        word,
-        reason: "Ce mot ne rapporte aucun point.",
-      });
-
+      this.rejectInvalidWord(ws, word, "Ce mot ne rapporte aucun point.");
       return;
     }
 
@@ -372,6 +535,15 @@ export class BoggleRoom extends DurableObject {
 
     ws.serializeAttachment(updatedAttachment);
 
+    if (this.gameOptions.uniqueWords) {
+      this.globalFoundWords.set(word, {
+        playerId: updatedAttachment.id,
+        playerName: updatedAttachment.name,
+      });
+
+      await this.saveRoomState();
+    }
+
     this.send(ws, {
       type: "wordAccepted",
       word,
@@ -380,6 +552,47 @@ export class BoggleRoom extends DurableObject {
     });
 
     this.broadcastPlayers();
+
+    if (
+      this.gameOptions.durationMode === "targetScore" &&
+      updatedAttachment.score >= this.getTargetScore()
+    ) {
+      await this.endGameIfNeeded(true);
+    }
+  }
+
+  private rejectInvalidWord(ws: WebSocket, word: string, reason: string) {
+    const attachment = this.getPlayerAttachment(ws);
+    const alreadyTriedByThisPlayer = attachment.invalidWords.includes(word);
+    const penalty =
+      this.gameOptions.penalizeInvalidWords && !alreadyTriedByThisPlayer
+        ? this.gameOptions.invalidWordPenalty
+        : 0;
+
+    const updatedAttachment: PlayerAttachment = {
+      ...attachment,
+      invalidWords: alreadyTriedByThisPlayer
+        ? attachment.invalidWords
+        : [...attachment.invalidWords, word],
+      score: attachment.score - penalty,
+    };
+
+    ws.serializeAttachment(updatedAttachment);
+
+    this.send(ws, {
+      type: "wordRejected",
+      word,
+      reason: alreadyTriedByThisPlayer && this.gameOptions.penalizeInvalidWords
+        ? `${reason} Déjà tenté : pas de nouvelle pénalité.`
+        : reason,
+      reasonCode: "invalid",
+      penalty,
+      score: updatedAttachment.score,
+    });
+
+    if (penalty > 0) {
+      this.broadcastPlayers();
+    }
   }
 
   private async endGameIfNeeded(force = false) {
@@ -387,7 +600,7 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
-    if (this.mode === "solution") {
+    if (!force && this.gameOptions.durationMode !== "timer") {
       return;
     }
 
@@ -413,6 +626,7 @@ export class BoggleRoom extends DurableObject {
       type: "gameEnded",
       status: "ended",
       mode: this.mode,
+      gameOptions: this.gameOptions,
       board: this.board,
       startedAt: this.startedAt,
       durationSeconds: this.durationSeconds,
@@ -424,7 +638,7 @@ export class BoggleRoom extends DurableObject {
   }
 
   private hasCurrentGameFinished() {
-    if (this.mode === "solution") {
+    if (this.gameOptions.durationMode !== "timer") {
       return false;
     }
 
@@ -445,6 +659,7 @@ export class BoggleRoom extends DurableObject {
         type: "gameStarted",
         status: "playing",
         mode: this.mode,
+        gameOptions: this.gameOptions,
         board: this.board,
         startedAt: this.startedAt,
         durationSeconds: this.durationSeconds,
@@ -465,6 +680,7 @@ export class BoggleRoom extends DurableObject {
         type: "gameEnded",
         status: "ended",
         mode: this.mode,
+        gameOptions: this.gameOptions,
         board: this.board,
         startedAt: this.startedAt,
         durationSeconds: this.durationSeconds,
@@ -492,12 +708,14 @@ export class BoggleRoom extends DurableObject {
     if (stored) {
       this.status = stored.status;
       this.mode = stored.mode ?? "timed";
+      this.gameOptions = stored.gameOptions ?? { ...DEFAULT_GAME_OPTIONS };
       this.board = stored.board;
       this.startedAt = stored.startedAt;
       this.endedAt = stored.endedAt;
       this.durationSeconds = stored.durationSeconds;
       this.solutions = stored.solutions ?? [];
       this.solveDurationMs = stored.solveDurationMs ?? 0;
+      this.globalFoundWords = new Map(stored.globalFoundWords ?? []);
 
       if (this.board && this.solutions.length === 0) {
         const solveStartedAt = Date.now();
@@ -513,12 +731,14 @@ export class BoggleRoom extends DurableObject {
     const roomState: StoredRoomState = {
       status: this.status,
       mode: this.mode,
+      gameOptions: this.gameOptions,
       board: this.board,
       startedAt: this.startedAt,
       endedAt: this.endedAt,
       durationSeconds: this.durationSeconds,
       solutions: this.solutions,
       solveDurationMs: this.solveDurationMs,
+      globalFoundWords: [...this.globalFoundWords.entries()],
     };
 
     await this.ctx.storage.put(ROOM_STATE_KEY, roomState);
@@ -531,6 +751,7 @@ export class BoggleRoom extends DurableObject {
       ws.serializeAttachment({
         ...attachment,
         foundWords: [],
+        invalidWords: [],
         score: 0,
       });
     }
@@ -541,6 +762,7 @@ export class BoggleRoom extends DurableObject {
       id: crypto.randomUUID(),
       name: "joueur",
       foundWords: [],
+      invalidWords: [],
       score: 0,
     };
   }
@@ -548,7 +770,16 @@ export class BoggleRoom extends DurableObject {
   private getPlayerAttachment(ws: WebSocket): PlayerAttachment {
     const attachment = ws.deserializeAttachment() as PlayerAttachment | null;
 
-    return attachment ?? this.createDefaultPlayerAttachment();
+    if (!attachment) {
+      return this.createDefaultPlayerAttachment();
+    }
+
+    return {
+      ...attachment,
+      foundWords: attachment.foundWords ?? [],
+      invalidWords: attachment.invalidWords ?? [],
+      score: attachment.score ?? 0,
+    };
   }
 
   private getPlayerName(ws: WebSocket) {

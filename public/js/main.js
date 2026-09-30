@@ -20,11 +20,14 @@ import {
   hideEndScreen,
   renderEndScreen,
 } from "./ui/end-screen-ui.js";
-import { renderModeControls } from "./ui/mode-ui.js";
+import { getGameOptions, renderModeControls } from "./ui/mode-ui.js";
 import { renderMouseInputPanel } from "./ui/mouse-input-ui.js";
 import { setupAppLayout } from "./ui/layout-ui.js";
+import { runSubmissionFeedback } from "./ui/feedback-ui.js";
 
 const DEFAULT_DURATION_SECONDS = 180;
+
+let pendingSubmissionPath = [];
 
 const roomInput = document.querySelector("#room");
 const nameInput = document.querySelector("#name");
@@ -41,6 +44,21 @@ const wordInput = document.querySelector("#word-input");
 const wordSubmitButton = document.querySelector("#word-submit");
 const wordFeedbackElement = document.querySelector("#word-feedback");
 const foundWordsElement = document.querySelector("#found-words");
+
+const endGameButton = document.createElement("button");
+endGameButton.id = "end-game";
+endGameButton.type = "button";
+endGameButton.textContent = "Terminer la partie";
+endGameButton.hidden = true;
+endGameButton.style.background = "#a9433f";
+endGameButton.style.color = "#fff";
+endGameButton.addEventListener("click", () => {
+  send({
+    type: "endGame",
+  });
+});
+
+timerElement.insertAdjacentElement("afterend", endGameButton);
 
 connectButton.addEventListener("click", connectToRoom);
 startButton.addEventListener("click", startRandomTimedGame);
@@ -69,6 +87,13 @@ function submitWord(event) {
     return;
   }
 
+  pendingSubmissionPath =
+    state.selectedPath.length > 0 &&
+    state.selectedWord &&
+    normalizeComparableWord(state.selectedWord) === normalizeComparableWord(word)
+      ? [...state.selectedPath]
+      : [];
+
   send({
     type: "submitWord",
     word,
@@ -84,6 +109,8 @@ function submitSelectedWord() {
     return;
   }
 
+  pendingSubmissionPath = [...state.selectedPath];
+
   send({
     type: "submitWord",
     word: state.selectedWord,
@@ -91,6 +118,19 @@ function submitSelectedWord() {
 
   wordInput.value = "";
   clearSelectedLetters();
+}
+
+function normalizeComparableWord(word) {
+  return String(word || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase();
+}
+
+function takePendingSubmissionPath() {
+  const path = pendingSubmissionPath;
+  pendingSubmissionPath = [];
+  return path;
 }
 
 function connectToRoom() {
@@ -159,6 +199,7 @@ function startRandomTimedGame() {
   send({
     type: "startGame",
     mode: "timed",
+    options: getGameOptions(),
   });
 }
 
@@ -167,6 +208,10 @@ function startSolutionMode(board) {
     type: "startGame",
     mode: "solution",
     board,
+    options: {
+      ...getGameOptions(),
+      durationMode: "noTimer",
+    },
   });
 }
 
@@ -235,6 +280,8 @@ function handleServerMessage(data) {
 }
 
 function handleWordAccepted(data) {
+  const feedbackPath = takePendingSubmissionPath();
+
   state.score = data.score;
   state.foundWords = [
     ...state.foundWords,
@@ -253,13 +300,72 @@ function handleWordAccepted(data) {
   clearSelectedLetters();
   refreshHelpDisplay();
   renderCurrentBoardWithHelp();
+
+  runSubmissionFeedback(wordForm, {
+    type: "accepted",
+    label: `+${data.points}`,
+    options: state.gameOptions,
+    boardElement,
+    path: feedbackPath,
+  });
 }
 
 function handleWordRejected(data) {
+  const feedbackPath = takePendingSubmissionPath();
+
+  if (typeof data.score === "number") {
+    state.score = data.score;
+  }
+
+  const penaltyText = data.penalty ? ` — -${data.penalty} point(s)` : "";
+  const feedbackType = data.reasonCode === "invalid" ? "invalid" : "duplicate";
+  const label = data.penalty ? `-${data.penalty}` : "!";
+
   setWordFeedback(
     wordFeedbackElement,
-    `${data.word || "Mot"} refusé : ${data.reason}`
+    `${data.word || "Mot"} refusé : ${data.reason}${penaltyText}`
   );
+
+  runSubmissionFeedback(wordForm, {
+    type: feedbackType,
+    label,
+    options: state.gameOptions,
+    boardElement,
+    path: feedbackPath,
+  });
+}
+
+
+function getCurrentTargetScore() {
+  if (!state.solutionsStats) {
+    return null;
+  }
+
+  if (state.gameOptions.targetScoreMode === "fixedScore") {
+    return state.gameOptions.targetScore;
+  }
+
+  return Math.max(
+    1,
+    Math.ceil(
+      (state.solutionsStats.maxScore * state.gameOptions.targetScorePercent) / 100
+    )
+  );
+}
+
+function renderTargetScoreStatus() {
+  if (state.gameOptions.durationMode !== "targetScore") {
+    return;
+  }
+
+  const targetScore = getCurrentTargetScore();
+
+  if (!targetScore) {
+    timerElement.textContent = "Objectif de score";
+    return;
+  }
+
+  timerElement.textContent = `Objectif : ${targetScore} pt(s)`;
 }
 
 function handleSolutionsStats(data) {
@@ -271,6 +377,8 @@ function handleSolutionsStats(data) {
   if (state.board) {
     renderCurrentBoardWithHelp();
   }
+
+  renderTargetScoreStatus();
 
   if (state.endScreenVisible) {
     renderCurrentEndScreen();
@@ -495,16 +603,47 @@ function isSameCell(a, b) {
 }
 
 function changeHelpLevel() {
-  state.helpLevel = getNextHelpLevel(state.helpLevel);
+  const maxHelpLevel = getMaxHelpLevel();
+
+  state.helpLevel =
+    state.helpLevel >= maxHelpLevel ? 0 : Math.min(maxHelpLevel, state.helpLevel + 1);
+
   state.selectedHelpCell = null;
 
   refreshHelpDisplay();
   renderCurrentBoardWithHelp();
 }
 
+function getMaxHelpLevel() {
+  return Math.min(3, Math.max(0, state.gameOptions?.maxHelpLevel ?? 3));
+}
+
+function clampCurrentHelpLevel() {
+  const maxHelpLevel = getMaxHelpLevel();
+
+  if (state.helpLevel > maxHelpLevel) {
+    state.helpLevel = maxHelpLevel;
+    state.selectedHelpCell = null;
+  }
+}
+
 function handleGameStarted(data) {
   state.gameStatus = "playing";
   state.gameMode = data.mode ?? "timed";
+  state.gameOptions = data.gameOptions ?? {
+    durationMode: data.durationSeconds > 0 ? "timer" : "noTimer",
+    durationSeconds: data.durationSeconds,
+    uniqueWords: false,
+    penalizeInvalidWords: false,
+    invalidWordPenalty: 1,
+    maxHelpLevel: 3,
+    targetScoreMode: "percentOfMaxScore",
+    targetScorePercent: 70,
+    targetScore: 50,
+    soundEnabled: true,
+    masterVolume: 0.65,
+    visualEffectsEnabled: true,
+  };
   state.board = data.board;
   state.startedAt = data.startedAt;
   state.endedAt = null;
@@ -521,6 +660,8 @@ function handleGameStarted(data) {
   state.dragMoved = false;
   state.isDraggingLetters = false;
   state.suppressNextCellClick = false;
+  pendingSubmissionPath = [];
+  clampCurrentHelpLevel();
 
   hideEndScreen();
   renderFoundWords(foundWordsElement, state.foundWords);
@@ -528,6 +669,7 @@ function handleGameStarted(data) {
 
   wordInput.disabled = false;
   wordSubmitButton.disabled = false;
+  endGameButton.hidden = false;
 
   refreshHelpDisplay();
   renderCurrentBoardWithHelp();
@@ -536,7 +678,10 @@ function handleGameStarted(data) {
 
   renderModePanel();
 
-  if (state.gameMode === "timed") {
+  if (
+    state.gameMode === "timed" &&
+    state.gameOptions.durationMode === "timer"
+  ) {
     startButton.disabled = true;
 
     startLocalTimer({
@@ -550,28 +695,53 @@ function handleGameStarted(data) {
   } else {
     stopLocalTimer();
     renderTimer(timerElement, 0);
-    timerElement.textContent = "Mode solution";
+    timerElement.textContent =
+      state.gameMode === "solution"
+        ? "Mode solution"
+        : state.gameOptions.durationMode === "targetScore"
+          ? "Objectif de score"
+          : "Sans timer";
     startButton.disabled = false;
+    renderTargetScoreStatus();
   }
 
   const startDate = new Date(data.startedAt);
 
   addLog(
     logElement,
-    state.gameMode === "timed"
-      ? `Nouvelle grille chronométrée reçue. Début officiel : ${startDate.toLocaleTimeString()} — durée : ${data.durationSeconds}s`
-      : `Mode solution lancé à ${startDate.toLocaleTimeString()}.`
+    state.gameMode === "solution"
+      ? `Mode solution lancé à ${startDate.toLocaleTimeString()}.`
+      : state.gameOptions.durationMode === "timer"
+        ? `Nouvelle grille chronométrée reçue. Début officiel : ${startDate.toLocaleTimeString()} — durée : ${data.durationSeconds}s`
+        : state.gameOptions.durationMode === "targetScore"
+          ? `Nouvelle grille avec objectif de score reçue à ${startDate.toLocaleTimeString()}.`
+          : `Nouvelle grille sans timer reçue à ${startDate.toLocaleTimeString()}.`
   );
 }
 
 function handleGameEnded(data) {
   state.gameStatus = "ended";
   state.gameMode = data.mode ?? "timed";
+  state.gameOptions = data.gameOptions ?? {
+    durationMode: data.durationSeconds > 0 ? "timer" : "noTimer",
+    durationSeconds: data.durationSeconds,
+    uniqueWords: false,
+    penalizeInvalidWords: false,
+    invalidWordPenalty: 1,
+    maxHelpLevel: 3,
+    targetScoreMode: "percentOfMaxScore",
+    targetScorePercent: 70,
+    targetScore: 50,
+    soundEnabled: true,
+    masterVolume: 0.65,
+    visualEffectsEnabled: true,
+  };
   state.board = data.board;
   state.startedAt = data.startedAt;
   state.endedAt = data.endedAt;
   state.durationSeconds = data.durationSeconds;
   state.endScreenVisible = true;
+  clampCurrentHelpLevel();
 
   clearSelectedLetters();
   renderCurrentBoardWithHelp();
@@ -585,13 +755,14 @@ function handleGameEnded(data) {
 
   wordInput.disabled = true;
   wordSubmitButton.disabled = true;
+  endGameButton.hidden = true;
 
   renderCurrentEndScreen();
   renderModePanel();
 
   addLog(
     logElement,
-    `Partie terminée à ${endDate.toLocaleTimeString()}.`
+    `Partie terminée à ${endDate.toLocaleTimeString()} — temps écoulé : ${getElapsedDurationSeconds()}s.`
   );
 }
 
@@ -605,7 +776,8 @@ function renderModePanel() {
 
 function refreshHelpDisplay() {
   renderHelpPanel(wordForm, {
-    helpLevel: state.helpLevel,
+    helpLevel: Math.min(state.helpLevel, getMaxHelpLevel()),
+    maxHelpLevel: getMaxHelpLevel(),
     stats: state.solutionsStats,
     progress: {
       foundWords: state.foundWords.length,
@@ -649,8 +821,18 @@ function renderCurrentEndScreen() {
     currentPlayerId: state.playerId,
     maxScore: state.solutionsStats?.maxScore ?? 0,
     totalWords: state.solutionsStats?.totalWords ?? 0,
-    durationSeconds: state.durationSeconds,
+    durationSeconds: getElapsedDurationSeconds(),
   });
+}
+
+function getElapsedDurationSeconds() {
+  if (!state.startedAt) {
+    return state.durationSeconds;
+  }
+
+  const endTime = state.endedAt ?? Date.now();
+
+  return Math.max(0, Math.round((endTime - state.startedAt) / 1000));
 }
 
 function createFoundCellCounts() {
@@ -679,6 +861,10 @@ function updateGameStatus(status) {
     state.startedAt = null;
     state.endedAt = null;
     state.durationSeconds = DEFAULT_DURATION_SECONDS;
+    state.gameOptions = {
+      durationMode: "timer",
+      durationSeconds: DEFAULT_DURATION_SECONDS,
+    };
 
     state.foundWords = [];
     state.score = 0;
@@ -691,6 +877,7 @@ function updateGameStatus(status) {
     state.dragPath = [];
     state.dragMoved = false;
     state.isDraggingLetters = false;
+    pendingSubmissionPath = [];
 
     renderFoundWords(foundWordsElement, state.foundWords);
     setWordFeedback(wordFeedbackElement, "");
@@ -700,6 +887,7 @@ function updateGameStatus(status) {
 
     wordInput.disabled = true;
     wordSubmitButton.disabled = true;
+    endGameButton.hidden = true;
 
     boardElement.innerHTML = "";
     renderTimer(timerElement, DEFAULT_DURATION_SECONDS);
@@ -713,9 +901,16 @@ function updateGameStatus(status) {
 
   if (status === "playing") {
     gameStatusElement.textContent =
-      state.gameMode === "solution" ? "Mode solution" : "Partie en cours";
+      state.gameMode === "solution"
+        ? "Mode solution"
+        : state.gameOptions.durationMode === "targetScore"
+          ? "Objectif de score"
+          : state.gameOptions.durationMode === "noTimer"
+            ? "Partie sans timer"
+            : "Partie en cours";
 
-    startButton.disabled = state.gameMode === "timed";
+    startButton.disabled =
+      state.gameMode === "timed" && state.gameOptions.durationMode === "timer";
     renderModePanel();
     return;
   }
@@ -728,6 +923,7 @@ function updateGameStatus(status) {
     renderModePanel();
     wordInput.disabled = true;
     wordSubmitButton.disabled = true;
+    endGameButton.hidden = true;
 
     return;
   }
@@ -736,6 +932,10 @@ function updateGameStatus(status) {
 function resetGameUiToWaiting() {
   state.gameStatus = "waiting";
   state.gameMode = "timed";
+  state.gameOptions = {
+    durationMode: "timer",
+    durationSeconds: DEFAULT_DURATION_SECONDS,
+  };
   state.board = null;
   state.startedAt = null;
   state.endedAt = null;
@@ -768,4 +968,5 @@ function resetGameUiToWaiting() {
 
   wordInput.disabled = true;
   wordSubmitButton.disabled = true;
+  endGameButton.hidden = true;
 }
