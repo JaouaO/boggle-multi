@@ -1,4 +1,5 @@
 let layoutInitialized = false;
+let layoutSyncing = false;
 
 const HIDDEN_OLD_HEADINGS = new Set([
   "grille",
@@ -51,7 +52,11 @@ export function setupAppLayout() {
   shell.append(top, layout);
   root.appendChild(shell);
 
-  const observer = new MutationObserver(syncLayout);
+  const observer = new MutationObserver(() => {
+    if (!layoutSyncing) {
+      syncLayout();
+    }
+  });
   observer.observe(root, {
     childList: true,
     subtree: true,
@@ -61,46 +66,94 @@ export function setupAppLayout() {
 }
 
 function syncLayout() {
+  if (layoutSyncing) {
+    return;
+  }
+
   const shell = document.querySelector("#boggle-shell");
 
   if (!shell) {
     return;
   }
 
-  const top = shell.querySelector("#boggle-top");
-  const left = shell.querySelector("#boggle-left");
-  const center = shell.querySelector("#boggle-center");
-  const right = shell.querySelector("#boggle-right");
+  layoutSyncing = true;
 
-  moveConnectionControls(top);
+  try {
+    const top = shell.querySelector("#boggle-top");
+    const left = shell.querySelector("#boggle-left");
+    const center = shell.querySelector("#boggle-center");
+    const right = shell.querySelector("#boggle-right");
 
-  const launchPanel = ensurePanel(center, "launch-panel", "Lancer une grille");
-  launchPanel.hidden = isGridActive();
-  moveNode("#start", launchPanel);
-  moveDirect("#mode-controls", launchPanel);
+    if (!top || !left || !center || !right) {
+      return;
+    }
 
-  const statusPanel = ensurePanel(center, "play-status-panel", "Partie");
-  moveNode("#game-status", statusPanel);
-  moveNode("#timer", statusPanel);
-  moveNode("#end-game", statusPanel);
+    moveConnectionControls(top);
 
-  moveDirect("#board", center);
-  moveDirect("#word-form", center);
-  moveDirect("#word-feedback", center);
-  moveDirect("#mouse-input-panel", center);
-  moveDirect("#end-screen", center);
+    moveDirect("#welcome-panel", center);
 
-  const playersPanel = ensurePanel(left, "players-panel", "Joueurs");
-  moveNode("#players", playersPanel);
+    const welcomePanel = document.querySelector("#welcome-panel");
+    if (welcomePanel) {
+      welcomePanel.hidden = isConnected() || isGridActive();
+    }
 
-  const wordsPanel = ensurePanel(left, "found-words-panel", "Mots trouvés");
-  moveNode("#found-words", wordsPanel);
+    const launchPanel = ensurePanel(center, "launch-panel", "Lancer une grille");
+    launchPanel.hidden = !isConnected() || isGridActive();
+    moveNode("#start", launchPanel);
+    moveDirect("#mode-controls", launchPanel);
 
-  moveDirect("#help-panel", right);
+    const statusPanel = ensurePanel(center, "play-status-panel", "Partie");
+    moveNode("#game-status", statusPanel);
+    moveNode("#timer", statusPanel);
+    moveNode("#end-game", statusPanel);
 
-  moveTechnicalLog();
-  hideOldStructuralHeadings();
-  hideEmptyLegacyContainers();
+    moveDirect("#board", center);
+    moveDirect("#word-form", center);
+    moveDirect("#word-feedback", center);
+    moveDirect("#mouse-input-panel", center);
+
+    const mouseInputPanel = document.querySelector("#mouse-input-panel");
+    if (mouseInputPanel) {
+      mouseInputPanel.hidden = true;
+    }
+
+    moveDirect("#end-screen", center);
+
+    const playersPanel = ensurePanel(left, "players-panel", "Joueurs");
+    moveNode("#players", playersPanel);
+
+    const wordsPanel = ensurePanel(left, "found-words-panel", "Mots trouvés");
+    moveNode("#found-words", wordsPanel);
+
+    moveRightColumnContent(right);
+
+    moveTechnicalLog();
+    hideOldStructuralHeadings();
+    hideEmptyLegacyContainers();
+  } finally {
+    layoutSyncing = false;
+  }
+}
+
+function moveRightColumnContent(right) {
+  const helpSlot = ensureSlot(right, "help-slot", "help-slot");
+
+  const rulesSummary = document.querySelector("#rules-summary");
+  if (rulesSummary) {
+    moveElementInto(rulesSummary, helpSlot);
+  }
+
+  const helpPanel = document.querySelector("#help-panel");
+  if (helpPanel) {
+    moveElementInto(helpPanel, helpSlot);
+  }
+}
+
+
+function isConnected() {
+  const status = document.querySelector("#status");
+
+  return Boolean(status && !status.hidden);
 }
 
 function isGridActive() {
@@ -113,31 +166,110 @@ function isGridActive() {
   return statusText.includes("partie en cours") || statusText.includes("mode solution");
 }
 
-function moveConnectionControls(top) {
-  moveNearestLabeledControl("#room", top);
-  moveNearestLabeledControl("#name", top);
-  moveNode("#connect", top);
-  moveNode("#status", top);
+
+function ensureSlot(parent, id, className) {
+  let slot = document.querySelector(`#${id}`);
+
+  if (!slot) {
+    slot = document.createElement("section");
+    slot.id = id;
+    slot.className = className;
+  }
+
+  moveElementInto(slot, parent);
+
+  return slot;
 }
 
-function moveNearestLabeledControl(selector, parent) {
-  const input = document.querySelector(selector);
+function moveConnectionControls(top) {
+  const connectionControls = ensureConnectionControls(top);
+  const roomControl = ensureConnectionControl(connectionControls, "room-control", "Room :");
+  const nameControl = ensureConnectionControl(connectionControls, "name-control", "Pseudo :");
+  const actions = ensureConnectionActions(connectionControls);
 
-  if (!input) {
+  moveNodeInto("#room", roomControl);
+  moveNodeInto("#name", nameControl);
+  moveNodeInto("#connect", actions);
+
+  const connectionStatusLine = document.querySelector("#connection-status-line");
+  const status = document.querySelector("#status");
+  const invite = document.querySelector("#copy-room-link");
+
+  if (status) {
+    moveElementInto(status, actions);
+  }
+
+  if (invite) {
+    moveElementInto(invite, actions);
+  }
+
+  if (connectionStatusLine) {
+    connectionStatusLine.hidden = true;
+  }
+}
+
+function ensureConnectionControls(parent) {
+  let controls = document.querySelector("#connection-controls");
+
+  if (!controls) {
+    controls = document.createElement("div");
+    controls.id = "connection-controls";
+  }
+
+  moveElementInto(controls, parent);
+
+  return controls;
+}
+
+function ensureConnectionControl(parent, id, labelText) {
+  let control = document.querySelector(`#${id}`);
+
+  if (!control) {
+    control = document.createElement("label");
+    control.id = id;
+    control.className = "connection-control";
+
+    const label = document.createElement("span");
+    label.className = "connection-field-label";
+    label.textContent = labelText;
+
+    control.appendChild(label);
+  }
+
+  moveElementInto(control, parent);
+
+  return control;
+}
+
+function ensureConnectionActions(parent) {
+  let actions = document.querySelector("#connection-actions");
+
+  if (!actions) {
+    actions = document.createElement("div");
+    actions.id = "connection-actions";
+  }
+
+  moveElementInto(actions, parent);
+
+  return actions;
+}
+
+function moveNodeInto(selector, parent) {
+  const node = document.querySelector(selector);
+
+  if (!node || !parent) {
     return;
   }
 
-  const label = input.closest("label");
+  moveElementInto(node, parent);
+}
 
-  if (label) {
-    if (label.parentElement !== parent) {
-      parent.appendChild(label);
-    }
-
+function moveElementInto(node, parent) {
+  if (!node || !parent || node.parentElement === parent) {
     return;
   }
 
-  moveNode(selector, parent);
+  parent.appendChild(node);
 }
 
 function ensurePanel(parent, id, title) {
@@ -245,7 +377,7 @@ function hideEmptyLegacyContainers() {
 
     const visibleText = clone.textContent.replace(/\s+/g, "").trim();
     const visibleControls = section.querySelector(
-      "input:not([hidden]), textarea:not([hidden]), button:not([hidden]), #board, #players, #found-words, #log"
+      "input:not([hidden]), textarea:not([hidden]), button:not([hidden]), #board, #players, #found-words, #help-panel, #rules-summary, #log"
     );
 
     if (!visibleText && !visibleControls) {

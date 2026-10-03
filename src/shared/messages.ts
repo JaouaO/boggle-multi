@@ -13,6 +13,10 @@ export type ClientMessage =
       options?: Partial<GameOptions>;
     }
   | {
+      type: "updateGameOptions";
+      options: Partial<GameOptions>;
+    }
+  | {
       type: "endGame";
     }
   | {
@@ -33,6 +37,10 @@ export type ServerMessage =
   | {
       type: "players";
       players: Player[];
+    }
+  | {
+      type: "gameOptionsUpdated";
+      gameOptions: GameOptions;
     }
   | {
       type: "gameStatus";

@@ -240,21 +240,21 @@ function injectFeedbackStyle() {
     }
 
     .boggle-feedback-invalid {
-      outline: 3px solid color-mix(in srgb, var(--danger, #a9433f) 45%, transparent);
+      outline: 3px solid color-mix(in srgb, var(--danger, #8f3f2d) 45%, transparent);
       outline-offset: 3px;
     }
 
     .boggle-feedback-invalid .boggle-feedback-badge {
-      color: var(--danger, #a9433f);
+      color: var(--danger, #8f3f2d);
     }
 
     .boggle-feedback-duplicate {
-      outline: 3px solid color-mix(in srgb, var(--warning, #9a6422) 45%, transparent);
+      outline: 3px solid color-mix(in srgb, var(--warning, #8a5a1d) 45%, transparent);
       outline-offset: 3px;
     }
 
     .boggle-feedback-duplicate .boggle-feedback-badge {
-      color: var(--warning, #9a6422);
+      color: var(--warning, #8a5a1d);
     }
 
     #board.boggle-board-feedback-accepted {
@@ -262,32 +262,49 @@ function injectFeedbackStyle() {
     }
 
     #board.boggle-board-feedback-invalid {
-      border-color: color-mix(in srgb, var(--danger, #a9433f) 58%, var(--board-line, #b99d83)) !important;
+      border-color: color-mix(in srgb, var(--danger, #8f3f2d) 58%, var(--board-line, #b99d83)) !important;
     }
 
     #board.boggle-board-feedback-duplicate {
-      border-color: color-mix(in srgb, var(--warning, #9a6422) 58%, var(--board-line, #b99d83)) !important;
+      border-color: color-mix(in srgb, var(--warning, #8a5a1d) 58%, var(--board-line, #b99d83)) !important;
     }
 
     .board-cell-feedback-accepted,
     .board-cell-feedback-invalid,
     .board-cell-feedback-duplicate {
-      outline-offset: -5px !important;
+      outline-offset: -4px !important;
+      background-repeat: no-repeat !important;
     }
 
     .board-cell-feedback-accepted {
-      --cell-feedback-bg: color-mix(in srgb, var(--success, #4d7653) 18%, var(--tile, #fff8ea));
-      --cell-feedback-outline: color-mix(in srgb, var(--success, #4d7653) 42%, transparent);
+      --cell-feedback-center: color-mix(in srgb, var(--success, #4d7653) 10%, var(--tile, #fff8ea));
+      --cell-feedback-edge: color-mix(in srgb, var(--success, #4d7653) 64%, var(--tile, #fff8ea));
+      --cell-feedback-outline: color-mix(in srgb, var(--success, #4d7653) 84%, transparent);
+      --cell-feedback-glow: color-mix(in srgb, var(--success, #4d7653) 58%, transparent);
     }
 
     .board-cell-feedback-invalid {
-      --cell-feedback-bg: color-mix(in srgb, var(--danger, #a9433f) 15%, var(--tile, #fff8ea));
-      --cell-feedback-outline: color-mix(in srgb, var(--danger, #a9433f) 42%, transparent);
+      --cell-feedback-center: color-mix(in srgb, var(--danger, #8f3f2d) 9%, var(--tile, #fff8ea));
+      --cell-feedback-edge: color-mix(in srgb, var(--danger, #8f3f2d) 60%, var(--tile, #fff8ea));
+      --cell-feedback-outline: color-mix(in srgb, var(--danger, #8f3f2d) 84%, transparent);
+      --cell-feedback-glow: color-mix(in srgb, var(--danger, #8f3f2d) 56%, transparent);
     }
 
     .board-cell-feedback-duplicate {
-      --cell-feedback-bg: color-mix(in srgb, var(--warning, #9a6422) 16%, var(--tile, #fff8ea));
-      --cell-feedback-outline: color-mix(in srgb, var(--warning, #9a6422) 42%, transparent);
+      --cell-feedback-center: color-mix(in srgb, var(--warning, #8a5a1d) 10%, var(--tile, #fff8ea));
+      --cell-feedback-edge: color-mix(in srgb, var(--warning, #8a5a1d) 64%, var(--tile, #fff8ea));
+      --cell-feedback-outline: color-mix(in srgb, var(--warning, #8a5a1d) 84%, transparent);
+      --cell-feedback-glow: color-mix(in srgb, var(--warning, #8a5a1d) 56%, transparent);
+    }
+
+    .board-cell-feedback-accepted,
+    .board-cell-feedback-invalid,
+    .board-cell-feedback-duplicate {
+      --cell-feedback-gradient:
+        radial-gradient(circle at center,
+          var(--cell-feedback-center) 0%,
+          var(--cell-feedback-center) 38%,
+          var(--cell-feedback-edge) 100%);
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -318,8 +335,11 @@ function injectFeedbackStyle() {
       .board-cell-feedback-accepted,
       .board-cell-feedback-invalid,
       .board-cell-feedback-duplicate {
-        background: var(--cell-feedback-bg) !important;
+        background: var(--cell-feedback-gradient) !important;
         outline: 2px solid var(--cell-feedback-outline) !important;
+        box-shadow:
+          inset 0 0 0 4px var(--cell-feedback-glow),
+          0 0 0 2px var(--cell-feedback-glow) !important;
       }
     }
 
@@ -344,21 +364,33 @@ function injectFeedbackStyle() {
       0% {
         background: var(--tile, #fff8ea);
         outline: 2px solid transparent;
+        box-shadow:
+          inset 0 0 0 0 transparent,
+          0 0 0 0 transparent;
       }
 
-      12% {
-        background: var(--cell-feedback-bg);
+      10% {
+        background: var(--cell-feedback-gradient);
         outline: 2px solid var(--cell-feedback-outline);
+        box-shadow:
+          inset 0 0 0 4px var(--cell-feedback-glow),
+          0 0 0 2px var(--cell-feedback-glow);
       }
 
-      42% {
-        background: var(--cell-feedback-bg);
+      44% {
+        background: var(--cell-feedback-gradient);
         outline: 2px solid var(--cell-feedback-outline);
+        box-shadow:
+          inset 0 0 0 4px var(--cell-feedback-glow),
+          0 0 0 2px var(--cell-feedback-glow);
       }
 
       100% {
         background: var(--tile, #fff8ea);
         outline: 2px solid transparent;
+        box-shadow:
+          inset 0 0 0 0 transparent,
+          0 0 0 0 transparent;
       }
     }
 
