@@ -1,54 +1,78 @@
-import type { Board } from "../shared/types";
+import { Board, BoardSize } from "../shared/types";
 
-const LETTERS = [
-	"A", "A", "A", "A", "A", "A", "A", "A", "A",
-	"E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E",
-	"I", "I", "I", "I", "I", "I", "I",
-	"O", "O", "O", "O", "O",
-	"U", "U", "U", "U",
-	"Y",
-
-	"B", "B",
-	"C", "C", "C", "C",
-	"D", "D", "D",
-	"F", "F",
-	"G", "G",
-	"H",
-	"J",
-	"K",
-	"L", "L", "L", "L", "L",
-	"M", "M", "M",
-	"N", "N", "N", "N", "N", "N",
-	"P", "P", "P",
-	"Q",
-	"R", "R", "R", "R", "R", "R",
-	"S", "S", "S", "S", "S", "S",
-	"T", "T", "T", "T", "T", "T",
-	"V", "V",
-	"W",
-	"X",
-	"Z",
+/* Dés officiels 4×4 utilisés jusque-là. */
+const dice4x4 = [
+  "ETUKNO", "EVGTIN", "DECAMP", "IELRUW",
+  "EHIFSE", "RECALS", "ENTDOS", "OFXRIA",
+  "NAVEDZ", "EIOATA", "GLENYU", "BMAQJO",
+  "TLIBRA", "SPULTE", "AIMSOR", "ENHRIS",
 ];
 
-export function generateBoard(size = 4): Board {
-	const board: Board = [];
+/*
+ * Extension 5×5 reprise de la version solo.
+ * Elle conserve des dés à fréquence française et évite des suites trop absurdes.
+ */
+const dice5x5 = [
+  ...dice4x4,
+  "AEIOUY", "SPULTE",
+  "RECALS", "BMAQJO",
+  "DECAMP", "WXYZEA",
+  "ERISPN", "TLIBRA",
+  "GLENYU",
+];
 
-	for (let row = 0; row < size; row++) {
-		const line: string[] = [];
+function shuffle<T>(values: T[]) {
+  const result = [...values];
 
-		for (let col = 0; col < size; col++) {
-			line.push(randomItem(LETTERS));
-		}
+  for (let index = result.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [result[index], result[randomIndex]] = [result[randomIndex], result[index]];
+  }
 
-		board.push(line);
-	}
-
-	return board;
+  return result;
 }
 
-function randomItem<T>(items: T[]): T {
-	const array = new Uint32Array(1);
-	crypto.getRandomValues(array);
+function getDice(size: BoardSize) {
+  if (size === 3) {
+    return shuffle(dice4x4).slice(0, 9);
+  }
 
-	return items[array[0] % items.length];
+  if (size === 5) {
+    return dice5x5;
+  }
+
+  return dice4x4;
+}
+
+function randomDieLetter(die: string) {
+  return die[Math.floor(Math.random() * die.length)];
+}
+
+export function normalizeBoardSize(value: unknown): BoardSize {
+  const size = Number(value);
+
+  if (size === 3 || size === 5) {
+    return size;
+  }
+
+  return 4;
+}
+
+export function generateBoard(sizeValue: unknown = 4): Board {
+  const size = normalizeBoardSize(sizeValue);
+  const dice = shuffle(getDice(size));
+  const board: Board = [];
+
+  for (let row = 0; row < size; row++) {
+    const boardRow: string[] = [];
+
+    for (let col = 0; col < size; col++) {
+      const die = dice[row * size + col];
+      boardRow.push(randomDieLetter(die));
+    }
+
+    board.push(boardRow);
+  }
+
+  return board;
 }

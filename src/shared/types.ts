@@ -1,5 +1,7 @@
 export type Board = string[][];
 
+export type BoardSize = 3 | 4 | 5;
+
 export type GameMode = "timed" | "solution";
 
 export type GameDurationMode = "timer" | "noTimer" | "targetScore";
@@ -9,6 +11,7 @@ export type TargetScoreMode = "percentOfMaxScore" | "fixedScore";
 export type GameOptions = {
   durationMode: GameDurationMode;
   durationSeconds: number;
+  boardSize: BoardSize;
   uniqueWords: boolean;
   penalizeInvalidWords: boolean;
   invalidWordPenalty: number;
@@ -38,6 +41,7 @@ export type Player = {
   name: string;
   score: number;
   wordCount: number;
+  isHost: boolean;
 };
 
 export type Env = {

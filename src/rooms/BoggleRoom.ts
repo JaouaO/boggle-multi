@@ -8,7 +8,7 @@ import {
   getMaxScore,
   isWordOnBoard,
 } from "../engine/solver";
-import { generateBoard } from "../game/board";
+import { generateBoard, normalizeBoardSize } from "../game/board";
 import {
   DEFAULT_GAME_DURATION_SECONDS,
   getGameEndTime,
@@ -16,7 +16,7 @@ import {
   GameStatus,
 } from "../game/game-state";
 import { scoreWord } from "../game/scoring";
-import { Board, BoardSolution, Env, GameMode, GameOptions, Player } from "../shared/types";
+import { Board, BoardSize, BoardSolution, Env, GameMode, GameOptions, Player } from "../shared/types";
 import { ClientMessage, ServerMessage } from "../shared/messages";
 
 const ROOM_STATE_KEY = "roomState";
@@ -24,6 +24,7 @@ const ROOM_STATE_KEY = "roomState";
 const DEFAULT_GAME_OPTIONS: GameOptions = {
   durationMode: "timer",
   durationSeconds: DEFAULT_GAME_DURATION_SECONDS,
+  boardSize: 4,
   uniqueWords: false,
   penalizeInvalidWords: false,
   invalidWordPenalty: 1,
@@ -51,6 +52,7 @@ type FoundWordOwner = {
 
 type StoredRoomState = {
   status: GameStatus;
+  hostPlayerId: string | null;
   mode: GameMode;
   gameOptions: GameOptions;
   board: Board | null;
@@ -64,6 +66,7 @@ type StoredRoomState = {
 
 export class BoggleRoom extends DurableObject {
   private roomId = "";
+  private hostPlayerId: string | null = null;
   private status: GameStatus = "waiting";
   private mode: GameMode = "timed";
   private gameOptions: GameOptions = { ...DEFAULT_GAME_OPTIONS };
@@ -151,15 +154,22 @@ export class BoggleRoom extends DurableObject {
     if (data.type === "join") {
       const currentAttachment = this.getPlayerAttachment(ws);
       const name = data.name.trim().slice(0, 30) || "joueur";
+      const isNewHost = this.ensureHost(currentAttachment.id);
 
       ws.serializeAttachment({
         ...currentAttachment,
         name,
       });
 
+      if (isNewHost) {
+        await this.saveRoomState();
+      }
+
       this.broadcast({
         type: "system",
-        text: `${name} a rejoint la partie.`,
+        text: isNewHost
+          ? `${name} a rejoint la partie et devient l’hébergeur de la salle.`
+          : `${name} a rejoint la partie.`,
       });
 
       this.broadcastPlayers();
@@ -169,11 +179,34 @@ export class BoggleRoom extends DurableObject {
     }
 
     if (data.type === "startGame") {
+      if (!this.isHost(ws)) {
+        this.send(ws, {
+          type: "system",
+          text: "Seul l’hébergeur de la salle peut lancer une partie.",
+        });
+
+        return;
+      }
+
       await this.startGame(ws, data.mode ?? "timed", data.board, data.options);
       return;
     }
 
+    if (data.type === "updateGameOptions") {
+      await this.updateGameOptions(ws, data.options);
+      return;
+    }
+
     if (data.type === "endGame") {
+      if (!this.isHost(ws)) {
+        this.send(ws, {
+          type: "system",
+          text: "Seul l’hébergeur de la salle peut terminer la partie.",
+        });
+
+        return;
+      }
+
       await this.endGameIfNeeded(true);
       return;
     }
@@ -185,23 +218,74 @@ export class BoggleRoom extends DurableObject {
   }
 
   async webSocketClose(ws: WebSocket) {
-    const name = this.getPlayerName(ws);
+    const attachment = this.getPlayerAttachment(ws);
+    const name = attachment.name;
+    const wasHost = this.hostPlayerId === attachment.id;
 
-    this.broadcast({
-      type: "system",
-      text: `${name} a quitté la room.`,
-    });
+    if (wasHost) {
+      this.hostPlayerId = null;
+      const nextHost = this.assignHostFromConnectedPlayers(ws);
 
-    this.broadcastPlayers();
+      if (nextHost) {
+        await this.saveRoomState();
+
+        this.broadcast({
+          type: "system",
+          text: `${name} a quitté la room. ${nextHost.name} devient l’hébergeur de la salle.`,
+        });
+      } else {
+        await this.saveRoomState();
+
+        this.broadcast({
+          type: "system",
+          text: `${name} a quitté la room.`,
+        });
+      }
+    } else {
+      this.broadcast({
+        type: "system",
+        text: `${name} a quitté la room.`,
+      });
+    }
+
+    this.broadcastPlayers(attachment.id);
   }
 
-  async webSocketError() {
-    this.broadcastPlayers();
+  async webSocketError(ws: WebSocket) {
+    const attachment = this.getPlayerAttachment(ws);
+
+    this.broadcastPlayers(attachment.id);
   }
 
   async alarm() {
     await this.loadRoomState();
     await this.endGameIfNeeded(true);
+  }
+  private async updateGameOptions(
+    ws: WebSocket,
+    options?: Partial<GameOptions>
+  ) {
+    if (!this.isHost(ws)) {
+      this.send(ws, {
+        type: "system",
+        text: "Seul l’hébergeur de la salle peut modifier les règles.",
+      });
+
+      return;
+    }
+
+    if (this.status === "playing") {
+      this.send(ws, {
+        type: "system",
+        text: "Les règles ne peuvent plus être modifiées pendant une partie.",
+      });
+
+      return;
+    }
+
+    this.gameOptions = this.normalizeGameOptions("timed", options);
+    await this.saveRoomState();
+    this.broadcastGameOptions();
   }
 
   private async startGame(
@@ -225,10 +309,15 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
+    const normalizedOptions = this.normalizeGameOptions(
+      mode,
+      options ?? this.gameOptions
+    );
+
     const board =
       customBoard && customBoard.length > 0
         ? this.normalizeCustomBoard(customBoard)
-        : generateBoard();
+        : generateBoard(normalizedOptions.boardSize);
 
     if (!board) {
       this.send(ws, {
@@ -241,7 +330,10 @@ export class BoggleRoom extends DurableObject {
 
     this.status = "playing";
     this.mode = mode;
-    this.gameOptions = this.normalizeGameOptions(mode, options);
+    this.gameOptions = {
+      ...normalizedOptions,
+      boardSize: this.getBoardSize(board),
+    };
     this.board = board;
 
     const solveStartedAt = Date.now();
@@ -301,12 +393,11 @@ export class BoggleRoom extends DurableObject {
         ...DEFAULT_GAME_OPTIONS,
         durationMode: "noTimer",
         durationSeconds: 0,
+        boardSize: normalizeBoardSize(options?.boardSize ?? DEFAULT_GAME_OPTIONS.boardSize),
         maxHelpLevel: 3,
-        soundEnabled: options?.soundEnabled !== false,
-        masterVolume: this.clampVolume(
-          options?.masterVolume ?? DEFAULT_GAME_OPTIONS.masterVolume
-        ),
-        visualEffectsEnabled: options?.visualEffectsEnabled !== false,
+        soundEnabled: DEFAULT_GAME_OPTIONS.soundEnabled,
+        masterVolume: DEFAULT_GAME_OPTIONS.masterVolume,
+        visualEffectsEnabled: DEFAULT_GAME_OPTIONS.visualEffectsEnabled,
       };
     }
 
@@ -322,6 +413,7 @@ export class BoggleRoom extends DurableObject {
     return {
       durationMode,
       durationSeconds,
+      boardSize: normalizeBoardSize(options?.boardSize ?? DEFAULT_GAME_OPTIONS.boardSize),
       uniqueWords: Boolean(options?.uniqueWords),
       penalizeInvalidWords: Boolean(options?.penalizeInvalidWords),
       invalidWordPenalty: this.clampPenalty(
@@ -338,11 +430,9 @@ export class BoggleRoom extends DurableObject {
       targetScore: this.clampTargetScore(
         options?.targetScore ?? DEFAULT_GAME_OPTIONS.targetScore
       ),
-      soundEnabled: options?.soundEnabled !== false,
-      masterVolume: this.clampVolume(
-        options?.masterVolume ?? DEFAULT_GAME_OPTIONS.masterVolume
-      ),
-      visualEffectsEnabled: options?.visualEffectsEnabled !== false,
+      soundEnabled: DEFAULT_GAME_OPTIONS.soundEnabled,
+      masterVolume: DEFAULT_GAME_OPTIONS.masterVolume,
+      visualEffectsEnabled: DEFAULT_GAME_OPTIONS.visualEffectsEnabled,
     };
   }
 
@@ -392,6 +482,10 @@ export class BoggleRoom extends DurableObject {
     }
 
     return Math.min(1, Math.max(0, value));
+  }
+
+  private getBoardSize(board: Board): BoardSize {
+    return normalizeBoardSize(board.length);
   }
 
   private getMaxScore() {
@@ -696,6 +790,11 @@ export class BoggleRoom extends DurableObject {
       type: "gameStatus",
       status: this.status,
     });
+
+    this.send(ws, {
+      type: "gameOptionsUpdated",
+      gameOptions: this.gameOptions,
+    });
   }
 
   private async loadRoomState() {
@@ -707,8 +806,12 @@ export class BoggleRoom extends DurableObject {
 
     if (stored) {
       this.status = stored.status;
+      this.hostPlayerId = stored.hostPlayerId ?? null;
       this.mode = stored.mode ?? "timed";
-      this.gameOptions = stored.gameOptions ?? { ...DEFAULT_GAME_OPTIONS };
+      this.gameOptions = this.normalizeGameOptions(
+        stored.mode ?? "timed",
+        stored.gameOptions ?? DEFAULT_GAME_OPTIONS
+      );
       this.board = stored.board;
       this.startedAt = stored.startedAt;
       this.endedAt = stored.endedAt;
@@ -730,6 +833,7 @@ export class BoggleRoom extends DurableObject {
   private async saveRoomState() {
     const roomState: StoredRoomState = {
       status: this.status,
+      hostPlayerId: this.hostPlayerId,
       mode: this.mode,
       gameOptions: this.gameOptions,
       board: this.board,
@@ -742,6 +846,51 @@ export class BoggleRoom extends DurableObject {
     };
 
     await this.ctx.storage.put(ROOM_STATE_KEY, roomState);
+  }
+
+  private ensureHost(playerId: string) {
+    if (this.hostPlayerId && this.isHostConnected()) {
+      return false;
+    }
+
+    this.hostPlayerId = playerId;
+    return true;
+  }
+
+  private isHost(ws: WebSocket) {
+    const attachment = this.getPlayerAttachment(ws);
+
+    if (!this.hostPlayerId) {
+      this.ensureHost(attachment.id);
+    }
+
+    return this.hostPlayerId === attachment.id;
+  }
+
+  private isHostConnected() {
+    if (!this.hostPlayerId) {
+      return false;
+    }
+
+    return this.ctx
+      .getWebSockets()
+      .some((socket) => this.getPlayerAttachment(socket).id === this.hostPlayerId);
+  }
+
+  private assignHostFromConnectedPlayers(excludedWs?: WebSocket) {
+    const nextHostSocket = this.ctx
+      .getWebSockets()
+      .find((socket) => socket !== excludedWs);
+
+    if (!nextHostSocket) {
+      this.hostPlayerId = null;
+      return null;
+    }
+
+    const nextHost = this.getPlayerAttachment(nextHostSocket);
+    this.hostPlayerId = nextHost.id;
+
+    return nextHost;
   }
 
   private resetAllPlayersForNewGame() {
@@ -838,17 +987,24 @@ export class BoggleRoom extends DurableObject {
     };
   }
 
-  private broadcastPlayers() {
-    const players: Player[] = [...this.ctx.getWebSockets()].map((ws) => {
-      const attachment = this.getPlayerAttachment(ws);
+  private broadcastGameOptions() {
+    this.broadcast({
+      type: "gameOptionsUpdated",
+      gameOptions: this.gameOptions,
+    });
+  }
 
-      return {
+  private broadcastPlayers(excludedPlayerId?: string) {
+    const players: Player[] = [...this.ctx.getWebSockets()]
+      .map((ws) => this.getPlayerAttachment(ws))
+      .filter((attachment) => attachment.id !== excludedPlayerId)
+      .map((attachment) => ({
         id: attachment.id,
         name: attachment.name,
         score: attachment.score,
         wordCount: attachment.foundWords.length,
-      };
-    });
+        isHost: this.hostPlayerId === attachment.id,
+      }));
 
     this.broadcast({
       type: "players",

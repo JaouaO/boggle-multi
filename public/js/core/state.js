@@ -9,6 +9,7 @@ export const state = {
   gameOptions: {
     durationMode: "timer",
     durationSeconds: 180,
+    boardSize: 4,
     uniqueWords: false,
     penalizeInvalidWords: false,
     invalidWordPenalty: 1,
@@ -16,6 +17,11 @@ export const state = {
     targetScoreMode: "percentOfMaxScore",
     targetScorePercent: 70,
     targetScore: 50,
+    soundEnabled: true,
+    masterVolume: 0.65,
+    visualEffectsEnabled: true,
+  },
+  playerPreferences: {
     soundEnabled: true,
     masterVolume: 0.65,
     visualEffectsEnabled: true,

@@ -7,7 +7,27 @@ export function renderModeControls(anchorElement, options) {
     return;
   }
 
-  controls.solutionButton.disabled = Boolean(options.disabled);
+  const disabled = Boolean(options.disabled);
+
+  if (options.gameOptions) {
+    applyGameOptionsToControls(controls, options.gameOptions);
+  }
+
+  controls.panel.dataset.controlsLocked = disabled ? "true" : "false";
+  controls.lockNotice.hidden = !disabled;
+  controls.optionsBody.hidden = false;
+  setControlsDisabled(controls, disabled);
+
+  if (disabled) {
+    controls.solutionButton.onclick = null;
+    controls.fillExampleButton.onclick = null;
+    controls.panel.onchange = null;
+    controls.panel.oninput = null;
+    refreshDurationControls();
+    refreshPenaltyControls();
+    setControlsDisabled(controls, true);
+    return;
+  }
 
   controls.solutionButton.onclick = () => {
     const board = parseCustomBoard(controls.textarea.value);
@@ -23,43 +43,101 @@ export function renderModeControls(anchorElement, options) {
   };
 
   controls.fillExampleButton.onclick = () => {
-    controls.textarea.value = "ABCD\nEFGH\nIJKL\nMNOP";
+    const size = clampBoardSize(Number(controls.boardSize.value ?? 4));
+    controls.textarea.value = createExampleBoard(size);
     controls.feedback.textContent = "";
   };
 
-  controls.durationMode.onchange = refreshDurationControls;
+  const emitOptionsChange = () => {
+    if (disabled) {
+      return;
+    }
+
+    options.onOptionsChange?.(getGameOptions());
+  };
+
+  controls.panel.onchange = emitOptionsChange;
+
+  controls.boardSize.onchange = emitOptionsChange;
+
+  controls.durationMode.onchange = () => {
+    refreshDurationControls();
+    emitOptionsChange();
+  };
+  const emitNumericChangeOnEnter = (event) => {
+    if (event.key === "Enter") {
+      event.currentTarget.blur();
+    }
+  };
+
   controls.durationSeconds.oninput = () => sanitizeDigitsOnly(controls.durationSeconds);
+  controls.durationSeconds.onkeydown = emitNumericChangeOnEnter;
   controls.durationSeconds.onblur = () => {
     controls.durationSeconds.value = String(
       clampDuration(Number(controls.durationSeconds.value))
     );
+    emitOptionsChange();
   };
 
-  controls.targetScoreMode.onchange = refreshDurationControls;
+  controls.targetScoreMode.onchange = () => {
+    refreshDurationControls();
+    emitOptionsChange();
+  };
   controls.targetScorePercent.oninput = () => sanitizeDigitsOnly(controls.targetScorePercent);
+  controls.targetScorePercent.onkeydown = emitNumericChangeOnEnter;
   controls.targetScorePercent.onblur = () => {
     controls.targetScorePercent.value = String(
       clampTargetScorePercent(Number(controls.targetScorePercent.value))
     );
+    emitOptionsChange();
   };
 
   controls.targetScore.oninput = () => sanitizeDigitsOnly(controls.targetScore);
+  controls.targetScore.onkeydown = emitNumericChangeOnEnter;
   controls.targetScore.onblur = () => {
     controls.targetScore.value = String(
       clampTargetScore(Number(controls.targetScore.value))
     );
+    emitOptionsChange();
   };
 
-  controls.penalizeInvalidWords.onchange = refreshPenaltyControls;
+  controls.penalizeInvalidWords.onchange = () => {
+    refreshPenaltyControls();
+    emitOptionsChange();
+  };
   controls.invalidWordPenalty.oninput = () => sanitizeDigitsOnly(controls.invalidWordPenalty);
+  controls.invalidWordPenalty.onkeydown = emitNumericChangeOnEnter;
   controls.invalidWordPenalty.onblur = () => {
     controls.invalidWordPenalty.value = String(
       clampPenalty(Number(controls.invalidWordPenalty.value))
     );
+    emitOptionsChange();
   };
 
   refreshDurationControls();
   refreshPenaltyControls();
+  setControlsDisabled(controls, disabled);
+}
+
+function applyGameOptionsToControls(controls, gameOptions) {
+  if (!gameOptions) {
+    return;
+  }
+
+  controls.boardSize.value = String(clampBoardSize(gameOptions.boardSize ?? 4));
+  controls.durationMode.value = gameOptions.durationMode ?? "timer";
+  controls.durationSeconds.value = String(gameOptions.durationSeconds ?? 180);
+  controls.targetScoreMode.value =
+    gameOptions.targetScoreMode === "fixedScore"
+      ? "fixedScore"
+      : "percentOfMaxScore";
+  controls.targetScorePercent.value = String(gameOptions.targetScorePercent ?? 70);
+  controls.targetScore.value = String(gameOptions.targetScore ?? 50);
+  controls.uniqueWords.checked = Boolean(gameOptions.uniqueWords);
+  controls.penalizeInvalidWords.checked = Boolean(gameOptions.penalizeInvalidWords);
+  controls.invalidWordPenalty.value = String(gameOptions.invalidWordPenalty ?? 1);
+  controls.maxHelpLevel.value = String(gameOptions.maxHelpLevel ?? 3);
+  // Les préférences sonores/visuelles sont locales à chaque joueur.
 }
 
 export function getGameOptions() {
@@ -69,6 +147,13 @@ export function getGameOptions() {
     selectedDurationMode === "noTimer" || selectedDurationMode === "targetScore"
       ? selectedDurationMode
       : "timer";
+
+  const boardSizeSelect = panel?.querySelector("#board-size");
+  const boardSize = clampBoardSize(Number(boardSizeSelect?.value ?? 4));
+
+  if (boardSizeSelect) {
+    boardSizeSelect.value = String(boardSize);
+  }
 
   const durationInput = panel?.querySelector("#duration-seconds");
   const durationSeconds = clampDuration(Number(durationInput?.value ?? 180));
@@ -114,17 +199,10 @@ export function getGameOptions() {
     Number(panel?.querySelector("#max-help-level")?.value ?? 3)
   );
 
-  const soundEnabled = Boolean(panel?.querySelector("#sound-enabled")?.checked);
-  const visualEffectsEnabled = Boolean(
-    panel?.querySelector("#visual-effects-enabled")?.checked
-  );
-
-  const volumeInput = panel?.querySelector("#master-volume");
-  const masterVolume = clampVolume(Number(volumeInput?.value ?? 65) / 100);
-
   return {
     durationMode,
     durationSeconds,
+    boardSize,
     targetScoreMode,
     targetScorePercent,
     targetScore,
@@ -132,10 +210,111 @@ export function getGameOptions() {
     penalizeInvalidWords,
     invalidWordPenalty,
     maxHelpLevel,
-    soundEnabled,
-    masterVolume,
-    visualEffectsEnabled,
+    soundEnabled: true,
+    masterVolume: 0.65,
+    visualEffectsEnabled: true,
   };
+}
+
+export function renderPlayerPreferencesPanel(anchorElement, preferences, onChange) {
+  let panel = document.querySelector("#player-preferences");
+
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "player-preferences";
+
+    const toggle = document.createElement("button");
+    toggle.id = "player-preferences-toggle";
+    toggle.type = "button";
+    toggle.textContent = "⚙ Options";
+    toggle.title = "Ouvrir les options de confort personnel";
+
+    const body = document.createElement("div");
+    body.id = "player-preferences-body";
+    body.hidden = true;
+
+    const title = document.createElement("h2");
+    title.textContent = "Confort personnel";
+    title.style.marginTop = "0";
+
+    const description = document.createElement("p");
+    description.textContent =
+      "Ces réglages ne concernent que ce joueur.";
+    description.style.marginTop = "0";
+    description.style.opacity = "0.8";
+
+    const soundLabel = createCheckboxLabel(
+      "personal-sound-enabled",
+      "Sons activés",
+      "Active ou coupe les sons uniquement sur cet écran."
+    );
+    soundLabel.querySelector("input").checked = true;
+
+    const volumeLabel = createLabeledControl("Volume");
+    volumeLabel.id = "personal-master-volume-label";
+
+    const volume = document.createElement("input");
+    volume.id = "personal-master-volume";
+    volume.type = "range";
+    volume.min = "0";
+    volume.max = "100";
+    volume.step = "5";
+    volume.value = "65";
+
+    volumeLabel.append(volume);
+
+    const effectsLabel = createCheckboxLabel(
+      "personal-visual-effects-enabled",
+      "Effets visuels",
+      "Active ou coupe les animations de feedback uniquement sur cet écran."
+    );
+    effectsLabel.querySelector("input").checked = true;
+
+    toggle.addEventListener("click", () => {
+      body.hidden = !body.hidden;
+      toggle.setAttribute("aria-expanded", String(!body.hidden));
+    });
+
+    body.append(title, description, soundLabel, volumeLabel, effectsLabel);
+    panel.append(toggle, body);
+    const connectionControls = document.querySelector("#connection-controls");
+    const topBar = document.querySelector("#boggle-top");
+    (connectionControls || topBar || document.body).append(panel);
+  }
+
+  const soundEnabled = panel.querySelector("#personal-sound-enabled");
+  const masterVolume = panel.querySelector("#personal-master-volume");
+  const visualEffectsEnabled = panel.querySelector("#personal-visual-effects-enabled");
+
+  soundEnabled.checked = preferences?.soundEnabled !== false;
+  masterVolume.value = String(
+    Math.round(clampVolume(preferences?.masterVolume ?? 0.65) * 100)
+  );
+  visualEffectsEnabled.checked = preferences?.visualEffectsEnabled !== false;
+
+  const emitChange = () => {
+    onChange?.({
+      soundEnabled: Boolean(soundEnabled.checked),
+      masterVolume: clampVolume(Number(masterVolume.value) / 100),
+      visualEffectsEnabled: Boolean(visualEffectsEnabled.checked),
+    });
+  };
+
+  soundEnabled.onchange = emitChange;
+  masterVolume.oninput = emitChange;
+  visualEffectsEnabled.onchange = emitChange;
+}
+
+function createExampleBoard(size) {
+  if (size === 3) {
+    return "ABC\nDEF\nGHI";
+  }
+
+  if (size === 5) {
+    return "ABCDE\nFGHIJ\nKLMNO\nPQRST\nUVWXY";
+  }
+
+  return "ABCD\nEFGH\nIJKL\nMNOP";
 }
 
 export function parseCustomBoard(value) {
@@ -168,6 +347,38 @@ function ensureModeControls(anchorElement) {
     const title = document.createElement("h2");
     title.textContent = "Options de partie";
     title.style.marginTop = "0";
+
+    const lockNotice = document.createElement("p");
+    lockNotice.id = "mode-lock-notice";
+    lockNotice.textContent =
+      "Les règles sont choisies par l’hébergeur. Elles s’appliqueront au lancement de la partie.";
+    lockNotice.hidden = true;
+    lockNotice.style.margin = "0 0 0.85rem";
+    lockNotice.style.fontWeight = "800";
+    lockNotice.style.color = "#7a4a1f";
+
+    const boardSizeFieldset = createFieldset("Grille");
+
+    const boardSizeLabel = createLabeledControl("Taille de grille");
+    boardSizeLabel.id = "board-size-label";
+
+    const boardSize = document.createElement("select");
+    boardSize.id = "board-size";
+
+    for (const [value, label] of [
+      ["3", "3×3"],
+      ["4", "4×4"],
+      ["5", "5×5"],
+    ]) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      boardSize.append(option);
+    }
+
+    boardSize.value = "4";
+    boardSizeLabel.append(boardSize);
+    boardSizeFieldset.append(boardSizeLabel);
 
     const durationFieldset = createFieldset("Fin de partie");
 
@@ -309,41 +520,6 @@ function ensureModeControls(anchorElement) {
       maxHelpLevelLabel
     );
 
-    const feedbackFieldset = createFieldset("Feedback");
-
-    const soundEnabledLabel = createCheckboxLabel(
-      "sound-enabled",
-      "Sons activés",
-      "Joue un petit son pour les mots acceptés, refusés ou déjà trouvés."
-    );
-    soundEnabledLabel.querySelector("input").checked = true;
-
-    const masterVolumeLabel = createLabeledControl("Volume master");
-    masterVolumeLabel.id = "master-volume-label";
-
-    const masterVolume = document.createElement("input");
-    masterVolume.id = "master-volume";
-    masterVolume.type = "range";
-    masterVolume.min = "0";
-    masterVolume.max = "100";
-    masterVolume.step = "5";
-    masterVolume.value = "65";
-
-    masterVolumeLabel.append(masterVolume);
-
-    const visualEffectsEnabledLabel = createCheckboxLabel(
-      "visual-effects-enabled",
-      "Effets visuels",
-      "Affiche un signal discret autour de la saisie quand un mot est accepté ou refusé."
-    );
-    visualEffectsEnabledLabel.querySelector("input").checked = true;
-
-    feedbackFieldset.append(
-      soundEnabledLabel,
-      masterVolumeLabel,
-      visualEffectsEnabledLabel
-    );
-
     const boardFieldset = createFieldset("Grille personnalisée");
 
     const description = document.createElement("p");
@@ -369,7 +545,7 @@ function ensureModeControls(anchorElement) {
     const fillExampleButton = document.createElement("button");
     fillExampleButton.id = "fill-example-board";
     fillExampleButton.type = "button";
-    fillExampleButton.textContent = "Exemple 4×4";
+    fillExampleButton.textContent = "Exemple";
 
     const feedback = document.createElement("p");
     feedback.id = "mode-feedback";
@@ -388,17 +564,24 @@ function ensureModeControls(anchorElement) {
 
     const laterText = document.createElement("p");
     laterText.textContent =
-      "Sons, volume, effets visuels et musique seront branchés dans les prochaines étapes.";
+      "La musique d’ambiance et d’autres préférences pourront être ajoutées plus tard.";
 
     later.append(laterSummary, laterText);
 
-    panel.append(
-      title,
+    const optionsBody = document.createElement("div");
+    optionsBody.id = "mode-options-body";
+    optionsBody.append(
+      boardSizeFieldset,
       durationFieldset,
       rulesFieldset,
-      feedbackFieldset,
       boardFieldset,
       later
+    );
+
+    panel.append(
+      title,
+      lockNotice,
+      optionsBody
     );
 
     anchorElement.insertAdjacentElement("afterend", panel);
@@ -406,6 +589,9 @@ function ensureModeControls(anchorElement) {
 
   return {
     panel,
+    lockNotice: panel.querySelector("#mode-lock-notice"),
+    optionsBody: panel.querySelector("#mode-options-body"),
+    boardSize: panel.querySelector("#board-size"),
     durationMode: panel.querySelector("#duration-mode"),
     durationSeconds: panel.querySelector("#duration-seconds"),
     durationSecondsLabel: panel.querySelector("#duration-seconds-label"),
@@ -420,9 +606,6 @@ function ensureModeControls(anchorElement) {
     invalidWordPenalty: panel.querySelector("#invalid-word-penalty"),
     invalidWordPenaltyLabel: panel.querySelector("#invalid-word-penalty-label"),
     maxHelpLevel: panel.querySelector("#max-help-level"),
-    soundEnabled: panel.querySelector("#sound-enabled"),
-    masterVolume: panel.querySelector("#master-volume"),
-    visualEffectsEnabled: panel.querySelector("#visual-effects-enabled"),
     textarea: panel.querySelector("#custom-board"),
     solutionButton: panel.querySelector("#start-solution-mode"),
     fillExampleButton: panel.querySelector("#fill-example-board"),
@@ -487,6 +670,35 @@ function createCheckboxLabel(id, labelText, descriptionText) {
   return label;
 }
 
+function setControlsDisabled(controls, disabled) {
+  const fields = [
+    controls.boardSize,
+    controls.durationMode,
+    controls.durationSeconds,
+    controls.targetScoreMode,
+    controls.targetScorePercent,
+    controls.targetScore,
+    controls.uniqueWords,
+    controls.penalizeInvalidWords,
+    controls.invalidWordPenalty,
+    controls.maxHelpLevel,
+    controls.textarea,
+    controls.solutionButton,
+    controls.fillExampleButton,
+  ];
+
+  for (const field of fields) {
+    if (field) {
+      field.disabled = disabled;
+    }
+  }
+
+  if (!disabled) {
+    refreshDurationControls();
+    refreshPenaltyControls();
+  }
+}
+
 function refreshDurationControls() {
   const panel = document.querySelector("#mode-controls");
 
@@ -508,9 +720,10 @@ function refreshDurationControls() {
   const isTimer = mode === "timer";
   const isTargetScore = mode === "targetScore";
   const isFixedTarget = targetScoreMode?.value === "fixedScore";
+  const isLocked = panel.dataset.controlsLocked === "true";
 
   if (durationSeconds) {
-    durationSeconds.disabled = !isTimer;
+    durationSeconds.disabled = isLocked || !isTimer;
   }
 
   if (durationSecondsLabel) {
@@ -532,11 +745,11 @@ function refreshDurationControls() {
   }
 
   if (targetScorePercent) {
-    targetScorePercent.disabled = !isTargetScore || isFixedTarget;
+    targetScorePercent.disabled = isLocked || !isTargetScore || isFixedTarget;
   }
 
   if (targetScore) {
-    targetScore.disabled = !isTargetScore || !isFixedTarget;
+    targetScore.disabled = isLocked || !isTargetScore || !isFixedTarget;
   }
 }
 
@@ -551,9 +764,10 @@ function refreshPenaltyControls() {
   const invalidWordPenalty = panel.querySelector("#invalid-word-penalty");
   const invalidWordPenaltyLabel = panel.querySelector("#invalid-word-penalty-label");
   const enabled = Boolean(penalizeInvalidWords?.checked);
+  const isLocked = panel.dataset.controlsLocked === "true";
 
   if (invalidWordPenalty) {
-    invalidWordPenalty.disabled = !enabled;
+    invalidWordPenalty.disabled = isLocked || !enabled;
   }
 
   if (invalidWordPenaltyLabel) {
@@ -567,6 +781,10 @@ function sanitizeDigitsOnly(input) {
   }
 
   input.value = input.value.replace(/\D+/g, "");
+}
+
+function clampBoardSize(value) {
+  return value === 3 || value === 5 ? value : 4;
 }
 
 function clampDuration(value) {
