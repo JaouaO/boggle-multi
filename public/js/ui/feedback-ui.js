@@ -231,8 +231,9 @@ function injectFeedbackStyle() {
     }
 
     .boggle-feedback-accepted {
-      outline: 3px solid color-mix(in srgb, var(--success, #4d7653) 45%, transparent);
-      outline-offset: 3px;
+      outline: none !important;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--success, #4d7653) 35%, transparent) !important;
+      border-radius: 9999px !important;
     }
 
     .boggle-feedback-accepted .boggle-feedback-badge {
@@ -240,8 +241,9 @@ function injectFeedbackStyle() {
     }
 
     .boggle-feedback-invalid {
-      outline: 3px solid color-mix(in srgb, var(--danger, #8f3f2d) 45%, transparent);
-      outline-offset: 3px;
+      outline: none !important;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger, #8f3f2d) 35%, transparent) !important;
+      border-radius: 9999px !important;
     }
 
     .boggle-feedback-invalid .boggle-feedback-badge {
@@ -249,8 +251,9 @@ function injectFeedbackStyle() {
     }
 
     .boggle-feedback-duplicate {
-      outline: 3px solid color-mix(in srgb, var(--warning, #8a5a1d) 45%, transparent);
-      outline-offset: 3px;
+      outline: none !important;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning, #8a5a1d) 35%, transparent) !important;
+      border-radius: 9999px !important;
     }
 
     .boggle-feedback-duplicate .boggle-feedback-badge {

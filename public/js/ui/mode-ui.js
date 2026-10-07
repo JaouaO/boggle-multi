@@ -15,7 +15,7 @@ export function renderModeControls(anchorElement, options) {
 
   controls.panel.dataset.controlsLocked = disabled ? "true" : "false";
   controls.lockNotice.hidden = !disabled;
-  controls.optionsBody.hidden = false;
+  setupOptionsDisclosure(controls);
   setControlsDisabled(controls, disabled);
 
   if (disabled) {
@@ -117,6 +117,26 @@ export function renderModeControls(anchorElement, options) {
   refreshDurationControls();
   refreshPenaltyControls();
   setControlsDisabled(controls, disabled);
+}
+
+function setupOptionsDisclosure(controls) {
+  if (!controls.panel.dataset.optionsOpen) {
+    controls.panel.dataset.optionsOpen = "false";
+  }
+
+  const sync = () => {
+    const open = controls.panel.dataset.optionsOpen === "true";
+    controls.optionsBody.hidden = !open;
+    controls.optionsToggle.setAttribute("aria-expanded", String(open));
+  };
+
+  controls.optionsToggle.onclick = () => {
+    const open = controls.panel.dataset.optionsOpen === "true";
+    controls.panel.dataset.optionsOpen = open ? "false" : "true";
+    sync();
+  };
+
+  sync();
 }
 
 function applyGameOptionsToControls(controls, gameOptions) {
@@ -345,8 +365,16 @@ function ensureModeControls(anchorElement) {
     panel.id = "mode-controls";
 
     const title = document.createElement("h2");
-    title.textContent = "Options de partie";
-    title.style.marginTop = "0";
+    title.style.margin = "0";
+
+    const optionsToggle = document.createElement("button");
+    optionsToggle.id = "mode-options-toggle";
+    optionsToggle.type = "button";
+    optionsToggle.textContent = "Options de partie";
+    optionsToggle.setAttribute("aria-expanded", "false");
+    optionsToggle.setAttribute("aria-controls", "mode-options-body");
+
+    title.append(optionsToggle);
 
     const lockNotice = document.createElement("p");
     lockNotice.id = "mode-lock-notice";
@@ -570,6 +598,8 @@ function ensureModeControls(anchorElement) {
 
     const optionsBody = document.createElement("div");
     optionsBody.id = "mode-options-body";
+    optionsBody.hidden = true;
+    panel.dataset.optionsOpen = "false";
     optionsBody.append(
       boardSizeFieldset,
       durationFieldset,
@@ -590,6 +620,7 @@ function ensureModeControls(anchorElement) {
   return {
     panel,
     lockNotice: panel.querySelector("#mode-lock-notice"),
+    optionsToggle: panel.querySelector("#mode-options-toggle"),
     optionsBody: panel.querySelector("#mode-options-body"),
     boardSize: panel.querySelector("#board-size"),
     durationMode: panel.querySelector("#duration-mode"),

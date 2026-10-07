@@ -88,6 +88,7 @@ function syncLayout() {
       return;
     }
 
+    ensureBrand(top);
     moveConnectionControls(top);
 
     moveDirect("#welcome-panel", center);
@@ -136,17 +137,153 @@ function syncLayout() {
 }
 
 function moveRightColumnContent(right) {
-  const helpSlot = ensureSlot(right, "help-slot", "help-slot");
+  ensureMockupRightCards(right);
 
-  const rulesSummary = document.querySelector("#rules-summary");
-  if (rulesSummary) {
-    moveElementInto(rulesSummary, helpSlot);
-  }
+  const helpSlot = ensureSlot(right, "help-slot", "help-slot");
+  helpSlot.hidden = true;
 
   const helpPanel = document.querySelector("#help-panel");
   if (helpPanel) {
     moveElementInto(helpPanel, helpSlot);
   }
+
+  const rulesSummary = document.querySelector("#rules-summary");
+  if (rulesSummary) {
+    moveElementInto(rulesSummary, helpSlot);
+  }
+}
+
+
+function ensureBrand(parent) {
+  let brand = document.querySelector("#boggle-brand");
+
+  if (!brand) {
+    brand = document.createElement("div");
+    brand.id = "boggle-brand";
+    brand.setAttribute("aria-label", "Boggle");
+
+    const mark = document.createElement("span");
+    mark.className = "boggle-brand-mark";
+    mark.textContent = "Boggle";
+
+    const dots = document.createElement("span");
+    dots.className = "boggle-brand-dots";
+    dots.setAttribute("aria-hidden", "true");
+
+    for (const className of [
+      "brand-dot brand-dot-orange",
+      "brand-dot brand-dot-yellow",
+      "brand-dot brand-dot-green",
+    ]) {
+      const dot = document.createElement("span");
+      dot.className = className;
+      dots.append(dot);
+    }
+
+    brand.append(mark, dots);
+  }
+
+  if (brand.parentElement !== parent) {
+    parent.prepend(brand);
+  } else if (parent.firstElementChild !== brand) {
+    parent.prepend(brand);
+  }
+
+  return brand;
+}
+
+
+function ensureMockupRightCards(parent) {
+  let stack = document.querySelector("#mockup-right-cards");
+
+  if (!stack) {
+    stack = document.createElement("section");
+    stack.id = "mockup-right-cards";
+    stack.setAttribute("aria-label", "Aide et règles");
+
+    stack.append(
+      createMockupInfoCard({
+        id: "mockup-help-card",
+        modifier: "help-card rules-card",
+        icon: "📜",
+        title: "Règles",
+        body: "Formez des mots français valides en reliant des lettres adjacentes.",
+        items: [
+          ["3+", "Mots de 3 lettres minimum"],
+          ["↔", "Toutes les lettres doivent être connectées"],
+          ["★", "Points : 3-4 = 1 · 5 = 2 · 6 = 3 · 7 = 5 · 8+ = 11"],
+        ],
+      }),
+      createMockupInfoCard({
+        id: "mockup-unique-card",
+        modifier: "unique-card",
+        icon: "✨",
+        title: "Mot unique dans la salle",
+        body: "Activé : un mot déjà trouvé par un autre joueur ne peut plus être validé.",
+      }),
+      createMockupInfoCard({
+        id: "mockup-penalty-card",
+        modifier: "penalty-card",
+        icon: "!",
+        title: "Pénalité",
+        body: "Activée : un mot invalide retire des points.",
+      })
+    );
+  }
+
+  moveElementInto(stack, parent);
+
+  return stack;
+}
+
+function createMockupInfoCard({ id, modifier, icon, title, body, items = [] }) {
+  const card = document.createElement("section");
+  card.id = id;
+  card.className = `mockup-info-card ${modifier}`;
+
+  const heading = document.createElement("h2");
+
+  const iconElement = document.createElement("span");
+  iconElement.className = "mockup-info-icon";
+  iconElement.textContent = icon;
+
+  const titleElement = document.createElement("span");
+  titleElement.textContent = title;
+
+  const question = document.createElement("span");
+  question.className = "mockup-info-question";
+  question.textContent = "?";
+  question.setAttribute("aria-hidden", "true");
+
+  heading.append(iconElement, titleElement, question);
+
+  const text = document.createElement("p");
+  text.textContent = body;
+
+  card.append(heading, text);
+
+  if (items.length) {
+    const list = document.createElement("ul");
+    list.className = "mockup-help-list";
+
+    for (const [itemIcon, itemText] of items) {
+      const item = document.createElement("li");
+
+      const bullet = document.createElement("span");
+      bullet.className = "mockup-help-icon";
+      bullet.textContent = itemIcon;
+
+      const label = document.createElement("span");
+      label.textContent = itemText;
+
+      item.append(bullet, label);
+      list.append(item);
+    }
+
+    card.append(list);
+  }
+
+  return card;
 }
 
 
@@ -183,29 +320,43 @@ function ensureSlot(parent, id, className) {
 
 function moveConnectionControls(top) {
   const connectionControls = ensureConnectionControls(top);
-  const roomControl = ensureConnectionControl(connectionControls, "room-control", "Room :");
-  const nameControl = ensureConnectionControl(connectionControls, "name-control", "Pseudo :");
-  const actions = ensureConnectionActions(connectionControls);
+  const connectionCore = ensureConnectionCore(connectionControls);
+  const roomControl = ensureConnectionControl(connectionCore, "room-control", "Room :");
+  const nameControl = ensureConnectionControl(connectionCore, "name-control", "Pseudo :");
+  ensureConnectionActions(connectionControls);
 
   moveNodeInto("#room", roomControl);
   moveNodeInto("#name", nameControl);
-  moveNodeInto("#connect", actions);
+  moveNodeInto("#connect", connectionCore);
 
   const connectionStatusLine = document.querySelector("#connection-status-line");
   const status = document.querySelector("#status");
   const invite = document.querySelector("#copy-room-link");
 
   if (status) {
-    moveElementInto(status, actions);
+    moveElementInto(status, connectionCore);
   }
 
   if (invite) {
-    moveElementInto(invite, actions);
+    moveElementInto(invite, connectionCore);
   }
 
   if (connectionStatusLine) {
     connectionStatusLine.hidden = true;
   }
+}
+
+function ensureConnectionCore(parent) {
+  let core = document.querySelector("#connection-core");
+
+  if (!core) {
+    core = document.createElement("div");
+    core.id = "connection-core";
+  }
+
+  moveElementInto(core, parent);
+
+  return core;
 }
 
 function ensureConnectionControls(parent) {
