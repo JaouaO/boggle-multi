@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-08T18:45:19.650Z",
-  "auditedCandidateCount": 18,
+  "generatedAt": "2026-10-08T18:57:48.025Z",
+  "auditedCandidateCount": 19,
   "probableUnused": [],
   "referenced": [
     {
@@ -34,7 +34,7 @@
     },
     {
       "file": "public/js/main.js",
-      "referenceCount": 3,
+      "referenceCount": 4,
       "references": [
         {
           "file": "public/index.html",
@@ -46,6 +46,12 @@
         },
         {
           "file": "public/js/ui/board-ui.js",
+          "via": [
+            "main.js"
+          ]
+        },
+        {
+          "file": "public/js/ui/theme-styles.js",
           "via": [
             "main.js"
           ]
@@ -184,6 +190,30 @@
           "via": [
             "./ui/mouse-input-ui.js",
             "mouse-input-ui.js"
+          ]
+        }
+      ],
+      "probableUnused": false
+    },
+    {
+      "file": "public/js/ui/theme-styles.js",
+      "referenceCount": 2,
+      "references": [
+        {
+          "file": "public/js/main.js",
+          "via": [
+            "./ui/theme-styles.js",
+            "theme-styles.js"
+          ]
+        },
+        {
+          "file": "tools/audit-css-js.mjs",
+          "via": [
+            "public/js/ui/theme-styles.js",
+            "js/ui/theme-styles.js",
+            "public/js/ui/theme-styles",
+            "js/ui/theme-styles",
+            "theme-styles.js"
           ]
         }
       ],
