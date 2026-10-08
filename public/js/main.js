@@ -144,7 +144,7 @@ injectMockupStableTopCleanVictoryThemeV16();
 injectMockupRightRulesInputThemeV22();
 injectWordsPlayersLayoutV29();
 injectFinalRecapHoverV30();
-injectBoardFitAndTabsV31();
+injectFinalBoardInputV36();
 injectFinalButtonsV34();
 
 
@@ -4701,26 +4701,9 @@ function injectWordsPlayersLayoutV29() {
   style.id = "boggle-words-players-layout-v29-style";
   style.textContent = `
     /*
-     * V29 : espace plateau/saisie + liste mots par points + sélecteur joueur final/solution.
+     * V29 : liste des mots par points + sélecteur joueur final/solution.
+     * Les règles plateau/saisie finales sont centralisées dans V36.
      */
-    #boggle-center {
-      overflow: visible !important;
-    }
-
-    #board {
-      margin-bottom: 0.9rem !important;
-      overflow: visible !important;
-    }
-
-    #word-form {
-      margin-top: 0.75rem !important;
-      position: relative !important;
-      z-index: 2 !important;
-    }
-
-    #word-feedback {
-      margin-top: 0.48rem !important;
-    }
 
     .found-words-viewer {
       display: grid !important;
@@ -5031,16 +5014,16 @@ function injectFinalRecapHoverV30() {
 
 
 
-function injectBoardFitAndTabsV31() {
-  if (document.querySelector("#boggle-board-fit-tabs-v31-style")) {
+function injectFinalBoardInputV36() {
+  if (document.querySelector("#boggle-final-board-input-v36-style")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-board-fit-tabs-v31-style";
+  style.id = "boggle-final-board-input-v36-style";
   style.textContent = `
     /*
-     * V31 : verrou de layout fiable.
+     * V36 : couche finale plateau + champ "Votre mot".
      * Le plateau reçoit une taille calculée par JS dans --board-fit-size-v31.
      * Le formulaire reste dans le flux, sous la grille, sans superposition.
      */
