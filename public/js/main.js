@@ -143,7 +143,6 @@ injectMockupResponsiveThemeV7();
 injectTopLaunchEndScreenLayoutV39();
 injectRulesHelpOptionsPanelV38();
 injectFoundWordsPanelV37();
-injectFinalRecapHoverV30();
 injectFinalBoardInputV36();
 injectFinalButtonsV34();
 
@@ -4626,7 +4625,7 @@ function injectFoundWordsPanelV37() {
   style.id = "boggle-found-words-panel-v37-style";
   style.textContent = `
     /*
-     * V37 : couche finale du panneau "Mots trouvés" et des onglets joueurs.
+     * V40 : couche finale du panneau "Mots trouvés", onglets joueurs et survol.
      * Les règles plateau/saisie finales sont centralisées dans V36.
      */
 
@@ -4782,83 +4781,8 @@ function injectFoundWordsPanelV37() {
     .found-words-empty-row {
       grid-column: 1 / -1 !important;
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-
-function injectFinalRecapHoverV30() {
-  if (document.querySelector("#boggle-final-recap-hover-v30-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-final-recap-hover-v30-style";
-  style.textContent = `
-    /*
-     * V30 : règles fiables plateau/saisie + panneau mots seamless + hover de mot.
-     */
-
-    #boggle-center {
-      display: grid !important;
-      grid-template-rows: auto minmax(0, auto) auto auto !important;
-      align-items: start !important;
-      overflow: visible !important;
-      gap: clamp(0.58rem, 1.05vh, 0.95rem) !important;
-    }
-
-    #play-status-panel {
-      grid-row: 1 !important;
-    }
-
-    #board {
-      grid-row: 2 !important;
-      justify-self: center !important;
-      align-self: center !important;
-      width: min(100%, 42rem, calc(100dvh - 17.75rem)) !important;
-      max-width: 100% !important;
-      height: auto !important;
-      aspect-ratio: 1 / 1 !important;
-      margin: 0 auto !important;
-      overflow: visible !important;
-      box-sizing: border-box !important;
-    }
-
-    #word-form {
-      grid-row: 3 !important;
-      justify-self: center !important;
-      width: min(100%, 43rem) !important;
-      max-width: 100% !important;
-      margin: 0 auto !important;
-      transform: none !important;
-      position: relative !important;
-      z-index: 2 !important;
-    }
-
-    #word-feedback {
-      grid-row: 4 !important;
-      width: min(100%, 43rem) !important;
-      margin: 0.16rem auto 0 !important;
-    }
-
-    @media (max-height: 760px) {
-      #board {
-        width: min(100%, 38rem, calc(100dvh - 15.8rem)) !important;
-      }
-
-      #boggle-center {
-        gap: 0.5rem !important;
-      }
-    }
-
-    @media (max-width: 78rem) {
-      #board {
-        width: min(100%, 42rem) !important;
-      }
-    }
-
+    /* V40 : anciennes finitions V30 rapatriées ici. */
     #found-words {
       background: transparent !important;
       border: 0 !important;
@@ -4944,7 +4868,6 @@ function injectFinalRecapHoverV30() {
 
   document.head.appendChild(style);
 }
-
 
 
 function injectFinalBoardInputV36() {
