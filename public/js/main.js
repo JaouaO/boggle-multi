@@ -140,7 +140,7 @@ injectMockupCloserThemeV4();
 injectMockupFullWidthThemeV5();
 injectMockupFullWidthThemeV6();
 injectMockupResponsiveThemeV7();
-injectMockupStableTopCleanVictoryThemeV16();
+injectTopLaunchEndScreenLayoutV39();
 injectRulesHelpOptionsPanelV38();
 injectFoundWordsPanelV37();
 injectFinalRecapHoverV30();
@@ -3888,20 +3888,19 @@ function injectMockupResponsiveThemeV7() {
 
 
 
-function injectMockupStableTopCleanVictoryThemeV16() {
-  if (document.querySelector("#boggle-mockup-stable-top-clean-victory-v16-style")) {
+function injectTopLaunchEndScreenLayoutV39() {
+  if (document.querySelector("#boggle-top-launch-end-screen-v39-style")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-mockup-stable-top-clean-victory-v16-style";
+  style.id = "boggle-top-launch-end-screen-v39-style";
   style.textContent = `
     /*
-     * V16 :
-     * - on garde le centrage du haut ;
-     * - on garde l'écran avant lancement ;
-     * - on n'utilise plus #end-screen comme popup visible ;
-     * - on crée #victory-modal-v16, indépendant des anciens styles.
+     * V39 : couche finale haut de page / accueil / popup de fin.
+     * - positionnement de la barre de connexion ;
+     * - état accueil / lancement avant partie ;
+     * - popup de fin indépendante de l'ancien #end-screen.
      */
 
     #boggle-top {
