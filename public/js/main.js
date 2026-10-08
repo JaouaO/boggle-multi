@@ -1,7 +1,6 @@
 import { state } from "./core/state.js";
 import { createRoomSocket, sendMessage } from "./net/socket.js";
 import { renderBoard } from "./ui/board-ui.js";
-import { renderPlayers } from "./ui/players-ui.js";
 import { addLog } from "./ui/log-ui.js";
 import { setWordFeedback } from "./ui/words-ui.js";
 import {
@@ -9,10 +8,7 @@ import {
   startLocalTimer,
   stopLocalTimer,
 } from "./ui/timer-ui.js";
-import {
-  getNextHelpLevel,
-  renderHelpPanel,
-} from "./ui/help-ui.js";
+import { renderHelpPanel } from "./ui/help-ui.js";
 import {
   hideEndScreen,
   renderEndScreen,
@@ -7148,43 +7144,7 @@ function renderRulesSummary() {
   syncRulesSummarySlotVisibility();
 }
 
-function formatDurationRule() {
-  if (state.gameMode === "solution") {
-    return "Mode solution";
-  }
 
-  if (state.gameOptions.durationMode === "noTimer") {
-    return "Sans timer";
-  }
-
-  if (state.gameOptions.durationMode === "targetScore") {
-    if (state.gameOptions.targetScoreMode === "fixedScore") {
-      return `Objectif : ${state.gameOptions.targetScore} point(s)`;
-    }
-
-    return `Objectif : ${state.gameOptions.targetScorePercent}% du score max`;
-  }
-
-  return `Durée : ${state.gameOptions.durationSeconds} seconde(s)`;
-}
-
-function formatHelpRule() {
-  const level = Number(state.gameOptions.maxHelpLevel ?? 3);
-
-  if (level <= 0) {
-    return "Pas d’aide";
-  }
-
-  if (level === 1) {
-    return "Aide max : compteurs";
-  }
-
-  if (level >= 2) {
-    return "Aide max : solution complète";
-  }
-
-  return "Aide max : compteurs";
-}
 
 function renderModePanel() {
   renderModeControls(startButton, {
@@ -7420,12 +7380,6 @@ function renderVictoryModalV16() {
   closeButton.focus({ preventScroll: true });
 }
 
-
-function ensureEndScreenCloseButton() {
-  if (document.body.classList.contains("boggle-end-screen-open")) {
-    renderVictoryModalV16();
-  }
-}
 
 
 function closeEndScreenPopup() {

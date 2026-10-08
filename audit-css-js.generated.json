@@ -1,0 +1,2494 @@
+{
+  "generatedAt": "2026-10-08T17:13:21.335Z",
+  "main": {
+    "path": "public/js/main.js",
+    "lines": 7751,
+    "chars": 214278
+  },
+  "injectionCalls": [
+    {
+      "name": "injectDesignPassStyles",
+      "line": 134
+    },
+    {
+      "name": "injectFruityThemeOverrides",
+      "line": 135
+    },
+    {
+      "name": "injectMockupCloserTheme",
+      "line": 136
+    },
+    {
+      "name": "injectMockupCloserThemeV2",
+      "line": 137
+    },
+    {
+      "name": "injectMockupCloserThemeV3",
+      "line": 138
+    },
+    {
+      "name": "injectMockupCloserThemeV4",
+      "line": 139
+    },
+    {
+      "name": "injectMockupFullWidthThemeV5",
+      "line": 140
+    },
+    {
+      "name": "injectMockupFullWidthThemeV6",
+      "line": 141
+    },
+    {
+      "name": "injectMockupResponsiveThemeV7",
+      "line": 142
+    },
+    {
+      "name": "injectMockupStableTopCleanVictoryThemeV16",
+      "line": 143
+    },
+    {
+      "name": "injectMockupRightRulesInputThemeV22",
+      "line": 144
+    },
+    {
+      "name": "injectVisibleControlsButtonsV28",
+      "line": 145
+    },
+    {
+      "name": "injectWordsPlayersLayoutV29",
+      "line": 146
+    },
+    {
+      "name": "injectFinalRecapHoverV30",
+      "line": 147
+    },
+    {
+      "name": "injectBoardFitAndTabsV31",
+      "line": 148
+    }
+  ],
+  "injectionFunctions": [
+    {
+      "name": "injectDesignPassStyles",
+      "line": 151,
+      "blockChars": 11614,
+      "cssChars": 11343,
+      "idSelectorCount": 68,
+      "classSelectorCount": 130,
+      "topIdSelectors": [
+        [
+          "#boggle-top",
+          7
+        ],
+        [
+          "#play-status-panel",
+          5
+        ],
+        [
+          "#4b3322",
+          4
+        ],
+        [
+          "#connection-status-line",
+          4
+        ],
+        [
+          "#found-words",
+          4
+        ],
+        [
+          "#player-preferences",
+          4
+        ],
+        [
+          "#status",
+          4
+        ],
+        [
+          "#timer",
+          4
+        ],
+        [
+          "#game-status",
+          3
+        ],
+        [
+          "#mode-options-toggle",
+          3
+        ],
+        [
+          "#connection-controls",
+          2
+        ],
+        [
+          "#end-game",
+          2
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".15rem",
+          7
+        ],
+        [
+          ".35rem",
+          6
+        ],
+        [
+          ".55rem",
+          5
+        ],
+        [
+          ".75rem",
+          5
+        ],
+        [
+          ".5rem",
+          4
+        ],
+        [
+          ".65rem",
+          4
+        ],
+        [
+          ".board-cell",
+          4
+        ],
+        [
+          ".welcome-board",
+          4
+        ],
+        [
+          ".08",
+          3
+        ],
+        [
+          ".22",
+          3
+        ],
+        [
+          ".25rem",
+          3
+        ],
+        [
+          ".2rem",
+          3
+        ]
+      ]
+    },
+    {
+      "name": "injectFruityThemeOverrides",
+      "line": 674,
+      "blockChars": 19558,
+      "cssChars": 19279,
+      "idSelectorCount": 101,
+      "classSelectorCount": 209,
+      "topIdSelectors": [
+        [
+          "#help-panel",
+          9
+        ],
+        [
+          "#play-status-panel",
+          7
+        ],
+        [
+          "#launch-panel",
+          6
+        ],
+        [
+          "#boggle-top",
+          5
+        ],
+        [
+          "#found-words-panel",
+          5
+        ],
+        [
+          "#players-panel",
+          5
+        ],
+        [
+          "#board",
+          3
+        ],
+        [
+          "#found-words",
+          3
+        ],
+        [
+          "#help-slot",
+          3
+        ],
+        [
+          "#mode-controls",
+          3
+        ],
+        [
+          "#status",
+          3
+        ],
+        [
+          "#welcome-panel",
+          3
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".16",
+          16
+        ],
+        [
+          ".18",
+          13
+        ],
+        [
+          ".08",
+          6
+        ],
+        [
+          ".2rem",
+          6
+        ],
+        [
+          ".5",
+          6
+        ],
+        [
+          ".8rem",
+          6
+        ],
+        [
+          ".95",
+          6
+        ],
+        [
+          ".14",
+          5
+        ],
+        [
+          ".22",
+          5
+        ],
+        [
+          ".6",
+          4
+        ],
+        [
+          ".72",
+          4
+        ],
+        [
+          ".7rem",
+          4
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupCloserTheme",
+      "line": 1099,
+      "blockChars": 19661,
+      "cssChars": 19385,
+      "idSelectorCount": 118,
+      "classSelectorCount": 178,
+      "topIdSelectors": [
+        [
+          "#fff8e8",
+          6
+        ],
+        [
+          "#board",
+          5
+        ],
+        [
+          "#fffaf0",
+          4
+        ],
+        [
+          "#help-panel",
+          4
+        ],
+        [
+          "#player-preferences",
+          4
+        ],
+        [
+          "#rules-summary",
+          4
+        ],
+        [
+          "#start",
+          4
+        ],
+        [
+          "#word-submit",
+          4
+        ],
+        [
+          "#boggle-top",
+          3
+        ],
+        [
+          "#connect",
+          3
+        ],
+        [
+          "#connection-controls",
+          3
+        ],
+        [
+          "#found-words-panel",
+          3
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".1rem",
+          8
+        ],
+        [
+          ".65rem",
+          8
+        ],
+        [
+          ".75rem",
+          7
+        ],
+        [
+          ".7rem",
+          7
+        ],
+        [
+          ".95rem",
+          7
+        ],
+        [
+          ".9rem",
+          7
+        ],
+        [
+          ".25rem",
+          6
+        ],
+        [
+          ".2rem",
+          6
+        ],
+        [
+          ".55rem",
+          6
+        ],
+        [
+          ".45rem",
+          5
+        ],
+        [
+          ".4rem",
+          5
+        ],
+        [
+          ".5rem",
+          5
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupCloserThemeV2",
+      "line": 1782,
+      "blockChars": 10068,
+      "cssChars": 9784,
+      "idSelectorCount": 74,
+      "classSelectorCount": 98,
+      "topIdSelectors": [
+        [
+          "#5d351e",
+          3
+        ],
+        [
+          "#end-game",
+          3
+        ],
+        [
+          "#found-words-panel",
+          3
+        ],
+        [
+          "#mode-options-toggle",
+          3
+        ],
+        [
+          "#play-status-panel",
+          3
+        ],
+        [
+          "#players-panel",
+          3
+        ],
+        [
+          "#6e5038",
+          2
+        ],
+        [
+          "#board",
+          2
+        ],
+        [
+          "#boggle-layout",
+          2
+        ],
+        [
+          "#connect",
+          2
+        ],
+        [
+          "#connection-controls",
+          2
+        ],
+        [
+          "#ef6255",
+          2
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".25rem",
+          6
+        ],
+        [
+          ".7rem",
+          6
+        ],
+        [
+          ".85rem",
+          6
+        ],
+        [
+          ".4rem",
+          5
+        ],
+        [
+          ".55rem",
+          4
+        ],
+        [
+          ".65rem",
+          4
+        ],
+        [
+          ".75rem",
+          4
+        ],
+        [
+          ".9rem",
+          4
+        ],
+        [
+          ".penalty-card",
+          4
+        ],
+        [
+          ".unique-card",
+          4
+        ],
+        [
+          ".08rem",
+          3
+        ],
+        [
+          ".22",
+          3
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupCloserThemeV3",
+      "line": 2181,
+      "blockChars": 7925,
+      "cssChars": 7641,
+      "idSelectorCount": 47,
+      "classSelectorCount": 93,
+      "topIdSelectors": [
+        [
+          "#7a5b40",
+          3
+        ],
+        [
+          "#mockup-right-cards",
+          3
+        ],
+        [
+          "#play-status-panel",
+          3
+        ],
+        [
+          "#5d351e",
+          2
+        ],
+        [
+          "#boggle-top",
+          2
+        ],
+        [
+          "#connection-controls",
+          2
+        ],
+        [
+          "#game-status",
+          2
+        ],
+        [
+          "#player-preferences",
+          2
+        ],
+        [
+          "#word-form",
+          2
+        ],
+        [
+          "#49a6d8",
+          1
+        ],
+        [
+          "#62b64b",
+          1
+        ],
+        [
+          "#6b3b1f",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".8rem",
+          6
+        ],
+        [
+          ".35rem",
+          5
+        ],
+        [
+          ".5rem",
+          4
+        ],
+        [
+          ".25rem",
+          3
+        ],
+        [
+          ".3rem",
+          3
+        ],
+        [
+          ".55rem",
+          3
+        ],
+        [
+          ".85rem",
+          3
+        ],
+        [
+          ".found-words-header-cell",
+          3
+        ],
+        [
+          ".mockup-info-card",
+          3
+        ],
+        [
+          ".02em",
+          2
+        ],
+        [
+          ".07",
+          2
+        ],
+        [
+          ".08rem",
+          2
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupCloserThemeV4",
+      "line": 2473,
+      "blockChars": 14121,
+      "cssChars": 13837,
+      "idSelectorCount": 68,
+      "classSelectorCount": 172,
+      "topIdSelectors": [
+        [
+          "#play-status-panel",
+          5
+        ],
+        [
+          "#found-words-panel",
+          4
+        ],
+        [
+          "#players-panel",
+          4
+        ],
+        [
+          "#board",
+          3
+        ],
+        [
+          "#boggle-layout",
+          3
+        ],
+        [
+          "#boggle-top",
+          3
+        ],
+        [
+          "#game-status",
+          3
+        ],
+        [
+          "#connection-controls",
+          2
+        ],
+        [
+          "#launch-panel",
+          2
+        ],
+        [
+          "#mockup-right-cards",
+          2
+        ],
+        [
+          "#word-form",
+          2
+        ],
+        [
+          "#4f2a17",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".75rem",
+          10
+        ],
+        [
+          ".05rem",
+          9
+        ],
+        [
+          ".5rem",
+          7
+        ],
+        [
+          ".02rem",
+          5
+        ],
+        [
+          ".35rem",
+          5
+        ],
+        [
+          ".mockup-info-card",
+          5
+        ],
+        [
+          ".06rem",
+          4
+        ],
+        [
+          ".15rem",
+          4
+        ],
+        [
+          ".1rem",
+          4
+        ],
+        [
+          ".25rem",
+          4
+        ],
+        [
+          ".2rem",
+          4
+        ],
+        [
+          ".6rem",
+          4
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupFullWidthThemeV5",
+      "line": 2967,
+      "blockChars": 9521,
+      "cssChars": 9226,
+      "idSelectorCount": 46,
+      "classSelectorCount": 96,
+      "topIdSelectors": [
+        [
+          "#boggle-center",
+          6
+        ],
+        [
+          "#play-status-panel",
+          5
+        ],
+        [
+          "#boggle-layout",
+          4
+        ],
+        [
+          "#board",
+          3
+        ],
+        [
+          "#game-status",
+          3
+        ],
+        [
+          "#boggle-shell",
+          2
+        ],
+        [
+          "#end-game",
+          2
+        ],
+        [
+          "#word-form",
+          2
+        ],
+        [
+          "#8a6447",
+          1
+        ],
+        [
+          "#boggle-left",
+          1
+        ],
+        [
+          "#boggle-right",
+          1
+        ],
+        [
+          "#boggle-top",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".9rem",
+          7
+        ],
+        [
+          ".35rem",
+          6
+        ],
+        [
+          ".15rem",
+          5
+        ],
+        [
+          ".25rem",
+          5
+        ],
+        [
+          ".55rem",
+          5
+        ],
+        [
+          ".65rem",
+          5
+        ],
+        [
+          ".8rem",
+          5
+        ],
+        [
+          ".5rem",
+          4
+        ],
+        [
+          ".08",
+          3
+        ],
+        [
+          ".10",
+          3
+        ],
+        [
+          ".45rem",
+          3
+        ],
+        [
+          ".mockup-info-card",
+          3
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupFullWidthThemeV6",
+      "line": 3323,
+      "blockChars": 5240,
+      "cssChars": 4945,
+      "idSelectorCount": 42,
+      "classSelectorCount": 24,
+      "topIdSelectors": [
+        [
+          "#boggle-layout",
+          5
+        ],
+        [
+          "#play-status-panel",
+          4
+        ],
+        [
+          "#end-game",
+          3
+        ],
+        [
+          "#game-status",
+          3
+        ],
+        [
+          "#app",
+          2
+        ],
+        [
+          "#board",
+          2
+        ],
+        [
+          "#boggle-center",
+          2
+        ],
+        [
+          "#boggle-left",
+          2
+        ],
+        [
+          "#boggle-right",
+          2
+        ],
+        [
+          "#boggle-shell",
+          2
+        ],
+        [
+          "#boggle-top",
+          2
+        ],
+        [
+          "#timer",
+          2
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".15rem",
+          2
+        ],
+        [
+          ".2rem",
+          2
+        ],
+        [
+          ".2vw",
+          2
+        ],
+        [
+          ".35rem",
+          2
+        ],
+        [
+          ".75rem",
+          2
+        ],
+        [
+          ".8rem",
+          2
+        ],
+        [
+          ".8vw",
+          2
+        ],
+        [
+          ".95fr",
+          2
+        ],
+        [
+          ".02rem",
+          1
+        ],
+        [
+          ".38rem",
+          1
+        ],
+        [
+          ".5rem",
+          1
+        ],
+        [
+          ".62fr",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupResponsiveThemeV7",
+      "line": 3547,
+      "blockChars": 8857,
+      "cssChars": 8558,
+      "idSelectorCount": 60,
+      "classSelectorCount": 177,
+      "topIdSelectors": [
+        [
+          "#board",
+          6
+        ],
+        [
+          "#boggle-center",
+          5
+        ],
+        [
+          "#boggle-left",
+          4
+        ],
+        [
+          "#mockup-right-cards",
+          4
+        ],
+        [
+          "#boggle-layout",
+          3
+        ],
+        [
+          "#boggle-shell",
+          3
+        ],
+        [
+          "#boggle-top",
+          3
+        ],
+        [
+          "#found-words-panel",
+          3
+        ],
+        [
+          "#players-panel",
+          3
+        ],
+        [
+          "#boggle-right",
+          2
+        ],
+        [
+          "#end-game",
+          2
+        ],
+        [
+          "#launch-panel",
+          2
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".55rem",
+          16
+        ],
+        [
+          ".8rem",
+          9
+        ],
+        [
+          ".35rem",
+          7
+        ],
+        [
+          ".45rem",
+          7
+        ],
+        [
+          ".05rem",
+          6
+        ],
+        [
+          ".4vh",
+          6
+        ],
+        [
+          ".65rem",
+          6
+        ],
+        [
+          ".5rem",
+          5
+        ],
+        [
+          ".75rem",
+          5
+        ],
+        [
+          ".9vh",
+          5
+        ],
+        [
+          ".15rem",
+          4
+        ],
+        [
+          ".25rem",
+          4
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupStableTopCleanVictoryThemeV16",
+      "line": 3891,
+      "blockChars": 10957,
+      "cssChars": 10616,
+      "idSelectorCount": 93,
+      "classSelectorCount": 78,
+      "topIdSelectors": [
+        [
+          "#boggle-layout",
+          17
+        ],
+        [
+          "#launch-panel",
+          16
+        ],
+        [
+          "#victory-modal-v16",
+          16
+        ],
+        [
+          "#status",
+          4
+        ],
+        [
+          "#6e3d1d",
+          3
+        ],
+        [
+          "#connection-core",
+          3
+        ],
+        [
+          "#4b3322",
+          2
+        ],
+        [
+          "#boggle-center",
+          2
+        ],
+        [
+          "#boggle-left",
+          2
+        ],
+        [
+          "#boggle-top",
+          2
+        ],
+        [
+          "#connection-controls",
+          2
+        ],
+        [
+          "#end-screen",
+          2
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".9rem",
+          7
+        ],
+        [
+          ".35rem",
+          4
+        ],
+        [
+          ".4rem",
+          4
+        ],
+        [
+          ".5rem",
+          4
+        ],
+        [
+          ".75rem",
+          4
+        ],
+        [
+          ".8rem",
+          4
+        ],
+        [
+          ".boggle-end-screen-open",
+          4
+        ],
+        [
+          ".2rem",
+          3
+        ],
+        [
+          ".55rem",
+          3
+        ],
+        [
+          ".7rem",
+          3
+        ],
+        [
+          ".105",
+          2
+        ],
+        [
+          ".25rem",
+          2
+        ]
+      ]
+    },
+    {
+      "name": "injectMockupRightRulesInputThemeV22",
+      "line": 4272,
+      "blockChars": 7663,
+      "cssChars": 7355,
+      "idSelectorCount": 34,
+      "classSelectorCount": 107,
+      "topIdSelectors": [
+        [
+          "#word-form",
+          5
+        ],
+        [
+          "#5d351e",
+          3
+        ],
+        [
+          "#6e3d1d",
+          3
+        ],
+        [
+          "#mockup-help-card",
+          3
+        ],
+        [
+          "#mockup-right-cards",
+          3
+        ],
+        [
+          "#word-feedback",
+          3
+        ],
+        [
+          "#c8921c",
+          2
+        ],
+        [
+          "#found-words-panel",
+          2
+        ],
+        [
+          "#mockup-penalty-card",
+          2
+        ],
+        [
+          "#players-panel",
+          2
+        ],
+        [
+          "#4b3322",
+          1
+        ],
+        [
+          "#7a4b1d",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".rules-help-button-v22",
+          8
+        ],
+        [
+          ".55rem",
+          5
+        ],
+        [
+          ".65rem",
+          4
+        ],
+        [
+          ".rules-help-details-v22",
+          4
+        ],
+        [
+          ".08",
+          3
+        ],
+        [
+          ".15rem",
+          3
+        ],
+        [
+          ".35rem",
+          3
+        ],
+        [
+          ".72rem",
+          3
+        ],
+        [
+          ".75rem",
+          3
+        ],
+        [
+          ".mockup-info-card",
+          3
+        ],
+        [
+          ".rules-card",
+          3
+        ],
+        [
+          ".1rem",
+          2
+        ]
+      ]
+    },
+    {
+      "name": "injectVisibleControlsButtonsV28",
+      "line": 4540,
+      "blockChars": 4208,
+      "cssChars": 3894,
+      "idSelectorCount": 32,
+      "classSelectorCount": 32,
+      "topIdSelectors": [
+        [
+          "#mode-controls",
+          8
+        ],
+        [
+          "#mockup-help-card",
+          6
+        ],
+        [
+          "#fill-example-board",
+          4
+        ],
+        [
+          "#start-solution-mode",
+          4
+        ],
+        [
+          "#4b3322",
+          3
+        ],
+        [
+          "#fff6df",
+          2
+        ],
+        [
+          "#word-input",
+          2
+        ],
+        [
+          "#ea7e33",
+          1
+        ],
+        [
+          "#ffedc2",
+          1
+        ],
+        [
+          "#fff8f1",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".rules-help-button-v22",
+          6
+        ],
+        [
+          ".34",
+          4
+        ],
+        [
+          ".13",
+          2
+        ],
+        [
+          ".2rem",
+          2
+        ],
+        [
+          ".45rem",
+          2
+        ],
+        [
+          ".55rem",
+          2
+        ],
+        [
+          ".boggle-keyboard-word-impossible",
+          2
+        ],
+        [
+          ".10",
+          1
+        ],
+        [
+          ".12",
+          1
+        ],
+        [
+          ".25rem",
+          1
+        ],
+        [
+          ".28",
+          1
+        ],
+        [
+          ".28rem",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "injectWordsPlayersLayoutV29",
+      "line": 4674,
+      "blockChars": 5191,
+      "cssChars": 4889,
+      "idSelectorCount": 13,
+      "classSelectorCount": 71,
+      "topIdSelectors": [
+        [
+          "#5d351e",
+          2
+        ],
+        [
+          "#137a48",
+          1
+        ],
+        [
+          "#1468c7",
+          1
+        ],
+        [
+          "#6a3e1f",
+          1
+        ],
+        [
+          "#7d3fc7",
+          1
+        ],
+        [
+          "#board",
+          1
+        ],
+        [
+          "#boggle-center",
+          1
+        ],
+        [
+          "#d42323",
+          1
+        ],
+        [
+          "#ea7e33",
+          1
+        ],
+        [
+          "#fff8f1",
+          1
+        ],
+        [
+          "#word-feedback",
+          1
+        ],
+        [
+          "#word-form",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".65rem",
+          6
+        ],
+        [
+          ".found-words-points",
+          6
+        ],
+        [
+          ".found-words-player-tab",
+          4
+        ],
+        [
+          ".48rem",
+          3
+        ],
+        [
+          ".4rem",
+          3
+        ],
+        [
+          ".10",
+          2
+        ],
+        [
+          ".11",
+          2
+        ],
+        [
+          ".16",
+          2
+        ],
+        [
+          ".18",
+          2
+        ],
+        [
+          ".28",
+          2
+        ],
+        [
+          ".35rem",
+          2
+        ],
+        [
+          ".75rem",
+          2
+        ]
+      ]
+    },
+    {
+      "name": "injectFinalRecapHoverV30",
+      "line": 4855,
+      "blockChars": 4538,
+      "cssChars": 4245,
+      "idSelectorCount": 22,
+      "classSelectorCount": 60,
+      "topIdSelectors": [
+        [
+          "#25150d",
+          3
+        ],
+        [
+          "#board",
+          3
+        ],
+        [
+          "#boggle-center",
+          2
+        ],
+        [
+          "#0f4d95",
+          1
+        ],
+        [
+          "#105a38",
+          1
+        ],
+        [
+          "#14653c",
+          1
+        ],
+        [
+          "#1468c7",
+          1
+        ],
+        [
+          "#16824f",
+          1
+        ],
+        [
+          "#21a663",
+          1
+        ],
+        [
+          "#622aa6",
+          1
+        ],
+        [
+          "#7d3fc7",
+          1
+        ],
+        [
+          "#a31818",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".found-word-dot",
+          6
+        ],
+        [
+          ".found-words-points",
+          5
+        ],
+        [
+          ".72",
+          3
+        ],
+        [
+          ".found-word-score-1",
+          3
+        ],
+        [
+          ".found-word-score-11",
+          3
+        ],
+        [
+          ".found-word-score-2",
+          3
+        ],
+        [
+          ".found-word-score-3",
+          3
+        ],
+        [
+          ".found-word-score-5",
+          3
+        ],
+        [
+          ".found-words-word",
+          3
+        ],
+        [
+          ".14",
+          2
+        ],
+        [
+          ".15",
+          2
+        ],
+        [
+          ".16",
+          2
+        ]
+      ]
+    },
+    {
+      "name": "injectBoardFitAndTabsV31",
+      "line": 5013,
+      "blockChars": 3067,
+      "cssChars": 2781,
+      "idSelectorCount": 19,
+      "classSelectorCount": 12,
+      "topIdSelectors": [
+        [
+          "#found-words",
+          8
+        ],
+        [
+          "#4b3322",
+          1
+        ],
+        [
+          "#5d351e",
+          1
+        ],
+        [
+          "#board",
+          1
+        ],
+        [
+          "#boggle-center",
+          1
+        ],
+        [
+          "#ea7e33",
+          1
+        ],
+        [
+          "#ffe5ad",
+          1
+        ],
+        [
+          "#fff1d0",
+          1
+        ],
+        [
+          "#fff8f1",
+          1
+        ],
+        [
+          "#play-status-panel",
+          1
+        ],
+        [
+          "#word-feedback",
+          1
+        ],
+        [
+          "#word-form",
+          1
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".found-words-player-tab",
+          8
+        ],
+        [
+          ".22",
+          1
+        ],
+        [
+          ".32",
+          1
+        ],
+        [
+          ".72rem",
+          1
+        ],
+        [
+          ".board-cell",
+          1
+        ]
+      ]
+    }
+  ],
+  "imports": [
+    {
+      "symbol": "state",
+      "source": "./core/state.js",
+      "references": 371
+    },
+    {
+      "symbol": "createRoomSocket",
+      "source": "./net/socket.js",
+      "references": 2
+    },
+    {
+      "symbol": "sendMessage",
+      "source": "./net/socket.js",
+      "references": 2
+    },
+    {
+      "symbol": "renderBoard",
+      "source": "./ui/board-ui.js",
+      "references": 3
+    },
+    {
+      "symbol": "addLog",
+      "source": "./ui/log-ui.js",
+      "references": 17
+    },
+    {
+      "symbol": "setWordFeedback",
+      "source": "./ui/words-ui.js",
+      "references": 6
+    },
+    {
+      "symbol": "renderTimer",
+      "source": "./ui/timer-ui.js",
+      "references": 5
+    },
+    {
+      "symbol": "startLocalTimer",
+      "source": "./ui/timer-ui.js",
+      "references": 2
+    },
+    {
+      "symbol": "stopLocalTimer",
+      "source": "./ui/timer-ui.js",
+      "references": 7
+    },
+    {
+      "symbol": "renderHelpPanel",
+      "source": "./ui/help-ui.js",
+      "references": 2
+    },
+    {
+      "symbol": "hideEndScreen",
+      "source": "./ui/end-screen-ui.js",
+      "references": 6
+    },
+    {
+      "symbol": "renderEndScreen",
+      "source": "./ui/end-screen-ui.js",
+      "references": 2
+    },
+    {
+      "symbol": "getGameOptions",
+      "source": "./ui/mode-ui.js",
+      "references": 3
+    },
+    {
+      "symbol": "renderModeControls",
+      "source": "./ui/mode-ui.js",
+      "references": 2
+    },
+    {
+      "symbol": "renderPlayerPreferencesPanel",
+      "source": "./ui/mode-ui.js",
+      "references": 2
+    },
+    {
+      "symbol": "renderMouseInputPanel",
+      "source": "./ui/mouse-input-ui.js",
+      "references": 3
+    },
+    {
+      "symbol": "setupAppLayout",
+      "source": "./ui/layout-ui.js",
+      "references": 3
+    },
+    {
+      "symbol": "runSubmissionFeedback",
+      "source": "./ui/feedback-ui.js",
+      "references": 3
+    }
+  ],
+  "functionDeclarations": [
+    {
+      "name": "injectDesignPassStyles",
+      "line": 151,
+      "references": 2
+    },
+    {
+      "name": "injectFruityThemeOverrides",
+      "line": 674,
+      "references": 2
+    },
+    {
+      "name": "injectMockupCloserTheme",
+      "line": 1099,
+      "references": 2
+    },
+    {
+      "name": "injectMockupCloserThemeV2",
+      "line": 1782,
+      "references": 2
+    },
+    {
+      "name": "injectMockupCloserThemeV3",
+      "line": 2181,
+      "references": 2
+    },
+    {
+      "name": "injectMockupCloserThemeV4",
+      "line": 2473,
+      "references": 2
+    },
+    {
+      "name": "injectMockupFullWidthThemeV5",
+      "line": 2967,
+      "references": 2
+    },
+    {
+      "name": "injectMockupFullWidthThemeV6",
+      "line": 3323,
+      "references": 2
+    },
+    {
+      "name": "injectMockupResponsiveThemeV7",
+      "line": 3547,
+      "references": 2
+    },
+    {
+      "name": "injectMockupStableTopCleanVictoryThemeV16",
+      "line": 3891,
+      "references": 2
+    },
+    {
+      "name": "injectMockupRightRulesInputThemeV22",
+      "line": 4272,
+      "references": 2
+    },
+    {
+      "name": "injectVisibleControlsButtonsV28",
+      "line": 4540,
+      "references": 2
+    },
+    {
+      "name": "injectWordsPlayersLayoutV29",
+      "line": 4674,
+      "references": 2
+    },
+    {
+      "name": "injectFinalRecapHoverV30",
+      "line": 4855,
+      "references": 2
+    },
+    {
+      "name": "injectBoardFitAndTabsV31",
+      "line": 5013,
+      "references": 2
+    },
+    {
+      "name": "setupConnectionFields",
+      "line": 5108,
+      "references": 2
+    },
+    {
+      "name": "createWelcomePanel",
+      "line": 5170,
+      "references": 2
+    },
+    {
+      "name": "buildWelcomeGrid",
+      "line": 5192,
+      "references": 2
+    },
+    {
+      "name": "isSocketConnected",
+      "line": 5202,
+      "references": 2
+    },
+    {
+      "name": "loadLocalSettings",
+      "line": 5218,
+      "references": 2
+    },
+    {
+      "name": "readLocalJson",
+      "line": 5234,
+      "references": 2
+    },
+    {
+      "name": "saveLocalJson",
+      "line": 5251,
+      "references": 2
+    },
+    {
+      "name": "getInitialRoomIdFromUrl",
+      "line": 5259,
+      "references": 2
+    },
+    {
+      "name": "getCurrentRoomIdForInvite",
+      "line": 5270,
+      "references": 2
+    },
+    {
+      "name": "createRoomInviteUrl",
+      "line": 5274,
+      "references": 2
+    },
+    {
+      "name": "updateRoomUrl",
+      "line": 5280,
+      "references": 2
+    },
+    {
+      "name": "copyRoomInviteLink",
+      "line": 5301,
+      "references": 2
+    },
+    {
+      "name": "handleGlobalPointerUp",
+      "line": 5323,
+      "references": 2
+    },
+    {
+      "name": "handleKeyboardWordInput",
+      "line": 5406,
+      "references": 2
+    },
+    {
+      "name": "getSubmissionPathForTypedWord",
+      "line": 5431,
+      "references": 2
+    },
+    {
+      "name": "flashKeyboardWordImpossible",
+      "line": 5540,
+      "references": 2
+    },
+    {
+      "name": "connectToRoom",
+      "line": 5568,
+      "references": 2
+    },
+    {
+      "name": "startRandomTimedGame",
+      "line": 5652,
+      "references": 2
+    },
+    {
+      "name": "startSolutionMode",
+      "line": 5665,
+      "references": 2
+    },
+    {
+      "name": "formatBoardForTextarea",
+      "line": 5706,
+      "references": 2
+    },
+    {
+      "name": "syncPendingGameOptions",
+      "line": 5733,
+      "references": 2
+    },
+    {
+      "name": "renderPlayersWithHostBadges",
+      "line": 5789,
+      "references": 2
+    },
+    {
+      "name": "createPlayerRow",
+      "line": 5829,
+      "references": 2
+    },
+    {
+      "name": "handleServerMessage",
+      "line": 5897,
+      "references": 2
+    },
+    {
+      "name": "bindFoundWordHover",
+      "line": 6110,
+      "references": 2
+    },
+    {
+      "name": "normalizeFoundWordPath",
+      "line": 6130,
+      "references": 2
+    },
+    {
+      "name": "getInvalidCountForSelectedPlayer",
+      "line": 6140,
+      "references": 2
+    },
+    {
+      "name": "getFoundWordScoreClass",
+      "line": 6156,
+      "references": 2
+    },
+    {
+      "name": "getSelectedFoundWordsPlayer",
+      "line": 6182,
+      "references": 2
+    },
+    {
+      "name": "getFoundWordsForSelectedPlayer",
+      "line": 6201,
+      "references": 2
+    },
+    {
+      "name": "createFoundWordsPlayerTabs",
+      "line": 6227,
+      "references": 2
+    },
+    {
+      "name": "handleWordAccepted",
+      "line": 6254,
+      "references": 2
+    },
+    {
+      "name": "handleWordRejected",
+      "line": 6290,
+      "references": 2
+    },
+    {
+      "name": "getCurrentTargetScore",
+      "line": 6329,
+      "references": 2
+    },
+    {
+      "name": "handleSolutionsStats",
+      "line": 6361,
+      "references": 2
+    },
+    {
+      "name": "handleBoardCellClick",
+      "line": 6385,
+      "references": 2
+    },
+    {
+      "name": "handleCellHelpClick",
+      "line": 6398,
+      "references": 2
+    },
+    {
+      "name": "handleCellPointerDown",
+      "line": 6402,
+      "references": 2
+    },
+    {
+      "name": "handleCellPointerEnter",
+      "line": 6416,
+      "references": 2
+    },
+    {
+      "name": "handleCellPointerMove",
+      "line": 6420,
+      "references": 2
+    },
+    {
+      "name": "handleCellPointerCancel",
+      "line": 6424,
+      "references": 2
+    },
+    {
+      "name": "handleBoardPointerUp",
+      "line": 6428,
+      "references": 2
+    },
+    {
+      "name": "handleCellPointerUp",
+      "line": 6480,
+      "references": 2
+    },
+    {
+      "name": "updateHelpCell",
+      "line": 6543,
+      "references": 2
+    },
+    {
+      "name": "handleGameStarted",
+      "line": 6670,
+      "references": 2
+    },
+    {
+      "name": "handleGameEnded",
+      "line": 6771,
+      "references": 2
+    },
+    {
+      "name": "renderRulesHelpCardV22",
+      "line": 6889,
+      "references": 2
+    },
+    {
+      "name": "handleRulesHelpButtonClickV22",
+      "line": 6969,
+      "references": 2
+    },
+    {
+      "name": "getRulesHelpButtonLabelV22",
+      "line": 6989,
+      "references": 2
+    },
+    {
+      "name": "getRulesHelpLevelLabelV22",
+      "line": 7001,
+      "references": 2
+    },
+    {
+      "name": "getRulesHelpContentTitleV22",
+      "line": 7013,
+      "references": 2
+    },
+    {
+      "name": "getRulesHelpDetailsV22",
+      "line": 7025,
+      "references": 2
+    },
+    {
+      "name": "createSolutionListV22",
+      "line": 7061,
+      "references": 2
+    },
+    {
+      "name": "updateBoardFitV31",
+      "line": 7202,
+      "references": 2
+    },
+    {
+      "name": "showEndScreenOverlay",
+      "line": 7308,
+      "references": 2
+    },
+    {
+      "name": "ensureEndScreenBackdrop",
+      "line": 7314,
+      "references": 2
+    },
+    {
+      "name": "isCurrentPlayerWinning",
+      "line": 7407,
+      "references": 2
+    },
+    {
+      "name": "playVictorySound",
+      "line": 7419,
+      "references": 2
+    },
+    {
+      "name": "launchConfetti",
+      "line": 7475,
+      "references": 2
+    },
+    {
+      "name": "startCountdownWarning",
+      "line": 7511,
+      "references": 2
+    },
+    {
+      "name": "playCountdownTick",
+      "line": 7552,
+      "references": 2
+    },
+    {
+      "name": "playCountdownTone",
+      "line": 7585,
+      "references": 2
+    },
+    {
+      "name": "createFoundCellCounts",
+      "line": 7613,
+      "references": 2
+    },
+    {
+      "name": "readLocalString",
+      "line": 5226,
+      "references": 3
+    },
+    {
+      "name": "findBoardPathForWord",
+      "line": 5450,
+      "references": 3
+    },
+    {
+      "name": "visit",
+      "line": 5464,
+      "references": 3
+    },
+    {
+      "name": "takePendingSubmissionPath",
+      "line": 5562,
+      "references": 3
+    },
+    {
+      "name": "saveLastBoardSuggestion",
+      "line": 5686,
+      "references": 3
+    },
+    {
+      "name": "normalizeBoardTextForTextarea",
+      "line": 5723,
+      "references": 3
+    },
+    {
+      "name": "createPlayerBadge",
+      "line": 5888,
+      "references": 3
+    },
+    {
+      "name": "ensureSelectedFoundWordsPlayer",
+      "line": 5979,
+      "references": 3
+    },
+    {
+      "name": "canSelectFoundWordsPlayer",
+      "line": 6178,
+      "references": 3
+    },
+    {
+      "name": "renderTargetScoreStatus",
+      "line": 6346,
+      "references": 3
+    },
+    {
+      "name": "addCellToDragPath",
+      "line": 6432,
+      "references": 3
+    },
+    {
+      "name": "addClickedLetterToSelection",
+      "line": 6508,
+      "references": 3
+    },
+    {
+      "name": "areAdjacentCells",
+      "line": 6589,
+      "references": 3
+    },
+    {
+      "name": "changeHelpLevel",
+      "line": 6597,
+      "references": 3
+    },
+    {
+      "name": "getNextSimplifiedHelpLevel",
+      "line": 6620,
+      "references": 3
+    },
+    {
+      "name": "normalizeSimplifiedHelpLevel",
+      "line": 6640,
+      "references": 3
+    },
+    {
+      "name": "clampCurrentHelpLevel",
+      "line": 6660,
+      "references": 3
+    },
+    {
+      "name": "updateOptionCardText",
+      "line": 6876,
+      "references": 3
+    },
+    {
+      "name": "getRemainingSolutionWordsV22",
+      "line": 7085,
+      "references": 3
+    },
+    {
+      "name": "showEndScreenNow",
+      "line": 7296,
+      "references": 3
+    },
+    {
+      "name": "renderVictoryModalV16",
+      "line": 7327,
+      "references": 3
+    },
+    {
+      "name": "closeEndScreenPopup",
+      "line": 7385,
+      "references": 3
+    },
+    {
+      "name": "getElapsedDurationSeconds",
+      "line": 7603,
+      "references": 3
+    },
+    {
+      "name": "resetGameUiToWaiting",
+      "line": 7704,
+      "references": 3
+    },
+    {
+      "name": "submitWord",
+      "line": 5365,
+      "references": 4
+    },
+    {
+      "name": "submitSelectedWord",
+      "line": 5390,
+      "references": 4
+    },
+    {
+      "name": "rankPlayers",
+      "line": 5811,
+      "references": 4
+    },
+    {
+      "name": "normalizeFoundWordsForDisplay",
+      "line": 6217,
+      "references": 4
+    },
+    {
+      "name": "syncRulesSummarySlotVisibility",
+      "line": 7112,
+      "references": 4
+    },
+    {
+      "name": "renderCurrentEndScreen",
+      "line": 7497,
+      "references": 4
+    },
+    {
+      "name": "getFoundWordList",
+      "line": 7625,
+      "references": 4
+    },
+    {
+      "name": "saveLocalString",
+      "line": 5243,
+      "references": 5
+    },
+    {
+      "name": "finishCurrentDragSelection",
+      "line": 5337,
+      "references": 5
+    },
+    {
+      "name": "isSameCell",
+      "line": 6593,
+      "references": 5
+    },
+    {
+      "name": "renderPlayerPreferences",
+      "line": 6826,
+      "references": 5
+    },
+    {
+      "name": "scheduleBoardFitV31",
+      "line": 7196,
+      "references": 5
+    },
+    {
+      "name": "updateGameStatus",
+      "line": 7629,
+      "references": 5
+    },
+    {
+      "name": "updateInviteButton",
+      "line": 5290,
+      "references": 6
+    },
+    {
+      "name": "isCurrentPlayerHost",
+      "line": 5760,
+      "references": 6
+    },
+    {
+      "name": "updateSelectedWordFromPath",
+      "line": 6556,
+      "references": 6
+    },
+    {
+      "name": "pathToWord",
+      "line": 6585,
+      "references": 6
+    },
+    {
+      "name": "getMaxHelpLevel",
+      "line": 6608,
+      "references": 6
+    },
+    {
+      "name": "hideEndScreenOverlay",
+      "line": 7391,
+      "references": 6
+    },
+    {
+      "name": "normalizeComparableWord",
+      "line": 5551,
+      "references": 7
+    },
+    {
+      "name": "renderFoundWords",
+      "line": 6004,
+      "references": 7
+    },
+    {
+      "name": "updateWordInputFromPath",
+      "line": 6564,
+      "references": 7
+    },
+    {
+      "name": "clearSelectedLetters",
+      "line": 6570,
+      "references": 7
+    },
+    {
+      "name": "renderModePanel",
+      "line": 7149,
+      "references": 7
+    },
+    {
+      "name": "playVictoryTone",
+      "line": 7457,
+      "references": 7
+    },
+    {
+      "name": "refreshHomeVisibility",
+      "line": 5206,
+      "references": 8
+    },
+    {
+      "name": "send",
+      "line": 5752,
+      "references": 8
+    },
+    {
+      "name": "refreshHelpDisplay",
+      "line": 7159,
+      "references": 8
+    },
+    {
+      "name": "stopCountdownWarning",
+      "line": 7542,
+      "references": 9
+    },
+    {
+      "name": "renderMousePanel",
+      "line": 7288,
+      "references": 12
+    },
+    {
+      "name": "updateHostControls",
+      "line": 5766,
+      "references": 14
+    },
+    {
+      "name": "renderRulesSummary",
+      "line": 7116,
+      "references": 14
+    },
+    {
+      "name": "refreshRightRulesPanel",
+      "line": 6840,
+      "references": 16
+    },
+    {
+      "name": "renderCurrentBoardWithHelp",
+      "line": 7259,
+      "references": 19
+    }
+  ],
+  "publicJsFiles": [
+    {
+      "file": "public/js/core/state.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/main.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/net/socket.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/board-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/end-screen-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/feedback-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/help-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/layout-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/log-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/mode-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/mouse-input-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/players-ui.js",
+      "importedByMain": false
+    },
+    {
+      "file": "public/js/ui/timer-ui.js",
+      "importedByMain": true
+    },
+    {
+      "file": "public/js/ui/words-ui.js",
+      "importedByMain": true
+    }
+  ],
+  "recommendations": [
+    "Ne supprimer que les fonctions avec references=1 après vérification manuelle.",
+    "Consolider les injections CSS de la plus récente vers l'ancienne, pas l'inverse.",
+    "Priorité de fusion CSS : boutons, plateau/saisie, panneaux gauche/droite, popup fin.",
+    "Garder une version committée avant chaque suppression de couche CSS."
+  ]
+}

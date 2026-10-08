@@ -12,7 +12,8 @@
     "check:js": "node tools/check-js-syntax.mjs",
     "check": "npm run typecheck && npm run check:js",
     "build": "npm run typecheck",
-    "dry-run": "wrangler deploy --dry-run"
+    "dry-run": "wrangler deploy --dry-run",
+    "audit:css-js": "node tools/audit-css-js.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.1",
