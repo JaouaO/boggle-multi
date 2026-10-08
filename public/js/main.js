@@ -141,7 +141,7 @@ injectMockupFullWidthThemeV5();
 injectMockupFullWidthThemeV6();
 injectMockupResponsiveThemeV7();
 injectMockupStableTopCleanVictoryThemeV16();
-injectMockupRightRulesInputThemeV22();
+injectRulesHelpOptionsPanelV38();
 injectFoundWordsPanelV37();
 injectFinalRecapHoverV30();
 injectFinalBoardInputV36();
@@ -4269,20 +4269,18 @@ function injectMockupStableTopCleanVictoryThemeV16() {
 
 
 
-function injectMockupRightRulesInputThemeV22() {
-  if (document.querySelector("#boggle-mockup-help-titles-v22-style")) {
+function injectRulesHelpOptionsPanelV38() {
+  if (document.querySelector("#boggle-rules-help-options-v38-style")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-mockup-help-titles-v22-style";
+  style.id = "boggle-rules-help-options-v38-style";
   style.textContent = `
     /*
-     * V22 :
-     * - conserve le look v21 ;
-     * - bouton d'aide plus identifiable ;
-     * - libellés plus courts pour éviter les dépassements ;
-     * - titres gauche/droite harmonisés.
+     * V38 : couche finale du panneau règles / aide / options.
+     * Les styles de boutons sont centralisés dans V34.
+     * Les règles plateau/saisie finales sont centralisées dans V36.
      */
 
     #mockup-help-card.rules-card {
@@ -4329,44 +4327,6 @@ function injectMockupRightRulesInputThemeV22() {
       white-space: nowrap !important;
     }
 
-    .rules-help-button-v22 {
-      min-height: 2.75rem !important;
-      padding: 0.6rem 1.18rem !important;
-      border-radius: 999px !important;
-      cursor: pointer !important;
-      pointer-events: auto !important;
-      position: relative !important;
-      z-index: 30 !important;
-      white-space: nowrap !important;
-      background: #f4c430 !important;
-      color: #4b3322 !important;
-      border: 3px solid #7a4b1d !important;
-      box-shadow:
-        0 0.34rem 0 #c8921c,
-        0 0.55rem 1rem rgba(97, 65, 35, 0.18) !important;
-      font-weight: 950 !important;
-      font-size: clamp(0.95rem, 1vw, 1.05rem) !important;
-    }
-
-    .rules-help-button-v22::after {
-      content: "›";
-      margin-left: 0.45rem;
-      font-size: 1.15em;
-      line-height: 1;
-      font-weight: 950;
-    }
-
-    .rules-help-button-v22:hover,
-    .rules-help-button-v22:focus-visible {
-      transform: translateY(-1px);
-      box-shadow:
-        0 0.42rem 0 #c8921c,
-        0 0.72rem 1.1rem rgba(97, 65, 35, 0.22) !important;
-      outline: 3px solid rgba(244, 196, 48, 0.45) !important;
-      outline-offset: 2px !important;
-    }
-
-    .rules-help-content-v22,
     .rules-help-content-v22 {
       display: grid !important;
       gap: 0.5rem !important;
@@ -4374,7 +4334,6 @@ function injectMockupRightRulesInputThemeV22() {
       border-top: 1px solid rgba(111, 73, 40, 0.13) !important;
     }
 
-    .rules-help-content-title-v22,
     .rules-help-content-title-v22 {
       margin: 0 !important;
       color: #6e3d1d !important;
@@ -4383,7 +4342,6 @@ function injectMockupRightRulesInputThemeV22() {
       line-height: 1.1 !important;
     }
 
-    .rules-help-details-v22,
     .rules-help-details-v22 {
       display: grid !important;
       gap: 0.4rem !important;
@@ -4392,7 +4350,6 @@ function injectMockupRightRulesInputThemeV22() {
       list-style: none !important;
     }
 
-    .rules-help-details-v22 li,
     .rules-help-details-v22 li {
       display: grid !important;
       grid-template-columns: auto 1fr !important;
@@ -4402,7 +4359,6 @@ function injectMockupRightRulesInputThemeV22() {
       line-height: 1.3 !important;
     }
 
-    .rules-help-bullet-v22,
     .rules-help-bullet-v22 {
       display: inline-flex !important;
       align-items: center !important;
@@ -4416,7 +4372,6 @@ function injectMockupRightRulesInputThemeV22() {
       font-size: 0.75rem !important;
     }
 
-    .rules-solution-list-v22,
     .rules-solution-list-v22 {
       display: flex !important;
       flex-wrap: wrap !important;
@@ -4426,7 +4381,6 @@ function injectMockupRightRulesInputThemeV22() {
       padding: 0.3rem 0.15rem 0.1rem !important;
     }
 
-    .rules-solution-chip-v22,
     .rules-solution-chip-v22 {
       display: inline-flex !important;
       align-items: center !important;
