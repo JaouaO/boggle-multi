@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:32:58.924Z",
+  "generatedAt": "2026-10-08T19:37:20.934Z",
   "source": "public/js/ui/theme-styles.js",
   "layerCount": 6,
   "layers": [
@@ -8,7 +8,7 @@
       "name": "injectLegacyThemeFoundationV42",
       "line": 13,
       "cssChars": 103444,
-      "ruleCount": 2196
+      "ruleCount": 2188
     },
     {
       "order": 2,
@@ -43,10 +43,12 @@
       "name": "injectFinalButtonsV34",
       "line": 4562,
       "cssChars": 4050,
-      "ruleCount": 118
+      "ruleCount": 113
     }
   ],
-  "overrideCount": 965,
+  "overrideCount": 963,
+  "sameValueOverrideCount": 203,
+  "changedValueOverrideCount": 760,
   "overridePairs": [
     {
       "key": "injectLegacyThemeFoundationV42 -> injectLegacyThemeFoundationV42",
@@ -83,10 +85,6 @@
     {
       "key": "injectFinalButtonsV34 -> injectFinalButtonsV34",
       "count": 3
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectFinalButtonsV34",
-      "count": 2
     }
   ],
   "hotSelectors": [
@@ -369,16 +367,16 @@
       "count": 12
     },
     {
-      "key": "transform",
-      "count": 12
-    },
-    {
       "key": "font-family",
       "count": 11
     },
     {
       "key": "line-height",
       "count": 11
+    },
+    {
+      "key": "transform",
+      "count": 10
     },
     {
       "key": "justify-self",
@@ -493,7 +491,9 @@
       "count": 2
     }
   ],
-  "legacyOverriddenByFinalCount": 39,
+  "legacyOverriddenByFinalCount": 37,
+  "legacyOverriddenByFinalSameValueCount": 14,
+  "legacyOverriddenByFinalChangedValueCount": 23,
   "legacyOverriddenByFinal": [
     {
       "selector": "#boggle-top",
@@ -501,7 +501,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "grid !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "flex !important"
+      "overridingValue": "flex !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#boggle-top",
@@ -509,7 +510,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "center !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "center !important"
+      "overridingValue": "center !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#boggle-top",
@@ -517,7 +519,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "5rem !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "clamp(4.7rem, 7vh, 5.6rem) !important"
+      "overridingValue": "clamp(4.7rem, 7vh, 5.6rem) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#connection-controls",
@@ -525,7 +528,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "relative",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "static !important"
+      "overridingValue": "static !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#status",
@@ -533,7 +537,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "border-box",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "border-box !important"
+      "overridingValue": "border-box !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#status",
@@ -541,7 +546,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "1.25rem !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0.85rem !important"
+      "overridingValue": "0.85rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#boggle-top",
@@ -549,7 +555,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "auto minmax(0, 1fr) !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "1fr !important"
+      "overridingValue": "1fr !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#players-panel > h2",
@@ -557,7 +564,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "1.42rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important"
+      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#players-panel > h2",
@@ -565,7 +573,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "-0.035em !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "-0.035em !important"
+      "overridingValue": "-0.035em !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#found-words-panel > h2",
@@ -573,7 +582,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "1.42rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important"
+      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#found-words-panel > h2",
@@ -581,7 +591,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "-0.035em !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "-0.035em !important"
+      "overridingValue": "-0.035em !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#mockup-right-cards .mockup-info-card p",
@@ -589,7 +600,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0.96rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1rem, 1.05vw, 1.14rem) !important"
+      "overridingValue": "clamp(1rem, 1.05vw, 1.14rem) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#players-panel > h2",
@@ -597,7 +609,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0.8rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0.9rem !important"
+      "overridingValue": "0.9rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#found-words-panel > h2",
@@ -605,7 +618,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0.8rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0.9rem !important"
+      "overridingValue": "0.9rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#word-form",
@@ -613,7 +627,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "2px solid rgba(111, 73, 40, 0.105) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0 !important"
+      "overridingValue": "0 !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#word-form",
@@ -621,7 +636,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "var(--panel-radius) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "9999px !important"
+      "overridingValue": "9999px !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#word-form",
@@ -629,7 +645,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "rgba(255, 248, 232, 0.94) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "rgba(255, 248, 232, 0.96) !important"
+      "overridingValue": "rgba(255, 248, 232, 0.96) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#word-form",
@@ -637,7 +654,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "var(--soft-shadow) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0 0.35rem 1rem rgba(97, 65, 35, 0.08) !important"
+      "overridingValue": "0 0.35rem 1rem rgba(97, 65, 35, 0.08) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#word-input",
@@ -645,7 +663,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0.8rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "9999px !important"
+      "overridingValue": "9999px !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#word-submit",
@@ -653,7 +672,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "9999px !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "9999px !important"
+      "overridingValue": "9999px !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": ".found-words-word",
@@ -661,7 +681,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "inline-flex !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "inline-flex !important"
+      "overridingValue": "inline-flex !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": ".found-words-word",
@@ -669,7 +690,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "center !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "center !important"
+      "overridingValue": "center !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": ".found-words-word",
@@ -677,7 +699,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0.36rem 0.6rem !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.28rem 0.35rem !important"
+      "overridingValue": "0.28rem 0.35rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": ".found-words-points",
@@ -685,7 +708,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "inline-flex !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "inline-flex !important"
+      "overridingValue": "inline-flex !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": ".found-words-points",
@@ -693,7 +717,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "center !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "center !important"
+      "overridingValue": "center !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": ".found-words-points",
@@ -701,7 +726,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "clamp(1.85rem, 3vh, 2.35rem) !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "1.65rem !important"
+      "overridingValue": "1.65rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": ".found-words-points",
@@ -709,7 +735,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0.36rem 0.6rem !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.12rem 0.48rem !important"
+      "overridingValue": "0.12rem 0.48rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": ".found-words-points",
@@ -717,7 +744,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "750 !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "950 !important"
+      "overridingValue": "950 !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": ".found-words-word",
@@ -725,7 +753,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "rgba(255, 250, 239, 0.54) !important",
       "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "transparent !important"
+      "overridingValue": "transparent !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#boggle-center",
@@ -733,7 +762,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "flex !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "flex !important"
+      "overridingValue": "flex !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#boggle-center",
@@ -741,7 +771,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "column !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "column !important"
+      "overridingValue": "column !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#boggle-center",
@@ -749,7 +780,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "visible !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "visible !important"
+      "overridingValue": "visible !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#boggle-center",
@@ -757,7 +789,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0 !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "0.72rem !important"
+      "overridingValue": "0.72rem !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#board",
@@ -765,7 +798,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "min(100%, 46rem) !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "var(--board-fit-size-v31, min(100%, 36rem)) !important"
+      "overridingValue": "var(--board-fit-size-v31, min(100%, 36rem)) !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#board",
@@ -773,7 +807,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "none !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "100% !important"
+      "overridingValue": "100% !important",
+      "valueChange": "changed-value"
     },
     {
       "selector": "#board",
@@ -781,7 +816,8 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "0 auto !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "0 auto !important"
+      "overridingValue": "0 auto !important",
+      "valueChange": "same-normalized-value"
     },
     {
       "selector": "#board",
@@ -789,27 +825,14 @@
       "previousLayer": "injectLegacyThemeFoundationV42",
       "previousValue": "border-box !important",
       "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "border-box !important"
-    },
-    {
-      "selector": "0%",
-      "property": "transform",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "translate3d(0, -1rem, 0) rotate(0deg)",
-      "overridingLayer": "injectFinalButtonsV34",
-      "overridingValue": "translateX(0)"
-    },
-    {
-      "selector": "100%",
-      "property": "transform",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "translate3d(var(--confetti-drift), 105vh, 0) rotate(720deg)",
-      "overridingLayer": "injectFinalButtonsV34",
-      "overridingValue": "translateX(0)"
+      "overridingValue": "border-box !important",
+      "valueChange": "same-normalized-value"
     }
   ],
   "notes": [
     "Cet audit est indicatif : il repère les mêmes couples sélecteur/propriété redéfinis plus tard dans la cascade.",
+    "Les étapes de keyframes from/to/0%/100% sont exclues pour éviter les faux positifs entre animations différentes.",
+    "valueChange ignore uniquement !important et les variations d'espaces, afin de distinguer les valeurs vraiment changées des renforcements de priorité.",
     "Il ne prouve pas seul qu'une règle peut être supprimée : media queries, spécificité et états pseudo-classes doivent être relus.",
     "Les meilleurs candidats de suppression sont les règles legacy écrasées par les couches finales V34 à V39."
   ]

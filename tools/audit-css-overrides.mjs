@@ -111,6 +111,10 @@ function parseRules(css, layerName) {
     const selectors = splitSelectorList(match[1]);
     const declarations = parseDeclarations(match[2]);
 
+    if (selectors.every((selector) => /^(?:from|to|\d+(?:\.\d+)?%)$/.test(selector))) {
+      continue;
+    }
+
     if (!selectors.length || !declarations.length) {
       continue;
     }
@@ -166,6 +170,7 @@ for (const layer of layers) {
         previousValue: previous.value,
         overridingLayer: rule.layer,
         overridingValue: rule.value,
+        valueChange: classifyValueChange(previous.value, rule.value),
       });
     }
 
@@ -191,6 +196,19 @@ function topEntries(map, limit = 30) {
     .map(([key, count]) => ({ key, count }));
 }
 
+function normalizeCssValue(value) {
+  return value
+    .replace(/!important/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function classifyValueChange(previousValue, overridingValue) {
+  return normalizeCssValue(previousValue) === normalizeCssValue(overridingValue)
+    ? "same-normalized-value"
+    : "changed-value";
+}
+
 const finalLayerNames = new Set([
   "injectTopLaunchEndScreenLayoutV39",
   "injectRulesHelpOptionsPanelV38",
@@ -199,12 +217,10 @@ const finalLayerNames = new Set([
   "injectFinalButtonsV34",
 ]);
 
-const legacyOverriddenByFinal = overridden
-  .filter((item) =>
-    item.previousLayer === "injectLegacyThemeFoundationV42" &&
-    finalLayerNames.has(item.overridingLayer)
-  )
-  .slice(0, 250);
+const legacyOverriddenByFinalAll = overridden.filter((item) =>
+  item.previousLayer === "injectLegacyThemeFoundationV42" &&
+  finalLayerNames.has(item.overridingLayer)
+);
 
 const report = {
   generatedAt: new Date().toISOString(),
@@ -212,16 +228,23 @@ const report = {
   layerCount: layers.length,
   layers: layers.map(({ rules, ...layer }) => layer),
   overrideCount: overridden.length,
+  sameValueOverrideCount: overridden.filter((item) => item.valueChange === "same-normalized-value").length,
+  changedValueOverrideCount: overridden.filter((item) => item.valueChange === "changed-value").length,
   overridePairs: topEntries(pairCounts, 50),
   hotSelectors: topEntries(selectorCounts, 50),
   hotProperties: topEntries(propertyCounts, 50),
-  legacyOverriddenByFinalCount: overridden.filter((item) =>
-    item.previousLayer === "injectLegacyThemeFoundationV42" &&
-    finalLayerNames.has(item.overridingLayer)
+  legacyOverriddenByFinalCount: legacyOverriddenByFinalAll.length,
+  legacyOverriddenByFinalSameValueCount: legacyOverriddenByFinalAll.filter((item) =>
+    item.valueChange === "same-normalized-value"
   ).length,
-  legacyOverriddenByFinal,
+  legacyOverriddenByFinalChangedValueCount: legacyOverriddenByFinalAll.filter((item) =>
+    item.valueChange === "changed-value"
+  ).length,
+  legacyOverriddenByFinal: legacyOverriddenByFinalAll.slice(0, 250),
   notes: [
     "Cet audit est indicatif : il repère les mêmes couples sélecteur/propriété redéfinis plus tard dans la cascade.",
+    "Les étapes de keyframes from/to/0%/100% sont exclues pour éviter les faux positifs entre animations différentes.",
+    "valueChange ignore uniquement !important et les variations d'espaces, afin de distinguer les valeurs vraiment changées des renforcements de priorité.",
     "Il ne prouve pas seul qu'une règle peut être supprimée : media queries, spécificité et états pseudo-classes doivent être relus.",
     "Les meilleurs candidats de suppression sont les règles legacy écrasées par les couches finales V34 à V39."
   ],
