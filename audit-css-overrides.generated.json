@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:20:58.839Z",
+  "generatedAt": "2026-10-08T19:25:20.861Z",
   "source": "public/js/ui/theme-styles.js",
   "layerCount": 6,
   "layers": [
@@ -7,8 +7,8 @@
       "order": 1,
       "name": "injectLegacyThemeFoundationV42",
       "line": 13,
-      "cssChars": 108423,
-      "ruleCount": 2352
+      "cssChars": 103444,
+      "ruleCount": 2196
     },
     {
       "order": 2,
@@ -46,23 +46,11 @@
       "ruleCount": 118
     }
   ],
-  "overrideCount": 1121,
+  "overrideCount": 965,
   "overridePairs": [
     {
       "key": "injectLegacyThemeFoundationV42 -> injectLegacyThemeFoundationV42",
-      "count": 994
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectFoundWordsPanelV37",
-      "count": 25
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectRulesHelpOptionsPanelV38",
-      "count": 24
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectTopLaunchEndScreenLayoutV39",
-      "count": 22
+      "count": 884
     },
     {
       "key": "injectTopLaunchEndScreenLayoutV39 -> injectTopLaunchEndScreenLayoutV39",
@@ -73,8 +61,20 @@
       "count": 17
     },
     {
+      "key": "injectLegacyThemeFoundationV42 -> injectRulesHelpOptionsPanelV38",
+      "count": 13
+    },
+    {
+      "key": "injectLegacyThemeFoundationV42 -> injectFoundWordsPanelV37",
+      "count": 9
+    },
+    {
       "key": "injectLegacyThemeFoundationV42 -> injectFinalBoardInputV36",
-      "count": 12
+      "count": 8
+    },
+    {
+      "key": "injectLegacyThemeFoundationV42 -> injectTopLaunchEndScreenLayoutV39",
+      "count": 7
     },
     {
       "key": "injectRulesHelpOptionsPanelV38 -> injectFinalBoardInputV36",
@@ -95,14 +95,6 @@
       "count": 70
     },
     {
-      "key": "#boggle-top",
-      "count": 55
-    },
-    {
-      "key": "#word-form",
-      "count": 50
-    },
-    {
       "key": "#timer",
       "count": 45
     },
@@ -115,16 +107,12 @@
       "count": 39
     },
     {
-      "key": "#board",
-      "count": 35
-    },
-    {
       "key": "#boggle-layout",
       "count": 34
     },
     {
-      "key": "#connection-controls",
-      "count": 31
+      "key": "#boggle-top",
+      "count": 34
     },
     {
       "key": "#play-status-panel > h2",
@@ -132,18 +120,18 @@
     },
     {
       "key": "#status",
-      "count": 27
+      "count": 25
     },
     {
       "key": "#boggle-shell",
       "count": 23
     },
     {
-      "key": "#player-preferences > button",
+      "key": "#board",
       "count": 22
     },
     {
-      "key": "#word-submit",
+      "key": "#player-preferences > button",
       "count": 22
     },
     {
@@ -151,32 +139,20 @@
       "count": 21
     },
     {
-      "key": "#boggle-center",
-      "count": 20
-    },
-    {
       "key": "#mode-options-toggle",
       "count": 20
     },
     {
-      "key": "#word-input",
-      "count": 19
+      "key": "#word-submit",
+      "count": 18
+    },
+    {
+      "key": "#boggle-center",
+      "count": 17
     },
     {
       "key": "#board .board-cell",
       "count": 16
-    },
-    {
-      "key": "#found-words-panel > h2",
-      "count": 16
-    },
-    {
-      "key": "#players-panel > h2",
-      "count": 16
-    },
-    {
-      "key": "#connect",
-      "count": 15
     },
     {
       "key": "#name",
@@ -187,11 +163,15 @@
       "count": 15
     },
     {
-      "key": "#launch-panel",
+      "key": "#word-input",
+      "count": 15
+    },
+    {
+      "key": "#connect",
       "count": 14
     },
     {
-      "key": "#word-feedback",
+      "key": "#launch-panel",
       "count": 14
     },
     {
@@ -207,8 +187,24 @@
       "count": 13
     },
     {
+      "key": "#connection-controls",
+      "count": 13
+    },
+    {
       "key": "#found-words-panel",
       "count": 13
+    },
+    {
+      "key": "#word-form",
+      "count": 13
+    },
+    {
+      "key": "#found-words-panel > h2",
+      "count": 12
+    },
+    {
+      "key": "#players-panel > h2",
+      "count": 12
     },
     {
       "key": "#boggle-left",
@@ -217,10 +213,6 @@
     {
       "key": "body",
       "count": 11
-    },
-    {
-      "key": ".found-words-header-cell",
-      "count": 10
     },
     {
       "key": "#rules-summary",
@@ -239,16 +231,16 @@
       "count": 8
     },
     {
-      "key": ".found-words-word",
-      "count": 8
-    },
-    {
       "key": ".mockup-info-card h2",
       "count": 8
     },
     {
       "key": "#players",
       "count": 8
+    },
+    {
+      "key": ".found-words-word",
+      "count": 7
     },
     {
       "key": ".ui-button",
@@ -261,10 +253,6 @@
     {
       "key": "button:not(.board-cell)",
       "count": 7
-    },
-    {
-      "key": ".found-words-empty-row",
-      "count": 6
     },
     {
       "key": ".mockup-help-list li",
@@ -289,80 +277,92 @@
     {
       "key": "#connection-core",
       "count": 6
+    },
+    {
+      "key": "#found-words",
+      "count": 6
+    },
+    {
+      "key": "#game-status::before",
+      "count": 6
+    },
+    {
+      "key": "#help-slot",
+      "count": 6
     }
   ],
   "hotProperties": [
     {
       "key": "background",
-      "count": 88
+      "count": 82
     },
     {
       "key": "min-height",
-      "count": 86
-    },
-    {
-      "key": "border-radius",
       "count": 76
     },
     {
       "key": "color",
-      "count": 72
+      "count": 68
     },
     {
-      "key": "padding",
-      "count": 66
+      "key": "border-radius",
+      "count": 61
     },
     {
       "key": "font-size",
-      "count": 60
+      "count": 55
     },
     {
-      "key": "width",
-      "count": 59
+      "key": "padding",
+      "count": 55
     },
     {
       "key": "font-weight",
-      "count": 50
-    },
-    {
-      "key": "display",
-      "count": 49
-    },
-    {
-      "key": "border",
       "count": 48
     },
     {
-      "key": "box-shadow",
-      "count": 44
+      "key": "border",
+      "count": 45
     },
     {
-      "key": "grid-template-columns",
-      "count": 42
+      "key": "box-shadow",
+      "count": 40
     },
     {
       "key": "gap",
-      "count": 41
+      "count": 35
     },
     {
       "key": "height",
-      "count": 36
+      "count": 35
     },
     {
-      "key": "align-items",
-      "count": 25
+      "key": "grid-template-columns",
+      "count": 34
+    },
+    {
+      "key": "width",
+      "count": 34
+    },
+    {
+      "key": "display",
+      "count": 33
     },
     {
       "key": "min-width",
-      "count": 24
+      "count": 21
+    },
+    {
+      "key": "align-items",
+      "count": 20
     },
     {
       "key": "grid-column",
-      "count": 22
+      "count": 19
     },
     {
       "key": "margin",
-      "count": 19
+      "count": 13
     },
     {
       "key": "content",
@@ -381,19 +381,11 @@
       "count": 11
     },
     {
-      "key": "margin-bottom",
-      "count": 10
+      "key": "justify-self",
+      "count": 8
     },
     {
       "key": "letter-spacing",
-      "count": 9
-    },
-    {
-      "key": "max-width",
-      "count": 9
-    },
-    {
-      "key": "justify-self",
       "count": 8
     },
     {
@@ -405,19 +397,7 @@
       "count": 8
     },
     {
-      "key": "padding-inline",
-      "count": 8
-    },
-    {
-      "key": "align-self",
-      "count": 7
-    },
-    {
       "key": "background-image",
-      "count": 7
-    },
-    {
-      "key": "box-sizing",
       "count": 7
     },
     {
@@ -425,11 +405,19 @@
       "count": 7
     },
     {
+      "key": "max-width",
+      "count": 7
+    },
+    {
+      "key": "padding-inline",
+      "count": 7
+    },
+    {
       "key": "border-color",
       "count": 6
     },
     {
-      "key": "flex-wrap",
+      "key": "box-sizing",
       "count": 6
     },
     {
@@ -437,12 +425,16 @@
       "count": 6
     },
     {
+      "key": "margin-bottom",
+      "count": 6
+    },
+    {
       "key": "margin-left",
       "count": 5
     },
     {
-      "key": "position",
-      "count": 5
+      "key": "align-self",
+      "count": 4
     },
     {
       "key": "text-shadow",
@@ -469,6 +461,10 @@
       "count": 3
     },
     {
+      "key": "position",
+      "count": 3
+    },
+    {
       "key": "white-space",
       "count": 3
     },
@@ -491,18 +487,14 @@
     {
       "key": "opacity",
       "count": 2
+    },
+    {
+      "key": "padding-left",
+      "count": 2
     }
   ],
-  "legacyOverriddenByFinalCount": 85,
+  "legacyOverriddenByFinalCount": 39,
   "legacyOverriddenByFinal": [
-    {
-      "selector": "#boggle-top",
-      "property": "position",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "relative",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "relative !important"
-    },
     {
       "selector": "#boggle-top",
       "property": "display",
@@ -523,17 +515,9 @@
       "selector": "#boggle-top",
       "property": "min-height",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "auto !important",
+      "previousValue": "5rem !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
       "overridingValue": "clamp(4.7rem, 7vh, 5.6rem) !important"
-    },
-    {
-      "selector": "#connection-controls",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "flex !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "block !important"
     },
     {
       "selector": "#connection-controls",
@@ -542,54 +526,6 @@
       "previousValue": "relative",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
       "overridingValue": "static !important"
-    },
-    {
-      "selector": "#connection-controls",
-      "property": "width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "100% !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "auto !important"
-    },
-    {
-      "selector": "#connection-controls",
-      "property": "min-width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0 !important"
-    },
-    {
-      "selector": "#room-control",
-      "property": "min-width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0 !important"
-    },
-    {
-      "selector": "#name-control",
-      "property": "min-width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0 !important"
-    },
-    {
-      "selector": "#connect",
-      "property": "grid-column",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "3 !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "3 !important"
-    },
-    {
-      "selector": "#status",
-      "property": "grid-column",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "4 !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "4 !important"
     },
     {
       "selector": "#status",
@@ -603,95 +539,23 @@
       "selector": "#status",
       "property": "padding-inline",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1.2rem !important",
+      "previousValue": "1.25rem !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
       "overridingValue": "0.85rem !important"
-    },
-    {
-      "selector": "#status[hidden]",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "none !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "inline-flex !important"
-    },
-    {
-      "selector": "#connection-actions",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "contents !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "none !important"
-    },
-    {
-      "selector": "#player-preferences",
-      "property": "position",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "relative",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "absolute !important"
-    },
-    {
-      "selector": "#player-preferences",
-      "property": "z-index",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1000",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "3 !important"
-    },
-    {
-      "selector": "#player-preferences",
-      "property": "margin",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 0 0 auto !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0 !important"
     },
     {
       "selector": "#boggle-top",
       "property": "grid-template-columns",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1fr !important",
+      "previousValue": "auto minmax(0, 1fr) !important",
       "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
       "overridingValue": "1fr !important"
-    },
-    {
-      "selector": "#boggle-top",
-      "property": "gap",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1.15rem !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0.75rem !important"
-    },
-    {
-      "selector": "#connection-controls",
-      "property": "flex-wrap",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "wrap !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "wrap !important"
-    },
-    {
-      "selector": "#mockup-right-cards .mockup-info-card h2",
-      "property": "font-size",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1.28rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important"
-    },
-    {
-      "selector": "#mockup-right-cards .mockup-info-card h2",
-      "property": "letter-spacing",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "-0.02em !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "-0.035em !important"
     },
     {
       "selector": "#players-panel > h2",
       "property": "font-size",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(1.08rem, 1.2vw, 1.32rem) !important",
+      "previousValue": "1.42rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important"
     },
@@ -707,7 +571,7 @@
       "selector": "#found-words-panel > h2",
       "property": "font-size",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(1.08rem, 1.2vw, 1.32rem) !important",
+      "previousValue": "1.42rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important"
     },
@@ -731,7 +595,7 @@
       "selector": "#players-panel > h2",
       "property": "margin-bottom",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(0.45rem, 0.8vh, 0.75rem) !important",
+      "previousValue": "0.8rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "0.9rem !important"
     },
@@ -739,55 +603,15 @@
       "selector": "#found-words-panel > h2",
       "property": "margin-bottom",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(0.45rem, 0.8vh, 0.75rem) !important",
+      "previousValue": "0.8rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "0.9rem !important"
     },
     {
       "selector": "#word-form",
-      "property": "width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "min(100%, 42rem) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "min(100%, 49rem) !important"
-    },
-    {
-      "selector": "#word-form",
-      "property": "margin",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.9rem auto 0 !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1.15rem, 1.8vh, 1.65rem) auto 0 !important"
-    },
-    {
-      "selector": "#word-form",
-      "property": "min-height",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "4.1rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "auto !important"
-    },
-    {
-      "selector": "#word-form",
-      "property": "padding",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(0.55rem, 0.85vh, 0.75rem) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0.72rem 0.82rem !important"
-    },
-    {
-      "selector": "#word-form",
       "property": "border",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0 !important"
-    },
-    {
-      "selector": "#word-form",
-      "property": "border-top",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1px solid rgba(111, 73, 40, 0.10) !important",
+      "previousValue": "2px solid rgba(111, 73, 40, 0.105) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "0 !important"
     },
@@ -795,7 +619,7 @@
       "selector": "#word-form",
       "property": "border-radius",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 !important",
+      "previousValue": "var(--panel-radius) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "9999px !important"
     },
@@ -803,7 +627,7 @@
       "selector": "#word-form",
       "property": "background",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "transparent !important",
+      "previousValue": "rgba(255, 248, 232, 0.94) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "rgba(255, 248, 232, 0.96) !important"
     },
@@ -811,7 +635,7 @@
       "selector": "#word-form",
       "property": "box-shadow",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "none !important",
+      "previousValue": "var(--soft-shadow) !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "0 0.35rem 1rem rgba(97, 65, 35, 0.08) !important"
     },
@@ -819,7 +643,7 @@
       "selector": "#word-input",
       "property": "border-radius",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "var(--button-radius) !important",
+      "previousValue": "0.8rem !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "9999px !important"
     },
@@ -827,73 +651,9 @@
       "selector": "#word-submit",
       "property": "border-radius",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "var(--button-radius) !important",
+      "previousValue": "9999px !important",
       "overridingLayer": "injectRulesHelpOptionsPanelV38",
       "overridingValue": "9999px !important"
-    },
-    {
-      "selector": "#word-feedback",
-      "property": "width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "min(100%, 42rem) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "min(100%, 49rem) !important"
-    },
-    {
-      "selector": "#word-feedback",
-      "property": "margin",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.35rem auto 0 !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0.35rem auto 0 !important"
-    },
-    {
-      "selector": "#word-feedback",
-      "property": "min-height",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(1.45rem, 2.6vh, 2rem) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "1.55rem !important"
-    },
-    {
-      "selector": "#word-feedback",
-      "property": "text-align",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "center !important"
-    },
-    {
-      "selector": ".found-words-table",
-      "property": "grid-template-columns",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "minmax(6.5rem, 1fr) 5.2rem minmax(5.6rem, 0.9fr) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "minmax(0, 1fr) auto !important"
-    },
-    {
-      "selector": ".found-words-table",
-      "property": "align-items",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "center !important"
-    },
-    {
-      "selector": ".found-words-header-cell",
-      "property": "color",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "var(--brown) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "rgba(93, 53, 30, 0.76) !important"
-    },
-    {
-      "selector": ".found-words-header-cell",
-      "property": "font-weight",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "700 !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "950 !important"
     },
     {
       "selector": ".found-words-word",
@@ -910,14 +670,6 @@
       "previousValue": "center !important",
       "overridingLayer": "injectFoundWordsPanelV37",
       "overridingValue": "center !important"
-    },
-    {
-      "selector": ".found-words-word",
-      "property": "gap",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.42rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.4rem !important"
     },
     {
       "selector": ".found-words-word",
@@ -968,54 +720,6 @@
       "overridingValue": "950 !important"
     },
     {
-      "selector": ".found-word-dot",
-      "property": "width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.72rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.65rem !important"
-    },
-    {
-      "selector": ".found-word-dot",
-      "property": "height",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.72rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.65rem !important"
-    },
-    {
-      "selector": ".found-word-dot",
-      "property": "border-radius",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "9999px !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "999px !important"
-    },
-    {
-      "selector": ".found-words-empty-row",
-      "property": "grid-column",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1 / -1 !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "1 / -1 !important"
-    },
-    {
-      "selector": ".found-words-header-cell",
-      "property": "background",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "rgba(255, 232, 163, 0.72) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "transparent !important"
-    },
-    {
-      "selector": ".found-words-header-cell",
-      "property": "padding",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(0.32rem, 0.65vh, 0.52rem) 0.55rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.18rem 0.32rem !important"
-    },
-    {
       "selector": ".found-words-word",
       "property": "background",
       "previousLayer": "injectLegacyThemeFoundationV42",
@@ -1024,50 +728,10 @@
       "overridingValue": "transparent !important"
     },
     {
-      "selector": ".found-words-word strong",
-      "property": "color",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "var(--brown-dark) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "#25150d !important"
-    },
-    {
-      "selector": ".found-word-dot",
-      "property": "box-shadow",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "inset 0 0 0 1px rgba(111, 73, 40, 0.08) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0 0 0 2px rgba(255,255,255,0.72) !important"
-    },
-    {
-      "selector": ".found-words-empty-row",
-      "property": "background",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "rgba(255, 250, 239, 0.54) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "transparent !important"
-    },
-    {
-      "selector": ".found-words-empty-row",
-      "property": "color",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "#7a5b40 !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "rgba(37, 21, 13, 0.72) !important"
-    },
-    {
-      "selector": ".found-words-empty-row",
-      "property": "padding",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.9rem 0.7rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.45rem 0.32rem !important"
-    },
-    {
       "selector": "#boggle-center",
       "property": "display",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "grid !important",
+      "previousValue": "flex !important",
       "overridingLayer": "injectFinalBoardInputV36",
       "overridingValue": "flex !important"
     },
@@ -1078,14 +742,6 @@
       "previousValue": "column !important",
       "overridingLayer": "injectFinalBoardInputV36",
       "overridingValue": "column !important"
-    },
-    {
-      "selector": "#boggle-center",
-      "property": "align-items",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "stretch !important"
     },
     {
       "selector": "#boggle-center",
@@ -1105,17 +761,9 @@
     },
     {
       "selector": "#board",
-      "property": "align-self",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "center !important"
-    },
-    {
-      "selector": "#board",
       "property": "width",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "min(100%, 42rem) !important",
+      "previousValue": "min(100%, 46rem) !important",
       "overridingLayer": "injectFinalBoardInputV36",
       "overridingValue": "var(--board-fit-size-v31, min(100%, 36rem)) !important"
     },
@@ -1123,7 +771,7 @@
       "selector": "#board",
       "property": "max-width",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "39rem !important",
+      "previousValue": "none !important",
       "overridingLayer": "injectFinalBoardInputV36",
       "overridingValue": "100% !important"
     },
@@ -1142,22 +790,6 @@
       "previousValue": "border-box !important",
       "overridingLayer": "injectFinalBoardInputV36",
       "overridingValue": "border-box !important"
-    },
-    {
-      "selector": "#word-form",
-      "property": "align-self",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "end !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "center !important"
-    },
-    {
-      "selector": "#word-feedback",
-      "property": "align-self",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "end !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "center !important"
     },
     {
       "selector": "0%",

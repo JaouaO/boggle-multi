@@ -105,18 +105,18 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #boggle-top {
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
+      
+      
+      
       flex-wrap: wrap;
     }
 
     #connection-controls {
-      display: flex;
+      
       align-items: center;
       gap: 0.55rem;
-      flex-wrap: wrap;
-      width: 100%;
+      
+      
     }
 
     #connection-controls #player-preferences {
@@ -131,7 +131,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #connection-actions {
-      display: inline-flex;
+      
       align-items: center;
       gap: 0.55rem;
       flex-wrap: wrap;
@@ -273,7 +273,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #status[hidden] {
-      display: none !important;
+      
     }
 
     .connection-field-label {
@@ -416,9 +416,9 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #player-preferences {
-      position: relative;
-      z-index: 1000;
-      margin: 0 0 0 auto !important;
+      
+      
+      
       pointer-events: none;
     }
 
@@ -581,9 +581,9 @@ function injectLegacyThemeFoundationV42() {
 
 
     #boggle-top {
-      position: relative;
+      
       overflow: hidden;
-      min-height: 5.25rem;
+      
       padding: 1rem 1.2rem !important;
       background:
         linear-gradient(180deg, rgba(255,252,245,0.98), rgba(251,240,214,0.93)) !important;
@@ -896,11 +896,11 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-form {
-      padding: 0.85rem 0.95rem !important;
-      border-radius: 1.15rem !important;
-      background: linear-gradient(180deg, rgba(255,251,242,0.95), rgba(252,244,225,0.92)) !important;
-      border: 1px solid rgba(122,87,52,0.12) !important;
-      box-shadow: var(--fruit-shadow) !important;
+      
+      
+      
+      
+      
     }
 
     #word-feedback {
@@ -1003,11 +1003,11 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #boggle-top {
-      display: grid !important;
-      grid-template-columns: auto 1fr !important;
-      align-items: center !important;
-      gap: 1rem !important;
-      min-height: 4.15rem !important;
+      
+      
+      
+      
+      
       margin: 0 0 0.95rem !important;
       padding: 0.5rem 0.9rem !important;
       border: 1px solid var(--mk-line) !important;
@@ -1059,12 +1059,12 @@ function injectLegacyThemeFoundationV42() {
     .brand-dot-green { background: #94b96d !important; }
 
     #connection-controls {
-      display: flex !important;
+      
       align-items: center !important;
       gap: 0.75rem !important;
-      flex-wrap: nowrap !important;
-      width: 100% !important;
-      min-width: 0 !important;
+      
+      
+      
     }
 
     .connection-control {
@@ -1096,7 +1096,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #connection-actions {
-      display: flex !important;
+      
       align-items: center !important;
       gap: 0.75rem !important;
       margin-left: 0.1rem !important;
@@ -1312,9 +1312,9 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #board {
-      width: min(100%, 40rem) !important;
-      box-sizing: border-box !important;
-      margin: 0 auto !important;
+      
+      
+      
       padding: 0.95rem !important;
       gap: 0.65rem !important;
       border-radius: 1.55rem !important;
@@ -1366,23 +1366,23 @@ function injectLegacyThemeFoundationV42() {
 
 
     #word-form {
-      width: min(100%, 46rem) !important;
+      
       box-sizing: border-box !important;
-      margin: 0 auto !important;
-      padding: 0.85rem !important;
+      
+      
       display: grid !important;
       grid-template-columns: minmax(0, 1fr) auto !important;
       gap: 0.8rem !important;
       align-items: center !important;
-      border-radius: 1.45rem !important;
-      background: var(--mk-panel) !important;
-      border: 1px solid var(--mk-line) !important;
-      box-shadow: var(--mk-shadow) !important;
+      
+      
+      
+      
     }
 
     #word-input {
       min-height: 3.45rem !important;
-      border-radius: var(--mk-pill) !important;
+      
       border: 1px solid var(--mk-line) !important;
       background: #fffaf0 !important;
       padding: 0 1.3rem !important;
@@ -1396,7 +1396,7 @@ function injectLegacyThemeFoundationV42() {
       min-width: 11rem !important;
       padding: 0 1.6rem !important;
       font-size: 1.08rem !important;
-      border-radius: var(--mk-pill) !important;
+      
     }
 
     #word-submit::before {
@@ -1406,10 +1406,10 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-feedback {
-      width: min(100%, 46rem) !important;
-      margin: 0 auto !important;
-      min-height: 2rem !important;
-      text-align: center !important;
+      
+      
+      
+      
       color: var(--mk-ink) !important;
       font-weight: 850 !important;
     }
@@ -1608,7 +1608,7 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #boggle-top {
-        grid-template-columns: 1fr !important;
+        
       }
 
       #boggle-brand {
@@ -1616,7 +1616,7 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #connection-controls {
-        flex-wrap: wrap !important;
+        
       }
     }
 
@@ -1631,8 +1631,8 @@ function injectLegacyThemeFoundationV42() {
     #boggle-top {
       width: min(100%, 64rem) !important;
       margin-inline: auto !important;
-      grid-template-columns: auto minmax(0, 1fr) !important;
-      gap: 1rem !important;
+      
+      
       padding: 0.55rem 0.85rem !important;
       border-radius: 1.4rem !important;
     }
@@ -1647,7 +1647,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #connection-controls {
-      display: grid !important;
+      
       grid-template-columns: minmax(8rem, 12rem) minmax(8rem, 12rem) auto auto minmax(6rem, 1fr) auto !important;
       align-items: center !important;
       gap: 0.55rem !important;
@@ -1655,7 +1655,7 @@ function injectLegacyThemeFoundationV42() {
 
     #room-control,
     #name-control {
-      min-width: 0 !important;
+      
     }
 
     #room,
@@ -1665,15 +1665,15 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #connection-actions {
-      display: contents !important;
+      
     }
 
     #connect {
-      grid-column: 3 !important;
+      
     }
 
     #status {
-      grid-column: 4 !important;
+      
     }
 
     #player-preferences {
@@ -1782,7 +1782,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #board {
-      width: min(100%, 38rem) !important;
+      
       gap: 0.58rem !important;
       padding: 0.85rem !important;
     }
@@ -1793,23 +1793,23 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-form {
-      width: min(100%, 43rem) !important;
+      
       grid-template-columns: minmax(0, 1fr) minmax(9.5rem, auto) !important;
-      padding: 0.82rem 0.9rem !important;
-      border-radius: 1.4rem !important;
+      
+      
       gap: 0.7rem !important;
     }
 
     #word-input {
       min-height: 3.4rem !important;
       font-size: 1.08rem !important;
-      border-radius: 9999px !important;
+      
     }
 
     #word-submit {
       min-height: 3.4rem !important;
       min-width: 10rem !important;
-      border-radius: 9999px !important;
+      
     }
 
     #boggle-right {
@@ -1962,9 +1962,9 @@ function injectLegacyThemeFoundationV42() {
 
     #players-panel > h2,
     #found-words-panel > h2 {
-      font-size: 1.08rem !important;
+      
       padding-bottom: 0.65rem !important;
-      margin-bottom: 0.75rem !important;
+      
     }
 
     #players {
@@ -1982,8 +1982,8 @@ function injectLegacyThemeFoundationV42() {
 
     @media (max-width: 78rem) {
       #connection-controls {
-        display: flex !important;
-        flex-wrap: wrap !important;
+        
+        
       }
 
       #boggle-layout {
@@ -2040,11 +2040,11 @@ function injectLegacyThemeFoundationV42() {
       box-shadow: none !important;
       backdrop-filter: none !important;
       border-radius: 0 !important;
-      min-height: 4.3rem !important;
-      display: grid !important;
-      grid-template-columns: auto minmax(0, 1fr) !important;
-      align-items: center !important;
-      gap: 1.15rem !important;
+      
+      
+      
+      
+      
     }
 
     #boggle-brand {
@@ -2067,11 +2067,11 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #connection-controls {
-      display: grid !important;
+      
       grid-template-columns: minmax(9rem, 13rem) minmax(9rem, 13rem) auto auto 1fr auto !important;
       gap: 0.7rem !important;
       align-items: center !important;
-      width: 100% !important;
+      
     }
 
     .connection-field-label {
@@ -2177,8 +2177,8 @@ function injectLegacyThemeFoundationV42() {
 
     .found-words-table {
       display: grid !important;
-      grid-template-columns: minmax(5.5rem, 1fr) 4.7rem minmax(4.6rem, 0.85fr) !important;
-      align-items: center !important;
+      
+      
       width: 100% !important;
       row-gap: 0 !important;
       column-gap: 0 !important;
@@ -2187,10 +2187,10 @@ function injectLegacyThemeFoundationV42() {
     }
 
     .found-words-header-cell {
-      padding: 0.38rem 0.5rem !important;
-      background: rgba(255, 242, 210, 0.95) !important;
-      color: #7a5b40 !important;
-      font-weight: 900 !important;
+      
+      
+      
+      
       border-bottom: 1px solid rgba(111, 73, 40, 0.12) !important;
     }
 
@@ -2216,7 +2216,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     .found-words-word {
-      gap: 0.42rem !important;
+      
       font-weight: 950 !important;
     }
 
@@ -2227,11 +2227,11 @@ function injectLegacyThemeFoundationV42() {
     }
 
     .found-word-dot {
-      width: 0.72rem !important;
-      height: 0.72rem !important;
-      border-radius: 9999px !important;
+      
+      
+      
       flex: 0 0 auto !important;
-      box-shadow: inset 0 0 0 1px rgba(111, 73, 40, 0.08) !important;
+      
     }
 
     .found-word-dot-0 { background: #f7b21b !important; }
@@ -2242,16 +2242,16 @@ function injectLegacyThemeFoundationV42() {
     .found-word-dot-5 { background: #49a6d8 !important; }
 
     .found-words-empty-row {
-      grid-column: 1 / -1 !important;
-      padding: 0.75rem 0.5rem !important;
-      color: #7a5b40 !important;
+      
+      
+      
       font-weight: 750 !important;
       font-style: italic !important;
     }
 
     #mockup-right-cards .mockup-info-card h2 {
-      font-size: 1.28rem !important;
-      letter-spacing: -0.02em !important;
+      
+      
     }
 
     #mockup-right-cards .mockup-info-card p,
@@ -2260,28 +2260,28 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-form {
-      border-radius: 1.6rem !important;
+      
     }
 
     #word-input {
       min-height: 3.55rem !important;
-      border-radius: 9999px !important;
+      
     }
 
     #word-submit {
       min-height: 3.55rem !important;
-      border-radius: 9999px !important;
+      
     }
 
     @media (max-width: 78rem) {
       #boggle-top {
         width: 100% !important;
-        grid-template-columns: 1fr !important;
+        
       }
 
       #connection-controls {
-        display: flex !important;
-        flex-wrap: wrap !important;
+        
+        
       }
     }
 
@@ -2381,7 +2381,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #connection-controls {
-      display: grid !important;
+      
       grid-template-columns: minmax(10rem, 14rem) minmax(10rem, 14rem) auto auto 1fr auto !important;
       gap: 0.85rem !important;
       align-items: center !important;
@@ -2426,7 +2426,7 @@ function injectLegacyThemeFoundationV42() {
     #status {
       height: 2.8rem !important;
       min-height: 2.8rem !important;
-      padding-inline: 1.2rem !important;
+      
       background: var(--green-soft) !important;
       border: 2px solid rgba(103, 157, 70, 0.15) !important;
       color: #4f7b2e !important;
@@ -2590,7 +2590,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #board {
-      width: min(100%, 43rem) !important;
+      
       padding: 1.05rem !important;
       gap: 0.72rem !important;
       border-radius: 1.75rem !important;
@@ -2614,18 +2614,18 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-form {
-      width: min(100%, 43.5rem) !important;
-      min-height: 5.35rem !important;
-      padding: 0.92rem 1rem !important;
+      
+      
+      
       grid-template-columns: minmax(0, 1fr) minmax(10.5rem, auto) !important;
       gap: 0.85rem !important;
-      border-radius: 1.7rem !important;
+      
     }
 
     #word-input {
       height: 3.75rem !important;
       min-height: 3.75rem !important;
-      border-radius: var(--button-radius) !important;
+      
       padding-inline: 1.35rem !important;
       font-size: 1.17rem !important;
       font-weight: 500 !important;
@@ -2635,7 +2635,7 @@ function injectLegacyThemeFoundationV42() {
       height: 3.75rem !important;
       min-height: 3.75rem !important;
       min-width: 11.5rem !important;
-      border-radius: var(--button-radius) !important;
+      
       background: var(--orange) !important;
       border: 0 !important;
       font-size: 1.16rem !important;
@@ -2665,18 +2665,18 @@ function injectLegacyThemeFoundationV42() {
     }
 
     .found-words-table {
-      grid-template-columns: minmax(6.5rem, 1fr) 5.2rem minmax(5.6rem, 0.9fr) !important;
+      
       font-size: 1.02rem !important;
       border-radius: 1rem !important;
       overflow: hidden !important;
     }
 
     .found-words-header-cell {
-      background: rgba(255, 232, 163, 0.72) !important;
+      
       font-size: 1.02rem !important;
-      padding: 0.52rem 0.6rem !important;
-      color: var(--brown) !important;
-      font-weight: 700 !important;
+      
+      
+      
     }
 
     .found-words-word,
@@ -2689,12 +2689,12 @@ function injectLegacyThemeFoundationV42() {
 
     .found-words-word strong {
       font-weight: 700 !important;
-      color: var(--brown-dark) !important;
+      
     }
 
     .found-words-empty-row {
-      background: rgba(255, 250, 239, 0.54) !important;
-      padding: 0.9rem 0.7rem !important;
+      
+      
       font-weight: 500 !important;
       line-height: 1.45 !important;
     }
@@ -2747,12 +2747,12 @@ function injectLegacyThemeFoundationV42() {
 
     @media (max-width: 78rem) {
       #boggle-top {
-        grid-template-columns: 1fr !important;
+        
       }
 
       #connection-controls {
-        display: flex !important;
-        flex-wrap: wrap !important;
+        
+        
       }
 
       #boggle-layout {
@@ -2978,15 +2978,15 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-form {
-      width: min(100%, 46rem) !important;
-      margin: 0.9rem auto 0 !important;
-      min-height: 5.2rem !important;
-      padding: 0.75rem 0.85rem !important;
-      border: 0 !important;
-      border-top: 1px solid rgba(111, 73, 40, 0.10) !important;
-      border-radius: 0 !important;
-      background: transparent !important;
-      box-shadow: none !important;
+      
+      
+      
+      
+      
+      
+      
+      
+      
       grid-template-columns: minmax(0, 1fr) minmax(10.8rem, auto) !important;
     }
 
@@ -3002,8 +3002,8 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-feedback {
-      width: min(100%, 46rem) !important;
-      margin: 0.35rem auto 0 !important;
+      
+      
     }
 
     /*
@@ -3057,11 +3057,11 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #board {
-        width: min(100%, 48rem) !important;
+        
       }
 
       #word-form {
-        width: min(100%, 48rem) !important;
+        
       }
     }
 
@@ -3227,12 +3227,12 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #board {
-      width: min(100%, 49rem) !important;
+      
     }
 
     #word-form,
     #word-feedback {
-      width: min(100%, 49rem) !important;
+      
     }
 
     #players-panel {
@@ -3266,12 +3266,12 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #board {
-        width: min(100%, 52rem) !important;
+        
       }
 
       #word-form,
       #word-feedback {
-        width: min(100%, 52rem) !important;
+        
       }
     }
 
@@ -3338,7 +3338,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #boggle-top {
-      min-height: auto !important;
+      
       margin-bottom: clamp(0.95rem, 1.6vh, 1.35rem) !important;
       padding-top: 0.15rem !important;
       padding-bottom: 0.15rem !important;
@@ -3409,10 +3409,10 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #boggle-center {
-      display: grid !important;
+      
       grid-template-rows: auto auto minmax(0, 1fr) auto auto !important;
-      align-items: center !important;
-      gap: 0 !important;
+      
+      
       height: 100% !important;
       padding: clamp(0.75rem, 1.2vh, 1rem) !important;
       min-height: 0 !important;
@@ -3458,9 +3458,9 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #board {
-      align-self: center !important;
-      width: min(100%, var(--board-max-side)) !important;
-      max-width: 42rem !important;
+      
+      
+      
       padding: clamp(0.72rem, 1vh, 1rem) !important;
       gap: clamp(0.42rem, 0.8vh, 0.68rem) !important;
     }
@@ -3475,11 +3475,11 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-form {
-      align-self: end !important;
-      width: min(100%, 42rem) !important;
+      
+      
       margin-top: clamp(0.55rem, 0.9vh, 0.8rem) !important;
-      min-height: clamp(4.25rem, 6.2vh, 5rem) !important;
-      padding: clamp(0.55rem, 0.85vh, 0.75rem) !important;
+      
+      
       grid-template-columns: minmax(0, 1fr) minmax(9.5rem, auto) !important;
     }
 
@@ -3494,9 +3494,9 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #word-feedback {
-      align-self: end !important;
-      width: min(100%, 42rem) !important;
-      min-height: clamp(1.45rem, 2.6vh, 2rem) !important;
+      
+      
+      
       margin-top: 0.2rem !important;
       font-size: clamp(0.88rem, 1vw, 1rem) !important;
     }
@@ -3526,8 +3526,8 @@ function injectLegacyThemeFoundationV42() {
 
     #players-panel > h2,
     #found-words-panel > h2 {
-      font-size: clamp(1.08rem, 1.2vw, 1.32rem) !important;
-      margin-bottom: clamp(0.45rem, 0.8vh, 0.75rem) !important;
+      
+      
       padding-bottom: clamp(0.4rem, 0.75vh, 0.65rem) !important;
     }
 
@@ -3541,7 +3541,7 @@ function injectLegacyThemeFoundationV42() {
     }
 
     .found-words-header-cell {
-      padding: clamp(0.32rem, 0.65vh, 0.52rem) 0.55rem !important;
+      
     }
 
     .found-words-word,
@@ -3591,7 +3591,7 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #board {
-        max-width: 39rem !important;
+        
       }
 
       #board .board-cell {
@@ -3599,7 +3599,7 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #word-form {
-        min-height: 4.1rem !important;
+        
       }
     }
 
@@ -3642,7 +3642,7 @@ function injectLegacyThemeFoundationV42() {
       }
 
       #board {
-        width: min(100%, 42rem) !important;
+        
       }
     }
   `;

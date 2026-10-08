@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:20:47.711Z",
+  "generatedAt": "2026-10-08T19:25:19.590Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
@@ -46,10 +46,10 @@
       "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
       "line": 13,
-      "blockChars": 108741,
-      "cssChars": 108423,
-      "idSelectorCount": 624,
-      "classSelectorCount": 1177,
+      "blockChars": 103762,
+      "cssChars": 103444,
+      "idSelectorCount": 622,
+      "classSelectorCount": 1104,
       "topIdSelectors": [
         [
           "#play-status-panel",
@@ -103,51 +103,51 @@
       "topClassSelectors": [
         [
           ".55rem",
-          45
-        ],
-        [
-          ".35rem",
-          39
-        ],
-        [
-          ".75rem",
-          38
+          42
         ],
         [
           ".8rem",
           38
         ],
         [
-          ".5rem",
-          34
+          ".35rem",
+          37
+        ],
+        [
+          ".75rem",
+          33
         ],
         [
           ".25rem",
-          33
+          31
         ],
         [
           ".65rem",
           30
         ],
         [
-          ".15rem",
+          ".5rem",
           29
         ],
         [
+          ".15rem",
+          26
+        ],
+        [
           ".7rem",
-          28
+          25
         ],
         [
           ".2rem",
-          27
+          24
         ],
         [
           ".85rem",
-          27
+          24
         ],
         [
           ".9rem",
-          27
+          24
         ]
       ]
     },
