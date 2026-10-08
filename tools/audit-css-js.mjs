@@ -59,6 +59,32 @@ function sortCount(a, b) {
   return b[1] - a[1] || a[0].localeCompare(b[0]);
 }
 
+function stripCssComments(css) {
+  return css.replace(/\/\*[\s\S]*?\*\//g, "");
+}
+
+function splitSelectorList(selectorsText) {
+  return selectorsText
+    .split(",")
+    .map((selector) => selector.trim().replace(/\s+/g, " "))
+    .filter(Boolean);
+}
+
+function extractSelectorTokens(css, pattern) {
+  const clean = stripCssComments(css);
+  const selectors = [];
+  const rulePattern = /([^{}@][^{}]*)\{[^{}]*\}/g;
+  let match;
+
+  while ((match = rulePattern.exec(clean))) {
+    selectors.push(...splitSelectorList(match[1]));
+  }
+
+  return selectors.flatMap((selector) =>
+    [...selector.matchAll(pattern)].map((selectorMatch) => selectorMatch[0])
+  );
+}
+
 function findFunctionBlock(content, name) {
   const startIndex = content.indexOf("function " + name);
   if (startIndex === -1) {
@@ -138,8 +164,8 @@ for (const decl of functionDeclarations.filter((item) => item.name.startsWith("i
   const block = findFunctionBlock(source.content, decl.name);
   const cssMatch = block.match(/style\.textContent\s*=\s*`([\s\S]*?)`;/);
   const css = cssMatch ? cssMatch[1] : "";
-  const idSelectors = [...css.matchAll(/#[A-Za-z0-9_-]+/g)].map((m) => m[0]);
-  const classSelectors = [...css.matchAll(/\.[A-Za-z0-9_-]+/g)].map((m) => m[0]);
+  const idSelectors = extractSelectorTokens(css, /#[A-Za-z0-9_-]+/g);
+  const classSelectors = extractSelectorTokens(css, /\.[A-Za-z0-9_-]+/g);
 
   injectionFunctions.push({
     name: decl.name,
@@ -200,6 +226,7 @@ const report = {
     "Ne supprimer que les fonctions avec references=1 après vérification manuelle.",
     "Consolider les injections CSS de la plus récente vers l'ancienne, pas l'inverse.",
     "Priorité de fusion CSS : boutons, plateau/saisie, panneaux gauche/droite, popup fin.",
+    "Les sélecteurs CSS sont comptés uniquement dans les sélecteurs de règles, pas dans les valeurs.",
     "Garder une version committée avant chaque suppression de couche CSS."
   ]
 };

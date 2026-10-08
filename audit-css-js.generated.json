@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:41:31.773Z",
+  "generatedAt": "2026-10-08T19:57:33.189Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
@@ -48,8 +48,8 @@
       "line": 13,
       "blockChars": 106548,
       "cssChars": 106230,
-      "idSelectorCount": 689,
-      "classSelectorCount": 1135,
+      "idSelectorCount": 549,
+      "classSelectorCount": 216,
       "topIdSelectors": [
         [
           "#play-status-panel",
@@ -102,52 +102,52 @@
       ],
       "topClassSelectors": [
         [
-          ".55rem",
-          42
-        ],
-        [
-          ".8rem",
-          38
-        ],
-        [
-          ".35rem",
-          37
-        ],
-        [
-          ".75rem",
-          33
-        ],
-        [
-          ".25rem",
-          31
-        ],
-        [
-          ".65rem",
-          30
-        ],
-        [
-          ".5rem",
-          29
-        ],
-        [
-          ".15rem",
-          26
-        ],
-        [
-          ".7rem",
-          25
-        ],
-        [
-          ".2rem",
+          ".mockup-info-card",
           24
         ],
         [
-          ".85rem",
-          24
+          ".board-cell",
+          19
         ],
         [
-          ".9rem",
-          24
+          ".found-words-player",
+          13
+        ],
+        [
+          ".player-row",
+          10
+        ],
+        [
+          ".mockup-help-list",
+          9
+        ],
+        [
+          ".found-words-word",
+          8
+        ],
+        [
+          ".ui-button",
+          8
+        ],
+        [
+          ".connection-field-label",
+          6
+        ],
+        [
+          ".rule-pill",
+          6
+        ],
+        [
+          ".board-letter",
+          5
+        ],
+        [
+          ".boggle-column",
+          5
+        ],
+        [
+          ".connected-badge",
+          5
         ]
       ]
     },
@@ -157,8 +157,8 @@
       "line": 3810,
       "blockChars": 11295,
       "cssChars": 10978,
-      "idSelectorCount": 92,
-      "classSelectorCount": 78,
+      "idSelectorCount": 84,
+      "classSelectorCount": 6,
       "topIdSelectors": [
         [
           "#boggle-layout",
@@ -177,16 +177,8 @@
           4
         ],
         [
-          "#6e3d1d",
-          3
-        ],
-        [
           "#connection-core",
           3
-        ],
-        [
-          "#4b3322",
-          2
         ],
         [
           "#boggle-center",
@@ -205,58 +197,30 @@
           2
         ],
         [
-          "#end-screen",
+          "#player-preferences",
           2
+        ],
+        [
+          "#welcome-panel",
+          2
+        ],
+        [
+          "#board",
+          1
         ]
       ],
       "topClassSelectors": [
-        [
-          ".9rem",
-          7
-        ],
-        [
-          ".35rem",
-          4
-        ],
-        [
-          ".4rem",
-          4
-        ],
-        [
-          ".5rem",
-          4
-        ],
-        [
-          ".75rem",
-          4
-        ],
-        [
-          ".8rem",
-          4
-        ],
         [
           ".boggle-end-screen-open",
           4
         ],
         [
-          ".2rem",
-          3
+          ".mockup-info-card",
+          1
         ],
         [
-          ".55rem",
-          3
-        ],
-        [
-          ".7rem",
-          3
-        ],
-        [
-          ".105",
-          2
-        ],
-        [
-          ".25rem",
-          2
+          ".victory-modal-close-v16",
+          1
         ]
       ]
     },
@@ -266,20 +230,12 @@
       "line": 4186,
       "blockChars": 6290,
       "cssChars": 5982,
-      "idSelectorCount": 29,
-      "classSelectorCount": 74,
+      "idSelectorCount": 23,
+      "classSelectorCount": 23,
       "topIdSelectors": [
         [
           "#word-form",
           5
-        ],
-        [
-          "#5d351e",
-          3
-        ],
-        [
-          "#6e3d1d",
-          3
         ],
         [
           "#mockup-help-card",
@@ -320,26 +276,6 @@
       ],
       "topClassSelectors": [
         [
-          ".55rem",
-          4
-        ],
-        [
-          ".65rem",
-          4
-        ],
-        [
-          ".08",
-          3
-        ],
-        [
-          ".15rem",
-          3
-        ],
-        [
-          ".35rem",
-          3
-        ],
-        [
           ".mockup-info-card",
           3
         ],
@@ -348,23 +284,43 @@
           3
         ],
         [
-          ".72rem",
-          2
-        ],
-        [
-          ".75rem",
-          2
-        ],
-        [
-          ".9rem",
-          2
-        ],
-        [
           ".rules-help-details-v22",
           2
         ],
         [
-          ".035em",
+          ".boggle-feedback-accepted",
+          1
+        ],
+        [
+          ".boggle-feedback-duplicate",
+          1
+        ],
+        [
+          ".boggle-feedback-host",
+          1
+        ],
+        [
+          ".boggle-feedback-invalid",
+          1
+        ],
+        [
+          ".mockup-help-list",
+          1
+        ],
+        [
+          ".mockup-option-status-v18",
+          1
+        ],
+        [
+          ".mockup-option-status-v20",
+          1
+        ],
+        [
+          ".rules-help-actions-v22",
+          1
+        ],
+        [
+          ".rules-help-bullet-v22",
           1
         ]
       ]
@@ -375,56 +331,12 @@
       "line": 4398,
       "blockChars": 8395,
       "cssChars": 8095,
-      "idSelectorCount": 35,
-      "classSelectorCount": 124,
+      "idSelectorCount": 10,
+      "classSelectorCount": 71,
       "topIdSelectors": [
         [
           "#found-words",
           10
-        ],
-        [
-          "#25150d",
-          3
-        ],
-        [
-          "#1468c7",
-          2
-        ],
-        [
-          "#5d351e",
-          2
-        ],
-        [
-          "#7d3fc7",
-          2
-        ],
-        [
-          "#d42323",
-          2
-        ],
-        [
-          "#0f4d95",
-          1
-        ],
-        [
-          "#105a38",
-          1
-        ],
-        [
-          "#137a48",
-          1
-        ],
-        [
-          "#14653c",
-          1
-        ],
-        [
-          "#16824f",
-          1
-        ],
-        [
-          "#21a663",
-          1
         ]
       ],
       "topClassSelectors": [
@@ -435,10 +347,6 @@
         [
           ".found-words-player-tab",
           8
-        ],
-        [
-          ".65rem",
-          7
         ],
         [
           ".found-word-dot",
@@ -469,12 +377,16 @@
           5
         ],
         [
-          ".16",
+          ".found-words-row",
           3
         ],
         [
-          ".4rem",
-          3
+          ".found-words-empty-row",
+          2
+        ],
+        [
+          ".found-words-header-cell",
+          2
         ]
       ]
     },
@@ -485,7 +397,7 @@
       "blockChars": 1951,
       "cssChars": 1651,
       "idSelectorCount": 5,
-      "classSelectorCount": 1,
+      "classSelectorCount": 0,
       "topIdSelectors": [
         [
           "#board",
@@ -508,12 +420,7 @@
           1
         ]
       ],
-      "topClassSelectors": [
-        [
-          ".72rem",
-          1
-        ]
-      ]
+      "topClassSelectors": []
     },
     {
       "name": "injectFinalButtonsV34",
@@ -521,8 +428,8 @@
       "line": 4717,
       "blockChars": 4339,
       "cssChars": 4050,
-      "idSelectorCount": 32,
-      "classSelectorCount": 32,
+      "idSelectorCount": 24,
+      "classSelectorCount": 8,
       "topIdSelectors": [
         [
           "#mode-controls",
@@ -541,28 +448,8 @@
           4
         ],
         [
-          "#4b3322",
-          3
-        ],
-        [
-          "#fff6df",
-          2
-        ],
-        [
           "#word-input",
           2
-        ],
-        [
-          "#ea7e33",
-          1
-        ],
-        [
-          "#ffedc2",
-          1
-        ],
-        [
-          "#fff8f1",
-          1
         ]
       ],
       "topClassSelectors": [
@@ -571,48 +458,8 @@
           6
         ],
         [
-          ".34",
-          4
-        ],
-        [
-          ".13",
-          2
-        ],
-        [
-          ".2rem",
-          2
-        ],
-        [
-          ".45rem",
-          2
-        ],
-        [
-          ".55rem",
-          2
-        ],
-        [
           ".boggle-keyboard-word-impossible",
           2
-        ],
-        [
-          ".10",
-          1
-        ],
-        [
-          ".12",
-          1
-        ],
-        [
-          ".25rem",
-          1
-        ],
-        [
-          ".28",
-          1
-        ],
-        [
-          ".28rem",
-          1
         ]
       ]
     }
@@ -1552,6 +1399,7 @@
     "Ne supprimer que les fonctions avec references=1 après vérification manuelle.",
     "Consolider les injections CSS de la plus récente vers l'ancienne, pas l'inverse.",
     "Priorité de fusion CSS : boutons, plateau/saisie, panneaux gauche/droite, popup fin.",
+    "Les sélecteurs CSS sont comptés uniquement dans les sélecteurs de règles, pas dans les valeurs.",
     "Garder une version committée avant chaque suppression de couche CSS."
   ]
 }
