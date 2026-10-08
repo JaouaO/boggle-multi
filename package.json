@@ -13,7 +13,8 @@
     "check": "npm run typecheck && npm run check:js",
     "build": "npm run typecheck",
     "dry-run": "wrangler deploy --dry-run",
-    "audit:css-js": "node tools/audit-css-js.mjs"
+    "audit:css-js": "node tools/audit-css-js.mjs",
+    "audit:unused": "node tools/audit-unused-files.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.1",

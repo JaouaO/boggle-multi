@@ -142,10 +142,10 @@ injectMockupFullWidthThemeV6();
 injectMockupResponsiveThemeV7();
 injectMockupStableTopCleanVictoryThemeV16();
 injectMockupRightRulesInputThemeV22();
-injectVisibleControlsButtonsV28();
 injectWordsPlayersLayoutV29();
 injectFinalRecapHoverV30();
 injectBoardFitAndTabsV31();
+injectFinalButtonsV34();
 
 
 function injectDesignPassStyles() {
@@ -4295,7 +4295,6 @@ function injectMockupRightRulesInputThemeV22() {
       display: none !important;
     }
 
-    .rules-help-panel-v22,
     .rules-help-panel-v22 {
       display: grid !important;
       gap: 0.65rem !important;
@@ -4307,7 +4306,6 @@ function injectMockupRightRulesInputThemeV22() {
       pointer-events: auto !important;
     }
 
-    .rules-help-actions-v22,
     .rules-help-actions-v22 {
       display: grid !important;
       grid-template-columns: minmax(0, 1fr) auto !important;
@@ -4315,7 +4313,6 @@ function injectMockupRightRulesInputThemeV22() {
       gap: 0.65rem !important;
     }
 
-    .rules-help-level-v22,
     .rules-help-level-v22 {
       display: inline-flex !important;
       align-items: center !important;
@@ -4332,7 +4329,6 @@ function injectMockupRightRulesInputThemeV22() {
       white-space: nowrap !important;
     }
 
-    .rules-help-button-v22,
     .rules-help-button-v22 {
       min-height: 2.75rem !important;
       padding: 0.6rem 1.18rem !important;
@@ -4352,7 +4348,6 @@ function injectMockupRightRulesInputThemeV22() {
       font-size: clamp(0.95rem, 1vw, 1.05rem) !important;
     }
 
-    .rules-help-button-v22::after,
     .rules-help-button-v22::after {
       content: "›";
       margin-left: 0.45rem;
@@ -4361,8 +4356,6 @@ function injectMockupRightRulesInputThemeV22() {
       font-weight: 950;
     }
 
-    .rules-help-button-v22:hover,
-    .rules-help-button-v22:focus-visible,
     .rules-help-button-v22:hover,
     .rules-help-button-v22:focus-visible {
       transform: translateY(-1px);
@@ -4537,18 +4530,19 @@ function injectMockupRightRulesInputThemeV22() {
 
 
 
-function injectVisibleControlsButtonsV28() {
-  if (document.querySelector("#boggle-visible-controls-buttons-v28-style")) {
+function injectFinalButtonsV34() {
+  if (document.querySelector("#boggle-final-buttons-v34-style")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-visible-controls-buttons-v28-style";
+  style.id = "boggle-final-buttons-v34-style";
   style.textContent = `
     /*
-     * V28 : couche finale ciblée.
+     * V34 : couche finale dédiée aux boutons et contrôles cliquables.
      * - bouton d'aide = bouton standard, sans effet 3D ;
      * - boutons grille personnalisée visibles et cohérents ;
+     * - onglets joueurs lisibles ;
      * - tremblement discret sur saisie impossible, sans bloquer l'envoi.
      */
 
@@ -4631,6 +4625,33 @@ function injectVisibleControlsButtonsV28() {
       filter: none !important;
       outline: 3px solid rgba(244, 196, 48, 0.34) !important;
       outline-offset: 2px !important;
+    }
+
+    #found-words .found-words-player-tab,
+    #found-words button.found-words-player-tab {
+      background: #fff1d0 !important;
+      color: #5d351e !important;
+      border: 2px solid rgba(122, 75, 29, 0.22) !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    #found-words .found-words-player-tab[aria-selected="true"],
+    #found-words button.found-words-player-tab[aria-selected="true"] {
+      background: #ea7e33 !important;
+      color: #fff8f1 !important;
+      border-color: rgba(126, 59, 18, 0.32) !important;
+    }
+
+    #found-words .found-words-player-tab:not([aria-selected="true"]):hover,
+    #found-words button.found-words-player-tab:not([aria-selected="true"]):hover,
+    #found-words .found-words-player-tab:not([aria-selected="true"]):focus-visible,
+    #found-words button.found-words-player-tab:not([aria-selected="true"]):focus-visible {
+      background: #ffe5ad !important;
+      color: #4b3322 !important;
+      filter: none !important;
     }
 
     #word-input.boggle-keyboard-word-impossible {
@@ -5068,36 +5089,6 @@ function injectBoardFitAndTabsV31() {
       align-self: center !important;
       width: min(100%, 43rem) !important;
       margin: 0 auto !important;
-    }
-
-    /*
-     * Onglets joueurs : corrige le blanc sur blanc causé par les styles généraux button:not(.board-cell).
-     */
-    #found-words .found-words-player-tab,
-    #found-words button.found-words-player-tab {
-      background: #fff1d0 !important;
-      color: #5d351e !important;
-      border: 2px solid rgba(122, 75, 29, 0.22) !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    #found-words .found-words-player-tab[aria-selected="true"],
-    #found-words button.found-words-player-tab[aria-selected="true"] {
-      background: #ea7e33 !important;
-      color: #fff8f1 !important;
-      border-color: rgba(126, 59, 18, 0.32) !important;
-    }
-
-    #found-words .found-words-player-tab:not([aria-selected="true"]):hover,
-    #found-words button.found-words-player-tab:not([aria-selected="true"]):hover,
-    #found-words .found-words-player-tab:not([aria-selected="true"]):focus-visible,
-    #found-words button.found-words-player-tab:not([aria-selected="true"]):focus-visible {
-      background: #ffe5ad !important;
-      color: #4b3322 !important;
-      filter: none !important;
     }
   `;
 

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-08T17:13:21.335Z",
+  "generatedAt": "2026-10-08T17:22:34.504Z",
   "main": {
     "path": "public/js/main.js",
-    "lines": 7751,
-    "chars": 214278
+    "lines": 7742,
+    "chars": 221705
   },
   "injectionCalls": [
     {
@@ -51,19 +51,19 @@
       "line": 144
     },
     {
-      "name": "injectVisibleControlsButtonsV28",
+      "name": "injectWordsPlayersLayoutV29",
       "line": 145
     },
     {
-      "name": "injectWordsPlayersLayoutV29",
+      "name": "injectFinalRecapHoverV30",
       "line": 146
     },
     {
-      "name": "injectFinalRecapHoverV30",
+      "name": "injectBoardFitAndTabsV31",
       "line": 147
     },
     {
-      "name": "injectBoardFitAndTabsV31",
+      "name": "injectFinalButtonsV34",
       "line": 148
     }
   ],
@@ -71,8 +71,8 @@
     {
       "name": "injectDesignPassStyles",
       "line": 151,
-      "blockChars": 11614,
-      "cssChars": 11343,
+      "blockChars": 12137,
+      "cssChars": 11852,
       "idSelectorCount": 68,
       "classSelectorCount": 130,
       "topIdSelectors": [
@@ -179,8 +179,8 @@
     {
       "name": "injectFruityThemeOverrides",
       "line": 674,
-      "blockChars": 19558,
-      "cssChars": 19279,
+      "blockChars": 19983,
+      "cssChars": 19690,
       "idSelectorCount": 101,
       "classSelectorCount": 209,
       "topIdSelectors": [
@@ -287,8 +287,8 @@
     {
       "name": "injectMockupCloserTheme",
       "line": 1099,
-      "blockChars": 19661,
-      "cssChars": 19385,
+      "blockChars": 20344,
+      "cssChars": 20054,
       "idSelectorCount": 118,
       "classSelectorCount": 178,
       "topIdSelectors": [
@@ -395,8 +395,8 @@
     {
       "name": "injectMockupCloserThemeV2",
       "line": 1782,
-      "blockChars": 10068,
-      "cssChars": 9784,
+      "blockChars": 10467,
+      "cssChars": 10169,
       "idSelectorCount": 74,
       "classSelectorCount": 98,
       "topIdSelectors": [
@@ -503,8 +503,8 @@
     {
       "name": "injectMockupCloserThemeV3",
       "line": 2181,
-      "blockChars": 7925,
-      "cssChars": 7641,
+      "blockChars": 8217,
+      "cssChars": 7919,
       "idSelectorCount": 47,
       "classSelectorCount": 93,
       "topIdSelectors": [
@@ -611,8 +611,8 @@
     {
       "name": "injectMockupCloserThemeV4",
       "line": 2473,
-      "blockChars": 14121,
-      "cssChars": 13837,
+      "blockChars": 14615,
+      "cssChars": 14317,
       "idSelectorCount": 68,
       "classSelectorCount": 172,
       "topIdSelectors": [
@@ -719,8 +719,8 @@
     {
       "name": "injectMockupFullWidthThemeV5",
       "line": 2967,
-      "blockChars": 9521,
-      "cssChars": 9226,
+      "blockChars": 9877,
+      "cssChars": 9568,
       "idSelectorCount": 46,
       "classSelectorCount": 96,
       "topIdSelectors": [
@@ -827,8 +827,8 @@
     {
       "name": "injectMockupFullWidthThemeV6",
       "line": 3323,
-      "blockChars": 5240,
-      "cssChars": 4945,
+      "blockChars": 5464,
+      "cssChars": 5155,
       "idSelectorCount": 42,
       "classSelectorCount": 24,
       "topIdSelectors": [
@@ -935,8 +935,8 @@
     {
       "name": "injectMockupResponsiveThemeV7",
       "line": 3547,
-      "blockChars": 8857,
-      "cssChars": 8558,
+      "blockChars": 9201,
+      "cssChars": 8885,
       "idSelectorCount": 60,
       "classSelectorCount": 177,
       "topIdSelectors": [
@@ -1043,8 +1043,8 @@
     {
       "name": "injectMockupStableTopCleanVictoryThemeV16",
       "line": 3891,
-      "blockChars": 10957,
-      "cssChars": 10616,
+      "blockChars": 11338,
+      "cssChars": 10980,
       "idSelectorCount": 93,
       "classSelectorCount": 78,
       "topIdSelectors": [
@@ -1151,10 +1151,10 @@
     {
       "name": "injectMockupRightRulesInputThemeV22",
       "line": 4272,
-      "blockChars": 7663,
-      "cssChars": 7355,
+      "blockChars": 7702,
+      "cssChars": 7378,
       "idSelectorCount": 34,
-      "classSelectorCount": 107,
+      "classSelectorCount": 100,
       "topIdSelectors": [
         [
           "#word-form",
@@ -1207,15 +1207,15 @@
       ],
       "topClassSelectors": [
         [
-          ".rules-help-button-v22",
-          8
-        ],
-        [
           ".55rem",
           5
         ],
         [
           ".65rem",
+          4
+        ],
+        [
+          ".rules-help-button-v22",
           4
         ],
         [
@@ -1257,13 +1257,17 @@
       ]
     },
     {
-      "name": "injectVisibleControlsButtonsV28",
-      "line": 4540,
-      "blockChars": 4208,
-      "cssChars": 3894,
-      "idSelectorCount": 32,
-      "classSelectorCount": 32,
+      "name": "injectFinalButtonsV34",
+      "line": 4533,
+      "blockChars": 5488,
+      "cssChars": 5192,
+      "idSelectorCount": 46,
+      "classSelectorCount": 42,
       "topIdSelectors": [
+        [
+          "#found-words",
+          8
+        ],
         [
           "#mode-controls",
           8
@@ -1271,6 +1275,10 @@
         [
           "#mockup-help-card",
           6
+        ],
+        [
+          "#4b3322",
+          4
         ],
         [
           "#fill-example-board",
@@ -1281,11 +1289,15 @@
           4
         ],
         [
-          "#4b3322",
-          3
+          "#ea7e33",
+          2
         ],
         [
           "#fff6df",
+          2
+        ],
+        [
+          "#fff8f1",
           2
         ],
         [
@@ -1293,19 +1305,19 @@
           2
         ],
         [
-          "#ea7e33",
+          "#5d351e",
           1
         ],
         [
-          "#ffedc2",
-          1
-        ],
-        [
-          "#fff8f1",
+          "#ffe5ad",
           1
         ]
       ],
       "topClassSelectors": [
+        [
+          ".found-words-player-tab",
+          8
+        ],
         [
           ".rules-help-button-v22",
           6
@@ -1343,24 +1355,20 @@
           1
         ],
         [
+          ".22",
+          1
+        ],
+        [
           ".25rem",
-          1
-        ],
-        [
-          ".28",
-          1
-        ],
-        [
-          ".28rem",
           1
         ]
       ]
     },
     {
       "name": "injectWordsPlayersLayoutV29",
-      "line": 4674,
-      "blockChars": 5191,
-      "cssChars": 4889,
+      "line": 4695,
+      "blockChars": 5372,
+      "cssChars": 5056,
       "idSelectorCount": 13,
       "classSelectorCount": 71,
       "topIdSelectors": [
@@ -1466,9 +1474,9 @@
     },
     {
       "name": "injectFinalRecapHoverV30",
-      "line": 4855,
-      "blockChars": 4538,
-      "cssChars": 4245,
+      "line": 4876,
+      "blockChars": 4696,
+      "cssChars": 4389,
       "idSelectorCount": 22,
       "classSelectorCount": 60,
       "topIdSelectors": [
@@ -1574,46 +1582,18 @@
     },
     {
       "name": "injectBoardFitAndTabsV31",
-      "line": 5013,
-      "blockChars": 3067,
-      "cssChars": 2781,
-      "idSelectorCount": 19,
-      "classSelectorCount": 12,
+      "line": 5034,
+      "blockChars": 1932,
+      "cssChars": 1633,
+      "idSelectorCount": 5,
+      "classSelectorCount": 1,
       "topIdSelectors": [
-        [
-          "#found-words",
-          8
-        ],
-        [
-          "#4b3322",
-          1
-        ],
-        [
-          "#5d351e",
-          1
-        ],
         [
           "#board",
           1
         ],
         [
           "#boggle-center",
-          1
-        ],
-        [
-          "#ea7e33",
-          1
-        ],
-        [
-          "#ffe5ad",
-          1
-        ],
-        [
-          "#fff1d0",
-          1
-        ],
-        [
-          "#fff8f1",
           1
         ],
         [
@@ -1631,23 +1611,7 @@
       ],
       "topClassSelectors": [
         [
-          ".found-words-player-tab",
-          8
-        ],
-        [
-          ".22",
-          1
-        ],
-        [
-          ".32",
-          1
-        ],
-        [
           ".72rem",
-          1
-        ],
-        [
-          ".board-cell",
           1
         ]
       ]
@@ -1802,628 +1766,628 @@
       "references": 2
     },
     {
-      "name": "injectVisibleControlsButtonsV28",
-      "line": 4540,
+      "name": "injectFinalButtonsV34",
+      "line": 4533,
       "references": 2
     },
     {
       "name": "injectWordsPlayersLayoutV29",
-      "line": 4674,
+      "line": 4695,
       "references": 2
     },
     {
       "name": "injectFinalRecapHoverV30",
-      "line": 4855,
+      "line": 4876,
       "references": 2
     },
     {
       "name": "injectBoardFitAndTabsV31",
-      "line": 5013,
+      "line": 5034,
       "references": 2
     },
     {
       "name": "setupConnectionFields",
-      "line": 5108,
+      "line": 5099,
       "references": 2
     },
     {
       "name": "createWelcomePanel",
-      "line": 5170,
+      "line": 5161,
       "references": 2
     },
     {
       "name": "buildWelcomeGrid",
-      "line": 5192,
+      "line": 5183,
       "references": 2
     },
     {
       "name": "isSocketConnected",
-      "line": 5202,
+      "line": 5193,
       "references": 2
     },
     {
       "name": "loadLocalSettings",
-      "line": 5218,
+      "line": 5209,
       "references": 2
     },
     {
       "name": "readLocalJson",
-      "line": 5234,
+      "line": 5225,
       "references": 2
     },
     {
       "name": "saveLocalJson",
-      "line": 5251,
+      "line": 5242,
       "references": 2
     },
     {
       "name": "getInitialRoomIdFromUrl",
-      "line": 5259,
+      "line": 5250,
       "references": 2
     },
     {
       "name": "getCurrentRoomIdForInvite",
-      "line": 5270,
+      "line": 5261,
       "references": 2
     },
     {
       "name": "createRoomInviteUrl",
-      "line": 5274,
+      "line": 5265,
       "references": 2
     },
     {
       "name": "updateRoomUrl",
-      "line": 5280,
+      "line": 5271,
       "references": 2
     },
     {
       "name": "copyRoomInviteLink",
-      "line": 5301,
+      "line": 5292,
       "references": 2
     },
     {
       "name": "handleGlobalPointerUp",
-      "line": 5323,
+      "line": 5314,
       "references": 2
     },
     {
       "name": "handleKeyboardWordInput",
-      "line": 5406,
+      "line": 5397,
       "references": 2
     },
     {
       "name": "getSubmissionPathForTypedWord",
-      "line": 5431,
+      "line": 5422,
       "references": 2
     },
     {
       "name": "flashKeyboardWordImpossible",
-      "line": 5540,
+      "line": 5531,
       "references": 2
     },
     {
       "name": "connectToRoom",
-      "line": 5568,
+      "line": 5559,
       "references": 2
     },
     {
       "name": "startRandomTimedGame",
-      "line": 5652,
+      "line": 5643,
       "references": 2
     },
     {
       "name": "startSolutionMode",
-      "line": 5665,
+      "line": 5656,
       "references": 2
     },
     {
       "name": "formatBoardForTextarea",
-      "line": 5706,
+      "line": 5697,
       "references": 2
     },
     {
       "name": "syncPendingGameOptions",
-      "line": 5733,
+      "line": 5724,
       "references": 2
     },
     {
       "name": "renderPlayersWithHostBadges",
-      "line": 5789,
+      "line": 5780,
       "references": 2
     },
     {
       "name": "createPlayerRow",
-      "line": 5829,
+      "line": 5820,
       "references": 2
     },
     {
       "name": "handleServerMessage",
-      "line": 5897,
+      "line": 5888,
       "references": 2
     },
     {
       "name": "bindFoundWordHover",
-      "line": 6110,
+      "line": 6101,
       "references": 2
     },
     {
       "name": "normalizeFoundWordPath",
-      "line": 6130,
+      "line": 6121,
       "references": 2
     },
     {
       "name": "getInvalidCountForSelectedPlayer",
-      "line": 6140,
+      "line": 6131,
       "references": 2
     },
     {
       "name": "getFoundWordScoreClass",
-      "line": 6156,
+      "line": 6147,
       "references": 2
     },
     {
       "name": "getSelectedFoundWordsPlayer",
-      "line": 6182,
+      "line": 6173,
       "references": 2
     },
     {
       "name": "getFoundWordsForSelectedPlayer",
-      "line": 6201,
+      "line": 6192,
       "references": 2
     },
     {
       "name": "createFoundWordsPlayerTabs",
-      "line": 6227,
+      "line": 6218,
       "references": 2
     },
     {
       "name": "handleWordAccepted",
-      "line": 6254,
+      "line": 6245,
       "references": 2
     },
     {
       "name": "handleWordRejected",
-      "line": 6290,
+      "line": 6281,
       "references": 2
     },
     {
       "name": "getCurrentTargetScore",
-      "line": 6329,
+      "line": 6320,
       "references": 2
     },
     {
       "name": "handleSolutionsStats",
-      "line": 6361,
+      "line": 6352,
       "references": 2
     },
     {
       "name": "handleBoardCellClick",
-      "line": 6385,
+      "line": 6376,
       "references": 2
     },
     {
       "name": "handleCellHelpClick",
-      "line": 6398,
+      "line": 6389,
       "references": 2
     },
     {
       "name": "handleCellPointerDown",
-      "line": 6402,
+      "line": 6393,
       "references": 2
     },
     {
       "name": "handleCellPointerEnter",
-      "line": 6416,
+      "line": 6407,
       "references": 2
     },
     {
       "name": "handleCellPointerMove",
-      "line": 6420,
+      "line": 6411,
       "references": 2
     },
     {
       "name": "handleCellPointerCancel",
-      "line": 6424,
+      "line": 6415,
       "references": 2
     },
     {
       "name": "handleBoardPointerUp",
-      "line": 6428,
+      "line": 6419,
       "references": 2
     },
     {
       "name": "handleCellPointerUp",
-      "line": 6480,
+      "line": 6471,
       "references": 2
     },
     {
       "name": "updateHelpCell",
-      "line": 6543,
+      "line": 6534,
       "references": 2
     },
     {
       "name": "handleGameStarted",
-      "line": 6670,
+      "line": 6661,
       "references": 2
     },
     {
       "name": "handleGameEnded",
-      "line": 6771,
+      "line": 6762,
       "references": 2
     },
     {
       "name": "renderRulesHelpCardV22",
-      "line": 6889,
+      "line": 6880,
       "references": 2
     },
     {
       "name": "handleRulesHelpButtonClickV22",
-      "line": 6969,
+      "line": 6960,
       "references": 2
     },
     {
       "name": "getRulesHelpButtonLabelV22",
-      "line": 6989,
+      "line": 6980,
       "references": 2
     },
     {
       "name": "getRulesHelpLevelLabelV22",
-      "line": 7001,
+      "line": 6992,
       "references": 2
     },
     {
       "name": "getRulesHelpContentTitleV22",
-      "line": 7013,
+      "line": 7004,
       "references": 2
     },
     {
       "name": "getRulesHelpDetailsV22",
-      "line": 7025,
+      "line": 7016,
       "references": 2
     },
     {
       "name": "createSolutionListV22",
-      "line": 7061,
+      "line": 7052,
       "references": 2
     },
     {
       "name": "updateBoardFitV31",
-      "line": 7202,
+      "line": 7193,
       "references": 2
     },
     {
       "name": "showEndScreenOverlay",
-      "line": 7308,
+      "line": 7299,
       "references": 2
     },
     {
       "name": "ensureEndScreenBackdrop",
-      "line": 7314,
+      "line": 7305,
       "references": 2
     },
     {
       "name": "isCurrentPlayerWinning",
-      "line": 7407,
+      "line": 7398,
       "references": 2
     },
     {
       "name": "playVictorySound",
-      "line": 7419,
+      "line": 7410,
       "references": 2
     },
     {
       "name": "launchConfetti",
-      "line": 7475,
+      "line": 7466,
       "references": 2
     },
     {
       "name": "startCountdownWarning",
-      "line": 7511,
+      "line": 7502,
       "references": 2
     },
     {
       "name": "playCountdownTick",
-      "line": 7552,
+      "line": 7543,
       "references": 2
     },
     {
       "name": "playCountdownTone",
-      "line": 7585,
+      "line": 7576,
       "references": 2
     },
     {
       "name": "createFoundCellCounts",
-      "line": 7613,
+      "line": 7604,
       "references": 2
     },
     {
       "name": "readLocalString",
-      "line": 5226,
+      "line": 5217,
       "references": 3
     },
     {
       "name": "findBoardPathForWord",
-      "line": 5450,
+      "line": 5441,
       "references": 3
     },
     {
       "name": "visit",
-      "line": 5464,
+      "line": 5455,
       "references": 3
     },
     {
       "name": "takePendingSubmissionPath",
-      "line": 5562,
+      "line": 5553,
       "references": 3
     },
     {
       "name": "saveLastBoardSuggestion",
-      "line": 5686,
+      "line": 5677,
       "references": 3
     },
     {
       "name": "normalizeBoardTextForTextarea",
-      "line": 5723,
+      "line": 5714,
       "references": 3
     },
     {
       "name": "createPlayerBadge",
-      "line": 5888,
+      "line": 5879,
       "references": 3
     },
     {
       "name": "ensureSelectedFoundWordsPlayer",
-      "line": 5979,
+      "line": 5970,
       "references": 3
     },
     {
       "name": "canSelectFoundWordsPlayer",
-      "line": 6178,
+      "line": 6169,
       "references": 3
     },
     {
       "name": "renderTargetScoreStatus",
-      "line": 6346,
+      "line": 6337,
       "references": 3
     },
     {
       "name": "addCellToDragPath",
-      "line": 6432,
+      "line": 6423,
       "references": 3
     },
     {
       "name": "addClickedLetterToSelection",
-      "line": 6508,
+      "line": 6499,
       "references": 3
     },
     {
       "name": "areAdjacentCells",
-      "line": 6589,
+      "line": 6580,
       "references": 3
     },
     {
       "name": "changeHelpLevel",
-      "line": 6597,
+      "line": 6588,
       "references": 3
     },
     {
       "name": "getNextSimplifiedHelpLevel",
-      "line": 6620,
+      "line": 6611,
       "references": 3
     },
     {
       "name": "normalizeSimplifiedHelpLevel",
-      "line": 6640,
+      "line": 6631,
       "references": 3
     },
     {
       "name": "clampCurrentHelpLevel",
-      "line": 6660,
+      "line": 6651,
       "references": 3
     },
     {
       "name": "updateOptionCardText",
-      "line": 6876,
+      "line": 6867,
       "references": 3
     },
     {
       "name": "getRemainingSolutionWordsV22",
-      "line": 7085,
+      "line": 7076,
       "references": 3
     },
     {
       "name": "showEndScreenNow",
-      "line": 7296,
+      "line": 7287,
       "references": 3
     },
     {
       "name": "renderVictoryModalV16",
-      "line": 7327,
+      "line": 7318,
       "references": 3
     },
     {
       "name": "closeEndScreenPopup",
-      "line": 7385,
+      "line": 7376,
       "references": 3
     },
     {
       "name": "getElapsedDurationSeconds",
-      "line": 7603,
+      "line": 7594,
       "references": 3
     },
     {
       "name": "resetGameUiToWaiting",
-      "line": 7704,
+      "line": 7695,
       "references": 3
     },
     {
       "name": "submitWord",
-      "line": 5365,
+      "line": 5356,
       "references": 4
     },
     {
       "name": "submitSelectedWord",
-      "line": 5390,
+      "line": 5381,
       "references": 4
     },
     {
       "name": "rankPlayers",
-      "line": 5811,
+      "line": 5802,
       "references": 4
     },
     {
       "name": "normalizeFoundWordsForDisplay",
-      "line": 6217,
+      "line": 6208,
       "references": 4
     },
     {
       "name": "syncRulesSummarySlotVisibility",
-      "line": 7112,
+      "line": 7103,
       "references": 4
     },
     {
       "name": "renderCurrentEndScreen",
-      "line": 7497,
+      "line": 7488,
       "references": 4
     },
     {
       "name": "getFoundWordList",
-      "line": 7625,
+      "line": 7616,
       "references": 4
     },
     {
       "name": "saveLocalString",
-      "line": 5243,
+      "line": 5234,
       "references": 5
     },
     {
       "name": "finishCurrentDragSelection",
-      "line": 5337,
+      "line": 5328,
       "references": 5
     },
     {
       "name": "isSameCell",
-      "line": 6593,
+      "line": 6584,
       "references": 5
     },
     {
       "name": "renderPlayerPreferences",
-      "line": 6826,
+      "line": 6817,
       "references": 5
     },
     {
       "name": "scheduleBoardFitV31",
-      "line": 7196,
+      "line": 7187,
       "references": 5
     },
     {
       "name": "updateGameStatus",
-      "line": 7629,
+      "line": 7620,
       "references": 5
     },
     {
       "name": "updateInviteButton",
-      "line": 5290,
+      "line": 5281,
       "references": 6
     },
     {
       "name": "isCurrentPlayerHost",
-      "line": 5760,
+      "line": 5751,
       "references": 6
     },
     {
       "name": "updateSelectedWordFromPath",
-      "line": 6556,
+      "line": 6547,
       "references": 6
     },
     {
       "name": "pathToWord",
-      "line": 6585,
+      "line": 6576,
       "references": 6
     },
     {
       "name": "getMaxHelpLevel",
-      "line": 6608,
+      "line": 6599,
       "references": 6
     },
     {
       "name": "hideEndScreenOverlay",
-      "line": 7391,
+      "line": 7382,
       "references": 6
     },
     {
       "name": "normalizeComparableWord",
-      "line": 5551,
+      "line": 5542,
       "references": 7
     },
     {
       "name": "renderFoundWords",
-      "line": 6004,
+      "line": 5995,
       "references": 7
     },
     {
       "name": "updateWordInputFromPath",
-      "line": 6564,
+      "line": 6555,
       "references": 7
     },
     {
       "name": "clearSelectedLetters",
-      "line": 6570,
+      "line": 6561,
       "references": 7
     },
     {
       "name": "renderModePanel",
-      "line": 7149,
+      "line": 7140,
       "references": 7
     },
     {
       "name": "playVictoryTone",
-      "line": 7457,
+      "line": 7448,
       "references": 7
     },
     {
       "name": "refreshHomeVisibility",
-      "line": 5206,
+      "line": 5197,
       "references": 8
     },
     {
       "name": "send",
-      "line": 5752,
+      "line": 5743,
       "references": 8
     },
     {
       "name": "refreshHelpDisplay",
-      "line": 7159,
+      "line": 7150,
       "references": 8
     },
     {
       "name": "stopCountdownWarning",
-      "line": 7542,
+      "line": 7533,
       "references": 9
     },
     {
       "name": "renderMousePanel",
-      "line": 7288,
+      "line": 7279,
       "references": 12
     },
     {
       "name": "updateHostControls",
-      "line": 5766,
+      "line": 5757,
       "references": 14
     },
     {
       "name": "renderRulesSummary",
-      "line": 7116,
+      "line": 7107,
       "references": 14
     },
     {
       "name": "refreshRightRulesPanel",
-      "line": 6840,
+      "line": 6831,
       "references": 16
     },
     {
       "name": "renderCurrentBoardWithHelp",
-      "line": 7259,
+      "line": 7250,
       "references": 19
     }
   ],
