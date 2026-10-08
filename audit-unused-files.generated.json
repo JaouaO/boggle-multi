@@ -1,14 +1,7 @@
 {
-  "generatedAt": "2026-10-08T17:22:38.025Z",
-  "auditedCandidateCount": 19,
-  "probableUnused": [
-    {
-      "file": "public/js/ui/players-ui.js",
-      "referenceCount": 0,
-      "references": [],
-      "probableUnused": true
-    }
-  ],
+  "generatedAt": "2026-10-08T17:30:54.014Z",
+  "auditedCandidateCount": 18,
+  "probableUnused": [],
   "referenced": [
     {
       "file": "public/css/style.css",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T17:22:34.504Z",
+  "generatedAt": "2026-10-08T17:30:53.380Z",
   "main": {
     "path": "public/js/main.js",
     "lines": 7742,
@@ -2435,10 +2435,6 @@
     {
       "file": "public/js/ui/mouse-input-ui.js",
       "importedByMain": true
-    },
-    {
-      "file": "public/js/ui/players-ui.js",
-      "importedByMain": false
     },
     {
       "file": "public/js/ui/timer-ui.js",
