@@ -1,0 +1,676 @@
+{
+  "generatedAt": "2026-10-08T19:36:03.644Z",
+  "sourceAudit": "audit-css-overrides.generated.json",
+  "removedDeclarationCount": 31,
+  "preservedDeclarationCount": 31,
+  "removedDeclarations": [
+    {
+      "selectors": [
+        "#status"
+      ],
+      "property": "box-sizing",
+      "value": "border-box",
+      "preservedFor": [
+        ".info-badge",
+        "#game-status",
+        "#timer",
+        ".rule-pill"
+      ]
+    },
+    {
+      "selectors": [
+        "#connection-controls"
+      ],
+      "property": "position",
+      "value": "relative",
+      "preservedFor": [
+        "#connection-actions",
+        ".connection-control"
+      ]
+    },
+    {
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2"
+      ],
+      "property": "letter-spacing",
+      "value": "0.01em",
+      "preservedFor": [
+        ".connection-field-label",
+        "#launch-panel > h2",
+        "#play-status-panel > h2",
+        "#help-panel > h2"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-input"
+      ],
+      "property": "border-radius",
+      "value": "0.8rem !important",
+      "preservedFor": [
+        "#boggle-top input",
+        "#mode-controls input",
+        "#mode-controls select",
+        "#mode-controls textarea"
+      ]
+    },
+    {
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2"
+      ],
+      "property": "margin-bottom",
+      "value": "0.8rem !important",
+      "preservedFor": [
+        "#help-panel > h2",
+        "#play-status-panel > h2",
+        "#launch-panel > h2"
+      ]
+    },
+    {
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2"
+      ],
+      "property": "font-size",
+      "value": "1rem !important",
+      "preservedFor": [
+        "#help-panel > h2",
+        "#play-status-panel > h2",
+        "#launch-panel > h2"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-submit"
+      ],
+      "property": "border-radius",
+      "value": "var(--mk-pill) !important",
+      "preservedFor": [
+        "button:not(.board-cell)",
+        ".ui-button",
+        "#connect",
+        "#start",
+        "#mode-options-toggle",
+        "#player-preferences > button",
+        "#end-game"
+      ]
+    },
+    {
+      "selectors": [
+        "#boggle-center"
+      ],
+      "property": "display",
+      "value": "flex !important",
+      "preservedFor": [
+        "#boggle-left",
+        "#boggle-right"
+      ]
+    },
+    {
+      "selectors": [
+        "#boggle-center"
+      ],
+      "property": "flex-direction",
+      "value": "column !important",
+      "preservedFor": [
+        "#boggle-left",
+        "#boggle-right"
+      ]
+    },
+    {
+      "selectors": [
+        "#boggle-center"
+      ],
+      "property": "gap",
+      "value": "0.95rem !important",
+      "preservedFor": [
+        "#boggle-left",
+        "#boggle-right"
+      ]
+    },
+    {
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2"
+      ],
+      "property": "font-size",
+      "value": "1.2rem !important",
+      "preservedFor": [
+        "#help-panel > h2"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-submit"
+      ],
+      "property": "border-radius",
+      "value": "9999px !important",
+      "preservedFor": [
+        "#start",
+        "#mode-options-toggle",
+        "#connect",
+        "#status",
+        "#end-game",
+        "#player-preferences > button"
+      ]
+    },
+    {
+      "selectors": [
+        "#status"
+      ],
+      "property": "padding-inline",
+      "value": "1.25rem !important",
+      "preservedFor": [
+        "#connect",
+        "#player-preferences > button"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-form"
+      ],
+      "property": "box-shadow",
+      "value": "0 0.3rem 0.85rem rgba(97, 65, 35, 0.07) !important",
+      "preservedFor": [
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#play-status-panel",
+        "#launch-panel"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-points"
+      ],
+      "property": "min-height",
+      "value": "2rem !important",
+      "preservedFor": [
+        ".found-words-word",
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-points"
+      ],
+      "property": "display",
+      "value": "inline-flex !important",
+      "preservedFor": [
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-points"
+      ],
+      "property": "align-items",
+      "value": "center !important",
+      "preservedFor": [
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-points"
+      ],
+      "property": "padding",
+      "value": "0.28rem 0.5rem !important",
+      "preservedFor": [
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-points"
+      ],
+      "property": "font-weight",
+      "value": "750 !important",
+      "preservedFor": [
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        "#mockup-right-cards .mockup-info-card p"
+      ],
+      "property": "font-size",
+      "value": "0.96rem !important",
+      "preservedFor": [
+        ".mockup-help-list li"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-form"
+      ],
+      "property": "border-radius",
+      "value": "var(--panel-radius) !important",
+      "preservedFor": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-form"
+      ],
+      "property": "background",
+      "value": "rgba(255, 248, 232, 0.94) !important",
+      "preservedFor": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-form"
+      ],
+      "property": "border",
+      "value": "2px solid rgba(111, 73, 40, 0.105) !important",
+      "preservedFor": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ]
+    },
+    {
+      "selectors": [
+        "#word-form"
+      ],
+      "property": "box-shadow",
+      "value": "var(--soft-shadow) !important",
+      "preservedFor": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ]
+    },
+    {
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2"
+      ],
+      "property": "font-size",
+      "value": "1.42rem !important",
+      "preservedFor": [
+        ".mockup-info-card h2"
+      ]
+    },
+    {
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2"
+      ],
+      "property": "letter-spacing",
+      "value": "-0.035em !important",
+      "preservedFor": [
+        ".mockup-info-card h2"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-points"
+      ],
+      "property": "min-height",
+      "value": "2.35rem !important",
+      "preservedFor": [
+        ".found-words-word",
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-points"
+      ],
+      "property": "padding",
+      "value": "0.36rem 0.6rem !important",
+      "preservedFor": [
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-word"
+      ],
+      "property": "background",
+      "value": "rgba(255, 250, 239, 0.54) !important",
+      "preservedFor": [
+        ".found-words-points",
+        ".found-words-player"
+      ]
+    },
+    {
+      "selectors": [
+        "#boggle-center"
+      ],
+      "property": "overflow",
+      "value": "visible !important",
+      "preservedFor": [
+        "#boggle-left",
+        "#boggle-right"
+      ]
+    },
+    {
+      "selectors": [
+        ".found-words-points"
+      ],
+      "property": "min-height",
+      "value": "clamp(1.85rem, 3vh, 2.35rem) !important",
+      "preservedFor": [
+        ".found-words-word",
+        ".found-words-player"
+      ]
+    }
+  ],
+  "preservedDeclarationsForNonTargetSelectors": [
+    {
+      "selectors": [
+        ".info-badge",
+        "#game-status",
+        "#timer",
+        ".rule-pill"
+      ],
+      "property": "box-sizing",
+      "value": "border-box"
+    },
+    {
+      "selectors": [
+        "#connection-actions",
+        ".connection-control"
+      ],
+      "property": "position",
+      "value": "relative"
+    },
+    {
+      "selectors": [
+        ".connection-field-label",
+        "#launch-panel > h2",
+        "#play-status-panel > h2",
+        "#help-panel > h2"
+      ],
+      "property": "letter-spacing",
+      "value": "0.01em"
+    },
+    {
+      "selectors": [
+        "#boggle-top input",
+        "#mode-controls input",
+        "#mode-controls select",
+        "#mode-controls textarea"
+      ],
+      "property": "border-radius",
+      "value": "0.8rem !important"
+    },
+    {
+      "selectors": [
+        "#help-panel > h2",
+        "#play-status-panel > h2",
+        "#launch-panel > h2"
+      ],
+      "property": "margin-bottom",
+      "value": "0.8rem !important"
+    },
+    {
+      "selectors": [
+        "#help-panel > h2",
+        "#play-status-panel > h2",
+        "#launch-panel > h2"
+      ],
+      "property": "font-size",
+      "value": "1rem !important"
+    },
+    {
+      "selectors": [
+        "button:not(.board-cell)",
+        ".ui-button",
+        "#connect",
+        "#start",
+        "#mode-options-toggle",
+        "#player-preferences > button",
+        "#end-game"
+      ],
+      "property": "border-radius",
+      "value": "var(--mk-pill) !important"
+    },
+    {
+      "selectors": [
+        "#boggle-left",
+        "#boggle-right"
+      ],
+      "property": "display",
+      "value": "flex !important"
+    },
+    {
+      "selectors": [
+        "#boggle-left",
+        "#boggle-right"
+      ],
+      "property": "flex-direction",
+      "value": "column !important"
+    },
+    {
+      "selectors": [
+        "#boggle-left",
+        "#boggle-right"
+      ],
+      "property": "gap",
+      "value": "0.95rem !important"
+    },
+    {
+      "selectors": [
+        "#help-panel > h2"
+      ],
+      "property": "font-size",
+      "value": "1.2rem !important"
+    },
+    {
+      "selectors": [
+        "#start",
+        "#mode-options-toggle",
+        "#connect",
+        "#status",
+        "#end-game",
+        "#player-preferences > button"
+      ],
+      "property": "border-radius",
+      "value": "9999px !important"
+    },
+    {
+      "selectors": [
+        "#connect",
+        "#player-preferences > button"
+      ],
+      "property": "padding-inline",
+      "value": "1.25rem !important"
+    },
+    {
+      "selectors": [
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#play-status-panel",
+        "#launch-panel"
+      ],
+      "property": "box-shadow",
+      "value": "0 0.3rem 0.85rem rgba(97, 65, 35, 0.07) !important"
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-player"
+      ],
+      "property": "min-height",
+      "value": "2rem !important"
+    },
+    {
+      "selectors": [
+        ".found-words-player"
+      ],
+      "property": "display",
+      "value": "inline-flex !important"
+    },
+    {
+      "selectors": [
+        ".found-words-player"
+      ],
+      "property": "align-items",
+      "value": "center !important"
+    },
+    {
+      "selectors": [
+        ".found-words-player"
+      ],
+      "property": "padding",
+      "value": "0.28rem 0.5rem !important"
+    },
+    {
+      "selectors": [
+        ".found-words-player"
+      ],
+      "property": "font-weight",
+      "value": "750 !important"
+    },
+    {
+      "selectors": [
+        ".mockup-help-list li"
+      ],
+      "property": "font-size",
+      "value": "0.96rem !important"
+    },
+    {
+      "selectors": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ],
+      "property": "border-radius",
+      "value": "var(--panel-radius) !important"
+    },
+    {
+      "selectors": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ],
+      "property": "background",
+      "value": "rgba(255, 248, 232, 0.94) !important"
+    },
+    {
+      "selectors": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ],
+      "property": "border",
+      "value": "2px solid rgba(111, 73, 40, 0.105) !important"
+    },
+    {
+      "selectors": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#welcome-panel"
+      ],
+      "property": "box-shadow",
+      "value": "var(--soft-shadow) !important"
+    },
+    {
+      "selectors": [
+        ".mockup-info-card h2"
+      ],
+      "property": "font-size",
+      "value": "1.42rem !important"
+    },
+    {
+      "selectors": [
+        ".mockup-info-card h2"
+      ],
+      "property": "letter-spacing",
+      "value": "-0.035em !important"
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-player"
+      ],
+      "property": "min-height",
+      "value": "2.35rem !important"
+    },
+    {
+      "selectors": [
+        ".found-words-player"
+      ],
+      "property": "padding",
+      "value": "0.36rem 0.6rem !important"
+    },
+    {
+      "selectors": [
+        ".found-words-points",
+        ".found-words-player"
+      ],
+      "property": "background",
+      "value": "rgba(255, 250, 239, 0.54) !important"
+    },
+    {
+      "selectors": [
+        "#boggle-left",
+        "#boggle-right"
+      ],
+      "property": "overflow",
+      "value": "visible !important"
+    },
+    {
+      "selectors": [
+        ".found-words-word",
+        ".found-words-player"
+      ],
+      "property": "min-height",
+      "value": "clamp(1.85rem, 3vh, 2.35rem) !important"
+    }
+  ],
+  "notes": [
+    "Suppression/séparation des déclarations legacy restantes écrasées par les couches finales.",
+    "Quand une règle multi-sélecteurs concernait aussi des sélecteurs non couverts, la déclaration a été réintroduite uniquement pour ces sélecteurs non ciblés.",
+    "Les keyframes 0%/100% restent exclues."
+  ]
+}

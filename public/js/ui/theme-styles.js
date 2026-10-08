@@ -79,6 +79,12 @@ function injectLegacyThemeFoundationV42() {
       font-weight: 850;
       line-height: 1.1;
       white-space: nowrap;
+      
+    }
+    .info-badge,
+    #game-status,
+    #timer,
+    .rule-pill {
       box-sizing: border-box;
     }
 
@@ -604,8 +610,12 @@ function injectLegacyThemeFoundationV42() {
     #connection-controls,
     #connection-actions,
     .connection-control {
-      position: relative;
+      
       z-index: 1;
+    }
+    #connection-actions,
+    .connection-control {
+      position: relative;
     }
 
     .connection-field-label,
@@ -616,6 +626,12 @@ function injectLegacyThemeFoundationV42() {
     #help-panel > h2 {
       color: var(--fruit-brown) !important;
       font-weight: 900 !important;
+      
+    }
+    .connection-field-label,
+    #launch-panel > h2,
+    #play-status-panel > h2,
+    #help-panel > h2 {
       letter-spacing: 0.01em;
     }
 
@@ -678,10 +694,16 @@ function injectLegacyThemeFoundationV42() {
     #mode-controls select,
     #mode-controls textarea {
       border: 1px solid rgba(122, 87, 52, 0.18) !important;
-      border-radius: 0.8rem !important;
+      
       background: rgba(255, 252, 242, 0.96) !important;
       color: var(--fruit-brown) !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.45) !important;
+    }
+    #boggle-top input,
+    #mode-controls input,
+    #mode-controls select,
+    #mode-controls textarea {
+      border-radius: 0.8rem !important;
     }
 
     .info-badge,
@@ -783,7 +805,17 @@ function injectLegacyThemeFoundationV42() {
     #help-panel > h2,
     #play-status-panel > h2,
     #launch-panel > h2 {
+      
+      
+    }
+    #help-panel > h2,
+    #play-status-panel > h2,
+    #launch-panel > h2 {
       margin-bottom: 0.8rem !important;
+    }
+    #help-panel > h2,
+    #play-status-panel > h2,
+    #launch-panel > h2 {
       font-size: 1rem !important;
     }
 
@@ -1115,7 +1147,7 @@ function injectLegacyThemeFoundationV42() {
     #mode-options-toggle,
     #player-preferences > button,
     #end-game {
-      border-radius: var(--mk-pill) !important;
+      
       border: 1px solid transparent !important;
       background-image: none !important;
       box-shadow: none !important;
@@ -1123,6 +1155,15 @@ function injectLegacyThemeFoundationV42() {
       font-weight: 950 !important;
       letter-spacing: 0 !important;
       transition: transform 120ms ease, filter 120ms ease, background 120ms ease !important;
+    }
+    button:not(.board-cell),
+    .ui-button,
+    #connect,
+    #start,
+    #mode-options-toggle,
+    #player-preferences > button,
+    #end-game {
+      border-radius: var(--mk-pill) !important;
     }
 
     button:not(.board-cell):hover,
@@ -1213,10 +1254,22 @@ function injectLegacyThemeFoundationV42() {
     #boggle-left,
     #boggle-center,
     #boggle-right {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 0.95rem !important;
+      
+      
+      
       min-width: 0 !important;
+    }
+    #boggle-left,
+    #boggle-right {
+      display: flex !important;
+    }
+    #boggle-left,
+    #boggle-right {
+      flex-direction: column !important;
+    }
+    #boggle-left,
+    #boggle-right {
+      gap: 0.95rem !important;
     }
 
     #boggle-left {
@@ -1430,8 +1483,11 @@ function injectLegacyThemeFoundationV42() {
       padding-bottom: 0.65rem !important;
       border-bottom: 1px solid var(--mk-line) !important;
       color: var(--mk-ink) !important;
-      font-size: 1.2rem !important;
+      
       font-weight: 950 !important;
+    }
+    #help-panel > h2 {
+      font-size: 1.2rem !important;
     }
 
     #players-panel > h2::before { content: "👥 "; }
@@ -1700,9 +1756,17 @@ function injectLegacyThemeFoundationV42() {
     #end-game,
     #word-submit,
     #player-preferences > button {
-      border-radius: 9999px !important;
+      
       background-image: none !important;
       box-shadow: none !important;
+    }
+    #start,
+    #mode-options-toggle,
+    #connect,
+    #status,
+    #end-game,
+    #player-preferences > button {
+      border-radius: 9999px !important;
     }
 
     #start {
@@ -2098,9 +2162,13 @@ function injectLegacyThemeFoundationV42() {
     #player-preferences > button {
       min-height: 2.75rem !important;
       border-radius: 9999px !important;
-      padding-inline: 1.25rem !important;
+      
       font-size: 1rem !important;
       box-shadow: none !important;
+    }
+    #connect,
+    #player-preferences > button {
+      padding-inline: 1.25rem !important;
     }
 
     #player-preferences > button {
@@ -2166,6 +2234,13 @@ function injectLegacyThemeFoundationV42() {
     #play-status-panel,
     #launch-panel,
     #word-form {
+      
+    }
+    #players-panel,
+    #found-words-panel,
+    #mockup-right-cards .mockup-info-card,
+    #play-status-panel,
+    #launch-panel {
       box-shadow: 0 0.3rem 0.85rem rgba(97, 65, 35, 0.07) !important;
     }
 
@@ -2207,12 +2282,25 @@ function injectLegacyThemeFoundationV42() {
     .found-words-word,
     .found-words-points,
     .found-words-player {
-      min-height: 2rem !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      padding: 0.28rem 0.5rem !important;
+      
+      
+      
+      
       border-bottom: 1px solid rgba(111, 73, 40, 0.07) !important;
       box-sizing: border-box !important;
+    }
+    .found-words-word,
+    .found-words-player {
+      min-height: 2rem !important;
+    }
+    .found-words-player {
+      display: inline-flex !important;
+    }
+    .found-words-player {
+      align-items: center !important;
+    }
+    .found-words-player {
+      padding: 0.28rem 0.5rem !important;
     }
 
     .found-words-word {
@@ -2223,6 +2311,9 @@ function injectLegacyThemeFoundationV42() {
     .found-words-points,
     .found-words-player {
       color: #7a5b40 !important;
+      
+    }
+    .found-words-player {
       font-weight: 750 !important;
     }
 
@@ -2255,6 +2346,9 @@ function injectLegacyThemeFoundationV42() {
     }
 
     #mockup-right-cards .mockup-info-card p,
+    .mockup-help-list li {
+      
+    }
     .mockup-help-list li {
       font-size: 0.96rem !important;
     }
@@ -2459,9 +2553,45 @@ function injectLegacyThemeFoundationV42() {
     #play-status-panel,
     #word-form,
     #welcome-panel {
+      
+      
+      
+      
+    }
+    .boggle-column > section,
+    #players-panel,
+    #found-words-panel,
+    #mockup-right-cards .mockup-info-card,
+    #launch-panel,
+    #play-status-panel,
+    #welcome-panel {
       border-radius: var(--panel-radius) !important;
+    }
+    .boggle-column > section,
+    #players-panel,
+    #found-words-panel,
+    #mockup-right-cards .mockup-info-card,
+    #launch-panel,
+    #play-status-panel,
+    #welcome-panel {
       background: rgba(255, 248, 232, 0.94) !important;
+    }
+    .boggle-column > section,
+    #players-panel,
+    #found-words-panel,
+    #mockup-right-cards .mockup-info-card,
+    #launch-panel,
+    #play-status-panel,
+    #welcome-panel {
       border: 2px solid rgba(111, 73, 40, 0.105) !important;
+    }
+    .boggle-column > section,
+    #players-panel,
+    #found-words-panel,
+    #mockup-right-cards .mockup-info-card,
+    #launch-panel,
+    #play-status-panel,
+    #welcome-panel {
       box-shadow: var(--soft-shadow) !important;
     }
 
@@ -2650,10 +2780,16 @@ function injectLegacyThemeFoundationV42() {
     #players-panel > h2,
     #found-words-panel > h2,
     .mockup-info-card h2 {
-      font-size: 1.42rem !important;
+      
       font-weight: 700 !important;
-      letter-spacing: -0.035em !important;
+      
       color: var(--brown-dark) !important;
+    }
+    .mockup-info-card h2 {
+      font-size: 1.42rem !important;
+    }
+    .mockup-info-card h2 {
+      letter-spacing: -0.035em !important;
     }
 
     #players-panel {
@@ -2682,8 +2818,19 @@ function injectLegacyThemeFoundationV42() {
     .found-words-word,
     .found-words-points,
     .found-words-player {
+      
+      
+      
+    }
+    .found-words-word,
+    .found-words-player {
       min-height: 2.35rem !important;
+    }
+    .found-words-player {
       padding: 0.36rem 0.6rem !important;
+    }
+    .found-words-points,
+    .found-words-player {
       background: rgba(255, 250, 239, 0.54) !important;
     }
 
@@ -3355,6 +3502,10 @@ function injectLegacyThemeFoundationV42() {
     #boggle-right {
       height: 100% !important;
       min-height: 0 !important;
+      
+    }
+    #boggle-left,
+    #boggle-right {
       overflow: visible !important;
     }
 
@@ -3547,9 +3698,13 @@ function injectLegacyThemeFoundationV42() {
     .found-words-word,
     .found-words-points,
     .found-words-player {
-      min-height: clamp(1.85rem, 3vh, 2.35rem) !important;
+      
       padding-top: 0.24rem !important;
       padding-bottom: 0.24rem !important;
+    }
+    .found-words-word,
+    .found-words-player {
+      min-height: clamp(1.85rem, 3vh, 2.35rem) !important;
     }
 
     /*

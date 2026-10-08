@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:37:20.934Z",
+  "generatedAt": "2026-10-08T19:41:33.072Z",
   "source": "public/js/ui/theme-styles.js",
   "layerCount": 6,
   "layers": [
@@ -7,52 +7,52 @@
       "order": 1,
       "name": "injectLegacyThemeFoundationV42",
       "line": 13,
-      "cssChars": 103444,
-      "ruleCount": 2188
+      "cssChars": 106230,
+      "ruleCount": 2147
     },
     {
       "order": 2,
       "name": "injectTopLaunchEndScreenLayoutV39",
-      "line": 3655,
+      "line": 3810,
       "cssChars": 10978,
       "ruleCount": 223
     },
     {
       "order": 3,
       "name": "injectRulesHelpOptionsPanelV38",
-      "line": 4031,
+      "line": 4186,
       "cssChars": 5982,
       "ruleCount": 129
     },
     {
       "order": 4,
       "name": "injectFoundWordsPanelV37",
-      "line": 4243,
+      "line": 4398,
       "cssChars": 8095,
       "ruleCount": 179
     },
     {
       "order": 5,
       "name": "injectFinalBoardInputV36",
-      "line": 4497,
+      "line": 4652,
       "cssChars": 1651,
       "ruleCount": 32
     },
     {
       "order": 6,
       "name": "injectFinalButtonsV34",
-      "line": 4562,
+      "line": 4717,
       "cssChars": 4050,
       "ruleCount": 113
     }
   ],
-  "overrideCount": 963,
-  "sameValueOverrideCount": 203,
-  "changedValueOverrideCount": 760,
+  "overrideCount": 922,
+  "sameValueOverrideCount": 192,
+  "changedValueOverrideCount": 730,
   "overridePairs": [
     {
       "key": "injectLegacyThemeFoundationV42 -> injectLegacyThemeFoundationV42",
-      "count": 884
+      "count": 870
     },
     {
       "key": "injectTopLaunchEndScreenLayoutV39 -> injectTopLaunchEndScreenLayoutV39",
@@ -63,20 +63,12 @@
       "count": 17
     },
     {
-      "key": "injectLegacyThemeFoundationV42 -> injectRulesHelpOptionsPanelV38",
-      "count": 13
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectFoundWordsPanelV37",
-      "count": 9
-    },
-    {
       "key": "injectLegacyThemeFoundationV42 -> injectFinalBoardInputV36",
-      "count": 8
+      "count": 6
     },
     {
       "key": "injectLegacyThemeFoundationV42 -> injectTopLaunchEndScreenLayoutV39",
-      "count": 7
+      "count": 4
     },
     {
       "key": "injectRulesHelpOptionsPanelV38 -> injectFinalBoardInputV36",
@@ -117,11 +109,11 @@
       "count": 30
     },
     {
-      "key": "#status",
-      "count": 25
+      "key": "#boggle-shell",
+      "count": 23
     },
     {
-      "key": "#boggle-shell",
+      "key": "#status",
       "count": 23
     },
     {
@@ -141,15 +133,11 @@
       "count": 20
     },
     {
-      "key": "#word-submit",
-      "count": 18
-    },
-    {
-      "key": "#boggle-center",
-      "count": 17
-    },
-    {
       "key": "#board .board-cell",
+      "count": 16
+    },
+    {
+      "key": "#word-submit",
       "count": 16
     },
     {
@@ -161,15 +149,15 @@
       "count": 15
     },
     {
-      "key": "#word-input",
-      "count": 15
-    },
-    {
       "key": "#connect",
       "count": 14
     },
     {
       "key": "#launch-panel",
+      "count": 14
+    },
+    {
+      "key": "#word-input",
       "count": 14
     },
     {
@@ -185,7 +173,7 @@
       "count": 13
     },
     {
-      "key": "#connection-controls",
+      "key": "#boggle-center",
       "count": 13
     },
     {
@@ -193,15 +181,7 @@
       "count": 13
     },
     {
-      "key": "#word-form",
-      "count": 13
-    },
-    {
-      "key": "#found-words-panel > h2",
-      "count": 12
-    },
-    {
-      "key": "#players-panel > h2",
+      "key": "#connection-controls",
       "count": 12
     },
     {
@@ -225,10 +205,6 @@
       "count": 9
     },
     {
-      "key": ".found-words-points",
-      "count": 8
-    },
-    {
       "key": ".mockup-info-card h2",
       "count": 8
     },
@@ -237,8 +213,8 @@
       "count": 8
     },
     {
-      "key": ".found-words-word",
-      "count": 7
+      "key": "#word-form",
+      "count": 8
     },
     {
       "key": ".ui-button",
@@ -281,22 +257,38 @@
       "count": 6
     },
     {
+      "key": "#found-words-panel > h2",
+      "count": 6
+    },
+    {
       "key": "#game-status::before",
       "count": 6
     },
     {
       "key": "#help-slot",
       "count": 6
+    },
+    {
+      "key": "#play-status-panel > h2::before",
+      "count": 6
+    },
+    {
+      "key": "#players-panel > h2",
+      "count": 6
+    },
+    {
+      "key": ".info-badge",
+      "count": 5
     }
   ],
   "hotProperties": [
     {
       "key": "background",
-      "count": 82
+      "count": 80
     },
     {
       "key": "min-height",
-      "count": 76
+      "count": 73
     },
     {
       "key": "color",
@@ -304,35 +296,35 @@
     },
     {
       "key": "border-radius",
-      "count": 61
-    },
-    {
-      "key": "font-size",
-      "count": 55
+      "count": 57
     },
     {
       "key": "padding",
-      "count": 55
+      "count": 51
     },
     {
-      "key": "font-weight",
+      "key": "font-size",
       "count": 48
     },
     {
+      "key": "font-weight",
+      "count": 47
+    },
+    {
       "key": "border",
-      "count": 45
+      "count": 44
     },
     {
       "key": "box-shadow",
-      "count": 40
-    },
-    {
-      "key": "gap",
-      "count": 35
+      "count": 38
     },
     {
       "key": "height",
       "count": 35
+    },
+    {
+      "key": "gap",
+      "count": 34
     },
     {
       "key": "grid-template-columns",
@@ -344,19 +336,19 @@
     },
     {
       "key": "display",
-      "count": 33
+      "count": 30
     },
     {
       "key": "min-width",
       "count": 21
     },
     {
-      "key": "align-items",
-      "count": 20
-    },
-    {
       "key": "grid-column",
       "count": 19
+    },
+    {
+      "key": "align-items",
+      "count": 18
     },
     {
       "key": "margin",
@@ -383,14 +375,6 @@
       "count": 8
     },
     {
-      "key": "letter-spacing",
-      "count": 8
-    },
-    {
-      "key": "overflow",
-      "count": 8
-    },
-    {
       "key": "padding-bottom",
       "count": 8
     },
@@ -407,7 +391,7 @@
       "count": 7
     },
     {
-      "key": "padding-inline",
+      "key": "overflow",
       "count": 7
     },
     {
@@ -415,16 +399,16 @@
       "count": 6
     },
     {
-      "key": "box-sizing",
-      "count": 6
-    },
-    {
       "key": "justify-content",
       "count": 6
     },
     {
-      "key": "margin-bottom",
+      "key": "padding-inline",
       "count": 6
+    },
+    {
+      "key": "box-sizing",
+      "count": 5
     },
     {
       "key": "margin-left",
@@ -432,6 +416,14 @@
     },
     {
       "key": "align-self",
+      "count": 4
+    },
+    {
+      "key": "letter-spacing",
+      "count": 4
+    },
+    {
+      "key": "margin-bottom",
       "count": 4
     },
     {
@@ -451,15 +443,7 @@
       "count": 3
     },
     {
-      "key": "flex-direction",
-      "count": 3
-    },
-    {
       "key": "padding-top",
-      "count": 3
-    },
-    {
-      "key": "position",
       "count": 3
     },
     {
@@ -468,6 +452,10 @@
     },
     {
       "key": "flex",
+      "count": 2
+    },
+    {
+      "key": "flex-direction",
       "count": 2
     },
     {
@@ -489,11 +477,15 @@
     {
       "key": "padding-left",
       "count": 2
+    },
+    {
+      "key": "padding-right",
+      "count": 2
     }
   ],
-  "legacyOverriddenByFinalCount": 37,
-  "legacyOverriddenByFinalSameValueCount": 14,
-  "legacyOverriddenByFinalChangedValueCount": 23,
+  "legacyOverriddenByFinalCount": 10,
+  "legacyOverriddenByFinalSameValueCount": 3,
+  "legacyOverriddenByFinalChangedValueCount": 7,
   "legacyOverriddenByFinal": [
     {
       "selector": "#boggle-top",
@@ -523,33 +515,6 @@
       "valueChange": "changed-value"
     },
     {
-      "selector": "#connection-controls",
-      "property": "position",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "relative",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "static !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#status",
-      "property": "box-sizing",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "border-box",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "border-box !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": "#status",
-      "property": "padding-inline",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1.25rem !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "0.85rem !important",
-      "valueChange": "changed-value"
-    },
-    {
       "selector": "#boggle-top",
       "property": "grid-template-columns",
       "previousLayer": "injectLegacyThemeFoundationV42",
@@ -559,229 +524,13 @@
       "valueChange": "changed-value"
     },
     {
-      "selector": "#players-panel > h2",
-      "property": "font-size",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1.42rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#players-panel > h2",
-      "property": "letter-spacing",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "-0.035em !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "-0.035em !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": "#found-words-panel > h2",
-      "property": "font-size",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "1.42rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1.45rem, 1.42vw, 1.68rem) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#found-words-panel > h2",
-      "property": "letter-spacing",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "-0.035em !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "-0.035em !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": "#mockup-right-cards .mockup-info-card p",
-      "property": "font-size",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.96rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "clamp(1rem, 1.05vw, 1.14rem) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#players-panel > h2",
-      "property": "margin-bottom",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.8rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0.9rem !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#found-words-panel > h2",
-      "property": "margin-bottom",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.8rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0.9rem !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#word-form",
-      "property": "border",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "2px solid rgba(111, 73, 40, 0.105) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0 !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#word-form",
-      "property": "border-radius",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "var(--panel-radius) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "9999px !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#word-form",
-      "property": "background",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "rgba(255, 248, 232, 0.94) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "rgba(255, 248, 232, 0.96) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#word-form",
-      "property": "box-shadow",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "var(--soft-shadow) !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "0 0.35rem 1rem rgba(97, 65, 35, 0.08) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#word-input",
-      "property": "border-radius",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.8rem !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "9999px !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#word-submit",
-      "property": "border-radius",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "9999px !important",
-      "overridingLayer": "injectRulesHelpOptionsPanelV38",
-      "overridingValue": "9999px !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": ".found-words-word",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "inline-flex !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "inline-flex !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": ".found-words-word",
-      "property": "align-items",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "center !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": ".found-words-word",
-      "property": "padding",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.36rem 0.6rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.28rem 0.35rem !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": ".found-words-points",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "inline-flex !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "inline-flex !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": ".found-words-points",
-      "property": "align-items",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "center !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": ".found-words-points",
-      "property": "min-height",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "clamp(1.85rem, 3vh, 2.35rem) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "1.65rem !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": ".found-words-points",
-      "property": "padding",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0.36rem 0.6rem !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "0.12rem 0.48rem !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": ".found-words-points",
-      "property": "font-weight",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "750 !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "950 !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": ".found-words-word",
-      "property": "background",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "rgba(255, 250, 239, 0.54) !important",
-      "overridingLayer": "injectFoundWordsPanelV37",
-      "overridingValue": "transparent !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#boggle-center",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "flex !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "flex !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": "#boggle-center",
-      "property": "flex-direction",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "column !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "column !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
       "selector": "#boggle-center",
       "property": "overflow",
       "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "visible !important",
+      "previousValue": "hidden !important",
       "overridingLayer": "injectFinalBoardInputV36",
       "overridingValue": "visible !important",
-      "valueChange": "same-normalized-value"
+      "valueChange": "changed-value"
     },
     {
       "selector": "#boggle-center",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T19:37:17.874Z",
+  "generatedAt": "2026-10-08T19:41:31.773Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
@@ -46,17 +46,25 @@
       "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
       "line": 13,
-      "blockChars": 103762,
-      "cssChars": 103444,
-      "idSelectorCount": 622,
-      "classSelectorCount": 1104,
+      "blockChars": 106548,
+      "cssChars": 106230,
+      "idSelectorCount": 689,
+      "classSelectorCount": 1135,
       "topIdSelectors": [
         [
           "#play-status-panel",
-          37
+          45
         ],
         [
           "#boggle-top",
+          28
+        ],
+        [
+          "#found-words-panel",
+          27
+        ],
+        [
+          "#players-panel",
           27
         ],
         [
@@ -64,40 +72,32 @@
           24
         ],
         [
-          "#found-words-panel",
-          22
+          "#launch-panel",
+          24
         ],
         [
-          "#players-panel",
-          22
+          "#game-status",
+          21
         ],
         [
           "#boggle-layout",
           20
         ],
         [
-          "#game-status",
-          20
-        ],
-        [
           "#end-game",
-          17
+          19
         ],
         [
-          "#launch-panel",
-          16
-        ],
-        [
-          "#timer",
-          16
+          "#help-panel",
+          18
         ],
         [
           "#player-preferences",
-          15
+          18
         ],
         [
-          "#boggle-center",
-          14
+          "#mockup-right-cards",
+          17
         ]
       ],
       "topClassSelectors": [
@@ -154,7 +154,7 @@
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3655,
+      "line": 3810,
       "blockChars": 11295,
       "cssChars": 10978,
       "idSelectorCount": 92,
@@ -263,7 +263,7 @@
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4031,
+      "line": 4186,
       "blockChars": 6290,
       "cssChars": 5982,
       "idSelectorCount": 29,
@@ -372,7 +372,7 @@
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4243,
+      "line": 4398,
       "blockChars": 8395,
       "cssChars": 8095,
       "idSelectorCount": 35,
@@ -481,7 +481,7 @@
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4497,
+      "line": 4652,
       "blockChars": 1951,
       "cssChars": 1651,
       "idSelectorCount": 5,
@@ -518,7 +518,7 @@
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4562,
+      "line": 4717,
       "blockChars": 4339,
       "cssChars": 4050,
       "idSelectorCount": 32,
@@ -1108,31 +1108,31 @@
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3655,
+      "line": 3810,
       "references": 2
     },
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4031,
+      "line": 4186,
       "references": 2
     },
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4243,
+      "line": 4398,
       "references": 2
     },
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4497,
+      "line": 4652,
       "references": 2
     },
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4562,
+      "line": 4717,
       "references": 2
     },
     {
