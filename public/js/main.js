@@ -142,7 +142,7 @@ injectMockupFullWidthThemeV6();
 injectMockupResponsiveThemeV7();
 injectMockupStableTopCleanVictoryThemeV16();
 injectMockupRightRulesInputThemeV22();
-injectWordsPlayersLayoutV29();
+injectFoundWordsPanelV37();
 injectFinalRecapHoverV30();
 injectFinalBoardInputV36();
 injectFinalButtonsV34();
@@ -4542,7 +4542,6 @@ function injectFinalButtonsV34() {
      * V34 : couche finale dédiée aux boutons et contrôles cliquables.
      * - bouton d'aide = bouton standard, sans effet 3D ;
      * - boutons grille personnalisée visibles et cohérents ;
-     * - onglets joueurs lisibles ;
      * - tremblement discret sur saisie impossible, sans bloquer l'envoi.
      */
 
@@ -4627,33 +4626,6 @@ function injectFinalButtonsV34() {
       outline-offset: 2px !important;
     }
 
-    #found-words .found-words-player-tab,
-    #found-words button.found-words-player-tab {
-      background: #fff1d0 !important;
-      color: #5d351e !important;
-      border: 2px solid rgba(122, 75, 29, 0.22) !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    #found-words .found-words-player-tab[aria-selected="true"],
-    #found-words button.found-words-player-tab[aria-selected="true"] {
-      background: #ea7e33 !important;
-      color: #fff8f1 !important;
-      border-color: rgba(126, 59, 18, 0.32) !important;
-    }
-
-    #found-words .found-words-player-tab:not([aria-selected="true"]):hover,
-    #found-words button.found-words-player-tab:not([aria-selected="true"]):hover,
-    #found-words .found-words-player-tab:not([aria-selected="true"]):focus-visible,
-    #found-words button.found-words-player-tab:not([aria-selected="true"]):focus-visible {
-      background: #ffe5ad !important;
-      color: #4b3322 !important;
-      filter: none !important;
-    }
-
     #word-input.boggle-keyboard-word-impossible {
       border-color: rgba(239, 81, 69, 0.52) !important;
       box-shadow:
@@ -4692,16 +4664,16 @@ function injectFinalButtonsV34() {
 
 
 
-function injectWordsPlayersLayoutV29() {
-  if (document.querySelector("#boggle-words-players-layout-v29-style")) {
+function injectFoundWordsPanelV37() {
+  if (document.querySelector("#boggle-found-words-panel-v37-style")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-words-players-layout-v29-style";
+  style.id = "boggle-found-words-panel-v37-style";
   style.textContent = `
     /*
-     * V29 : liste des mots par points + sélecteur joueur final/solution.
+     * V37 : couche finale du panneau "Mots trouvés" et des onglets joueurs.
      * Les règles plateau/saisie finales sont centralisées dans V36.
      */
 
@@ -4711,7 +4683,7 @@ function injectWordsPlayersLayoutV29() {
       min-height: 0 !important;
     }
 
-    .found-words-player-tabs {
+    #found-words .found-words-player-tabs {
       display: flex !important;
       gap: 0.4rem !important;
       align-items: center !important;
@@ -4721,30 +4693,38 @@ function injectWordsPlayersLayoutV29() {
       background: rgba(90, 59, 35, 0.06) !important;
     }
 
-    .found-words-player-tab {
+    #found-words .found-words-player-tab,
+    #found-words button.found-words-player-tab {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       min-height: 2rem !important;
       padding: 0.35rem 0.75rem !important;
       border-radius: 999px !important;
-      border: 1px solid rgba(122, 75, 29, 0.16) !important;
-      background: rgba(255, 250, 236, 0.82) !important;
+      background: #fff1d0 !important;
       color: #5d351e !important;
-      font-weight: 900 !important;
-      cursor: pointer !important;
+      border: 2px solid rgba(122, 75, 29, 0.22) !important;
       box-shadow: none !important;
       text-shadow: none !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      font-weight: 900 !important;
+      cursor: pointer !important;
     }
 
-    .found-words-player-tab[aria-selected="true"] {
+    #found-words .found-words-player-tab[aria-selected="true"],
+    #found-words button.found-words-player-tab[aria-selected="true"] {
       background: #ea7e33 !important;
       color: #fff8f1 !important;
-      border-color: rgba(126, 59, 18, 0.28) !important;
+      border-color: rgba(126, 59, 18, 0.32) !important;
     }
 
-    .found-words-player-tab:hover,
-    .found-words-player-tab:focus-visible {
+    #found-words .found-words-player-tab:not([aria-selected="true"]):hover,
+    #found-words button.found-words-player-tab:not([aria-selected="true"]):hover,
+    #found-words .found-words-player-tab:not([aria-selected="true"]):focus-visible,
+    #found-words button.found-words-player-tab:not([aria-selected="true"]):focus-visible {
+      background: #ffe5ad !important;
+      color: #4b3322 !important;
       transform: translateY(-1px) !important;
       outline: 3px solid rgba(244, 196, 48, 0.28) !important;
       outline-offset: 2px !important;
