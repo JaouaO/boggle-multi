@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Boggle multi — grille partagée</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<main class="page">
+	<h1>Boggle multi — grille partagée</h1>
+
+	<p id="status" class="status">Non connecté</p>
+
+	<div class="row">
+		<input id="room" value="TEST" placeholder="Room">
+		<input id="name" value="Fred" placeholder="Nom">
+		<button id="connect">Connexion</button>
+	</div>
+
+	<div class="game-panel">
+		<p id="game-status" class="game-status">En attente de lancement</p>
+		<p id="timer" class="timer">03:00</p>
+	</div>
+
+	<div class="row">
+		<button id="start" disabled>Lancer une grille aléatoire</button>
+	</div>
+
+	<section>
+		<h2>Joueurs</h2>
+		<ul id="players"></ul>
+	</section>
+
+	<section>
+		<h2>Grille</h2>
+		<div id="board" class="board"></div>
+	</section>
+
+	<section>
+		<h2>Proposer un mot</h2>
+
+		<form id="word-form" class="row">
+			<input id="word-input" placeholder="Votre mot" autocomplete="off" disabled>
+			<button id="word-submit" type="submit" disabled>Valider</button>
+		</form>
+
+		<p id="word-feedback" class="word-feedback"></p>
+
+		<h3>Mots trouvés</h3>
+		<ul id="found-words" class="found-words"></ul>
+	</section>
+
+	<section>
+		<h2>Journal</h2>
+		<div id="log" class="log"></div>
+	</section>
+</main>
+
+<script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "base_zip": "boggle-multi - Copie.zip",
+  "version": "v32-technique",
+  "modified_files": [
+    "src/index.ts",
+    "src/rooms/BoggleRoom.ts",
+    "src/shared/types.ts",
+    "package.json",
+    "tools/check-js-syntax.mjs",
+    "README-v32-technique.md"
+  ],
+  "changes": {
+    "env_import_removed_from_index": true,
+    "env_removed_from_room_import": true,
+    "custom_env_type_removed": true,
+    "scripts_added": true,
+    "js_checker_added": true,
+    "node_modules_excluded": true
+  },
+  "checks": {
+    "check_js": {
+      "returncode": 0,
+      "stdout_tail": "[ok] public/js/core/state.js\n[ok] public/js/main.js\n[ok] public/js/net/socket.js\n[ok] public/js/ui/board-ui.js\n[ok] public/js/ui/end-screen-ui.js\n[ok] public/js/ui/feedback-ui.js\n[ok] public/js/ui/help-ui.js\n[ok] public/js/ui/layout-ui.js\n[ok] public/js/ui/log-ui.js\n[ok] public/js/ui/mode-ui.js\n[ok] public/js/ui/mouse-input-ui.js\n[ok] public/js/ui/players-ui.js\n[ok] public/js/ui/timer-ui.js\n[ok] public/js/ui/words-ui.js\n[ok] tools/build-dico.js\n[ok] tools/check-js-syntax.mjs\n\n16 fichier(s) JS vérifié(s).\n",
+      "stderr_tail": ""
+    },
+    "typecheck_without_dependencies": {
+      "returncode": 2,
+      "stdout_tail": "error TS2688: Cannot find type definition file for 'node'.\n  The file is in the program because:\n    Entry point of type library 'node' specified in compilerOptions\n",
+      "stderr_tail": "",
+      "note": "Le typecheck complet nécessite npm ci, car node_modules n'est volontairement pas inclus dans le zip."
+    }
+  },
+  "local_commands_for_user": [
+    "npm ci",
+    "npm run check",
+    "npm run dry-run"
+  ]
+}

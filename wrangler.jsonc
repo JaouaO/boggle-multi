@@ -1,0 +1,35 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "boggle-multi",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-09-16",
+
+	"migrations": [
+		{
+			"new_sqlite_classes": [
+				"BoggleRoom"
+			],
+			"tag": "v1"
+		}
+	],
+
+	"assets": {
+		"directory": "./public",
+		"binding": "ASSETS"
+	},
+
+	"durable_objects": {
+		"bindings": [
+			{
+				"class_name": "BoggleRoom",
+				"name": "BOGGLE_ROOM"
+			}
+		]
+	},
+
+	"observability": {
+		"enabled": true
+	},
+
+	"upload_source_maps": true
+}

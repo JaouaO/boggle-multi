@@ -1,0 +1,22 @@
+{
+  "name": "boggle-multi",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "cf-typegen": "wrangler types",
+    "build-dico": "node tools/build-dico.js",
+    "typecheck": "tsc --noEmit",
+    "check:js": "node tools/check-js-syntax.mjs",
+    "check": "npm run typecheck && npm run check:js",
+    "build": "npm run typecheck",
+    "dry-run": "wrangler deploy --dry-run"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "typescript": "^5.5.2",
+    "wrangler": "^4.134.0"
+  }
+}
