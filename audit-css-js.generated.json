@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T18:57:45.775Z",
+  "generatedAt": "2026-10-08T19:08:29.988Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
@@ -11,1062 +11,150 @@
   },
   "injectionCalls": [
     {
-      "name": "injectDesignPassStyles",
+      "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
       "line": 5
     },
     {
-      "name": "injectFruityThemeOverrides",
+      "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
       "line": 6
     },
     {
-      "name": "injectMockupCloserTheme",
+      "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
       "line": 7
     },
     {
-      "name": "injectMockupCloserThemeV2",
+      "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
       "line": 8
     },
     {
-      "name": "injectMockupCloserThemeV3",
+      "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
       "line": 9
     },
     {
-      "name": "injectMockupCloserThemeV4",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 10
-    },
-    {
-      "name": "injectMockupFullWidthThemeV5",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 11
-    },
-    {
-      "name": "injectMockupFullWidthThemeV6",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 12
-    },
-    {
-      "name": "injectMockupResponsiveThemeV7",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 13
-    },
-    {
-      "name": "injectTopLaunchEndScreenLayoutV39",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 14
-    },
-    {
-      "name": "injectRulesHelpOptionsPanelV38",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 15
-    },
-    {
-      "name": "injectFoundWordsPanelV37",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 16
-    },
-    {
-      "name": "injectFinalBoardInputV36",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 17
-    },
-    {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 18
+      "line": 10
     }
   ],
   "injectionFunctions": [
     {
-      "name": "injectDesignPassStyles",
+      "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
-      "line": 21,
-      "blockChars": 12130,
-      "cssChars": 11852,
-      "idSelectorCount": 68,
-      "classSelectorCount": 130,
+      "line": 13,
+      "blockChars": 108583,
+      "cssChars": 108265,
+      "idSelectorCount": 624,
+      "classSelectorCount": 1177,
       "topIdSelectors": [
         [
-          "#boggle-top",
-          7
-        ],
-        [
           "#play-status-panel",
-          5
-        ],
-        [
-          "#4b3322",
-          4
-        ],
-        [
-          "#connection-status-line",
-          4
-        ],
-        [
-          "#found-words",
-          4
-        ],
-        [
-          "#player-preferences",
-          4
-        ],
-        [
-          "#status",
-          4
-        ],
-        [
-          "#timer",
-          4
-        ],
-        [
-          "#game-status",
-          3
-        ],
-        [
-          "#mode-options-toggle",
-          3
-        ],
-        [
-          "#connection-controls",
-          2
-        ],
-        [
-          "#end-game",
-          2
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".15rem",
-          7
-        ],
-        [
-          ".35rem",
-          6
-        ],
-        [
-          ".55rem",
-          5
-        ],
-        [
-          ".75rem",
-          5
-        ],
-        [
-          ".5rem",
-          4
-        ],
-        [
-          ".65rem",
-          4
-        ],
-        [
-          ".board-cell",
-          4
-        ],
-        [
-          ".welcome-board",
-          4
-        ],
-        [
-          ".08",
-          3
-        ],
-        [
-          ".22",
-          3
-        ],
-        [
-          ".25rem",
-          3
-        ],
-        [
-          ".2rem",
-          3
-        ]
-      ]
-    },
-    {
-      "name": "injectFruityThemeOverrides",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 543,
-      "blockChars": 19976,
-      "cssChars": 19690,
-      "idSelectorCount": 101,
-      "classSelectorCount": 209,
-      "topIdSelectors": [
-        [
-          "#help-panel",
-          9
-        ],
-        [
-          "#play-status-panel",
-          7
-        ],
-        [
-          "#launch-panel",
-          6
+          37
         ],
         [
           "#boggle-top",
-          5
-        ],
-        [
-          "#found-words-panel",
-          5
-        ],
-        [
-          "#players-panel",
-          5
+          27
         ],
         [
           "#board",
-          3
+          24
         ],
         [
-          "#found-words",
-          3
+          "#found-words-panel",
+          22
         ],
         [
-          "#help-slot",
-          3
+          "#players-panel",
+          22
         ],
         [
-          "#mode-controls",
-          3
+          "#boggle-layout",
+          20
         ],
         [
-          "#status",
-          3
+          "#game-status",
+          20
         ],
         [
-          "#welcome-panel",
-          3
-        ]
-      ],
-      "topClassSelectors": [
+          "#end-game",
+          17
+        ],
         [
-          ".16",
+          "#launch-panel",
           16
         ],
         [
-          ".18",
-          13
-        ],
-        [
-          ".08",
-          6
-        ],
-        [
-          ".2rem",
-          6
-        ],
-        [
-          ".5",
-          6
-        ],
-        [
-          ".8rem",
-          6
-        ],
-        [
-          ".95",
-          6
-        ],
-        [
-          ".14",
-          5
-        ],
-        [
-          ".22",
-          5
-        ],
-        [
-          ".6",
-          4
-        ],
-        [
-          ".72",
-          4
-        ],
-        [
-          ".7rem",
-          4
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupCloserTheme",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 967,
-      "blockChars": 20337,
-      "cssChars": 20054,
-      "idSelectorCount": 118,
-      "classSelectorCount": 178,
-      "topIdSelectors": [
-        [
-          "#fff8e8",
-          6
-        ],
-        [
-          "#board",
-          5
-        ],
-        [
-          "#fffaf0",
-          4
-        ],
-        [
-          "#help-panel",
-          4
-        ],
-        [
-          "#player-preferences",
-          4
-        ],
-        [
-          "#rules-summary",
-          4
-        ],
-        [
-          "#start",
-          4
-        ],
-        [
-          "#word-submit",
-          4
-        ],
-        [
-          "#boggle-top",
-          3
-        ],
-        [
-          "#connect",
-          3
-        ],
-        [
-          "#connection-controls",
-          3
-        ],
-        [
-          "#found-words-panel",
-          3
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".1rem",
-          8
-        ],
-        [
-          ".65rem",
-          8
-        ],
-        [
-          ".75rem",
-          7
-        ],
-        [
-          ".7rem",
-          7
-        ],
-        [
-          ".95rem",
-          7
-        ],
-        [
-          ".9rem",
-          7
-        ],
-        [
-          ".25rem",
-          6
-        ],
-        [
-          ".2rem",
-          6
-        ],
-        [
-          ".55rem",
-          6
-        ],
-        [
-          ".45rem",
-          5
-        ],
-        [
-          ".4rem",
-          5
-        ],
-        [
-          ".5rem",
-          5
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupCloserThemeV2",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 1649,
-      "blockChars": 10460,
-      "cssChars": 10169,
-      "idSelectorCount": 74,
-      "classSelectorCount": 98,
-      "topIdSelectors": [
-        [
-          "#5d351e",
-          3
-        ],
-        [
-          "#end-game",
-          3
-        ],
-        [
-          "#found-words-panel",
-          3
-        ],
-        [
-          "#mode-options-toggle",
-          3
-        ],
-        [
-          "#play-status-panel",
-          3
-        ],
-        [
-          "#players-panel",
-          3
-        ],
-        [
-          "#6e5038",
-          2
-        ],
-        [
-          "#board",
-          2
-        ],
-        [
-          "#boggle-layout",
-          2
-        ],
-        [
-          "#connect",
-          2
-        ],
-        [
-          "#connection-controls",
-          2
-        ],
-        [
-          "#ef6255",
-          2
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".25rem",
-          6
-        ],
-        [
-          ".7rem",
-          6
-        ],
-        [
-          ".85rem",
-          6
-        ],
-        [
-          ".4rem",
-          5
-        ],
-        [
-          ".55rem",
-          4
-        ],
-        [
-          ".65rem",
-          4
-        ],
-        [
-          ".75rem",
-          4
-        ],
-        [
-          ".9rem",
-          4
-        ],
-        [
-          ".penalty-card",
-          4
-        ],
-        [
-          ".unique-card",
-          4
-        ],
-        [
-          ".08rem",
-          3
-        ],
-        [
-          ".22",
-          3
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupCloserThemeV3",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 2047,
-      "blockChars": 8210,
-      "cssChars": 7919,
-      "idSelectorCount": 47,
-      "classSelectorCount": 93,
-      "topIdSelectors": [
-        [
-          "#7a5b40",
-          3
-        ],
-        [
-          "#mockup-right-cards",
-          3
-        ],
-        [
-          "#play-status-panel",
-          3
-        ],
-        [
-          "#5d351e",
-          2
-        ],
-        [
-          "#boggle-top",
-          2
-        ],
-        [
-          "#connection-controls",
-          2
-        ],
-        [
-          "#game-status",
-          2
-        ],
-        [
-          "#player-preferences",
-          2
-        ],
-        [
-          "#word-form",
-          2
-        ],
-        [
-          "#49a6d8",
-          1
-        ],
-        [
-          "#62b64b",
-          1
-        ],
-        [
-          "#6b3b1f",
-          1
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".8rem",
-          6
-        ],
-        [
-          ".35rem",
-          5
-        ],
-        [
-          ".5rem",
-          4
-        ],
-        [
-          ".25rem",
-          3
-        ],
-        [
-          ".3rem",
-          3
-        ],
-        [
-          ".55rem",
-          3
-        ],
-        [
-          ".85rem",
-          3
-        ],
-        [
-          ".found-words-header-cell",
-          3
-        ],
-        [
-          ".mockup-info-card",
-          3
-        ],
-        [
-          ".02em",
-          2
-        ],
-        [
-          ".07",
-          2
-        ],
-        [
-          ".08rem",
-          2
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupCloserThemeV4",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 2338,
-      "blockChars": 14608,
-      "cssChars": 14317,
-      "idSelectorCount": 68,
-      "classSelectorCount": 172,
-      "topIdSelectors": [
-        [
-          "#play-status-panel",
-          5
-        ],
-        [
-          "#found-words-panel",
-          4
-        ],
-        [
-          "#players-panel",
-          4
-        ],
-        [
-          "#board",
-          3
-        ],
-        [
-          "#boggle-layout",
-          3
-        ],
-        [
-          "#boggle-top",
-          3
-        ],
-        [
-          "#game-status",
-          3
-        ],
-        [
-          "#connection-controls",
-          2
-        ],
-        [
-          "#launch-panel",
-          2
-        ],
-        [
-          "#mockup-right-cards",
-          2
-        ],
-        [
-          "#word-form",
-          2
-        ],
-        [
-          "#4f2a17",
-          1
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".75rem",
-          10
-        ],
-        [
-          ".05rem",
-          9
-        ],
-        [
-          ".5rem",
-          7
-        ],
-        [
-          ".02rem",
-          5
-        ],
-        [
-          ".35rem",
-          5
-        ],
-        [
-          ".mockup-info-card",
-          5
-        ],
-        [
-          ".06rem",
-          4
-        ],
-        [
-          ".15rem",
-          4
-        ],
-        [
-          ".1rem",
-          4
-        ],
-        [
-          ".25rem",
-          4
-        ],
-        [
-          ".2rem",
-          4
-        ],
-        [
-          ".6rem",
-          4
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupFullWidthThemeV5",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 2831,
-      "blockChars": 9870,
-      "cssChars": 9568,
-      "idSelectorCount": 46,
-      "classSelectorCount": 96,
-      "topIdSelectors": [
-        [
-          "#boggle-center",
-          6
-        ],
-        [
-          "#play-status-panel",
-          5
-        ],
-        [
-          "#boggle-layout",
-          4
-        ],
-        [
-          "#board",
-          3
-        ],
-        [
-          "#game-status",
-          3
-        ],
-        [
-          "#boggle-shell",
-          2
-        ],
-        [
-          "#end-game",
-          2
-        ],
-        [
-          "#word-form",
-          2
-        ],
-        [
-          "#8a6447",
-          1
-        ],
-        [
-          "#boggle-left",
-          1
-        ],
-        [
-          "#boggle-right",
-          1
-        ],
-        [
-          "#boggle-top",
-          1
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".9rem",
-          7
-        ],
-        [
-          ".35rem",
-          6
-        ],
-        [
-          ".15rem",
-          5
-        ],
-        [
-          ".25rem",
-          5
-        ],
-        [
-          ".55rem",
-          5
-        ],
-        [
-          ".65rem",
-          5
-        ],
-        [
-          ".8rem",
-          5
-        ],
-        [
-          ".5rem",
-          4
-        ],
-        [
-          ".08",
-          3
-        ],
-        [
-          ".10",
-          3
-        ],
-        [
-          ".45rem",
-          3
-        ],
-        [
-          ".mockup-info-card",
-          3
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupFullWidthThemeV6",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 3186,
-      "blockChars": 5457,
-      "cssChars": 5155,
-      "idSelectorCount": 42,
-      "classSelectorCount": 24,
-      "topIdSelectors": [
-        [
-          "#boggle-layout",
-          5
-        ],
-        [
-          "#play-status-panel",
-          4
-        ],
-        [
-          "#end-game",
-          3
-        ],
-        [
-          "#game-status",
-          3
-        ],
-        [
-          "#app",
-          2
-        ],
-        [
-          "#board",
-          2
-        ],
-        [
-          "#boggle-center",
-          2
-        ],
-        [
-          "#boggle-left",
-          2
-        ],
-        [
-          "#boggle-right",
-          2
-        ],
-        [
-          "#boggle-shell",
-          2
-        ],
-        [
-          "#boggle-top",
-          2
-        ],
-        [
           "#timer",
-          2
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".15rem",
-          2
-        ],
-        [
-          ".2rem",
-          2
-        ],
-        [
-          ".2vw",
-          2
-        ],
-        [
-          ".35rem",
-          2
-        ],
-        [
-          ".75rem",
-          2
-        ],
-        [
-          ".8rem",
-          2
-        ],
-        [
-          ".8vw",
-          2
-        ],
-        [
-          ".95fr",
-          2
-        ],
-        [
-          ".02rem",
-          1
-        ],
-        [
-          ".38rem",
-          1
-        ],
-        [
-          ".5rem",
-          1
-        ],
-        [
-          ".62fr",
-          1
-        ]
-      ]
-    },
-    {
-      "name": "injectMockupResponsiveThemeV7",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 3409,
-      "blockChars": 9188,
-      "cssChars": 8885,
-      "idSelectorCount": 60,
-      "classSelectorCount": 177,
-      "topIdSelectors": [
-        [
-          "#board",
-          6
-        ],
-        [
-          "#boggle-center",
-          5
-        ],
-        [
-          "#boggle-left",
-          4
-        ],
-        [
-          "#mockup-right-cards",
-          4
-        ],
-        [
-          "#boggle-layout",
-          3
-        ],
-        [
-          "#boggle-shell",
-          3
-        ],
-        [
-          "#boggle-top",
-          3
-        ],
-        [
-          "#found-words-panel",
-          3
-        ],
-        [
-          "#players-panel",
-          3
-        ],
-        [
-          "#boggle-right",
-          2
-        ],
-        [
-          "#end-game",
-          2
-        ],
-        [
-          "#launch-panel",
-          2
-        ]
-      ],
-      "topClassSelectors": [
-        [
-          ".55rem",
           16
         ],
         [
-          ".8rem",
-          9
+          "#player-preferences",
+          15
+        ],
+        [
+          "#boggle-center",
+          14
+        ]
+      ],
+      "topClassSelectors": [
+        [
+          ".55rem",
+          45
         ],
         [
           ".35rem",
-          7
-        ],
-        [
-          ".45rem",
-          7
-        ],
-        [
-          ".05rem",
-          6
-        ],
-        [
-          ".4vh",
-          6
-        ],
-        [
-          ".65rem",
-          6
-        ],
-        [
-          ".5rem",
-          5
+          39
         ],
         [
           ".75rem",
-          5
+          38
         ],
         [
-          ".9vh",
-          5
+          ".8rem",
+          38
         ],
         [
-          ".15rem",
-          4
+          ".5rem",
+          34
         ],
         [
           ".25rem",
-          4
+          33
+        ],
+        [
+          ".65rem",
+          30
+        ],
+        [
+          ".15rem",
+          29
+        ],
+        [
+          ".7rem",
+          28
+        ],
+        [
+          ".2rem",
+          27
+        ],
+        [
+          ".85rem",
+          27
+        ],
+        [
+          ".9rem",
+          27
         ]
       ]
     },
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3749,
+      "line": 3651,
       "blockChars": 11295,
       "cssChars": 10978,
       "idSelectorCount": 92,
@@ -1175,7 +263,7 @@
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4125,
+      "line": 4027,
       "blockChars": 6290,
       "cssChars": 5982,
       "idSelectorCount": 29,
@@ -1284,7 +372,7 @@
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4337,
+      "line": 4239,
       "blockChars": 8395,
       "cssChars": 8095,
       "idSelectorCount": 35,
@@ -1393,7 +481,7 @@
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4591,
+      "line": 4493,
       "blockChars": 1951,
       "cssChars": 1651,
       "idSelectorCount": 5,
@@ -1430,7 +518,7 @@
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4656,
+      "line": 4558,
       "blockChars": 4339,
       "cssChars": 4050,
       "idSelectorCount": 32,
@@ -2006,87 +1094,39 @@
       "references": 2
     },
     {
-      "name": "injectDesignPassStyles",
+      "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
-      "line": 21,
-      "references": 2
-    },
-    {
-      "name": "injectFruityThemeOverrides",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 543,
-      "references": 2
-    },
-    {
-      "name": "injectMockupCloserTheme",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 967,
-      "references": 2
-    },
-    {
-      "name": "injectMockupCloserThemeV2",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 1649,
-      "references": 2
-    },
-    {
-      "name": "injectMockupCloserThemeV3",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 2047,
-      "references": 2
-    },
-    {
-      "name": "injectMockupCloserThemeV4",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 2338,
-      "references": 2
-    },
-    {
-      "name": "injectMockupFullWidthThemeV5",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 2831,
-      "references": 2
-    },
-    {
-      "name": "injectMockupFullWidthThemeV6",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 3186,
-      "references": 2
-    },
-    {
-      "name": "injectMockupResponsiveThemeV7",
-      "file": "public/js/ui/theme-styles.js",
-      "line": 3409,
+      "line": 13,
       "references": 2
     },
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3749,
+      "line": 3651,
       "references": 2
     },
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4125,
+      "line": 4027,
       "references": 2
     },
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4337,
+      "line": 4239,
       "references": 2
     },
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4591,
+      "line": 4493,
       "references": 2
     },
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4656,
+      "line": 4558,
       "references": 2
     },
     {

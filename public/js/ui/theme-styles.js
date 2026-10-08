@@ -2,15 +2,7 @@
 // Les couches restent injectées dans le même ordre pour préserver le rendu existant.
 
 export function applyThemeStyles() {
-  injectDesignPassStyles();
-  injectFruityThemeOverrides();
-  injectMockupCloserTheme();
-  injectMockupCloserThemeV2();
-  injectMockupCloserThemeV3();
-  injectMockupCloserThemeV4();
-  injectMockupFullWidthThemeV5();
-  injectMockupFullWidthThemeV6();
-  injectMockupResponsiveThemeV7();
+  injectLegacyThemeFoundationV42();
   injectTopLaunchEndScreenLayoutV39();
   injectRulesHelpOptionsPanelV38();
   injectFoundWordsPanelV37();
@@ -18,14 +10,20 @@ export function applyThemeStyles() {
   injectFinalButtonsV34();
 }
 
-function injectDesignPassStyles() {
-  if (document.querySelector("#boggle-design-pass-style")) {
+function injectLegacyThemeFoundationV42() {
+  if (document.querySelector("#boggle-legacy-theme-foundation-v42-style")) {
     return;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-design-pass-style";
+  style.id = "boggle-legacy-theme-foundation-v42-style";
   style.textContent = `
+    /*
+     * V42 : fusion des anciennes couches visuelles historiques.
+     * L'ordre interne est conservé pour préserver exactement la cascade CSS.
+     */
+
+    /* Ancienne couche : injectDesignPassStyles. */
     :root {
       --boggle-ink: #4b3322;
       --boggle-line: rgba(90, 59, 35, 0.22);
@@ -534,20 +532,7 @@ function injectDesignPassStyles() {
       color: #6a4317;
     }
 
-  `;
-
-  document.head.appendChild(style);
-}
-
-
-function injectFruityThemeOverrides() {
-  if (document.querySelector("#boggle-fruity-visual-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-fruity-visual-style";
-  style.textContent = `
+    /* Ancienne couche : injectFruityThemeOverrides. */
     :root {
       --fruit-bg: #f7efd9;
       --fruit-bg-2: #f3e4bf;
@@ -958,20 +943,8 @@ function injectFruityThemeOverrides() {
         display: none;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupCloserTheme() {
-  if (document.querySelector("#boggle-mockup-closer-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-closer-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupCloserTheme. */
     :root {
       --mk-bg: #f8efd8;
       --mk-panel: #fff8e8;
@@ -1640,20 +1613,8 @@ function injectMockupCloserTheme() {
         flex-wrap: wrap !important;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupCloserThemeV2() {
-  if (document.querySelector("#boggle-mockup-closer-v2-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-closer-v2-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupCloserThemeV2. */
     /* Passe v2 : on force une structure plus proche de la maquette. */
 
     #boggle-shell {
@@ -2038,20 +1999,8 @@ function injectMockupCloserThemeV2() {
         grid-column: auto !important;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupCloserThemeV3() {
-  if (document.querySelector("#boggle-mockup-closer-v3-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-closer-v3-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupCloserThemeV3. */
     /* V3 : top sans conteneur, police plus cute, statut sans bulle, mots en tableau. */
 
     :root {
@@ -2329,20 +2278,8 @@ function injectMockupCloserThemeV3() {
         flex-wrap: wrap !important;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupCloserThemeV4() {
-  if (document.querySelector("#boggle-mockup-closer-v4-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-closer-v4-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupCloserThemeV4. */
     /*
      * V4 : rapprochement plus fort de la maquette.
      * Police plus ronde, top bar posée sur le fond, panneaux plus larges et tableau des mots plus propre.
@@ -2822,20 +2759,8 @@ function injectMockupCloserThemeV4() {
         transform: none !important;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupFullWidthThemeV5() {
-  if (document.querySelector("#boggle-mockup-full-width-v5-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-full-width-v5-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupFullWidthThemeV5. */
     /*
      * V5 : pleine largeur + centre plus unifié.
      * But : moins de cartes empilées, plus proche de la maquette générée.
@@ -3177,20 +3102,8 @@ function injectMockupFullWidthThemeV5() {
         margin-top: 0.25rem !important;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupFullWidthThemeV6() {
-  if (document.querySelector("#boggle-mockup-full-width-v6-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-full-width-v6-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupFullWidthThemeV6. */
     /*
      * V6 : corrige le décalage pleine largeur.
      * On neutralise les contraintes du parent et on force un layout viewport centré.
@@ -3400,20 +3313,8 @@ function injectMockupFullWidthThemeV6() {
         grid-column: auto !important;
       }
     }
-  `;
 
-  document.head.appendChild(style);
-}
-
-
-function injectMockupResponsiveThemeV7() {
-  if (document.querySelector("#boggle-mockup-responsive-v7-style")) {
-    return;
-  }
-
-  const style = document.createElement("style");
-  style.id = "boggle-mockup-responsive-v7-style";
-  style.textContent = `
+    /* Ancienne couche : injectMockupResponsiveThemeV7. */
     /*
      * V7 : responsive vertical.
      * Objectif : voir haut + grille + côtés + saisie sans scroll quand la hauteur le permet.
@@ -3744,6 +3645,7 @@ function injectMockupResponsiveThemeV7() {
 
   document.head.appendChild(style);
 }
+
 
 
 function injectTopLaunchEndScreenLayoutV39() {
