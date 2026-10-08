@@ -5,6 +5,7 @@ export type ClientMessage =
   | {
       type: "join";
       name: string;
+      clientId?: string;
     }
   | {
       type: "startGame";

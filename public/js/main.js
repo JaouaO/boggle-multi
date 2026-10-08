@@ -50,6 +50,7 @@ const STORAGE_KEYS = {
   playerName: "boggle:playerName",
   lastRoomId: "boggle:lastRoomId",
   playerPreferences: "boggle:playerPreferences",
+  clientId: "boggle:clientId",
 };
 
 const roomInput = document.querySelector("#room");
@@ -251,6 +252,21 @@ function loadLocalSettings() {
     lastRoomId: readLocalString(STORAGE_KEYS.lastRoomId),
     playerPreferences: readLocalJson(STORAGE_KEYS.playerPreferences, {}),
   };
+}
+
+function getOrCreateClientId() {
+  const savedClientId = readLocalString(STORAGE_KEYS.clientId);
+
+  if (savedClientId) {
+    return savedClientId;
+  }
+
+  const clientId = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : `client-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+
+  saveLocalString(STORAGE_KEYS.clientId, clientId);
+  return clientId;
 }
 
 function readLocalString(key) {
@@ -598,6 +614,7 @@ function takePendingSubmissionPath() {
 function connectToRoom() {
   const roomId = roomInput.value.trim() || "TEST";
   const playerName = nameInput.value.trim() || "joueur";
+  const clientId = getOrCreateClientId();
 
   saveLocalString(STORAGE_KEYS.lastRoomId, roomId);
   saveLocalString(STORAGE_KEYS.playerName, playerName);
@@ -644,6 +661,7 @@ function connectToRoom() {
     send({
       type: "join",
       name: playerName,
+      clientId,
     });
   });
 

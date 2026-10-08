@@ -43,6 +43,7 @@ type PlayerAttachment = {
   foundWords: string[];
   invalidWords: string[];
   score: number;
+  joined: boolean;
 };
 
 type FoundWordOwner = {
@@ -120,20 +121,12 @@ export class BoggleRoom extends DurableObject {
     const playerAttachment = this.createDefaultPlayerAttachment();
 
     server.serializeAttachment(playerAttachment);
-    this.updatePlayerSnapshot(playerAttachment);
 
     this.send(server, {
       type: "connected",
       roomId: this.roomId,
       playerId: playerAttachment.id,
     });
-
-    this.broadcast({
-      type: "system",
-      text: "Un joueur a rejoint la room.",
-    });
-
-    this.broadcastPlayers();
 
     return new Response(null, {
       status: 101,
@@ -165,15 +158,33 @@ export class BoggleRoom extends DurableObject {
     if (data.type === "join") {
       const currentAttachment = this.getPlayerAttachment(ws);
       const name = data.name.trim().slice(0, 30) || "joueur";
-      const isNewHost = this.ensureHost(currentAttachment.id);
+      const stablePlayerId = this.normalizeClientId(data.clientId) ?? currentAttachment.id;
+      const previousAttachment =
+        this.findConnectedPlayerAttachment(stablePlayerId, ws) ??
+        this.playerSnapshots.get(stablePlayerId) ??
+        currentAttachment;
 
-      const namedAttachment = {
+      this.closeDuplicatePlayerSockets(stablePlayerId, ws);
+
+      const namedAttachment: PlayerAttachment = {
         ...currentAttachment,
+        id: stablePlayerId,
         name,
+        foundWords: previousAttachment.foundWords ?? [],
+        invalidWords: previousAttachment.invalidWords ?? [],
+        score: previousAttachment.score ?? 0,
+        joined: true,
       };
+      const isNewHost = this.ensureHost(namedAttachment.id);
 
       ws.serializeAttachment(namedAttachment);
       this.updatePlayerSnapshot(namedAttachment);
+
+      this.send(ws, {
+        type: "connected",
+        roomId: this.roomId,
+        playerId: namedAttachment.id,
+      });
 
       if (isNewHost) {
         await this.saveRoomState();
@@ -233,8 +244,18 @@ export class BoggleRoom extends DurableObject {
 
   async webSocketClose(ws: WebSocket) {
     const attachment = this.getPlayerAttachment(ws);
+
+    if (!attachment.joined) {
+      return;
+    }
+
     this.updatePlayerSnapshot(attachment);
     await this.saveRoomState();
+
+    if (this.isPlayerConnected(attachment.id, ws)) {
+      this.broadcastPlayers();
+      return;
+    }
 
     const name = attachment.name;
     const wasHost = this.hostPlayerId === attachment.id;
@@ -270,8 +291,18 @@ export class BoggleRoom extends DurableObject {
 
   async webSocketError(ws: WebSocket) {
     const attachment = this.getPlayerAttachment(ws);
+
+    if (!attachment.joined) {
+      return;
+    }
+
     this.updatePlayerSnapshot(attachment);
     await this.saveRoomState();
+
+    if (this.isPlayerConnected(attachment.id, ws)) {
+      this.broadcastPlayers();
+      return;
+    }
 
     this.broadcastPlayers(attachment.id);
   }
@@ -899,13 +930,19 @@ export class BoggleRoom extends DurableObject {
 
     return this.ctx
       .getWebSockets()
-      .some((socket) => this.getPlayerAttachment(socket).id === this.hostPlayerId);
+      .some((socket) => {
+        const attachment = this.getPlayerAttachment(socket);
+        return attachment.joined && attachment.id === this.hostPlayerId;
+      });
   }
 
   private assignHostFromConnectedPlayers(excludedWs?: WebSocket) {
     const nextHostSocket = this.ctx
       .getWebSockets()
-      .find((socket) => socket !== excludedWs);
+      .find((socket) => {
+        const attachment = this.getPlayerAttachment(socket);
+        return socket !== excludedWs && attachment.joined;
+      });
 
     if (!nextHostSocket) {
       this.hostPlayerId = null;
@@ -923,6 +960,11 @@ export class BoggleRoom extends DurableObject {
 
     for (const ws of this.ctx.getWebSockets()) {
       const attachment = this.getPlayerAttachment(ws);
+
+      if (!attachment.joined) {
+        continue;
+      }
+
       const resetAttachment = {
         ...attachment,
         foundWords: [],
@@ -937,7 +979,11 @@ export class BoggleRoom extends DurableObject {
 
   private updateAllConnectedPlayerSnapshots() {
     for (const ws of this.ctx.getWebSockets()) {
-      this.updatePlayerSnapshot(this.getPlayerAttachment(ws));
+      const attachment = this.getPlayerAttachment(ws);
+
+      if (attachment.joined) {
+        this.updatePlayerSnapshot(attachment);
+      }
     }
   }
 
@@ -958,6 +1004,7 @@ export class BoggleRoom extends DurableObject {
       foundWords: [],
       invalidWords: [],
       score: 0,
+      joined: false,
     };
   }
 
@@ -973,11 +1020,62 @@ export class BoggleRoom extends DurableObject {
       foundWords: attachment.foundWords ?? [],
       invalidWords: attachment.invalidWords ?? [],
       score: attachment.score ?? 0,
+      joined: Boolean(attachment.joined),
     };
   }
 
   private getPlayerName(ws: WebSocket) {
     return this.getPlayerAttachment(ws).name;
+  }
+
+  private normalizeClientId(clientId?: string) {
+    const normalized = String(clientId ?? "")
+      .trim()
+      .slice(0, 80);
+
+    if (!/^[A-Za-z0-9_-]+(?:-[A-Za-z0-9_-]+)*$/.test(normalized)) {
+      return null;
+    }
+
+    return normalized;
+  }
+
+  private findConnectedPlayerAttachment(playerId: string, excludedWs?: WebSocket) {
+    for (const socket of this.ctx.getWebSockets()) {
+      if (socket === excludedWs) {
+        continue;
+      }
+
+      const attachment = this.getPlayerAttachment(socket);
+
+      if (attachment.joined && attachment.id === playerId) {
+        return attachment;
+      }
+    }
+
+    return null;
+  }
+
+  private isPlayerConnected(playerId: string, excludedWs?: WebSocket) {
+    return Boolean(this.findConnectedPlayerAttachment(playerId, excludedWs));
+  }
+
+  private closeDuplicatePlayerSockets(playerId: string, currentWs: WebSocket) {
+    for (const socket of this.ctx.getWebSockets()) {
+      if (socket === currentWs) {
+        continue;
+      }
+
+      const attachment = this.getPlayerAttachment(socket);
+
+      if (attachment.joined && attachment.id === playerId) {
+        try {
+          socket.close(1000, "replaced by a newer connection");
+        } catch {
+          // socket déjà fermée
+        }
+      }
+    }
   }
 
   private send(ws: WebSocket, message: ServerMessage) {
@@ -1057,9 +1155,19 @@ export class BoggleRoom extends DurableObject {
 
   private broadcastPlayers(excludedPlayerId?: string) {
     const exposeWords = this.canExposePlayerWords();
-    const connectedAttachments = [...this.ctx.getWebSockets()]
-      .map((ws) => this.getPlayerAttachment(ws))
-      .filter((attachment) => attachment.id !== excludedPlayerId);
+    const connectedAttachmentsById = new Map<string, PlayerAttachment>();
+
+    for (const ws of this.ctx.getWebSockets()) {
+      const attachment = this.getPlayerAttachment(ws);
+
+      if (!attachment.joined || attachment.id === excludedPlayerId) {
+        continue;
+      }
+
+      connectedAttachmentsById.set(attachment.id, attachment);
+    }
+
+    const connectedAttachments = [...connectedAttachmentsById.values()];
 
     for (const attachment of connectedAttachments) {
       this.updatePlayerSnapshot(attachment);
