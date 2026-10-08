@@ -19,6 +19,12 @@ function injectLegacyThemeFoundationV42() {
   style.id = "boggle-legacy-theme-foundation-v42-style";
   style.textContent = `
     /*
+     * Les @import doivent rester avant toute règle CSS.
+     * Sinon la police Fredoka/Nunito peut être ignorée après fusion des couches.
+     */
+    @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap");
+
+    /*
      * V42 : fusion des anciennes couches visuelles historiques.
      * L'ordre interne est conservé pour préserver exactement la cascade CSS.
      */
@@ -2284,8 +2290,6 @@ function injectLegacyThemeFoundationV42() {
      * V4 : rapprochement plus fort de la maquette.
      * Police plus ronde, top bar posée sur le fond, panneaux plus larges et tableau des mots plus propre.
      */
-    @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap");
-
     :root {
       --cute-font: "Fredoka", "Nunito", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
       --cute-logo-font: "Fredoka", "Nunito", "Arial Rounded MT Bold", system-ui, sans-serif;
