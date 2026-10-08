@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-08T19:14:21.906Z",
-  "auditedCandidateCount": 19,
+  "generatedAt": "2026-10-08T19:20:48.331Z",
+  "auditedCandidateCount": 20,
   "probableUnused": [],
   "referenced": [
     {
@@ -197,7 +197,7 @@
     },
     {
       "file": "public/js/ui/theme-styles.js",
-      "referenceCount": 2,
+      "referenceCount": 3,
       "references": [
         {
           "file": "public/js/main.js",
@@ -208,6 +208,16 @@
         },
         {
           "file": "tools/audit-css-js.mjs",
+          "via": [
+            "public/js/ui/theme-styles.js",
+            "js/ui/theme-styles.js",
+            "public/js/ui/theme-styles",
+            "js/ui/theme-styles",
+            "theme-styles.js"
+          ]
+        },
+        {
+          "file": "tools/audit-css-overrides.mjs",
           "via": [
             "public/js/ui/theme-styles.js",
             "js/ui/theme-styles.js",
@@ -297,6 +307,87 @@
         },
         {
           "file": "src/shared/messages.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tools/audit-unused-files.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tsconfig.json",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "wrangler.jsonc",
+          "via": [
+            "./"
+          ]
+        }
+      ],
+      "probableUnused": false
+    },
+    {
+      "file": "tools/audit-css-overrides.mjs",
+      "referenceCount": 12,
+      "references": [
+        {
+          "file": "package.json",
+          "via": [
+            "tools/audit-css-overrides.mjs",
+            "tools/audit-css-overrides",
+            "audit-css-overrides.mjs"
+          ]
+        },
+        {
+          "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/engine/dictionary.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/engine/solver.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/game/board.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/index.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/rooms/BoggleRoom.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/shared/messages.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tools/audit-css-js.mjs",
           "via": [
             "./"
           ]
