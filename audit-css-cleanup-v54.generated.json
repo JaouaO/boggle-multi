@@ -1,0 +1,36 @@
+{
+  "removedDeclarationCount": 10,
+  "sourceAudit": "audit-css-overrides.generated.json",
+  "removedDeclarations": [
+    {
+      "selector": "#boggle-top",
+      "properties": [
+        "min-height",
+        "display",
+        "grid-template-columns",
+        "align-items"
+      ]
+    },
+    {
+      "selector": "#boggle-center",
+      "properties": [
+        "gap",
+        "overflow"
+      ]
+    },
+    {
+      "selector": "#board",
+      "properties": [
+        "width",
+        "max-width",
+        "margin",
+        "box-sizing"
+      ]
+    }
+  ],
+  "notes": [
+    "Suppression limitée aux 10 déclarations legacy restantes déjà écrasées par les couches finales.",
+    "Les règles restent présentes lorsqu'elles contiennent d'autres déclarations utiles.",
+    "Aucun changement de logique JS."
+  ]
+}

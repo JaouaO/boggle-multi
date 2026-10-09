@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T08:41:25.105Z",
+  "generatedAt": "2026-10-09T08:47:57.107Z",
   "source": "public/js/ui/theme-styles.js",
   "layerCount": 6,
   "layers": [
@@ -7,48 +7,48 @@
       "order": 1,
       "name": "injectLegacyThemeFoundationV42",
       "line": 13,
-      "cssChars": 103354,
-      "ruleCount": 2147
+      "cssChars": 102968,
+      "ruleCount": 2137
     },
     {
       "order": 2,
       "name": "injectTopLaunchEndScreenLayoutV39",
-      "line": 3599,
+      "line": 3589,
       "cssChars": 10976,
       "ruleCount": 223
     },
     {
       "order": 3,
       "name": "injectRulesHelpOptionsPanelV38",
-      "line": 3975,
+      "line": 3965,
       "cssChars": 5980,
       "ruleCount": 129
     },
     {
       "order": 4,
       "name": "injectFoundWordsPanelV37",
-      "line": 4187,
+      "line": 4177,
       "cssChars": 8093,
       "ruleCount": 179
     },
     {
       "order": 5,
       "name": "injectFinalBoardInputV36",
-      "line": 4441,
+      "line": 4431,
       "cssChars": 1649,
       "ruleCount": 32
     },
     {
       "order": 6,
       "name": "injectFinalButtonsV34",
-      "line": 4506,
+      "line": 4496,
       "cssChars": 4048,
       "ruleCount": 113
     }
   ],
-  "overrideCount": 922,
-  "sameValueOverrideCount": 192,
-  "changedValueOverrideCount": 730,
+  "overrideCount": 912,
+  "sameValueOverrideCount": 189,
+  "changedValueOverrideCount": 723,
   "overridePairs": [
     {
       "key": "injectLegacyThemeFoundationV42 -> injectLegacyThemeFoundationV42",
@@ -61,14 +61,6 @@
     {
       "key": "injectFoundWordsPanelV37 -> injectFoundWordsPanelV37",
       "count": 17
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectFinalBoardInputV36",
-      "count": 6
-    },
-    {
-      "key": "injectLegacyThemeFoundationV42 -> injectTopLaunchEndScreenLayoutV39",
-      "count": 4
     },
     {
       "key": "injectRulesHelpOptionsPanelV38 -> injectFinalBoardInputV36",
@@ -102,7 +94,7 @@
     },
     {
       "key": "#boggle-top",
-      "count": 34
+      "count": 30
     },
     {
       "key": "#play-status-panel > h2",
@@ -117,10 +109,6 @@
       "count": 23
     },
     {
-      "key": "#board",
-      "count": 22
-    },
-    {
       "key": "#player-preferences > button",
       "count": 22
     },
@@ -131,6 +119,10 @@
     {
       "key": "#mode-options-toggle",
       "count": 20
+    },
+    {
+      "key": "#board",
+      "count": 18
     },
     {
       "key": "#board .board-cell",
@@ -173,16 +165,16 @@
       "count": 13
     },
     {
-      "key": "#boggle-center",
-      "count": 13
-    },
-    {
       "key": "#found-words-panel",
       "count": 13
     },
     {
       "key": "#connection-controls",
       "count": 12
+    },
+    {
+      "key": "#boggle-center",
+      "count": 11
     },
     {
       "key": "#boggle-left",
@@ -288,7 +280,7 @@
     },
     {
       "key": "min-height",
-      "count": 73
+      "count": 72
     },
     {
       "key": "color",
@@ -324,19 +316,19 @@
     },
     {
       "key": "gap",
-      "count": 34
+      "count": 33
     },
     {
       "key": "grid-template-columns",
-      "count": 34
+      "count": 33
     },
     {
       "key": "width",
-      "count": 34
+      "count": 33
     },
     {
       "key": "display",
-      "count": 30
+      "count": 29
     },
     {
       "key": "min-width",
@@ -348,14 +340,14 @@
     },
     {
       "key": "align-items",
-      "count": 18
-    },
-    {
-      "key": "margin",
-      "count": 13
+      "count": 17
     },
     {
       "key": "content",
+      "count": 12
+    },
+    {
+      "key": "margin",
       "count": 12
     },
     {
@@ -387,14 +379,6 @@
       "count": 7
     },
     {
-      "key": "max-width",
-      "count": 7
-    },
-    {
-      "key": "overflow",
-      "count": 7
-    },
-    {
       "key": "border-color",
       "count": 6
     },
@@ -403,12 +387,16 @@
       "count": 6
     },
     {
-      "key": "padding-inline",
+      "key": "max-width",
       "count": 6
     },
     {
-      "key": "box-sizing",
-      "count": 5
+      "key": "overflow",
+      "count": 6
+    },
+    {
+      "key": "padding-inline",
+      "count": 6
     },
     {
       "key": "margin-left",
@@ -416,6 +404,10 @@
     },
     {
       "key": "align-self",
+      "count": 4
+    },
+    {
+      "key": "box-sizing",
       "count": 4
     },
     {
@@ -483,101 +475,10 @@
       "count": 2
     }
   ],
-  "legacyOverriddenByFinalCount": 10,
-  "legacyOverriddenByFinalSameValueCount": 3,
-  "legacyOverriddenByFinalChangedValueCount": 7,
-  "legacyOverriddenByFinal": [
-    {
-      "selector": "#boggle-top",
-      "property": "display",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "grid !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "flex !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#boggle-top",
-      "property": "align-items",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "center !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "center !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": "#boggle-top",
-      "property": "min-height",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "5rem !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "clamp(4.7rem, 7vh, 5.6rem) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#boggle-top",
-      "property": "grid-template-columns",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "auto minmax(0, 1fr) !important",
-      "overridingLayer": "injectTopLaunchEndScreenLayoutV39",
-      "overridingValue": "1fr !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#boggle-center",
-      "property": "overflow",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "hidden !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "visible !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#boggle-center",
-      "property": "gap",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "0.72rem !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#board",
-      "property": "width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "min(100%, 46rem) !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "var(--board-fit-size-v31, min(100%, 36rem)) !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#board",
-      "property": "max-width",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "none !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "100% !important",
-      "valueChange": "changed-value"
-    },
-    {
-      "selector": "#board",
-      "property": "margin",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "0 auto !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "0 auto !important",
-      "valueChange": "same-normalized-value"
-    },
-    {
-      "selector": "#board",
-      "property": "box-sizing",
-      "previousLayer": "injectLegacyThemeFoundationV42",
-      "previousValue": "border-box !important",
-      "overridingLayer": "injectFinalBoardInputV36",
-      "overridingValue": "border-box !important",
-      "valueChange": "same-normalized-value"
-    }
-  ],
+  "legacyOverriddenByFinalCount": 0,
+  "legacyOverriddenByFinalSameValueCount": 0,
+  "legacyOverriddenByFinalChangedValueCount": 0,
+  "legacyOverriddenByFinal": [],
   "notes": [
     "Cet audit est indicatif : il repère les mêmes couples sélecteur/propriété redéfinis plus tard dans la cascade.",
     "Les étapes de keyframes from/to/0%/100% sont exclues pour éviter les faux positifs entre animations différentes.",

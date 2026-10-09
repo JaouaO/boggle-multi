@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T08:41:23.799Z",
+  "generatedAt": "2026-10-09T08:47:55.790Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
@@ -46,8 +46,8 @@
       "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
       "line": 13,
-      "blockChars": 103672,
-      "cssChars": 103354,
+      "blockChars": 103286,
+      "cssChars": 102968,
       "idSelectorCount": 503,
       "classSelectorCount": 206,
       "topIdSelectors": [
@@ -154,7 +154,7 @@
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3599,
+      "line": 3589,
       "blockChars": 11293,
       "cssChars": 10976,
       "idSelectorCount": 84,
@@ -227,7 +227,7 @@
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3975,
+      "line": 3965,
       "blockChars": 6288,
       "cssChars": 5980,
       "idSelectorCount": 23,
@@ -328,7 +328,7 @@
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4187,
+      "line": 4177,
       "blockChars": 8393,
       "cssChars": 8093,
       "idSelectorCount": 10,
@@ -393,7 +393,7 @@
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4441,
+      "line": 4431,
       "blockChars": 1949,
       "cssChars": 1649,
       "idSelectorCount": 5,
@@ -425,7 +425,7 @@
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4506,
+      "line": 4496,
       "blockChars": 4337,
       "cssChars": 4048,
       "idSelectorCount": 24,
@@ -955,31 +955,31 @@
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3599,
+      "line": 3589,
       "references": 2
     },
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3975,
+      "line": 3965,
       "references": 2
     },
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4187,
+      "line": 4177,
       "references": 2
     },
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4441,
+      "line": 4431,
       "references": 2
     },
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4506,
+      "line": 4496,
       "references": 2
     },
     {
