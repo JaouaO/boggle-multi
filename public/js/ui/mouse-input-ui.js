@@ -15,29 +15,19 @@ function ensureMouseInputPanel(anchorElement) {
   if (!panel) {
     panel = document.createElement("section");
     panel.id = "mouse-input-panel";
-    panel.style.marginTop = "0.75rem";
-    panel.style.padding = "0.75rem";
-    panel.style.border = "1px solid #ddd";
-    panel.style.borderRadius = "0.75rem";
-    panel.style.background = "#fff";
+    panel.classList.add("boggle-mouse-input-panel-inner");
 
     const label = document.createElement("p");
     label.textContent = "Sélection souris";
-    label.style.fontWeight = "700";
-    label.style.margin = "0 0 0.35rem";
+    label.classList.add("boggle-mouse-input-label");
 
     const word = document.createElement("div");
     word.id = "mouse-selected-word";
-    word.style.fontSize = "1.4rem";
-    word.style.fontWeight = "800";
-    word.style.letterSpacing = "0.08em";
+    word.classList.add("boggle-mouse-selected-word");
     word.textContent = "—";
 
     const actions = document.createElement("div");
-    actions.style.display = "flex";
-    actions.style.gap = "0.5rem";
-    actions.style.flexWrap = "wrap";
-    actions.style.marginTop = "0.75rem";
+    actions.classList.add("boggle-mouse-input-actions");
 
     const submitButton = document.createElement("button");
     submitButton.type = "button";
@@ -48,9 +38,7 @@ function ensureMouseInputPanel(anchorElement) {
     clearButton.textContent = "Effacer";
 
     const hint = document.createElement("p");
-    hint.style.margin = "0.5rem 0 0";
-    hint.style.fontSize = "0.9rem";
-    hint.style.opacity = "0.75";
+    hint.classList.add("boggle-mouse-input-hint");
     hint.textContent =
       "Cliquez lettre par lettre, ou maintenez le clic et glissez sur les lettres adjacentes.";
 

@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-09T17:44:45.915Z",
+  "generatedAt": "2026-10-09T17:47:58.171Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 150,
-  "filesWithFindings": 9,
+  "findingCount": 124,
+  "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
       {
@@ -385,60 +385,6 @@
     "public/js/ui/end-screen-ui.js": [
       {
         "file": "public/js/ui/end-screen-ui.js",
-        "line": 45,
-        "type": "element.style access",
-        "snippet": "item.style.margin = \"0.35rem 0\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 46,
-        "type": "element.style access",
-        "snippet": "item.style.fontWeight = isCurrentPlayer ? \"700\" : \"400\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 75,
-        "type": "element.style access",
-        "snippet": "panel.style.marginTop = \"1rem\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 76,
-        "type": "element.style access",
-        "snippet": "panel.style.padding = \"1rem\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 77,
-        "type": "element.style access",
-        "snippet": "panel.style.border = \"2px solid #222\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 78,
-        "type": "element.style access",
-        "snippet": "panel.style.borderRadius = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 79,
-        "type": "element.style access",
-        "snippet": "panel.style.background = \"#f7f7f7\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 83,
-        "type": "element.style access",
-        "snippet": "title.style.marginTop = \"0\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 87,
-        "type": "element.style access",
-        "snippet": "message.style.fontWeight = \"700\";"
-      },
-      {
-        "file": "public/js/ui/end-screen-ui.js",
         "line": 38,
         "type": "innerHTML",
         "snippet": "panel.ranking.innerHTML = \"\";"
@@ -760,110 +706,6 @@
         "line": 833,
         "type": "element.style access",
         "snippet": "invalidWordPenaltyLabel.style.opacity = enabled ? \"1\" : \"0.45\";"
-      }
-    ],
-    "public/js/ui/mouse-input-ui.js": [
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 18,
-        "type": "element.style access",
-        "snippet": "panel.style.marginTop = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 19,
-        "type": "element.style access",
-        "snippet": "panel.style.padding = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 20,
-        "type": "element.style access",
-        "snippet": "panel.style.border = \"1px solid #ddd\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 21,
-        "type": "element.style access",
-        "snippet": "panel.style.borderRadius = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 22,
-        "type": "element.style access",
-        "snippet": "panel.style.background = \"#fff\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 26,
-        "type": "element.style access",
-        "snippet": "label.style.fontWeight = \"700\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 27,
-        "type": "element.style access",
-        "snippet": "label.style.margin = \"0 0 0.35rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 31,
-        "type": "element.style access",
-        "snippet": "word.style.fontSize = \"1.4rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 32,
-        "type": "element.style access",
-        "snippet": "word.style.fontWeight = \"800\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 33,
-        "type": "element.style access",
-        "snippet": "word.style.letterSpacing = \"0.08em\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 37,
-        "type": "element.style access",
-        "snippet": "actions.style.display = \"flex\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 38,
-        "type": "element.style access",
-        "snippet": "actions.style.gap = \"0.5rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 39,
-        "type": "element.style access",
-        "snippet": "actions.style.flexWrap = \"wrap\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 40,
-        "type": "element.style access",
-        "snippet": "actions.style.marginTop = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 51,
-        "type": "element.style access",
-        "snippet": "hint.style.margin = \"0.5rem 0 0\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 52,
-        "type": "element.style access",
-        "snippet": "hint.style.fontSize = \"0.9rem\";"
-      },
-      {
-        "file": "public/js/ui/mouse-input-ui.js",
-        "line": 53,
-        "type": "element.style access",
-        "snippet": "hint.style.opacity = \"0.75\";"
       }
     ],
     "public/js/ui/theme-styles.js": [

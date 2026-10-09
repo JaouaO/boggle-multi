@@ -42,8 +42,8 @@ export function renderEndScreen(anchorElement, options) {
     const isCurrentPlayer = player.id === currentPlayerId;
     const isWinner = player.score === winnerScore && winnerScore > 0;
 
-    item.style.margin = "0.35rem 0";
-    item.style.fontWeight = isCurrentPlayer ? "700" : "400";
+    item.classList.add("boggle-end-ranking-item");
+    item.classList.toggle("boggle-end-ranking-item-current", isCurrentPlayer);
 
     const rank = index + 1;
     const trophy = isWinner ? " 🏆" : "";
@@ -72,19 +72,15 @@ function ensureEndScreen(anchorElement) {
     panel = document.createElement("section");
     panel.id = "end-screen";
     panel.hidden = true;
-    panel.style.marginTop = "1rem";
-    panel.style.padding = "1rem";
-    panel.style.border = "2px solid #222";
-    panel.style.borderRadius = "0.75rem";
-    panel.style.background = "#f7f7f7";
+    panel.classList.add("boggle-end-screen-panel");
 
     const title = document.createElement("h2");
     title.id = "end-screen-title";
-    title.style.marginTop = "0";
+    title.classList.add("boggle-end-screen-title");
 
     const message = document.createElement("p");
     message.id = "end-screen-message";
-    message.style.fontWeight = "700";
+    message.classList.add("boggle-end-screen-message");
 
     const stats = document.createElement("p");
     stats.id = "end-screen-stats";
