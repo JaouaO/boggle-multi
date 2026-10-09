@@ -1,13 +1,19 @@
 // Styles d'interface extraits de main.js pour garder la logique de jeu lisible.
 // Les couches restent injectées dans le même ordre pour préserver le rendu existant.
 
+const THEME_STYLE_LAYERS = [
+  injectLegacyThemeFoundationV42,
+  injectTopLaunchEndScreenLayoutV39,
+  injectRulesHelpOptionsPanelV38,
+  injectFoundWordsPanelV37,
+  injectFinalBoardInputV36,
+  injectFinalButtonsV34,
+];
+
 export function applyThemeStyles() {
-  injectLegacyThemeFoundationV42();
-  injectTopLaunchEndScreenLayoutV39();
-  injectRulesHelpOptionsPanelV38();
-  injectFoundWordsPanelV37();
-  injectFinalBoardInputV36();
-  injectFinalButtonsV34();
+  for (const injectThemeStyleLayer of THEME_STYLE_LAYERS) {
+    injectThemeStyleLayer();
+  }
 }
 
 function createStyleElementOnce(id) {
