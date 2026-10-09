@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T17:50:32.250Z",
+  "generatedAt": "2026-10-09T17:53:38.817Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 108,
+  "findingCount": 88,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
@@ -415,199 +415,79 @@
     "public/js/ui/mode-ui.js": [
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 262,
-        "type": "element.style access",
-        "snippet": "title.style.marginTop = \"0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 267,
-        "type": "element.style access",
-        "snippet": "description.style.marginTop = \"0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 268,
-        "type": "element.style access",
-        "snippet": "description.style.opacity = \"0.8\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 393,
-        "type": "element.style access",
-        "snippet": "title.style.margin = \"0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 409,
-        "type": "element.style access",
-        "snippet": "lockNotice.style.margin = \"0 0 0.85rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 410,
-        "type": "element.style access",
-        "snippet": "lockNotice.style.fontWeight = \"800\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 411,
-        "type": "element.style access",
-        "snippet": "lockNotice.style.color = \"#7a4a1f\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 589,
-        "type": "element.style access",
-        "snippet": "actions.style.display = \"flex\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 590,
-        "type": "element.style access",
-        "snippet": "actions.style.gap = \"0.5rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 591,
-        "type": "element.style access",
-        "snippet": "actions.style.flexWrap = \"wrap\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 592,
-        "type": "element.style access",
-        "snippet": "actions.style.marginTop = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 608,
-        "type": "element.style access",
-        "snippet": "feedback.style.marginBottom = \"0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 609,
-        "type": "element.style access",
-        "snippet": "feedback.style.color = \"#a9433f\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 616,
-        "type": "element.style access",
-        "snippet": "later.style.marginTop = \"1rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 677,
-        "type": "element.style access",
-        "snippet": "fieldset.style.border = \"0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 678,
-        "type": "element.style access",
-        "snippet": "fieldset.style.padding = \"0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 679,
-        "type": "element.style access",
-        "snippet": "fieldset.style.margin = \"0 0 1rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 683,
-        "type": "element.style access",
-        "snippet": "legend.style.fontWeight = \"800\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 684,
-        "type": "element.style access",
-        "snippet": "legend.style.marginBottom = \"0.5rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 704,
-        "type": "element.style access",
-        "snippet": "label.style.display = \"grid\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 705,
+        "line": 695,
         "type": "element.style access",
         "snippet": "label.style.gridTemplateColumns = \"auto 1fr\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 706,
+        "line": 696,
         "type": "element.style access",
         "snippet": "label.style.gap = \"0.45rem\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 707,
+        "line": 697,
         "type": "element.style access",
         "snippet": "label.style.alignItems = \"start\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 708,
+        "line": 698,
         "type": "element.style access",
         "snippet": "label.style.margin = \"0.5rem 0\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 713,
+        "line": 703,
         "type": "element.style access",
         "snippet": "input.style.marginTop = \"0.15rem\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 722,
+        "line": 712,
         "type": "element.style access",
         "snippet": "description.style.display = \"block\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 723,
+        "line": 713,
         "type": "element.style access",
         "snippet": "description.style.opacity = \"0.75\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 724,
+        "line": 714,
         "type": "element.style access",
         "snippet": "description.style.fontWeight = \"400\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 789,
+        "line": 779,
         "type": "element.style access",
         "snippet": "durationSecondsLabel.style.display = isTimer ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 793,
+        "line": 783,
         "type": "element.style access",
         "snippet": "targetScoreModeLabel.style.display = isTargetScore ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 797,
+        "line": 787,
         "type": "element.style access",
         "snippet": "targetScorePercentLabel.style.display ="
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 802,
+        "line": 792,
         "type": "element.style access",
         "snippet": "targetScoreLabel.style.display ="
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 833,
+        "line": 823,
         "type": "element.style access",
         "snippet": "invalidWordPenaltyLabel.style.opacity = enabled ? \"1\" : \"0.45\";"
       }

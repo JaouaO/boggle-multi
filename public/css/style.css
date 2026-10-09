@@ -878,3 +878,58 @@ section,
 .boggle-help-cell-title {
   margin-bottom: 0.25rem;
 }
+
+
+/* ==========================================================================
+   V68 — migration styles inline mode-ui.js part 1
+   ========================================================================== */
+
+.boggle-mode-title-topless {
+  margin-top: 0;
+}
+
+.boggle-mode-description {
+  margin-top: 0;
+  opacity: 0.8;
+}
+
+.boggle-mode-title-compact {
+  margin: 0;
+}
+
+.boggle-mode-lock-notice {
+  margin: 0 0 0.85rem;
+  color: #7a4a1f;
+  font-weight: 800;
+}
+
+.boggle-mode-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.boggle-mode-feedback {
+  margin-bottom: 0;
+  color: #a9433f;
+}
+
+.boggle-mode-later {
+  margin-top: 1rem;
+}
+
+.boggle-mode-fieldset {
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.boggle-mode-legend {
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.boggle-mode-option-label {
+  display: grid;
+}

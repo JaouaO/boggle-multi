@@ -259,13 +259,12 @@ export function renderPlayerPreferencesPanel(anchorElement, preferences, onChang
 
     const title = document.createElement("h2");
     title.textContent = "Confort personnel";
-    title.style.marginTop = "0";
+    title.classList.add("boggle-mode-title-topless");
 
     const description = document.createElement("p");
     description.textContent =
       "Ces réglages ne concernent que ce joueur.";
-    description.style.marginTop = "0";
-    description.style.opacity = "0.8";
+    description.classList.add("boggle-mode-description");
 
     const soundLabel = createCheckboxLabel(
       "personal-sound-enabled",
@@ -390,7 +389,7 @@ function ensureModeControls(anchorElement) {
     panel.id = "mode-controls";
 
     const title = document.createElement("h2");
-    title.style.margin = "0";
+    title.classList.add("boggle-mode-title-compact");
 
     const optionsToggle = document.createElement("button");
     optionsToggle.id = "mode-options-toggle";
@@ -406,9 +405,7 @@ function ensureModeControls(anchorElement) {
     lockNotice.textContent =
       "Les règles sont choisies par l’hébergeur. Elles s’appliqueront au lancement de la partie.";
     lockNotice.hidden = true;
-    lockNotice.style.margin = "0 0 0.85rem";
-    lockNotice.style.fontWeight = "800";
-    lockNotice.style.color = "#7a4a1f";
+    lockNotice.classList.add("boggle-mode-lock-notice");
 
     const boardSizeFieldset = createFieldset("Grille");
 
@@ -586,10 +583,7 @@ function ensureModeControls(anchorElement) {
     textarea.value = readLastBoardSuggestion() || createExampleBoard(4);
 
     const actions = document.createElement("div");
-    actions.style.display = "flex";
-    actions.style.gap = "0.5rem";
-    actions.style.flexWrap = "wrap";
-    actions.style.marginTop = "0.75rem";
+    actions.classList.add("boggle-mode-actions");
 
     const solutionButton = document.createElement("button");
     solutionButton.id = "start-solution-mode";
@@ -605,15 +599,14 @@ function ensureModeControls(anchorElement) {
 
     const feedback = document.createElement("p");
     feedback.id = "mode-feedback";
-    feedback.style.marginBottom = "0";
-    feedback.style.color = "#a9433f";
+    feedback.classList.add("boggle-mode-feedback");
 
     actions.append(solutionButton, fillExampleButton);
     boardFieldset.append(description, textarea, actions, feedback);
 
     const later = document.createElement("details");
     later.id = "future-game-options";
-    later.style.marginTop = "1rem";
+    later.classList.add("boggle-mode-later");
 
     const laterSummary = document.createElement("summary");
     laterSummary.textContent = "Options à venir";
@@ -674,14 +667,11 @@ function ensureModeControls(anchorElement) {
 
 function createFieldset(title) {
   const fieldset = document.createElement("fieldset");
-  fieldset.style.border = "0";
-  fieldset.style.padding = "0";
-  fieldset.style.margin = "0 0 1rem";
+  fieldset.classList.add("boggle-mode-fieldset");
 
   const legend = document.createElement("legend");
   legend.textContent = title;
-  legend.style.fontWeight = "800";
-  legend.style.marginBottom = "0.5rem";
+  legend.classList.add("boggle-mode-legend");
 
   fieldset.append(legend);
 
@@ -701,7 +691,7 @@ function createLabeledControl(labelText) {
 
 function createCheckboxLabel(id, labelText, descriptionText) {
   const label = document.createElement("label");
-  label.style.display = "grid";
+  label.classList.add("boggle-mode-option-label");
   label.style.gridTemplateColumns = "auto 1fr";
   label.style.gap = "0.45rem";
   label.style.alignItems = "start";
