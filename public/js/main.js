@@ -1,3 +1,4 @@
+import { formatBoardForTextarea } from "./core/board-text.js";
 import { state } from "./core/state.js";
 import { createRoomSocket, sendMessage } from "./net/socket.js";
 import { renderBoard } from "./ui/board-ui.js";
@@ -775,33 +776,6 @@ function saveLastBoardSuggestion(board) {
   if (textarea instanceof HTMLTextAreaElement) {
     textarea.value = text;
   }
-}
-
-function formatBoardForTextarea(board) {
-  if (typeof board === "string") {
-    return normalizeBoardTextForTextarea(board);
-  }
-
-  if (!Array.isArray(board)) {
-    return "";
-  }
-
-  return normalizeBoardTextForTextarea(
-    board
-      .map((row) => Array.isArray(row) ? row.join("") : String(row || ""))
-      .filter(Boolean)
-      .join("\n")
-  );
-}
-
-function normalizeBoardTextForTextarea(value) {
-  return String(value || "")
-    .trim()
-    .replace(/\s*[\\/|;]+\s*/g, "\n")
-    .split(/\n+/)
-    .map((line) => line.replace(/\s+/g, "").toUpperCase())
-    .filter(Boolean)
-    .join("\n");
 }
 
 function syncPendingGameOptions(options) {

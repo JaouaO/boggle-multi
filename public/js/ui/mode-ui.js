@@ -1,3 +1,4 @@
+import { normalizeBoardTextForTextarea } from "../core/board-text.js";
 export function renderModeControls(anchorElement, options) {
   const controls = ensureModeControls(anchorElement);
 
@@ -349,16 +350,6 @@ function saveLastBoardSuggestionText(value) {
   } catch {
     // La persistance est un confort : on ignore les blocages navigateur.
   }
-}
-
-function normalizeBoardTextForTextarea(value) {
-  return String(value || "")
-    .trim()
-    .replace(/\s*[\\/|;]+\s*/g, "\n")
-    .split(/\n+/)
-    .map((line) => line.replace(/\s+/g, "").toUpperCase())
-    .filter(Boolean)
-    .join("\n");
 }
 
 function createExampleBoard(size) {
