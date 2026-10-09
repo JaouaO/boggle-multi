@@ -1017,3 +1017,69 @@ section,
     0 0.42rem 0.85rem rgba(126, 83, 39, 0.16) !important;
   transform: translateY(-1px) !important;
 }
+
+
+/* ==========================================================================
+   V72 — ajustement affichage règles et options
+   ========================================================================== */
+
+#mode-controls {
+  display: grid;
+  gap: 0.85rem;
+}
+
+#mode-controls h2,
+#mode-controls h3,
+.boggle-mode-title-topless,
+.boggle-mode-title-compact {
+  margin-bottom: 0.45rem;
+}
+
+.boggle-mode-description {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.boggle-mode-fieldset {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.boggle-mode-legend {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.boggle-mode-option-label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: start;
+  margin: 0.45rem 0;
+}
+
+.boggle-mode-option-label input[type="checkbox"],
+.boggle-mode-option-label input[type="radio"] {
+  margin-top: 0.2rem;
+}
+
+.boggle-mode-option-description {
+  display: block;
+  margin-top: 0.15rem;
+  line-height: 1.35;
+}
+
+.boggle-mode-actions {
+  align-items: center;
+  margin-top: 0.85rem;
+}
+
+.boggle-mode-later {
+  margin-top: 1rem;
+}
+
+@media (max-width: 720px) {
+  .boggle-mode-actions {
+    display: grid;
+  }
+}
