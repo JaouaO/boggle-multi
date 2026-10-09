@@ -1,0 +1,510 @@
+{
+  "generatedAt": "2026-10-09T08:34:49.585Z",
+  "source": "public/js/ui/theme-styles.js",
+  "layerCount": 6,
+  "layers": [
+    {
+      "order": 1,
+      "name": "injectLegacyThemeFoundationV42",
+      "line": 13,
+      "cssChars": 106230,
+      "ruleCount": 537,
+      "emptyRuleCount": 30,
+      "whitespaceOnlyRuleCount": 30
+    },
+    {
+      "order": 2,
+      "name": "injectTopLaunchEndScreenLayoutV39",
+      "line": 3810,
+      "cssChars": 10978,
+      "ruleCount": 44,
+      "emptyRuleCount": 0,
+      "whitespaceOnlyRuleCount": 0
+    },
+    {
+      "order": 3,
+      "name": "injectRulesHelpOptionsPanelV38",
+      "line": 4186,
+      "cssChars": 5982,
+      "ruleCount": 24,
+      "emptyRuleCount": 0,
+      "whitespaceOnlyRuleCount": 0
+    },
+    {
+      "order": 4,
+      "name": "injectFoundWordsPanelV37",
+      "line": 4398,
+      "cssChars": 8095,
+      "ruleCount": 46,
+      "emptyRuleCount": 0,
+      "whitespaceOnlyRuleCount": 0
+    },
+    {
+      "order": 5,
+      "name": "injectFinalBoardInputV36",
+      "line": 4652,
+      "cssChars": 1651,
+      "ruleCount": 5,
+      "emptyRuleCount": 0,
+      "whitespaceOnlyRuleCount": 0
+    },
+    {
+      "order": 6,
+      "name": "injectFinalButtonsV34",
+      "line": 4717,
+      "cssChars": 4050,
+      "ruleCount": 13,
+      "emptyRuleCount": 0,
+      "whitespaceOnlyRuleCount": 0
+    }
+  ],
+  "emptyRuleCount": 30,
+  "emptyRules": [
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 267,
+      "selectors": [
+        "#status[hidden]"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 789,
+      "selectors": [
+        "#players-panel > h2",
+        "#found-words-panel > h2",
+        "#help-panel > h2",
+        "#play-status-panel > h2",
+        "#launch-panel > h2"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 916,
+      "selectors": [
+        "#word-form"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1652,
+      "selectors": [
+        "#boggle-top"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1660,
+      "selectors": [
+        "#connection-controls"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1698,
+      "selectors": [
+        "#room-control",
+        "#name-control"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1709,
+      "selectors": [
+        "#connection-actions"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1713,
+      "selectors": [
+        "#connect"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1717,
+      "selectors": [
+        "#status"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2035,
+      "selectors": [
+        "#connection-controls"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2217,
+      "selectors": [
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#play-status-panel",
+        "#launch-panel",
+        "#word-form"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2329,
+      "selectors": [
+        "#mockup-right-cards .mockup-info-card h2"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2334,
+      "selectors": [
+        "#mockup-right-cards .mockup-info-card p",
+        ".mockup-help-list li"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2342,
+      "selectors": [
+        "#word-form"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2362,
+      "selectors": [
+        "#connection-controls"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2529,
+      "selectors": [
+        ".boggle-column > section",
+        "#players-panel",
+        "#found-words-panel",
+        "#mockup-right-cards .mockup-info-card",
+        "#launch-panel",
+        "#play-status-panel",
+        "#word-form",
+        "#welcome-panel"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2796,
+      "selectors": [
+        ".found-words-word",
+        ".found-words-points",
+        ".found-words-player"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2875,
+      "selectors": [
+        "#boggle-top"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2878,
+      "selectors": [
+        "#connection-controls"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3117,
+      "selectors": [
+        "#word-feedback"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3167,
+      "selectors": [
+        "#board"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3171,
+      "selectors": [
+        "#word-form"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3332,
+      "selectors": [
+        "#board"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3336,
+      "selectors": [
+        "#word-form",
+        "#word-feedback"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3371,
+      "selectors": [
+        "#board"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3375,
+      "selectors": [
+        "#word-form",
+        "#word-feedback"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3647,
+      "selectors": [
+        ".found-words-header-cell"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3699,
+      "selectors": [
+        "#board"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3707,
+      "selectors": [
+        "#word-form"
+      ],
+      "whitespaceOnly": true
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3748,
+      "selectors": [
+        "#board"
+      ],
+      "whitespaceOnly": true
+    }
+  ],
+  "suspiciousBlankGapCount": 44,
+  "suspiciousBlankGaps": [
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 108
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 419
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 925
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 926
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 927
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1032
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1033
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1034
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1091
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1251
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1362
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1424
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1425
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1456
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 1457
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2101
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2102
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2103
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2259
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2260
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2279
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2280
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2315
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2330
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2550
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2551
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2741
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2807
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 2815
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3122
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3123
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3124
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3125
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3126
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3127
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3128
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3606
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3642
+    },
+    {
+      "layer": "injectLegacyThemeFoundationV42",
+      "approxLine": 3797
+    },
+    {
+      "layer": "injectTopLaunchEndScreenLayoutV39",
+      "approxLine": 4174
+    },
+    {
+      "layer": "injectRulesHelpOptionsPanelV38",
+      "approxLine": 4386
+    },
+    {
+      "layer": "injectFoundWordsPanelV37",
+      "approxLine": 4640
+    },
+    {
+      "layer": "injectFinalBoardInputV36",
+      "approxLine": 4705
+    },
+    {
+      "layer": "injectFinalButtonsV34",
+      "approxLine": 4838
+    }
+  ],
+  "notes": [
+    "Cet audit ne modifie aucun fichier.",
+    "Les règles vides peuvent généralement être supprimées sans impact visuel, mais il faut conserver les blocs @keyframes et les media queries contenant encore des règles utiles.",
+    "Les lignes sont approximatives car elles sont calculées depuis les chaînes CSS injectées."
+  ]
+}
