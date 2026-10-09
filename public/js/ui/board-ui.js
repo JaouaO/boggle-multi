@@ -13,11 +13,8 @@ export function renderBoard(boardElement, board, options = {}) {
   const canShowCellHelp = Boolean(options.canShowCellHelp);
   const selectedKeys = new Set(options.selectedCells || []);
 
-  boardElement.style.display = "grid";
+  boardElement.classList.add("boggle-board-grid-runtime");
   boardElement.style.gridTemplateColumns = `repeat(${board[0]?.length || 0}, minmax(48px, 1fr))`;
-  boardElement.style.gap = "0.5rem";
-  boardElement.style.userSelect = "none";
-  boardElement.style.touchAction = "none";
 
   if (canClickCells) {
     boardElement.onpointermove = (event) => {
@@ -75,9 +72,8 @@ export function renderBoard(boardElement, board, options = {}) {
       cell.dataset.col = String(col);
       cell.dataset.letter = letter;
 
-      cell.style.position = "relative";
-      cell.style.minHeight = "56px";
-      cell.style.cursor = canClickCells ? "pointer" : "default";
+      cell.classList.add("boggle-board-cell-runtime");
+      cell.classList.toggle("boggle-board-cell-clickable", canClickCells);
 
       if (showCounts && possibleCount !== null) {
         cell.title = `${foundCount}/${possibleCount} mot(s) trouvé(s)/possible(s)`;
@@ -103,17 +99,8 @@ export function renderBoard(boardElement, board, options = {}) {
           : "board-count";
 
         countElement.textContent = `${foundCount}/${possibleCount}`;
-        countElement.style.position = "absolute";
-        countElement.style.right = "0.25rem";
-        countElement.style.bottom = "0.15rem";
-        countElement.style.fontSize = "0.7rem";
-        countElement.style.opacity = "0.85";
-        countElement.style.border = canShowCellHelp ? "1px solid #ddd" : "0";
-        countElement.style.borderRadius = "999px";
-        countElement.style.padding = canShowCellHelp ? "0.05rem 0.3rem" : "0";
-        countElement.style.background = canShowCellHelp ? "#fff" : "transparent";
-        countElement.style.color = "inherit";
-        countElement.style.cursor = canShowCellHelp ? "help" : "default";
+        countElement.classList.add("boggle-board-count-runtime");
+        countElement.classList.toggle("boggle-board-count-help-enabled", canShowCellHelp);
 
         if (canShowCellHelp) {
           countElement.type = "button";

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T18:25:27.340Z",
+  "generatedAt": "2026-10-09T18:27:34.940Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 84,
+  "findingCount": 66,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
@@ -251,15 +251,9 @@
     "public/js/ui/board-ui.js": [
       {
         "file": "public/js/ui/board-ui.js",
-        "line": 215,
+        "line": 202,
         "type": "html style attribute",
         "snippet": "const style = document.createElement(\"style\");"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 16,
-        "type": "element.style access",
-        "snippet": "boardElement.style.display = \"grid\";"
       },
       {
         "file": "public/js/ui/board-ui.js",
@@ -269,109 +263,7 @@
       },
       {
         "file": "public/js/ui/board-ui.js",
-        "line": 18,
-        "type": "element.style access",
-        "snippet": "boardElement.style.gap = \"0.5rem\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 19,
-        "type": "element.style access",
-        "snippet": "boardElement.style.userSelect = \"none\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 20,
-        "type": "element.style access",
-        "snippet": "boardElement.style.touchAction = \"none\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 78,
-        "type": "element.style access",
-        "snippet": "cell.style.position = \"relative\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 79,
-        "type": "element.style access",
-        "snippet": "cell.style.minHeight = \"56px\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 80,
-        "type": "element.style access",
-        "snippet": "cell.style.cursor = canClickCells ? \"pointer\" : \"default\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 106,
-        "type": "element.style access",
-        "snippet": "countElement.style.position = \"absolute\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 107,
-        "type": "element.style access",
-        "snippet": "countElement.style.right = \"0.25rem\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 108,
-        "type": "element.style access",
-        "snippet": "countElement.style.bottom = \"0.15rem\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 109,
-        "type": "element.style access",
-        "snippet": "countElement.style.fontSize = \"0.7rem\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 110,
-        "type": "element.style access",
-        "snippet": "countElement.style.opacity = \"0.85\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 111,
-        "type": "element.style access",
-        "snippet": "countElement.style.border = canShowCellHelp ? \"1px solid #ddd\" : \"0\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 112,
-        "type": "element.style access",
-        "snippet": "countElement.style.borderRadius = \"999px\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 113,
-        "type": "element.style access",
-        "snippet": "countElement.style.padding = canShowCellHelp ? \"0.05rem 0.3rem\" : \"0\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 114,
-        "type": "element.style access",
-        "snippet": "countElement.style.background = canShowCellHelp ? \"#fff\" : \"transparent\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 115,
-        "type": "element.style access",
-        "snippet": "countElement.style.color = \"inherit\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 116,
-        "type": "element.style access",
-        "snippet": "countElement.style.cursor = canShowCellHelp ? \"help\" : \"default\";"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 215,
+        "line": 202,
         "type": "create style element",
         "snippet": "const style = document.createElement(\"style\");"
       },
