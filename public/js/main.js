@@ -255,7 +255,9 @@ function loadLocalSettings() {
 }
 
 function getOrCreateClientId() {
-  const savedClientId = readLocalString(STORAGE_KEYS.clientId);
+  forgetSharedClientId();
+
+  const savedClientId = readSessionString(STORAGE_KEYS.clientId);
 
   if (savedClientId) {
     return savedClientId;
@@ -265,8 +267,32 @@ function getOrCreateClientId() {
     ? window.crypto.randomUUID()
     : `client-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
-  saveLocalString(STORAGE_KEYS.clientId, clientId);
+  saveSessionString(STORAGE_KEYS.clientId, clientId);
   return clientId;
+}
+
+function forgetSharedClientId() {
+  try {
+    window.localStorage.removeItem(STORAGE_KEYS.clientId);
+  } catch {
+    // Le stockage local peut être indisponible en navigation privée.
+  }
+}
+
+function readSessionString(key) {
+  try {
+    return window.sessionStorage.getItem(key) || "";
+  } catch {
+    return "";
+  }
+}
+
+function saveSessionString(key, value) {
+  try {
+    window.sessionStorage.setItem(key, value);
+  } catch {
+    // Le stockage de session peut être indisponible en navigation privée.
+  }
 }
 
 function readLocalString(key) {
