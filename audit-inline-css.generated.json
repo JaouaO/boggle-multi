@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T17:53:38.817Z",
+  "generatedAt": "2026-10-09T18:25:27.340Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 88,
+  "findingCount": 84,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
@@ -415,79 +415,55 @@
     "public/js/ui/mode-ui.js": [
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 695,
-        "type": "element.style access",
-        "snippet": "label.style.gridTemplateColumns = \"auto 1fr\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 696,
-        "type": "element.style access",
-        "snippet": "label.style.gap = \"0.45rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 697,
-        "type": "element.style access",
-        "snippet": "label.style.alignItems = \"start\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 698,
-        "type": "element.style access",
-        "snippet": "label.style.margin = \"0.5rem 0\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 703,
+        "line": 699,
         "type": "element.style access",
         "snippet": "input.style.marginTop = \"0.15rem\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 712,
+        "line": 708,
         "type": "element.style access",
         "snippet": "description.style.display = \"block\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 713,
+        "line": 709,
         "type": "element.style access",
         "snippet": "description.style.opacity = \"0.75\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 714,
+        "line": 710,
         "type": "element.style access",
         "snippet": "description.style.fontWeight = \"400\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 779,
+        "line": 774,
         "type": "element.style access",
-        "snippet": "durationSecondsLabel.style.display = isTimer ? \"\" : \"none\";"
+        "snippet": "if (durationSecondsLabel) {\r  durationSecondsLabel.style.display = isTimer ? \"\" : \"none\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 777,
+        "type": "element.style access",
+        "snippet": "if (targetScoreModeLabel) {\r  targetScoreModeLabel.style.display = isTargetScore ? \"\" : \"none\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 780,
+        "type": "element.style access",
+        "snippet": "if (targetScorePercentLabel) {\r  targetScorePercentLabel.style.display = isTargetScore && !isFixedTarget ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
         "line": 783,
         "type": "element.style access",
-        "snippet": "targetScoreModeLabel.style.display = isTargetScore ? \"\" : \"none\";"
+        "snippet": "if (targetScoreLabel) {\r  targetScoreLabel.style.display = isTargetScore && isFixedTarget ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 787,
-        "type": "element.style access",
-        "snippet": "targetScorePercentLabel.style.display ="
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 792,
-        "type": "element.style access",
-        "snippet": "targetScoreLabel.style.display ="
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 823,
+        "line": 813,
         "type": "element.style access",
         "snippet": "invalidWordPenaltyLabel.style.opacity = enabled ? \"1\" : \"0.45\";"
       }

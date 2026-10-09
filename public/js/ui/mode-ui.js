@@ -692,10 +692,6 @@ function createLabeledControl(labelText) {
 function createCheckboxLabel(id, labelText, descriptionText) {
   const label = document.createElement("label");
   label.classList.add("boggle-mode-option-label");
-  label.style.gridTemplateColumns = "auto 1fr";
-  label.style.gap = "0.45rem";
-  label.style.alignItems = "start";
-  label.style.margin = "0.5rem 0";
 
   const input = document.createElement("input");
   input.id = id;
@@ -710,8 +706,8 @@ function createCheckboxLabel(id, labelText, descriptionText) {
   const description = document.createElement("small");
   description.textContent = descriptionText;
   description.style.display = "block";
-  description.style.opacity = "0.75";
-  description.style.fontWeight = "400";
+description.style.opacity = "0.75";
+description.style.fontWeight = "400";
 
   body.append(title, description);
   label.append(input, body);
@@ -775,22 +771,16 @@ function refreshDurationControls() {
     durationSeconds.disabled = isLocked || !isTimer;
   }
 
-  if (durationSecondsLabel) {
-    durationSecondsLabel.style.display = isTimer ? "" : "none";
+  if (durationSecondsLabel) {  durationSecondsLabel.style.display = isTimer ? "" : "none";
   }
 
-  if (targetScoreModeLabel) {
-    targetScoreModeLabel.style.display = isTargetScore ? "" : "none";
+  if (targetScoreModeLabel) {  targetScoreModeLabel.style.display = isTargetScore ? "" : "none";
   }
 
-  if (targetScorePercentLabel) {
-    targetScorePercentLabel.style.display =
-      isTargetScore && !isFixedTarget ? "" : "none";
+  if (targetScorePercentLabel) {  targetScorePercentLabel.style.display = isTargetScore && !isFixedTarget ? "" : "none";
   }
 
-  if (targetScoreLabel) {
-    targetScoreLabel.style.display =
-      isTargetScore && isFixedTarget ? "" : "none";
+  if (targetScoreLabel) {  targetScoreLabel.style.display = isTargetScore && isFixedTarget ? "" : "none";
   }
 
   if (targetScorePercent) {
