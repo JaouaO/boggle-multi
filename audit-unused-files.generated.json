@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T16:59:32.779Z",
-  "auditedCandidateCount": 24,
+  "generatedAt": "2026-10-09T17:23:10.547Z",
+  "auditedCandidateCount": 26,
   "probableUnused": [],
   "referenced": [
     {
@@ -61,9 +61,41 @@
       "probableUnused": false
     },
     {
-      "file": "public/js/core/state.js",
-      "referenceCount": 1,
+      "file": "public/js/core/player-word-utils.js",
+      "referenceCount": 2,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "public/js/core/player-word-utils.js",
+            "js/core/player-word-utils.js",
+            "./core/player-word-utils.js",
+            "public/js/core/player-word-utils",
+            "js/core/player-word-utils",
+            "player-word-utils.js"
+          ]
+        },
+        {
+          "file": "public/js/main.js",
+          "via": [
+            "./core/player-word-utils.js",
+            "player-word-utils.js"
+          ]
+        }
+      ],
+      "probableUnused": false
+    },
+    {
+      "file": "public/js/core/state.js",
+      "referenceCount": 2,
+      "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./core/state.js",
+            "state.js"
+          ]
+        },
         {
           "file": "public/js/main.js",
           "via": [
@@ -75,9 +107,33 @@
       "probableUnused": false
     },
     {
-      "file": "public/js/main.js",
-      "referenceCount": 5,
+      "file": "public/js/core/storage.js",
+      "referenceCount": 1,
       "references": [
+        {
+          "file": "public/js/main.js",
+          "via": [
+            "./core/storage.js",
+            "storage.js"
+          ]
+        }
+      ],
+      "probableUnused": false
+    },
+    {
+      "file": "public/js/main.js",
+      "referenceCount": 6,
+      "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "public/js/main.js",
+            "js/main.js",
+            "public/js/main",
+            "js/main",
+            "main.js"
+          ]
+        },
         {
           "file": "public/index.html",
           "via": [
@@ -321,8 +377,14 @@
     },
     {
       "file": "tools/audit-css-empty.mjs",
-      "referenceCount": 15,
+      "referenceCount": 16,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [
@@ -420,8 +482,14 @@
     },
     {
       "file": "tools/audit-css-js.mjs",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [
@@ -513,8 +581,14 @@
     },
     {
       "file": "tools/audit-css-overrides.mjs",
-      "referenceCount": 15,
+      "referenceCount": 16,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [
@@ -612,8 +686,14 @@
     },
     {
       "file": "tools/audit-main-js.mjs",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [
@@ -705,8 +785,14 @@
     },
     {
       "file": "tools/audit-unused-files.mjs",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [
@@ -798,8 +884,14 @@
     },
     {
       "file": "tools/build-dico.js",
-      "referenceCount": 15,
+      "referenceCount": 16,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [
@@ -897,8 +989,14 @@
     },
     {
       "file": "tools/check-js-syntax.mjs",
-      "referenceCount": 15,
+      "referenceCount": 16,
       "references": [
+        {
+          "file": "apply_boggle_v63_extract_player_word_utils.mjs",
+          "via": [
+            "./"
+          ]
+        },
         {
           "file": "package.json",
           "via": [

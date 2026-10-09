@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-10-09T17:16:32.829Z",
+  "generatedAt": "2026-10-09T17:22:14.053Z",
   "file": "public/js/main.js",
   "summary": {
-    "lineCount": 2650,
-    "functionCount": 109,
+    "lineCount": 2595,
+    "functionCount": 105,
     "longFunctionThreshold": 80,
     "longFunctionCount": 4,
     "stateCoupledFunctionCount": 63,
     "socketCoupledFunctionCount": 12,
     "domCoupledFunctionCount": 40,
-    "lowRiskUtilityCandidateCount": 7
+    "lowRiskUtilityCandidateCount": 3
   },
   "categories": {
     "interaction": 26,
     "factory": 8,
-    "utility": 23,
+    "utility": 19,
     "rendering": 23,
     "other": 18,
     "storage": 1,
@@ -22,15 +22,15 @@
   },
   "extractionRisk": {
     "medium": 58,
-    "low": 23,
+    "low": 19,
     "high": 28
   },
   "longestFunctions": [
     {
       "name": "handleGameStarted",
       "category": "interaction",
-      "line": 1605,
-      "endLine": 1704,
+      "line": 1550,
+      "endLine": 1649,
       "length": 100,
       "coupling": {
         "state": true,
@@ -44,8 +44,8 @@
     {
       "name": "findBoardPathForWord",
       "category": "other",
-      "line": 449,
-      "endLine": 535,
+      "line": 455,
+      "endLine": 541,
       "length": 87,
       "coupling": {
         "state": true,
@@ -59,8 +59,8 @@
     {
       "name": "connectToRoom",
       "category": "interaction",
-      "line": 567,
-      "endLine": 651,
+      "line": 562,
+      "endLine": 646,
       "length": 85,
       "coupling": {
         "state": true,
@@ -74,8 +74,8 @@
     {
       "name": "handleServerMessage",
       "category": "interaction",
-      "line": 871,
-      "endLine": 950,
+      "line": 848,
+      "endLine": 927,
       "length": 80,
       "coupling": {
         "state": true,
@@ -89,8 +89,8 @@
     {
       "name": "renderRulesHelpCardV22",
       "category": "rendering",
-      "line": 1824,
-      "endLine": 1902,
+      "line": 1769,
+      "endLine": 1847,
       "length": 79,
       "coupling": {
         "state": true,
@@ -104,8 +104,8 @@
     {
       "name": "updateGameStatus",
       "category": "rendering",
-      "line": 2528,
-      "endLine": 2601,
+      "line": 2473,
+      "endLine": 2546,
       "length": 74,
       "coupling": {
         "state": true,
@@ -119,8 +119,8 @@
     {
       "name": "visit",
       "category": "other",
-      "line": 463,
-      "endLine": 522,
+      "line": 469,
+      "endLine": 528,
       "length": 60,
       "coupling": {
         "state": true,
@@ -134,8 +134,8 @@
     {
       "name": "createPlayerRow",
       "category": "factory",
-      "line": 803,
-      "endLine": 860,
+      "line": 780,
+      "endLine": 837,
       "length": 58,
       "coupling": {
         "state": true,
@@ -149,8 +149,8 @@
     {
       "name": "updateBoardFitV31",
       "category": "rendering",
-      "line": 2101,
-      "endLine": 2155,
+      "line": 2046,
+      "endLine": 2100,
       "length": 55,
       "coupling": {
         "state": false,
@@ -164,8 +164,8 @@
     {
       "name": "renderVictoryModalV16",
       "category": "rendering",
-      "line": 2226,
-      "endLine": 2280,
+      "line": 2171,
+      "endLine": 2225,
       "length": 55,
       "coupling": {
         "state": false,
@@ -179,8 +179,8 @@
     {
       "name": "handleGameEnded",
       "category": "interaction",
-      "line": 1706,
-      "endLine": 1759,
+      "line": 1651,
+      "endLine": 1704,
       "length": 54,
       "coupling": {
         "state": true,
@@ -194,8 +194,8 @@
     {
       "name": "addCellToDragPath",
       "category": "other",
-      "line": 1406,
-      "endLine": 1452,
+      "line": 1351,
+      "endLine": 1397,
       "length": 47,
       "coupling": {
         "state": true,
@@ -209,8 +209,8 @@
     {
       "name": "resetGameUiToWaiting",
       "category": "other",
-      "line": 2603,
-      "endLine": 2649,
+      "line": 2548,
+      "endLine": 2594,
       "length": 47,
       "coupling": {
         "state": true,
@@ -224,8 +224,8 @@
     {
       "name": "handleWordRejected",
       "category": "interaction",
-      "line": 1264,
-      "endLine": 1300,
+      "line": 1209,
+      "endLine": 1245,
       "length": 37,
       "coupling": {
         "state": true,
@@ -239,8 +239,8 @@
     {
       "name": "playVictorySound",
       "category": "runtime-effect",
-      "line": 2318,
-      "endLine": 2354,
+      "line": 2263,
+      "endLine": 2299,
       "length": 37,
       "coupling": {
         "state": true,
@@ -254,8 +254,8 @@
     {
       "name": "handleWordAccepted",
       "category": "interaction",
-      "line": 1228,
-      "endLine": 1262,
+      "line": 1173,
+      "endLine": 1207,
       "length": 35,
       "coupling": {
         "state": true,
@@ -269,8 +269,8 @@
     {
       "name": "refreshRightRulesPanel",
       "category": "rendering",
-      "line": 1775,
-      "endLine": 1809,
+      "line": 1720,
+      "endLine": 1754,
       "length": 35,
       "coupling": {
         "state": true,
@@ -284,8 +284,8 @@
     {
       "name": "getRulesHelpDetailsV22",
       "category": "utility",
-      "line": 1924,
-      "endLine": 1958,
+      "line": 1869,
+      "endLine": 1903,
       "length": 35,
       "coupling": {
         "state": true,
@@ -299,8 +299,8 @@
     {
       "name": "refreshHelpDisplay",
       "category": "rendering",
-      "line": 2058,
-      "endLine": 2092,
+      "line": 2003,
+      "endLine": 2037,
       "length": 35,
       "coupling": {
         "state": true,
@@ -314,8 +314,8 @@
     {
       "name": "addClickedLetterToSelection",
       "category": "other",
-      "line": 1482,
-      "endLine": 1515,
+      "line": 1427,
+      "endLine": 1460,
       "length": 34,
       "coupling": {
         "state": true,
@@ -329,8 +329,8 @@
     {
       "name": "playCountdownTick",
       "category": "runtime-effect",
-      "line": 2451,
-      "endLine": 2482,
+      "line": 2396,
+      "endLine": 2427,
       "length": 32,
       "coupling": {
         "state": true,
@@ -344,8 +344,8 @@
     {
       "name": "renderRulesSummary",
       "category": "rendering",
-      "line": 2015,
-      "endLine": 2044,
+      "line": 1960,
+      "endLine": 1989,
       "length": 30,
       "coupling": {
         "state": true,
@@ -359,8 +359,8 @@
     {
       "name": "startCountdownWarning",
       "category": "interaction",
-      "line": 2410,
-      "endLine": 2439,
+      "line": 2355,
+      "endLine": 2384,
       "length": 30,
       "coupling": {
         "state": false,
@@ -374,8 +374,8 @@
     {
       "name": "renderCurrentBoardWithHelp",
       "category": "rendering",
-      "line": 2158,
-      "endLine": 2185,
+      "line": 2103,
+      "endLine": 2130,
       "length": 28,
       "coupling": {
         "state": true,
@@ -389,8 +389,8 @@
     {
       "name": "finishCurrentDragSelection",
       "category": "other",
-      "line": 336,
-      "endLine": 362,
+      "line": 342,
+      "endLine": 368,
       "length": 27,
       "coupling": {
         "state": true,
@@ -404,52 +404,24 @@
   ],
   "lowRiskUtilityCandidates": [
     {
-      "name": "getFoundWordScoreClass",
-      "category": "utility",
-      "line": 1130,
-      "endLine": 1150,
-      "length": 21
-    },
-    {
-      "name": "rankPlayers",
-      "category": "utility",
-      "line": 785,
-      "endLine": 801,
-      "length": 17
-    },
-    {
       "name": "playVictoryTone",
       "category": "runtime-effect",
-      "line": 2356,
-      "endLine": 2372,
+      "line": 2301,
+      "endLine": 2317,
       "length": 17
     },
     {
       "name": "playCountdownTone",
       "category": "runtime-effect",
-      "line": 2484,
-      "endLine": 2500,
+      "line": 2429,
+      "endLine": 2445,
       "length": 17
-    },
-    {
-      "name": "normalizeComparableWord",
-      "category": "utility",
-      "line": 550,
-      "endLine": 559,
-      "length": 10
     },
     {
       "name": "buildWelcomeGrid",
       "category": "factory",
-      "line": 232,
-      "endLine": 240,
-      "length": 9
-    },
-    {
-      "name": "normalizeFoundWordsForDisplay",
-      "category": "utility",
-      "line": 1191,
-      "endLine": 1199,
+      "line": 238,
+      "endLine": 246,
       "length": 9
     }
   ],
