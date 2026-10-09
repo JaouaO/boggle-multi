@@ -1,0 +1,1036 @@
+{
+  "generatedAt": "2026-10-09T17:39:19.934Z",
+  "scannedRoots": [
+    "public"
+  ],
+  "findingCount": 168,
+  "filesWithFindings": 9,
+  "findingsByFile": {
+    "public/js/main.js": [
+      {
+        "file": "public/js/main.js",
+        "line": 98,
+        "type": "element.style access",
+        "snippet": "endGameButton.style.background = \"#b42318\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 99,
+        "type": "element.style access",
+        "snippet": "endGameButton.style.color = \"#fff\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 100,
+        "type": "element.style access",
+        "snippet": "endGameButton.style.border = \"2px solid #7f1d1d\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 101,
+        "type": "element.style access",
+        "snippet": "endGameButton.style.borderRadius = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 102,
+        "type": "element.style access",
+        "snippet": "endGameButton.style.fontWeight = \"900\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 103,
+        "type": "element.style access",
+        "snippet": "endGameButton.style.padding = \"0.58rem 0.9rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 125,
+        "type": "element.style access",
+        "snippet": "connectionStatusLine.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 126,
+        "type": "element.style access",
+        "snippet": "connectionStatusLine.style.alignItems = \"center\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 127,
+        "type": "element.style access",
+        "snippet": "connectionStatusLine.style.gap = \"0.5rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 128,
+        "type": "element.style access",
+        "snippet": "connectionStatusLine.style.flexWrap = \"wrap\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 129,
+        "type": "element.style access",
+        "snippet": "connectionStatusLine.style.margin = \"0.5rem 0\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 139,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 140,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.flexWrap = \"wrap\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 141,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.gap = \"0.35rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 142,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.margin = \"0\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 143,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.padding = \"0\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 144,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.border = \"0\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 145,
+        "type": "element.style access",
+        "snippet": "rulesSummaryElement.style.background = \"transparent\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 785,
+        "type": "element.style access",
+        "snippet": "item.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 786,
+        "type": "element.style access",
+        "snippet": "item.style.justifyContent = \"space-between\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 787,
+        "type": "element.style access",
+        "snippet": "item.style.alignItems = \"center\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 788,
+        "type": "element.style access",
+        "snippet": "item.style.gap = \"0.22rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 792,
+        "type": "element.style access",
+        "snippet": "nameLine.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 793,
+        "type": "element.style access",
+        "snippet": "nameLine.style.alignItems = \"center\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 794,
+        "type": "element.style access",
+        "snippet": "nameLine.style.gap = \"0.18rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 795,
+        "type": "element.style access",
+        "snippet": "nameLine.style.flexWrap = \"nowrap\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 803,
+        "type": "element.style access",
+        "snippet": "name.style.overflow = \"hidden\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 804,
+        "type": "element.style access",
+        "snippet": "name.style.textOverflow = \"ellipsis\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 805,
+        "type": "element.style access",
+        "snippet": "name.style.whiteSpace = \"nowrap\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 814,
+        "type": "element.style access",
+        "snippet": "selfBadge.style.background = \"rgba(90, 59, 35, 0.08)\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 815,
+        "type": "element.style access",
+        "snippet": "selfBadge.style.color = \"#5a3b23\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 821,
+        "type": "element.style access",
+        "snippet": "hostBadge.style.background = \"#5a3b23\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 822,
+        "type": "element.style access",
+        "snippet": "hostBadge.style.color = \"#fff8ea\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 843,
+        "type": "element.style access",
+        "snippet": "badge.style.lineHeight = \"1\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 957,
+        "type": "element.style access",
+        "snippet": "element.style.minHeight = \"0\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 958,
+        "type": "element.style access",
+        "snippet": "element.style.overflowY = \"auto\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 959,
+        "type": "element.style access",
+        "snippet": "element.style.overflowX = \"hidden\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 960,
+        "type": "element.style access",
+        "snippet": "element.style.overscrollBehavior = \"contain\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 961,
+        "type": "element.style access",
+        "snippet": "element.style.paddingRight = \"0.35rem\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 962,
+        "type": "element.style access",
+        "snippet": "element.style.boxSizing = \"border-box\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 963,
+        "type": "element.style access",
+        "snippet": "element.style.display = \"block\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 964,
+        "type": "element.style access",
+        "snippet": "element.style.flex = \"1 1 auto\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 965,
+        "type": "element.style access",
+        "snippet": "element.style.maxHeight = \"none\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2099,
+        "type": "element.style access",
+        "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2330,
+        "type": "element.style access",
+        "snippet": "piece.style.left = `${Math.random() * 100}vw`;"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2331,
+        "type": "element.style access",
+        "snippet": "piece.style.background = colors[index % colors.length];"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2332,
+        "type": "element.style access",
+        "snippet": "piece.style.animationDelay = `${Math.random() * 1.4}s`;"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2333,
+        "type": "element.style access",
+        "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2099,
+        "type": "style.setProperty",
+        "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2333,
+        "type": "style.setProperty",
+        "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 760,
+        "type": "innerHTML",
+        "snippet": "element.innerHTML = \"\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 956,
+        "type": "innerHTML",
+        "snippet": "element.innerHTML = \"\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 1760,
+        "type": "innerHTML",
+        "snippet": "body.innerHTML = bodyHtml;"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 1963,
+        "type": "innerHTML",
+        "snippet": "rulesSummaryElement.innerHTML = \"\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 1981,
+        "type": "innerHTML",
+        "snippet": "rulesSummaryElement.innerHTML = \"\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 1987,
+        "type": "innerHTML",
+        "snippet": "rulesSummaryElement.innerHTML = badges.join(\"\");"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2512,
+        "type": "innerHTML",
+        "snippet": "boardElement.innerHTML = \"\";"
+      },
+      {
+        "file": "public/js/main.js",
+        "line": 2560,
+        "type": "innerHTML",
+        "snippet": "boardElement.innerHTML = \"\";"
+      }
+    ],
+    "public/js/ui/board-ui.js": [
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 215,
+        "type": "html style attribute",
+        "snippet": "const style = document.createElement(\"style\");"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 16,
+        "type": "element.style access",
+        "snippet": "boardElement.style.display = \"grid\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 17,
+        "type": "element.style access",
+        "snippet": "boardElement.style.gridTemplateColumns = `repeat(${board[0]?.length || 0}, minmax(48px, 1fr))`;"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 18,
+        "type": "element.style access",
+        "snippet": "boardElement.style.gap = \"0.5rem\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 19,
+        "type": "element.style access",
+        "snippet": "boardElement.style.userSelect = \"none\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 20,
+        "type": "element.style access",
+        "snippet": "boardElement.style.touchAction = \"none\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 78,
+        "type": "element.style access",
+        "snippet": "cell.style.position = \"relative\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 79,
+        "type": "element.style access",
+        "snippet": "cell.style.minHeight = \"56px\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 80,
+        "type": "element.style access",
+        "snippet": "cell.style.cursor = canClickCells ? \"pointer\" : \"default\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 106,
+        "type": "element.style access",
+        "snippet": "countElement.style.position = \"absolute\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 107,
+        "type": "element.style access",
+        "snippet": "countElement.style.right = \"0.25rem\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 108,
+        "type": "element.style access",
+        "snippet": "countElement.style.bottom = \"0.15rem\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 109,
+        "type": "element.style access",
+        "snippet": "countElement.style.fontSize = \"0.7rem\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 110,
+        "type": "element.style access",
+        "snippet": "countElement.style.opacity = \"0.85\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 111,
+        "type": "element.style access",
+        "snippet": "countElement.style.border = canShowCellHelp ? \"1px solid #ddd\" : \"0\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 112,
+        "type": "element.style access",
+        "snippet": "countElement.style.borderRadius = \"999px\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 113,
+        "type": "element.style access",
+        "snippet": "countElement.style.padding = canShowCellHelp ? \"0.05rem 0.3rem\" : \"0\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 114,
+        "type": "element.style access",
+        "snippet": "countElement.style.background = canShowCellHelp ? \"#fff\" : \"transparent\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 115,
+        "type": "element.style access",
+        "snippet": "countElement.style.color = \"inherit\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 116,
+        "type": "element.style access",
+        "snippet": "countElement.style.cursor = canShowCellHelp ? \"help\" : \"default\";"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 215,
+        "type": "create style element",
+        "snippet": "const style = document.createElement(\"style\");"
+      },
+      {
+        "file": "public/js/ui/board-ui.js",
+        "line": 5,
+        "type": "innerHTML",
+        "snippet": "boardElement.innerHTML = \"\";"
+      }
+    ],
+    "public/js/ui/end-screen-ui.js": [
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 45,
+        "type": "element.style access",
+        "snippet": "item.style.margin = \"0.35rem 0\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 46,
+        "type": "element.style access",
+        "snippet": "item.style.fontWeight = isCurrentPlayer ? \"700\" : \"400\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 75,
+        "type": "element.style access",
+        "snippet": "panel.style.marginTop = \"1rem\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 76,
+        "type": "element.style access",
+        "snippet": "panel.style.padding = \"1rem\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 77,
+        "type": "element.style access",
+        "snippet": "panel.style.border = \"2px solid #222\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 78,
+        "type": "element.style access",
+        "snippet": "panel.style.borderRadius = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 79,
+        "type": "element.style access",
+        "snippet": "panel.style.background = \"#f7f7f7\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 83,
+        "type": "element.style access",
+        "snippet": "title.style.marginTop = \"0\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 87,
+        "type": "element.style access",
+        "snippet": "message.style.fontWeight = \"700\";"
+      },
+      {
+        "file": "public/js/ui/end-screen-ui.js",
+        "line": 38,
+        "type": "innerHTML",
+        "snippet": "panel.ranking.innerHTML = \"\";"
+      }
+    ],
+    "public/js/ui/feedback-ui.js": [
+      {
+        "file": "public/js/ui/feedback-ui.js",
+        "line": 191,
+        "type": "html style attribute",
+        "snippet": "const style = document.createElement(\"style\");"
+      },
+      {
+        "file": "public/js/ui/feedback-ui.js",
+        "line": 191,
+        "type": "create style element",
+        "snippet": "const style = document.createElement(\"style\");"
+      }
+    ],
+    "public/js/ui/help-ui.js": [
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 113,
+        "type": "element.style access",
+        "snippet": "section.style.marginTop = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 119,
+        "type": "element.style access",
+        "snippet": "list.style.margin = \"0.25rem 0 0\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 120,
+        "type": "element.style access",
+        "snippet": "list.style.lineHeight = \"1.5\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 136,
+        "type": "element.style access",
+        "snippet": "panel.style.marginTop = \"1rem\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 137,
+        "type": "element.style access",
+        "snippet": "panel.style.padding = \"1rem\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 138,
+        "type": "element.style access",
+        "snippet": "panel.style.border = \"1px solid #ddd\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 139,
+        "type": "element.style access",
+        "snippet": "panel.style.borderRadius = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 140,
+        "type": "element.style access",
+        "snippet": "panel.style.background = \"#fff\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 143,
+        "type": "element.style access",
+        "snippet": "header.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 144,
+        "type": "element.style access",
+        "snippet": "header.style.alignItems = \"center\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 145,
+        "type": "element.style access",
+        "snippet": "header.style.justifyContent = \"space-between\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 146,
+        "type": "element.style access",
+        "snippet": "header.style.gap = \"1rem\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 150,
+        "type": "element.style access",
+        "snippet": "title.style.margin = \"0\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 160,
+        "type": "element.style access",
+        "snippet": "levelDescription.style.margin = \"0.5rem 0\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 161,
+        "type": "element.style access",
+        "snippet": "levelDescription.style.opacity = \"0.8\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 168,
+        "type": "element.style access",
+        "snippet": "cellTitle.style.marginBottom = \"0.25rem\";"
+      },
+      {
+        "file": "public/js/ui/help-ui.js",
+        "line": 109,
+        "type": "innerHTML",
+        "snippet": "container.innerHTML = \"\";"
+      }
+    ],
+    "public/js/ui/mode-ui.js": [
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 262,
+        "type": "element.style access",
+        "snippet": "title.style.marginTop = \"0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 267,
+        "type": "element.style access",
+        "snippet": "description.style.marginTop = \"0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 268,
+        "type": "element.style access",
+        "snippet": "description.style.opacity = \"0.8\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 393,
+        "type": "element.style access",
+        "snippet": "title.style.margin = \"0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 409,
+        "type": "element.style access",
+        "snippet": "lockNotice.style.margin = \"0 0 0.85rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 410,
+        "type": "element.style access",
+        "snippet": "lockNotice.style.fontWeight = \"800\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 411,
+        "type": "element.style access",
+        "snippet": "lockNotice.style.color = \"#7a4a1f\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 589,
+        "type": "element.style access",
+        "snippet": "actions.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 590,
+        "type": "element.style access",
+        "snippet": "actions.style.gap = \"0.5rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 591,
+        "type": "element.style access",
+        "snippet": "actions.style.flexWrap = \"wrap\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 592,
+        "type": "element.style access",
+        "snippet": "actions.style.marginTop = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 608,
+        "type": "element.style access",
+        "snippet": "feedback.style.marginBottom = \"0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 609,
+        "type": "element.style access",
+        "snippet": "feedback.style.color = \"#a9433f\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 616,
+        "type": "element.style access",
+        "snippet": "later.style.marginTop = \"1rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 677,
+        "type": "element.style access",
+        "snippet": "fieldset.style.border = \"0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 678,
+        "type": "element.style access",
+        "snippet": "fieldset.style.padding = \"0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 679,
+        "type": "element.style access",
+        "snippet": "fieldset.style.margin = \"0 0 1rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 683,
+        "type": "element.style access",
+        "snippet": "legend.style.fontWeight = \"800\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 684,
+        "type": "element.style access",
+        "snippet": "legend.style.marginBottom = \"0.5rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 704,
+        "type": "element.style access",
+        "snippet": "label.style.display = \"grid\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 705,
+        "type": "element.style access",
+        "snippet": "label.style.gridTemplateColumns = \"auto 1fr\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 706,
+        "type": "element.style access",
+        "snippet": "label.style.gap = \"0.45rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 707,
+        "type": "element.style access",
+        "snippet": "label.style.alignItems = \"start\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 708,
+        "type": "element.style access",
+        "snippet": "label.style.margin = \"0.5rem 0\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 713,
+        "type": "element.style access",
+        "snippet": "input.style.marginTop = \"0.15rem\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 722,
+        "type": "element.style access",
+        "snippet": "description.style.display = \"block\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 723,
+        "type": "element.style access",
+        "snippet": "description.style.opacity = \"0.75\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 724,
+        "type": "element.style access",
+        "snippet": "description.style.fontWeight = \"400\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 789,
+        "type": "element.style access",
+        "snippet": "durationSecondsLabel.style.display = isTimer ? \"\" : \"none\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 793,
+        "type": "element.style access",
+        "snippet": "targetScoreModeLabel.style.display = isTargetScore ? \"\" : \"none\";"
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 797,
+        "type": "element.style access",
+        "snippet": "targetScorePercentLabel.style.display ="
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 802,
+        "type": "element.style access",
+        "snippet": "targetScoreLabel.style.display ="
+      },
+      {
+        "file": "public/js/ui/mode-ui.js",
+        "line": 833,
+        "type": "element.style access",
+        "snippet": "invalidWordPenaltyLabel.style.opacity = enabled ? \"1\" : \"0.45\";"
+      }
+    ],
+    "public/js/ui/mouse-input-ui.js": [
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 18,
+        "type": "element.style access",
+        "snippet": "panel.style.marginTop = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 19,
+        "type": "element.style access",
+        "snippet": "panel.style.padding = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 20,
+        "type": "element.style access",
+        "snippet": "panel.style.border = \"1px solid #ddd\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 21,
+        "type": "element.style access",
+        "snippet": "panel.style.borderRadius = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 22,
+        "type": "element.style access",
+        "snippet": "panel.style.background = \"#fff\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 26,
+        "type": "element.style access",
+        "snippet": "label.style.fontWeight = \"700\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 27,
+        "type": "element.style access",
+        "snippet": "label.style.margin = \"0 0 0.35rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 31,
+        "type": "element.style access",
+        "snippet": "word.style.fontSize = \"1.4rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 32,
+        "type": "element.style access",
+        "snippet": "word.style.fontWeight = \"800\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 33,
+        "type": "element.style access",
+        "snippet": "word.style.letterSpacing = \"0.08em\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 37,
+        "type": "element.style access",
+        "snippet": "actions.style.display = \"flex\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 38,
+        "type": "element.style access",
+        "snippet": "actions.style.gap = \"0.5rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 39,
+        "type": "element.style access",
+        "snippet": "actions.style.flexWrap = \"wrap\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 40,
+        "type": "element.style access",
+        "snippet": "actions.style.marginTop = \"0.75rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 51,
+        "type": "element.style access",
+        "snippet": "hint.style.margin = \"0.5rem 0 0\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 52,
+        "type": "element.style access",
+        "snippet": "hint.style.fontSize = \"0.9rem\";"
+      },
+      {
+        "file": "public/js/ui/mouse-input-ui.js",
+        "line": 53,
+        "type": "element.style access",
+        "snippet": "hint.style.opacity = \"0.75\";"
+      }
+    ],
+    "public/js/ui/theme-styles.js": [
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 24,
+        "type": "html style attribute",
+        "snippet": "const style = document.createElement(\"style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 34,
+        "type": "html style attribute",
+        "snippet": "const style = createStyleElementOnce(\"boggle-legacy-theme-foundation-v42-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 3609,
+        "type": "html style attribute",
+        "snippet": "const style = createStyleElementOnce(\"boggle-top-launch-end-screen-v39-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 3984,
+        "type": "html style attribute",
+        "snippet": "const style = createStyleElementOnce(\"boggle-rules-help-options-v38-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 4195,
+        "type": "html style attribute",
+        "snippet": "const style = createStyleElementOnce(\"boggle-found-words-panel-v37-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 4448,
+        "type": "html style attribute",
+        "snippet": "const style = createStyleElementOnce(\"boggle-final-board-input-v36-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 4512,
+        "type": "html style attribute",
+        "snippet": "const style = createStyleElementOnce(\"boggle-final-buttons-v34-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 24,
+        "type": "create style element",
+        "snippet": "const style = document.createElement(\"style\");"
+      }
+    ],
+    "public/js/ui/words-ui.js": [
+      {
+        "file": "public/js/ui/words-ui.js",
+        "line": 2,
+        "type": "innerHTML",
+        "snippet": "foundWordsElement.innerHTML = \"\";"
+      }
+    ]
+  }
+}
