@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T08:34:43.296Z",
+  "generatedAt": "2026-10-09T08:41:25.105Z",
   "source": "public/js/ui/theme-styles.js",
   "layerCount": 6,
   "layers": [
@@ -7,42 +7,42 @@
       "order": 1,
       "name": "injectLegacyThemeFoundationV42",
       "line": 13,
-      "cssChars": 106230,
+      "cssChars": 103354,
       "ruleCount": 2147
     },
     {
       "order": 2,
       "name": "injectTopLaunchEndScreenLayoutV39",
-      "line": 3810,
-      "cssChars": 10978,
+      "line": 3599,
+      "cssChars": 10976,
       "ruleCount": 223
     },
     {
       "order": 3,
       "name": "injectRulesHelpOptionsPanelV38",
-      "line": 4186,
-      "cssChars": 5982,
+      "line": 3975,
+      "cssChars": 5980,
       "ruleCount": 129
     },
     {
       "order": 4,
       "name": "injectFoundWordsPanelV37",
-      "line": 4398,
-      "cssChars": 8095,
+      "line": 4187,
+      "cssChars": 8093,
       "ruleCount": 179
     },
     {
       "order": 5,
       "name": "injectFinalBoardInputV36",
-      "line": 4652,
-      "cssChars": 1651,
+      "line": 4441,
+      "cssChars": 1649,
       "ruleCount": 32
     },
     {
       "order": 6,
       "name": "injectFinalButtonsV34",
-      "line": 4717,
-      "cssChars": 4050,
+      "line": 4506,
+      "cssChars": 4048,
       "ruleCount": 113
     }
   ],

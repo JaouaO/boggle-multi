@@ -1,0 +1,40 @@
+{
+  "removedEmptyRuleCount": 30,
+  "removedSelectors": [
+    "#status[hidden]",
+    "#players-panel > h2, #found-words-panel > h2, #help-panel > h2, #play-status-panel > h2, #launch-panel > h2",
+    "#word-form",
+    "#boggle-top",
+    "#connection-controls",
+    "#room-control, #name-control",
+    "#connection-actions",
+    "#connect",
+    "#status",
+    "#connection-controls",
+    "#players-panel, #found-words-panel, #mockup-right-cards .mockup-info-card, #play-status-panel, #launch-panel, #word-form",
+    "#mockup-right-cards .mockup-info-card h2",
+    "#mockup-right-cards .mockup-info-card p, .mockup-help-list li",
+    "#word-form",
+    "#connection-controls",
+    ".boggle-column > section, #players-panel, #found-words-panel, #mockup-right-cards .mockup-info-card, #launch-panel, #play-status-panel, #word-form, #welcome-panel",
+    ".found-words-word, .found-words-points, .found-words-player",
+    "#boggle-top",
+    "#connection-controls",
+    "#word-feedback",
+    "#board",
+    "#word-form",
+    "#board",
+    "#word-form, #word-feedback",
+    "#board",
+    "#word-form, #word-feedback",
+    ".found-words-header-cell",
+    "#board",
+    "#word-form",
+    "#board"
+  ],
+  "notes": [
+    "Suppression automatique des règles CSS dont le corps est vide ou uniquement composé de lignes blanches.",
+    "Les étapes de keyframes from/to/0%/100% sont explicitement conservées.",
+    "Les groupes de lignes vides ont été compactés sans changer la cascade CSS."
+  ]
+}
