@@ -95,12 +95,7 @@ endGameButton.type = "button";
 endGameButton.className = "ui-button danger-button";
 endGameButton.textContent = "Terminer la partie";
 endGameButton.hidden = true;
-endGameButton.style.background = "#b42318";
-endGameButton.style.color = "#fff";
-endGameButton.style.border = "2px solid #7f1d1d";
-endGameButton.style.borderRadius = "0.75rem";
-endGameButton.style.fontWeight = "900";
-endGameButton.style.padding = "0.58rem 0.9rem";
+endGameButton.classList.add("boggle-end-game-button");
 endGameButton.addEventListener("click", () => {
   if (!window.confirm("Terminer la partie ?")) {
     return;
@@ -122,11 +117,7 @@ inviteRoomButton.addEventListener("click", copyRoomInviteLink);
 const connectionStatusLine = document.createElement("div");
 connectionStatusLine.id = "connection-status-line";
 connectionStatusLine.className = "connection-status-wrapper";
-connectionStatusLine.style.display = "flex";
-connectionStatusLine.style.alignItems = "center";
-connectionStatusLine.style.gap = "0.5rem";
-connectionStatusLine.style.flexWrap = "wrap";
-connectionStatusLine.style.margin = "0.5rem 0";
+connectionStatusLine.classList.add("boggle-connection-status-line");
 
 // Inséré après setupAppLayout(), sinon la mise en page sépare les libellés des champs.
 
@@ -136,13 +127,7 @@ timerElement.insertAdjacentElement("afterend", endGameButton);
 const rulesSummaryElement = document.createElement("section");
 rulesSummaryElement.id = "rules-summary";
 rulesSummaryElement.hidden = true;
-rulesSummaryElement.style.display = "flex";
-rulesSummaryElement.style.flexWrap = "wrap";
-rulesSummaryElement.style.gap = "0.35rem";
-rulesSummaryElement.style.margin = "0";
-rulesSummaryElement.style.padding = "0";
-rulesSummaryElement.style.border = "0";
-rulesSummaryElement.style.background = "transparent";
+rulesSummaryElement.classList.add("boggle-rules-summary");
 gameStatusElement.insertAdjacentElement("afterend", rulesSummaryElement);
 
 const welcomePanel = createWelcomePanel();

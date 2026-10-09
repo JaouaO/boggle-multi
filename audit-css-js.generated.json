@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-09T17:23:09.894Z",
+  "generatedAt": "2026-10-09T17:45:15.146Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
   ],
   "main": {
     "path": "public/js/main.js",
-    "lines": 2595,
-    "chars": 68090
+    "lines": 2580,
+    "chars": 67470
   },
   "injectionCalls": [
     {
@@ -615,331 +615,331 @@
     {
       "name": "setupConnectionFields",
       "file": "public/js/main.js",
-      "line": 154,
+      "line": 139,
       "references": 2
     },
     {
       "name": "createWelcomePanel",
       "file": "public/js/main.js",
-      "line": 216,
+      "line": 201,
       "references": 2
     },
     {
       "name": "buildWelcomeGrid",
       "file": "public/js/main.js",
-      "line": 238,
+      "line": 223,
       "references": 2
     },
     {
       "name": "isSocketConnected",
       "file": "public/js/main.js",
-      "line": 248,
+      "line": 233,
       "references": 2
     },
     {
       "name": "getInitialRoomIdFromUrl",
       "file": "public/js/main.js",
-      "line": 264,
+      "line": 249,
       "references": 2
     },
     {
       "name": "getCurrentRoomIdForInvite",
       "file": "public/js/main.js",
-      "line": 275,
+      "line": 260,
       "references": 2
     },
     {
       "name": "createRoomInviteUrl",
       "file": "public/js/main.js",
-      "line": 279,
+      "line": 264,
       "references": 2
     },
     {
       "name": "updateRoomUrl",
       "file": "public/js/main.js",
-      "line": 285,
+      "line": 270,
       "references": 2
     },
     {
       "name": "copyRoomInviteLink",
       "file": "public/js/main.js",
-      "line": 306,
+      "line": 291,
       "references": 2
     },
     {
       "name": "handleGlobalPointerUp",
       "file": "public/js/main.js",
-      "line": 328,
+      "line": 313,
       "references": 2
     },
     {
       "name": "handleKeyboardWordInput",
       "file": "public/js/main.js",
-      "line": 411,
+      "line": 396,
       "references": 2
     },
     {
       "name": "getSubmissionPathForTypedWord",
       "file": "public/js/main.js",
-      "line": 436,
+      "line": 421,
       "references": 2
     },
     {
       "name": "flashKeyboardWordImpossible",
       "file": "public/js/main.js",
-      "line": 545,
+      "line": 530,
       "references": 2
     },
     {
       "name": "connectToRoom",
       "file": "public/js/main.js",
-      "line": 562,
+      "line": 547,
       "references": 2
     },
     {
       "name": "startRandomTimedGame",
       "file": "public/js/main.js",
-      "line": 648,
+      "line": 633,
       "references": 2
     },
     {
       "name": "startSolutionMode",
       "file": "public/js/main.js",
-      "line": 661,
+      "line": 646,
       "references": 2
     },
     {
       "name": "syncPendingGameOptions",
       "file": "public/js/main.js",
-      "line": 702,
+      "line": 687,
       "references": 2
     },
     {
       "name": "renderPlayersWithHostBadges",
       "file": "public/js/main.js",
-      "line": 758,
+      "line": 743,
       "references": 2
     },
     {
       "name": "createPlayerRow",
       "file": "public/js/main.js",
-      "line": 780,
+      "line": 765,
       "references": 2
     },
     {
       "name": "handleServerMessage",
       "file": "public/js/main.js",
-      "line": 848,
+      "line": 833,
       "references": 2
     },
     {
       "name": "bindFoundWordHover",
       "file": "public/js/main.js",
-      "line": 1061,
+      "line": 1046,
       "references": 2
     },
     {
       "name": "normalizeFoundWordPath",
       "file": "public/js/main.js",
-      "line": 1081,
+      "line": 1066,
       "references": 2
     },
     {
       "name": "getInvalidCountForSelectedPlayer",
       "file": "public/js/main.js",
-      "line": 1091,
+      "line": 1076,
       "references": 2
     },
     {
       "name": "getSelectedFoundWordsPlayer",
       "file": "public/js/main.js",
-      "line": 1111,
+      "line": 1096,
       "references": 2
     },
     {
       "name": "getFoundWordsForSelectedPlayer",
       "file": "public/js/main.js",
-      "line": 1130,
+      "line": 1115,
       "references": 2
     },
     {
       "name": "createFoundWordsPlayerTabs",
       "file": "public/js/main.js",
-      "line": 1146,
+      "line": 1131,
       "references": 2
     },
     {
       "name": "handleWordAccepted",
       "file": "public/js/main.js",
-      "line": 1173,
+      "line": 1158,
       "references": 2
     },
     {
       "name": "handleWordRejected",
       "file": "public/js/main.js",
-      "line": 1209,
+      "line": 1194,
       "references": 2
     },
     {
       "name": "getCurrentTargetScore",
       "file": "public/js/main.js",
-      "line": 1248,
+      "line": 1233,
       "references": 2
     },
     {
       "name": "handleSolutionsStats",
       "file": "public/js/main.js",
-      "line": 1280,
+      "line": 1265,
       "references": 2
     },
     {
       "name": "handleBoardCellClick",
       "file": "public/js/main.js",
-      "line": 1304,
+      "line": 1289,
       "references": 2
     },
     {
       "name": "handleCellHelpClick",
       "file": "public/js/main.js",
-      "line": 1317,
+      "line": 1302,
       "references": 2
     },
     {
       "name": "handleCellPointerDown",
       "file": "public/js/main.js",
-      "line": 1321,
+      "line": 1306,
       "references": 2
     },
     {
       "name": "handleCellPointerEnter",
       "file": "public/js/main.js",
-      "line": 1335,
+      "line": 1320,
       "references": 2
     },
     {
       "name": "handleCellPointerMove",
       "file": "public/js/main.js",
-      "line": 1339,
+      "line": 1324,
       "references": 2
     },
     {
       "name": "handleCellPointerCancel",
       "file": "public/js/main.js",
-      "line": 1343,
+      "line": 1328,
       "references": 2
     },
     {
       "name": "handleBoardPointerUp",
       "file": "public/js/main.js",
-      "line": 1347,
+      "line": 1332,
       "references": 2
     },
     {
       "name": "handleCellPointerUp",
       "file": "public/js/main.js",
-      "line": 1399,
+      "line": 1384,
       "references": 2
     },
     {
       "name": "updateHelpCell",
       "file": "public/js/main.js",
-      "line": 1462,
+      "line": 1447,
       "references": 2
     },
     {
       "name": "handleGameStarted",
       "file": "public/js/main.js",
-      "line": 1550,
+      "line": 1535,
       "references": 2
     },
     {
       "name": "handleGameEnded",
       "file": "public/js/main.js",
-      "line": 1651,
+      "line": 1636,
       "references": 2
     },
     {
       "name": "renderRulesHelpCardV22",
       "file": "public/js/main.js",
-      "line": 1769,
+      "line": 1754,
       "references": 2
     },
     {
       "name": "handleRulesHelpButtonClickV22",
       "file": "public/js/main.js",
-      "line": 1849,
+      "line": 1834,
       "references": 2
     },
     {
       "name": "getRulesHelpDetailsV22",
       "file": "public/js/main.js",
-      "line": 1869,
+      "line": 1854,
       "references": 2
     },
     {
       "name": "createSolutionListV22",
       "file": "public/js/main.js",
-      "line": 1905,
+      "line": 1890,
       "references": 2
     },
     {
       "name": "updateBoardFitV31",
       "file": "public/js/main.js",
-      "line": 2046,
+      "line": 2031,
       "references": 2
     },
     {
       "name": "showEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2152,
+      "line": 2137,
       "references": 2
     },
     {
       "name": "ensureEndScreenBackdrop",
       "file": "public/js/main.js",
-      "line": 2158,
+      "line": 2143,
       "references": 2
     },
     {
       "name": "isCurrentPlayerWinning",
       "file": "public/js/main.js",
-      "line": 2251,
+      "line": 2236,
       "references": 2
     },
     {
       "name": "playVictorySound",
       "file": "public/js/main.js",
-      "line": 2263,
+      "line": 2248,
       "references": 2
     },
     {
       "name": "launchConfetti",
       "file": "public/js/main.js",
-      "line": 2319,
+      "line": 2304,
       "references": 2
     },
     {
       "name": "startCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2355,
+      "line": 2340,
       "references": 2
     },
     {
       "name": "playCountdownTick",
       "file": "public/js/main.js",
-      "line": 2396,
+      "line": 2381,
       "references": 2
     },
     {
       "name": "playCountdownTone",
       "file": "public/js/main.js",
-      "line": 2429,
+      "line": 2414,
       "references": 2
     },
     {
       "name": "createFoundCellCounts",
       "file": "public/js/main.js",
-      "line": 2457,
+      "line": 2442,
       "references": 2
     },
     {
@@ -981,121 +981,121 @@
     {
       "name": "findBoardPathForWord",
       "file": "public/js/main.js",
-      "line": 455,
+      "line": 440,
       "references": 3
     },
     {
       "name": "visit",
       "file": "public/js/main.js",
-      "line": 469,
+      "line": 454,
       "references": 3
     },
     {
       "name": "takePendingSubmissionPath",
       "file": "public/js/main.js",
-      "line": 556,
+      "line": 541,
       "references": 3
     },
     {
       "name": "saveLastBoardSuggestion",
       "file": "public/js/main.js",
-      "line": 682,
+      "line": 667,
       "references": 3
     },
     {
       "name": "createPlayerBadge",
       "file": "public/js/main.js",
-      "line": 839,
+      "line": 824,
       "references": 3
     },
     {
       "name": "ensureSelectedFoundWordsPlayer",
       "file": "public/js/main.js",
-      "line": 930,
+      "line": 915,
       "references": 3
     },
     {
       "name": "canSelectFoundWordsPlayer",
       "file": "public/js/main.js",
-      "line": 1107,
+      "line": 1092,
       "references": 3
     },
     {
       "name": "renderTargetScoreStatus",
       "file": "public/js/main.js",
-      "line": 1265,
+      "line": 1250,
       "references": 3
     },
     {
       "name": "addCellToDragPath",
       "file": "public/js/main.js",
-      "line": 1351,
+      "line": 1336,
       "references": 3
     },
     {
       "name": "addClickedLetterToSelection",
       "file": "public/js/main.js",
-      "line": 1427,
+      "line": 1412,
       "references": 3
     },
     {
       "name": "areAdjacentCells",
       "file": "public/js/main.js",
-      "line": 1508,
+      "line": 1493,
       "references": 3
     },
     {
       "name": "changeHelpLevel",
       "file": "public/js/main.js",
-      "line": 1516,
+      "line": 1501,
       "references": 3
     },
     {
       "name": "clampCurrentHelpLevel",
       "file": "public/js/main.js",
-      "line": 1540,
+      "line": 1525,
       "references": 3
     },
     {
       "name": "updateOptionCardText",
       "file": "public/js/main.js",
-      "line": 1756,
+      "line": 1741,
       "references": 3
     },
     {
       "name": "getRemainingSolutionWordsV22",
       "file": "public/js/main.js",
-      "line": 1929,
+      "line": 1914,
       "references": 3
     },
     {
       "name": "showEndScreenNow",
       "file": "public/js/main.js",
-      "line": 2140,
+      "line": 2125,
       "references": 3
     },
     {
       "name": "renderVictoryModalV16",
       "file": "public/js/main.js",
-      "line": 2171,
+      "line": 2156,
       "references": 3
     },
     {
       "name": "closeEndScreenPopup",
       "file": "public/js/main.js",
-      "line": 2229,
+      "line": 2214,
       "references": 3
     },
     {
       "name": "getElapsedDurationSeconds",
       "file": "public/js/main.js",
-      "line": 2447,
+      "line": 2432,
       "references": 3
     },
     {
       "name": "resetGameUiToWaiting",
       "file": "public/js/main.js",
-      "line": 2548,
+      "line": 2533,
       "references": 3
     },
     {
@@ -1107,127 +1107,127 @@
     {
       "name": "submitWord",
       "file": "public/js/main.js",
-      "line": 370,
+      "line": 355,
       "references": 4
     },
     {
       "name": "submitSelectedWord",
       "file": "public/js/main.js",
-      "line": 395,
+      "line": 380,
       "references": 4
     },
     {
       "name": "syncRulesSummarySlotVisibility",
       "file": "public/js/main.js",
-      "line": 1956,
+      "line": 1941,
       "references": 4
     },
     {
       "name": "renderCurrentEndScreen",
       "file": "public/js/main.js",
-      "line": 2341,
+      "line": 2326,
       "references": 4
     },
     {
       "name": "getFoundWordList",
       "file": "public/js/main.js",
-      "line": 2469,
+      "line": 2454,
       "references": 4
     },
     {
       "name": "finishCurrentDragSelection",
       "file": "public/js/main.js",
-      "line": 342,
+      "line": 327,
       "references": 5
     },
     {
       "name": "isSameCell",
       "file": "public/js/main.js",
-      "line": 1512,
+      "line": 1497,
       "references": 5
     },
     {
       "name": "renderPlayerPreferences",
       "file": "public/js/main.js",
-      "line": 1706,
+      "line": 1691,
       "references": 5
     },
     {
       "name": "scheduleBoardFitV31",
       "file": "public/js/main.js",
-      "line": 2040,
+      "line": 2025,
       "references": 5
     },
     {
       "name": "updateGameStatus",
       "file": "public/js/main.js",
-      "line": 2473,
+      "line": 2458,
       "references": 5
     },
     {
       "name": "updateInviteButton",
       "file": "public/js/main.js",
-      "line": 295,
+      "line": 280,
       "references": 6
     },
     {
       "name": "isCurrentPlayerHost",
       "file": "public/js/main.js",
-      "line": 729,
+      "line": 714,
       "references": 6
     },
     {
       "name": "updateSelectedWordFromPath",
       "file": "public/js/main.js",
-      "line": 1475,
+      "line": 1460,
       "references": 6
     },
     {
       "name": "pathToWord",
       "file": "public/js/main.js",
-      "line": 1504,
+      "line": 1489,
       "references": 6
     },
     {
       "name": "getMaxHelpLevel",
       "file": "public/js/main.js",
-      "line": 1527,
+      "line": 1512,
       "references": 6
     },
     {
       "name": "hideEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2235,
+      "line": 2220,
       "references": 6
     },
     {
       "name": "renderFoundWords",
       "file": "public/js/main.js",
-      "line": 955,
+      "line": 940,
       "references": 7
     },
     {
       "name": "updateWordInputFromPath",
       "file": "public/js/main.js",
-      "line": 1483,
+      "line": 1468,
       "references": 7
     },
     {
       "name": "clearSelectedLetters",
       "file": "public/js/main.js",
-      "line": 1489,
+      "line": 1474,
       "references": 7
     },
     {
       "name": "renderModePanel",
       "file": "public/js/main.js",
-      "line": 1993,
+      "line": 1978,
       "references": 7
     },
     {
       "name": "playVictoryTone",
       "file": "public/js/main.js",
-      "line": 2301,
+      "line": 2286,
       "references": 7
     },
     {
@@ -1245,55 +1245,55 @@
     {
       "name": "refreshHomeVisibility",
       "file": "public/js/main.js",
-      "line": 252,
+      "line": 237,
       "references": 8
     },
     {
       "name": "send",
       "file": "public/js/main.js",
-      "line": 721,
+      "line": 706,
       "references": 8
     },
     {
       "name": "refreshHelpDisplay",
       "file": "public/js/main.js",
-      "line": 2003,
+      "line": 1988,
       "references": 8
     },
     {
       "name": "stopCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2386,
+      "line": 2371,
       "references": 9
     },
     {
       "name": "renderMousePanel",
       "file": "public/js/main.js",
-      "line": 2132,
+      "line": 2117,
       "references": 12
     },
     {
       "name": "updateHostControls",
       "file": "public/js/main.js",
-      "line": 735,
+      "line": 720,
       "references": 14
     },
     {
       "name": "renderRulesSummary",
       "file": "public/js/main.js",
-      "line": 1960,
+      "line": 1945,
       "references": 14
     },
     {
       "name": "refreshRightRulesPanel",
       "file": "public/js/main.js",
-      "line": 1720,
+      "line": 1705,
       "references": 16
     },
     {
       "name": "renderCurrentBoardWithHelp",
       "file": "public/js/main.js",
-      "line": 2103,
+      "line": 2088,
       "references": 19
     }
   ],

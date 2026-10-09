@@ -742,3 +742,35 @@ section,
     padding-top: 0;
   }
 }
+
+
+/* ==========================================================================
+   V65 — migration styles inline main.js
+   ========================================================================== */
+
+.boggle-end-game-button {
+  border: 2px solid #7f1d1d;
+  border-radius: 0.75rem;
+  background: #b42318;
+  color: #fff;
+  padding: 0.58rem 0.9rem;
+  font-weight: 900;
+}
+
+.boggle-connection-status-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.boggle-rules-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
