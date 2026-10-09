@@ -10,13 +10,26 @@ export function applyThemeStyles() {
   injectFinalButtonsV34();
 }
 
-function injectLegacyThemeFoundationV42() {
-  if (document.querySelector("#boggle-legacy-theme-foundation-v42-style")) {
-    return;
+function createStyleElementOnce(id) {
+  if (document.getElementById(id)) {
+    return null;
   }
 
   const style = document.createElement("style");
-  style.id = "boggle-legacy-theme-foundation-v42-style";
+  style.id = id;
+  return style;
+}
+
+function appendStyleElement(style) {
+  document.head.appendChild(style);
+}
+
+function injectLegacyThemeFoundationV42() {
+  const style = createStyleElementOnce("boggle-legacy-theme-foundation-v42-style");
+  if (!style) {
+    return;
+  }
+
   style.textContent = `
     /*
      * Les @import doivent rester avant toute règle CSS.
@@ -3581,18 +3594,17 @@ function injectLegacyThemeFoundationV42() {
     }
 `;
 
-  document.head.appendChild(style);
+  appendStyleElement(style);
 }
 
 
 
 function injectTopLaunchEndScreenLayoutV39() {
-  if (document.querySelector("#boggle-top-launch-end-screen-v39-style")) {
+  const style = createStyleElementOnce("boggle-top-launch-end-screen-v39-style");
+  if (!style) {
     return;
   }
 
-  const style = document.createElement("style");
-  style.id = "boggle-top-launch-end-screen-v39-style";
   style.textContent = `
     /*
      * V39 : couche finale haut de page / accueil / popup de fin.
@@ -3958,17 +3970,16 @@ function injectTopLaunchEndScreenLayoutV39() {
     }
 `;
 
-  document.head.appendChild(style);
+  appendStyleElement(style);
 }
 
 
 function injectRulesHelpOptionsPanelV38() {
-  if (document.querySelector("#boggle-rules-help-options-v38-style")) {
+  const style = createStyleElementOnce("boggle-rules-help-options-v38-style");
+  if (!style) {
     return;
   }
 
-  const style = document.createElement("style");
-  style.id = "boggle-rules-help-options-v38-style";
   style.textContent = `
     /*
      * V38 : couche finale du panneau règles / aide / options.
@@ -4170,17 +4181,16 @@ function injectRulesHelpOptionsPanelV38() {
     }
 `;
 
-  document.head.appendChild(style);
+  appendStyleElement(style);
 }
 
 
 function injectFoundWordsPanelV37() {
-  if (document.querySelector("#boggle-found-words-panel-v37-style")) {
+  const style = createStyleElementOnce("boggle-found-words-panel-v37-style");
+  if (!style) {
     return;
   }
 
-  const style = document.createElement("style");
-  style.id = "boggle-found-words-panel-v37-style";
   style.textContent = `
     /*
      * V40 : couche finale du panneau "Mots trouvés", onglets joueurs et survol.
@@ -4424,17 +4434,16 @@ function injectFoundWordsPanelV37() {
     }
 `;
 
-  document.head.appendChild(style);
+  appendStyleElement(style);
 }
 
 
 function injectFinalBoardInputV36() {
-  if (document.querySelector("#boggle-final-board-input-v36-style")) {
+  const style = createStyleElementOnce("boggle-final-board-input-v36-style");
+  if (!style) {
     return;
   }
 
-  const style = document.createElement("style");
-  style.id = "boggle-final-board-input-v36-style";
   style.textContent = `
     /*
      * V36 : couche finale plateau + champ "Votre mot".
@@ -4489,17 +4498,16 @@ function injectFinalBoardInputV36() {
     }
 `;
 
-  document.head.appendChild(style);
+  appendStyleElement(style);
 }
 
 
 function injectFinalButtonsV34() {
-  if (document.querySelector("#boggle-final-buttons-v34-style")) {
+  const style = createStyleElementOnce("boggle-final-buttons-v34-style");
+  if (!style) {
     return;
   }
 
-  const style = document.createElement("style");
-  style.id = "boggle-final-buttons-v34-style";
   style.textContent = `
     /*
      * V34 : couche finale dédiée aux boutons et contrôles cliquables.
@@ -4622,5 +4630,5 @@ function injectFinalButtonsV34() {
     }
 `;
 
-  document.head.appendChild(style);
+  appendStyleElement(style);
 }

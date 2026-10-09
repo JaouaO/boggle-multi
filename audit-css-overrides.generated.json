@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-09T08:47:57.107Z",
+  "generatedAt": "2026-10-09T13:54:42.846Z",
   "source": "public/js/ui/theme-styles.js",
   "layerCount": 6,
   "layers": [
     {
       "order": 1,
       "name": "injectLegacyThemeFoundationV42",
-      "line": 13,
+      "line": 27,
       "cssChars": 102968,
       "ruleCount": 2137
     },
     {
       "order": 2,
       "name": "injectTopLaunchEndScreenLayoutV39",
-      "line": 3589,
+      "line": 3602,
       "cssChars": 10976,
       "ruleCount": 223
     },
     {
       "order": 3,
       "name": "injectRulesHelpOptionsPanelV38",
-      "line": 3965,
+      "line": 3977,
       "cssChars": 5980,
       "ruleCount": 129
     },
     {
       "order": 4,
       "name": "injectFoundWordsPanelV37",
-      "line": 4177,
+      "line": 4188,
       "cssChars": 8093,
       "ruleCount": 179
     },
     {
       "order": 5,
       "name": "injectFinalBoardInputV36",
-      "line": 4431,
+      "line": 4441,
       "cssChars": 1649,
       "ruleCount": 32
     },
     {
       "order": 6,
       "name": "injectFinalButtonsV34",
-      "line": 4496,
+      "line": 4505,
       "cssChars": 4048,
       "ruleCount": 113
     }

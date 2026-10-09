@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T08:47:55.790Z",
+  "generatedAt": "2026-10-09T13:54:41.433Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
@@ -45,8 +45,8 @@
     {
       "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
-      "line": 13,
-      "blockChars": 103286,
+      "line": 27,
+      "blockChars": 103195,
       "cssChars": 102968,
       "idSelectorCount": 503,
       "classSelectorCount": 206,
@@ -154,8 +154,8 @@
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3589,
-      "blockChars": 11293,
+      "line": 3602,
+      "blockChars": 11204,
       "cssChars": 10976,
       "idSelectorCount": 84,
       "classSelectorCount": 6,
@@ -227,8 +227,8 @@
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3965,
-      "blockChars": 6288,
+      "line": 3977,
+      "blockChars": 6202,
       "cssChars": 5980,
       "idSelectorCount": 23,
       "classSelectorCount": 23,
@@ -328,8 +328,8 @@
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4177,
-      "blockChars": 8393,
+      "line": 4188,
+      "blockChars": 8308,
       "cssChars": 8093,
       "idSelectorCount": 10,
       "classSelectorCount": 71,
@@ -393,8 +393,8 @@
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4431,
-      "blockChars": 1949,
+      "line": 4441,
+      "blockChars": 1864,
       "cssChars": 1649,
       "idSelectorCount": 5,
       "classSelectorCount": 0,
@@ -425,8 +425,8 @@
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4496,
-      "blockChars": 4337,
+      "line": 4505,
+      "blockChars": 4256,
       "cssChars": 4048,
       "idSelectorCount": 24,
       "classSelectorCount": 8,
@@ -949,37 +949,37 @@
     {
       "name": "injectLegacyThemeFoundationV42",
       "file": "public/js/ui/theme-styles.js",
-      "line": 13,
+      "line": 27,
       "references": 2
     },
     {
       "name": "injectTopLaunchEndScreenLayoutV39",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3589,
+      "line": 3602,
       "references": 2
     },
     {
       "name": "injectRulesHelpOptionsPanelV38",
       "file": "public/js/ui/theme-styles.js",
-      "line": 3965,
+      "line": 3977,
       "references": 2
     },
     {
       "name": "injectFoundWordsPanelV37",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4177,
+      "line": 4188,
       "references": 2
     },
     {
       "name": "injectFinalBoardInputV36",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4431,
+      "line": 4441,
       "references": 2
     },
     {
       "name": "injectFinalButtonsV34",
       "file": "public/js/ui/theme-styles.js",
-      "line": 4496,
+      "line": 4505,
       "references": 2
     },
     {
@@ -1280,6 +1280,18 @@
       "name": "playVictoryTone",
       "file": "public/js/main.js",
       "line": 2505,
+      "references": 7
+    },
+    {
+      "name": "createStyleElementOnce",
+      "file": "public/js/ui/theme-styles.js",
+      "line": 13,
+      "references": 7
+    },
+    {
+      "name": "appendStyleElement",
+      "file": "public/js/ui/theme-styles.js",
+      "line": 23,
       "references": 7
     },
     {
