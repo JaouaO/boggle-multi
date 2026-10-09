@@ -1,6 +1,9 @@
 import { formatBoardForTextarea } from "./core/board-text.js";
 import {
   getNextSimplifiedHelpLevel,
+  getRulesHelpButtonLabel,
+  getRulesHelpContentTitle,
+  getRulesHelpLevelLabel,
   normalizeSimplifiedHelpLevel,
 } from "./core/help-levels.js";
 import { state } from "./core/state.js";
@@ -1928,13 +1931,13 @@ function renderRulesHelpCardV22(card, options) {
 
   const level = document.createElement("span");
   level.className = "rules-help-level-v22";
-  level.textContent = getRulesHelpLevelLabelV22(visibleHelpLevel, maxHelpLevel);
+  level.textContent = getRulesHelpLevelLabel(visibleHelpLevel, maxHelpLevel);
 
   const button = document.createElement("button");
   button.type = "button";
   button.className = "rules-help-button-v22";
   button.disabled = maxHelpLevel <= 0;
-  button.textContent = getRulesHelpButtonLabelV22(visibleHelpLevel, maxHelpLevel);
+  button.textContent = getRulesHelpButtonLabel(visibleHelpLevel, maxHelpLevel);
   button.addEventListener("click", handleRulesHelpButtonClickV22);
 
   actions.append(level, button);
@@ -1944,7 +1947,7 @@ function renderRulesHelpCardV22(card, options) {
 
   const title = document.createElement("p");
   title.className = "rules-help-content-title-v22";
-  title.textContent = getRulesHelpContentTitleV22(visibleHelpLevel, maxHelpLevel);
+  title.textContent = getRulesHelpContentTitle(visibleHelpLevel, maxHelpLevel);
 
   const details = document.createElement("ul");
   details.className = "rules-help-details-v22";
@@ -1997,42 +2000,6 @@ function handleRulesHelpButtonClickV22(event) {
   state.helpLevel = getNextSimplifiedHelpLevel(state.helpLevel, maxHelpLevel);
   state.selectedHelpCell = null;
   refreshRightRulesPanel();
-}
-
-function getRulesHelpButtonLabelV22(level, maxLevel) {
-  if (maxLevel <= 0) {
-    return "Aide désactivée";
-  }
-
-  if (level >= 3 || (maxLevel <= 1 && level >= 1)) {
-    return "Règles";
-  }
-
-  return level === 0 ? "Aide" : "Solution";
-}
-
-function getRulesHelpLevelLabelV22(level, maxLevel) {
-  if (maxLevel <= 0) {
-    return "Niveau d’aide 0 — aide désactivée";
-  }
-
-  if (level >= 3) {
-    return "Aide 2 — solution";
-  }
-
-  return level === 0 ? "Aide 0 — règles" : `Aide ${level}`;
-}
-
-function getRulesHelpContentTitleV22(level, maxLevel) {
-  if (level <= 0 || maxLevel <= 0) {
-    return "Rappel des règles";
-  }
-
-  if (level >= 3) {
-    return "Solution complète";
-  }
-
-  return "Aide niveau 1";
 }
 
 function getRulesHelpDetailsV22(level, maxLevel) {

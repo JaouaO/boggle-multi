@@ -17,6 +17,40 @@ export const HELP_LEVELS = [
   },
 ];
 
+export function getRulesHelpButtonLabel(level, maxLevel) {
+  if (maxLevel <= 0) {
+    return "Aide désactivée";
+  }
+
+  if (level >= 3 || (maxLevel <= 1 && level >= 1)) {
+    return "Règles";
+  }
+
+  return level === 0 ? "Aide" : "Solution";
+}
+
+export function getRulesHelpLevelLabel(level, maxLevel) {
+  if (maxLevel <= 0) {
+    return "Niveau d’aide 0 — aide désactivée";
+  }
+  if (level >= 3) {
+    return "Aide 2 — solution";
+  }
+
+  return level === 0 ? "Aide 0 — règles" : `Aide ${level}`;
+}
+
+export function getRulesHelpContentTitle(level, maxLevel) {
+  if (level <= 0 || maxLevel <= 0) {
+    return "Rappel des règles";
+  }
+
+  if (level >= 3) {
+    return "Solution complète";
+  }
+
+  return "Aide niveau 1";
+}
 export function getNextSimplifiedHelpLevel(currentLevel, maxHelpLevel) {
   if (maxHelpLevel <= 0) {
     return 0;
