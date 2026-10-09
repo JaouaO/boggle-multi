@@ -1,4 +1,8 @@
 import { formatBoardForTextarea } from "./core/board-text.js";
+import {
+  getNextSimplifiedHelpLevel,
+  normalizeSimplifiedHelpLevel,
+} from "./core/help-levels.js";
 import { state } from "./core/state.js";
 import { createRoomSocket, sendMessage } from "./net/socket.js";
 import { renderBoard } from "./ui/board-ui.js";
@@ -1665,45 +1669,6 @@ function getMaxHelpLevel() {
   return 3;
 }
 
-function getNextSimplifiedHelpLevel(currentLevel, maxHelpLevel) {
-  if (maxHelpLevel <= 0) {
-    return 0;
-  }
-
-  if (maxHelpLevel <= 1) {
-    return currentLevel >= 1 ? 0 : 1;
-  }
-
-  if (currentLevel <= 0) {
-    return 1;
-  }
-
-  if (currentLevel === 1) {
-    return 3;
-  }
-
-  return 0;
-}
-
-function normalizeSimplifiedHelpLevel(level, maxHelpLevel) {
-  if (maxHelpLevel <= 0) {
-    return 0;
-  }
-
-  if (maxHelpLevel <= 1) {
-    return level >= 1 ? 1 : 0;
-  }
-
-  if (level === 2) {
-    return 3;
-  }
-
-  if (level >= 3) {
-    return 3;
-  }
-
-  return level >= 1 ? 1 : 0;
-}
 
 function clampCurrentHelpLevel() {
   const maxHelpLevel = getMaxHelpLevel();

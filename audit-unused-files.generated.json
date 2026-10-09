@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T15:17:34.465Z",
-  "auditedCandidateCount": 23,
+  "generatedAt": "2026-10-09T15:40:50.308Z",
+  "auditedCandidateCount": 24,
   "probableUnused": [],
   "referenced": [
     {
@@ -34,6 +34,27 @@
           "via": [
             "./core/board-text.js",
             "board-text.js"
+          ]
+        }
+      ],
+      "probableUnused": false
+    },
+    {
+      "file": "public/js/core/help-levels.js",
+      "referenceCount": 2,
+      "references": [
+        {
+          "file": "public/js/main.js",
+          "via": [
+            "./core/help-levels.js",
+            "help-levels.js"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
+          "via": [
+            "./core/help-levels.js",
+            "help-levels.js"
           ]
         }
       ],
@@ -300,7 +321,7 @@
     },
     {
       "file": "tools/audit-css-empty.mjs",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
         {
           "file": "package.json",
@@ -312,6 +333,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]
@@ -393,7 +420,7 @@
     },
     {
       "file": "tools/audit-css-js.mjs",
-      "referenceCount": 13,
+      "referenceCount": 14,
       "references": [
         {
           "file": "package.json",
@@ -405,6 +432,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]
@@ -480,7 +513,7 @@
     },
     {
       "file": "tools/audit-css-overrides.mjs",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
         {
           "file": "package.json",
@@ -492,6 +525,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]
@@ -573,7 +612,7 @@
     },
     {
       "file": "tools/audit-main-js.mjs",
-      "referenceCount": 13,
+      "referenceCount": 14,
       "references": [
         {
           "file": "package.json",
@@ -585,6 +624,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]
@@ -660,7 +705,7 @@
     },
     {
       "file": "tools/audit-unused-files.mjs",
-      "referenceCount": 13,
+      "referenceCount": 14,
       "references": [
         {
           "file": "package.json",
@@ -672,6 +717,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]
@@ -747,7 +798,7 @@
     },
     {
       "file": "tools/build-dico.js",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
         {
           "file": "package.json",
@@ -759,6 +810,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]
@@ -840,7 +897,7 @@
     },
     {
       "file": "tools/check-js-syntax.mjs",
-      "referenceCount": 14,
+      "referenceCount": 15,
       "references": [
         {
           "file": "package.json",
@@ -852,6 +909,12 @@
         },
         {
           "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "public/js/ui/help-ui.js",
           "via": [
             "./"
           ]

@@ -1,25 +1,4 @@
-export const HELP_LEVELS = [
-  {
-    label: "Aucune",
-    description: "Aucune indication n’est affichée.",
-  },
-  {
-    label: "Compteurs",
-    description: "Affiche le nombre de mots trouvés / possibles sur chaque lettre.",
-  },
-  {
-    label: "Par lettre",
-    description: "Permet de cliquer sur une lettre pour afficher les mots qui l’utilisent.",
-  },
-  {
-    label: "Solution",
-    description: "Affiche toute la solution de la grille.",
-  },
-];
-
-export function getNextHelpLevel(currentLevel) {
-  return (currentLevel + 1) % HELP_LEVELS.length;
-}
+import { HELP_LEVELS } from "../core/help-levels.js";
 
 export function renderHelpPanel(anchorElement, options) {
   const {
