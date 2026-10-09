@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T18:27:34.940Z",
+  "generatedAt": "2026-10-09T18:37:49.787Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 66,
+  "findingCount": 64,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
@@ -251,21 +251,9 @@
     "public/js/ui/board-ui.js": [
       {
         "file": "public/js/ui/board-ui.js",
-        "line": 202,
-        "type": "html style attribute",
-        "snippet": "const style = document.createElement(\"style\");"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
         "line": 17,
         "type": "element.style access",
         "snippet": "boardElement.style.gridTemplateColumns = `repeat(${board[0]?.length || 0}, minmax(48px, 1fr))`;"
-      },
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 202,
-        "type": "create style element",
-        "snippet": "const style = document.createElement(\"style\");"
       },
       {
         "file": "public/js/ui/board-ui.js",

@@ -193,53 +193,7 @@ export function renderBoard(boardElement, board, options = {}) {
 
 
 function injectBoardInteractionStyle() {
-  if (boardInteractionStyleInjected) {
-    return;
-  }
-
   boardInteractionStyleInjected = true;
-
-  const style = document.createElement("style");
-  style.id = "boggle-board-interaction-v25-style";
-  style.textContent = `
-    /*
-     * V25 : base saine affinée pour les effets de plateau.
-     * Les anciennes règles de main.js restent neutralisées.
-     * Spécificité volontairement haute pour battre les styles historiques du plateau.
-     */
-    #board .board-cell {
-      transition:
-        background-color 115ms ease,
-        border-color 115ms ease,
-        box-shadow 115ms ease,
-        transform 115ms ease,
-        filter 115ms ease !important;
-    }
-
-    #board .board-cell.board-cell-hovered:not(.board-cell-selected):not(.board-cell-feedback-accepted):not(.board-cell-feedback-invalid):not(.board-cell-feedback-duplicate),
-    #board .board-cell:hover:not(.board-cell-selected):not(.board-cell-feedback-accepted):not(.board-cell-feedback-invalid):not(.board-cell-feedback-duplicate) {
-      background: #ffedb3 !important;
-      border-color: rgba(224, 164, 41, 0.74) !important;
-      box-shadow:
-        inset 0 0 0 3px rgba(255, 246, 204, 0.82),
-        0 0 0 2px rgba(224, 164, 41, 0.16),
-        0 0.32rem 0.62rem rgba(126, 83, 39, 0.12) !important;
-      transform: translateY(-1px) scale(1.01) !important;
-    }
-
-    #board .board-cell.board-cell-selected:not(.board-cell-feedback-accepted):not(.board-cell-feedback-invalid):not(.board-cell-feedback-duplicate) {
-      background: #f5cf67 !important;
-      border-color: #d89012 !important;
-      color: #4b3322 !important;
-      box-shadow:
-        inset 0 0 0 2px rgba(255, 244, 190, 0.72),
-        0 0 0 3px rgba(216, 144, 18, 0.20),
-        0 0.42rem 0.85rem rgba(126, 83, 39, 0.16) !important;
-      transform: translateY(-1px) !important;
-    }
-  `;
-
-  document.head.appendChild(style);
 }
 
 
