@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T17:47:58.171Z",
+  "generatedAt": "2026-10-09T17:50:32.250Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 124,
+  "findingCount": 108,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
@@ -405,102 +405,6 @@
       }
     ],
     "public/js/ui/help-ui.js": [
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 113,
-        "type": "element.style access",
-        "snippet": "section.style.marginTop = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 119,
-        "type": "element.style access",
-        "snippet": "list.style.margin = \"0.25rem 0 0\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 120,
-        "type": "element.style access",
-        "snippet": "list.style.lineHeight = \"1.5\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 136,
-        "type": "element.style access",
-        "snippet": "panel.style.marginTop = \"1rem\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 137,
-        "type": "element.style access",
-        "snippet": "panel.style.padding = \"1rem\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 138,
-        "type": "element.style access",
-        "snippet": "panel.style.border = \"1px solid #ddd\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 139,
-        "type": "element.style access",
-        "snippet": "panel.style.borderRadius = \"0.75rem\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 140,
-        "type": "element.style access",
-        "snippet": "panel.style.background = \"#fff\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 143,
-        "type": "element.style access",
-        "snippet": "header.style.display = \"flex\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 144,
-        "type": "element.style access",
-        "snippet": "header.style.alignItems = \"center\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 145,
-        "type": "element.style access",
-        "snippet": "header.style.justifyContent = \"space-between\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 146,
-        "type": "element.style access",
-        "snippet": "header.style.gap = \"1rem\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 150,
-        "type": "element.style access",
-        "snippet": "title.style.margin = \"0\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 160,
-        "type": "element.style access",
-        "snippet": "levelDescription.style.margin = \"0.5rem 0\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 161,
-        "type": "element.style access",
-        "snippet": "levelDescription.style.opacity = \"0.8\";"
-      },
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 168,
-        "type": "element.style access",
-        "snippet": "cellTitle.style.marginBottom = \"0.25rem\";"
-      },
       {
         "file": "public/js/ui/help-ui.js",
         "line": 109,

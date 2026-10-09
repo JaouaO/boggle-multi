@@ -110,14 +110,13 @@ function renderGroupedWords(container, words, foundSet, options = {}) {
 
   for (const [length, groupWords] of groups) {
     const section = document.createElement("div");
-    section.style.marginTop = "0.75rem";
+    section.classList.add("boggle-help-section");
 
     const title = document.createElement("strong");
     title.textContent = `${length} lettres (${groupWords.length})`;
 
     const list = document.createElement("p");
-    list.style.margin = "0.25rem 0 0";
-    list.style.lineHeight = "1.5";
+    list.classList.add("boggle-help-list");
     list.textContent = groupWords
       .map((word) => foundSet.has(word) ? `✓ ${word}` : word)
       .join(", ");
@@ -133,21 +132,14 @@ function ensureHelpPanel(anchorElement) {
   if (!panel) {
     panel = document.createElement("section");
     panel.id = "help-panel";
-    panel.style.marginTop = "1rem";
-    panel.style.padding = "1rem";
-    panel.style.border = "1px solid #ddd";
-    panel.style.borderRadius = "0.75rem";
-    panel.style.background = "#fff";
+    panel.classList.add("boggle-help-card");
 
     const header = document.createElement("div");
-    header.style.display = "flex";
-    header.style.alignItems = "center";
-    header.style.justifyContent = "space-between";
-    header.style.gap = "1rem";
+    header.classList.add("boggle-help-card-header");
 
     const title = document.createElement("h2");
     title.textContent = "Aide";
-    title.style.margin = "0";
+    title.classList.add("boggle-help-card-title");
 
     const levelButton = document.createElement("button");
     levelButton.id = "help-level-button";
@@ -157,15 +149,14 @@ function ensureHelpPanel(anchorElement) {
 
     const levelDescription = document.createElement("p");
     levelDescription.id = "help-level-description";
-    levelDescription.style.margin = "0.5rem 0";
-    levelDescription.style.opacity = "0.8";
+    levelDescription.classList.add("boggle-help-level-description");
 
     const summary = document.createElement("p");
     summary.id = "help-summary";
 
     const cellTitle = document.createElement("h3");
     cellTitle.id = "help-cell-title";
-    cellTitle.style.marginBottom = "0.25rem";
+    cellTitle.classList.add("boggle-help-cell-title");
 
     const cellBody = document.createElement("div");
     cellBody.id = "help-cell-body";

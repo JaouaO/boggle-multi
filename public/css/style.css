@@ -836,3 +836,45 @@ section,
   font-size: 0.9rem;
   opacity: 0.75;
 }
+
+
+/* ==========================================================================
+   V67 — migration styles inline help-ui.js
+   ========================================================================== */
+
+.boggle-help-section {
+  margin-top: 0.75rem;
+}
+
+.boggle-help-list {
+  margin: 0.25rem 0 0;
+  line-height: 1.5;
+}
+
+.boggle-help-card {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.boggle-help-card-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.boggle-help-card-title {
+  margin: 0;
+}
+
+.boggle-help-level-description {
+  margin: 0.5rem 0;
+  opacity: 0.8;
+}
+
+.boggle-help-cell-title {
+  margin-bottom: 0.25rem;
+}
