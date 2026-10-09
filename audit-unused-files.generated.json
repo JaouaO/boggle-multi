@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T14:56:10.724Z",
-  "auditedCandidateCount": 21,
+  "generatedAt": "2026-10-09T15:06:25.235Z",
+  "auditedCandidateCount": 22,
   "probableUnused": [],
   "referenced": [
     {
@@ -34,7 +34,7 @@
     },
     {
       "file": "public/js/main.js",
-      "referenceCount": 4,
+      "referenceCount": 5,
       "references": [
         {
           "file": "public/index.html",
@@ -58,6 +58,16 @@
         },
         {
           "file": "tools/audit-css-js.mjs",
+          "via": [
+            "public/js/main.js",
+            "js/main.js",
+            "public/js/main",
+            "js/main",
+            "main.js"
+          ]
+        },
+        {
+          "file": "tools/audit-main-js.mjs",
           "via": [
             "public/js/main.js",
             "js/main.js",
@@ -269,7 +279,7 @@
     },
     {
       "file": "tools/audit-css-empty.mjs",
-      "referenceCount": 12,
+      "referenceCount": 13,
       "references": [
         {
           "file": "package.json",
@@ -328,6 +338,12 @@
           ]
         },
         {
+          "file": "tools/audit-main-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
           "file": "tools/audit-unused-files.mjs",
           "via": [
             "./"
@@ -350,7 +366,7 @@
     },
     {
       "file": "tools/audit-css-js.mjs",
-      "referenceCount": 11,
+      "referenceCount": 12,
       "references": [
         {
           "file": "package.json",
@@ -403,6 +419,12 @@
           ]
         },
         {
+          "file": "tools/audit-main-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
           "file": "tools/audit-unused-files.mjs",
           "via": [
             "./"
@@ -425,7 +447,7 @@
     },
     {
       "file": "tools/audit-css-overrides.mjs",
-      "referenceCount": 12,
+      "referenceCount": 13,
       "references": [
         {
           "file": "package.json",
@@ -433,6 +455,93 @@
             "tools/audit-css-overrides.mjs",
             "tools/audit-css-overrides",
             "audit-css-overrides.mjs"
+          ]
+        },
+        {
+          "file": "public/js/main.js",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/engine/dictionary.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/engine/solver.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/game/board.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/index.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/rooms/BoggleRoom.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "src/shared/messages.ts",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tools/audit-css-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tools/audit-main-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tools/audit-unused-files.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tsconfig.json",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "wrangler.jsonc",
+          "via": [
+            "./"
+          ]
+        }
+      ],
+      "probableUnused": false
+    },
+    {
+      "file": "tools/audit-main-js.mjs",
+      "referenceCount": 12,
+      "references": [
+        {
+          "file": "package.json",
+          "via": [
+            "tools/audit-main-js.mjs",
+            "tools/audit-main-js",
+            "audit-main-js.mjs"
           ]
         },
         {
@@ -506,7 +615,7 @@
     },
     {
       "file": "tools/audit-unused-files.mjs",
-      "referenceCount": 11,
+      "referenceCount": 12,
       "references": [
         {
           "file": "package.json",
@@ -565,6 +674,12 @@
           ]
         },
         {
+          "file": "tools/audit-main-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
           "file": "tsconfig.json",
           "via": [
             "./"
@@ -581,7 +696,7 @@
     },
     {
       "file": "tools/build-dico.js",
-      "referenceCount": 12,
+      "referenceCount": 13,
       "references": [
         {
           "file": "package.json",
@@ -640,6 +755,12 @@
           ]
         },
         {
+          "file": "tools/audit-main-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
           "file": "tools/audit-unused-files.mjs",
           "via": [
             "./"
@@ -662,7 +783,7 @@
     },
     {
       "file": "tools/check-js-syntax.mjs",
-      "referenceCount": 12,
+      "referenceCount": 13,
       "references": [
         {
           "file": "package.json",
@@ -716,6 +837,12 @@
         },
         {
           "file": "tools/audit-css-js.mjs",
+          "via": [
+            "./"
+          ]
+        },
+        {
+          "file": "tools/audit-main-js.mjs",
           "via": [
             "./"
           ]

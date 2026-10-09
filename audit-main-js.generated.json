@@ -1,0 +1,509 @@
+{
+  "generatedAt": "2026-10-09T15:06:23.925Z",
+  "file": "public/js/main.js",
+  "summary": {
+    "lineCount": 2825,
+    "functionCount": 125,
+    "longFunctionThreshold": 80,
+    "longFunctionCount": 4,
+    "stateCoupledFunctionCount": 63,
+    "socketCoupledFunctionCount": 12,
+    "domCoupledFunctionCount": 48,
+    "lowRiskUtilityCandidateCount": 14
+  },
+  "categories": {
+    "interaction": 26,
+    "factory": 8,
+    "utility": 31,
+    "rendering": 23,
+    "storage": 9,
+    "other": 18,
+    "runtime-effect": 10
+  },
+  "extractionRisk": {
+    "medium": 67,
+    "low": 30,
+    "high": 28
+  },
+  "longestFunctions": [
+    {
+      "name": "handleGameStarted",
+      "category": "interaction",
+      "line": 1744,
+      "endLine": 1843,
+      "length": 100,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "findBoardPathForWord",
+      "category": "other",
+      "line": 522,
+      "endLine": 608,
+      "length": 87,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "connectToRoom",
+      "category": "interaction",
+      "line": 640,
+      "endLine": 724,
+      "length": 85,
+      "coupling": {
+        "state": true,
+        "socket": true,
+        "dom": true,
+        "storage": true,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "handleServerMessage",
+      "category": "interaction",
+      "line": 971,
+      "endLine": 1050,
+      "length": 80,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "renderRulesHelpCardV22",
+      "category": "rendering",
+      "line": 1963,
+      "endLine": 2041,
+      "length": 79,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "updateGameStatus",
+      "category": "rendering",
+      "line": 2703,
+      "endLine": 2776,
+      "length": 74,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "visit",
+      "category": "other",
+      "line": 536,
+      "endLine": 595,
+      "length": 60,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "createPlayerRow",
+      "category": "factory",
+      "line": 903,
+      "endLine": 960,
+      "length": 58,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "updateBoardFitV31",
+      "category": "rendering",
+      "line": 2276,
+      "endLine": 2330,
+      "length": 55,
+      "coupling": {
+        "state": false,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "renderVictoryModalV16",
+      "category": "rendering",
+      "line": 2401,
+      "endLine": 2455,
+      "length": 55,
+      "coupling": {
+        "state": false,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "handleGameEnded",
+      "category": "interaction",
+      "line": 1845,
+      "endLine": 1898,
+      "length": 54,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "addCellToDragPath",
+      "category": "other",
+      "line": 1506,
+      "endLine": 1552,
+      "length": 47,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "resetGameUiToWaiting",
+      "category": "other",
+      "line": 2778,
+      "endLine": 2824,
+      "length": 47,
+      "coupling": {
+        "state": true,
+        "socket": true,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "handleWordRejected",
+      "category": "interaction",
+      "line": 1364,
+      "endLine": 1400,
+      "length": 37,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "playVictorySound",
+      "category": "runtime-effect",
+      "line": 2493,
+      "endLine": 2529,
+      "length": 37,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": true
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "handleWordAccepted",
+      "category": "interaction",
+      "line": 1328,
+      "endLine": 1362,
+      "length": 35,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "refreshRightRulesPanel",
+      "category": "rendering",
+      "line": 1914,
+      "endLine": 1948,
+      "length": 35,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "getRulesHelpDetailsV22",
+      "category": "utility",
+      "line": 2099,
+      "endLine": 2133,
+      "length": 35,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "refreshHelpDisplay",
+      "category": "rendering",
+      "line": 2233,
+      "endLine": 2267,
+      "length": 35,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "addClickedLetterToSelection",
+      "category": "other",
+      "line": 1582,
+      "endLine": 1615,
+      "length": 34,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "playCountdownTick",
+      "category": "runtime-effect",
+      "line": 2626,
+      "endLine": 2657,
+      "length": 32,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": true
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "renderRulesSummary",
+      "category": "rendering",
+      "line": 2190,
+      "endLine": 2219,
+      "length": 30,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "high"
+    },
+    {
+      "name": "startCountdownWarning",
+      "category": "interaction",
+      "line": 2585,
+      "endLine": 2614,
+      "length": 30,
+      "coupling": {
+        "state": false,
+        "socket": false,
+        "dom": true,
+        "storage": false,
+        "effects": true
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "renderCurrentBoardWithHelp",
+      "category": "rendering",
+      "line": 2333,
+      "endLine": 2360,
+      "length": 28,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    },
+    {
+      "name": "finishCurrentDragSelection",
+      "category": "other",
+      "line": 409,
+      "endLine": 435,
+      "length": 27,
+      "coupling": {
+        "state": true,
+        "socket": false,
+        "dom": false,
+        "storage": false,
+        "effects": false
+      },
+      "extractionRisk": "medium"
+    }
+  ],
+  "lowRiskUtilityCandidates": [
+    {
+      "name": "getFoundWordScoreClass",
+      "category": "utility",
+      "line": 1230,
+      "endLine": 1250,
+      "length": 21
+    },
+    {
+      "name": "getNextSimplifiedHelpLevel",
+      "category": "utility",
+      "line": 1694,
+      "endLine": 1712,
+      "length": 19
+    },
+    {
+      "name": "normalizeSimplifiedHelpLevel",
+      "category": "utility",
+      "line": 1714,
+      "endLine": 1732,
+      "length": 19
+    },
+    {
+      "name": "rankPlayers",
+      "category": "utility",
+      "line": 885,
+      "endLine": 901,
+      "length": 17
+    },
+    {
+      "name": "playVictoryTone",
+      "category": "runtime-effect",
+      "line": 2531,
+      "endLine": 2547,
+      "length": 17
+    },
+    {
+      "name": "playCountdownTone",
+      "category": "runtime-effect",
+      "line": 2659,
+      "endLine": 2675,
+      "length": 17
+    },
+    {
+      "name": "formatBoardForTextarea",
+      "category": "utility",
+      "line": 780,
+      "endLine": 795,
+      "length": 16
+    },
+    {
+      "name": "getRulesHelpButtonLabelV22",
+      "category": "utility",
+      "line": 2063,
+      "endLine": 2073,
+      "length": 11
+    },
+    {
+      "name": "getRulesHelpLevelLabelV22",
+      "category": "utility",
+      "line": 2075,
+      "endLine": 2085,
+      "length": 11
+    },
+    {
+      "name": "getRulesHelpContentTitleV22",
+      "category": "utility",
+      "line": 2087,
+      "endLine": 2097,
+      "length": 11
+    },
+    {
+      "name": "normalizeComparableWord",
+      "category": "utility",
+      "line": 623,
+      "endLine": 632,
+      "length": 10
+    },
+    {
+      "name": "buildWelcomeGrid",
+      "category": "factory",
+      "line": 223,
+      "endLine": 231,
+      "length": 9
+    },
+    {
+      "name": "normalizeBoardTextForTextarea",
+      "category": "utility",
+      "line": 797,
+      "endLine": 805,
+      "length": 9
+    },
+    {
+      "name": "normalizeFoundWordsForDisplay",
+      "category": "utility",
+      "line": 1291,
+      "endLine": 1299,
+      "length": 9
+    }
+  ],
+  "notes": [
+    "Les fonctions high sont à éviter pour les prochains découpages sans tests dédiés.",
+    "Les fonctions lowRiskUtilityCandidates sont de meilleurs candidats pour un nettoyage progressif."
+  ]
+}
