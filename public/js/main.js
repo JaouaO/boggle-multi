@@ -7,6 +7,13 @@ import {
   normalizeSimplifiedHelpLevel,
 } from "./core/help-levels.js";
 import { state } from "./core/state.js";
+import {
+  STORAGE_KEYS,
+  getOrCreateClientId,
+  loadLocalSettings,
+  saveLocalJson,
+  saveLocalString,
+} from "./core/storage.js";
 import { createRoomSocket, sendMessage } from "./net/socket.js";
 import { renderBoard } from "./ui/board-ui.js";
 import { addLog } from "./ui/log-ui.js";
@@ -54,12 +61,6 @@ let countdownWarningInterval = null;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
 
-const STORAGE_KEYS = {
-  playerName: "boggle:playerName",
-  lastRoomId: "boggle:lastRoomId",
-  playerPreferences: "boggle:playerPreferences",
-  clientId: "boggle:clientId",
-};
 
 const roomInput = document.querySelector("#room");
 const nameInput = document.querySelector("#name");
@@ -251,88 +252,6 @@ function refreshHomeVisibility() {
 
   if (launchPanel) {
     launchPanel.hidden = !connected || gameActive;
-  }
-}
-
-function loadLocalSettings() {
-  return {
-    playerName: readLocalString(STORAGE_KEYS.playerName),
-    lastRoomId: readLocalString(STORAGE_KEYS.lastRoomId),
-    playerPreferences: readLocalJson(STORAGE_KEYS.playerPreferences, {}),
-  };
-}
-
-function getOrCreateClientId() {
-  forgetSharedClientId();
-
-  const savedClientId = readSessionString(STORAGE_KEYS.clientId);
-
-  if (savedClientId) {
-    return savedClientId;
-  }
-
-  const clientId = window.crypto?.randomUUID
-    ? window.crypto.randomUUID()
-    : `client-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-
-  saveSessionString(STORAGE_KEYS.clientId, clientId);
-  return clientId;
-}
-
-function forgetSharedClientId() {
-  try {
-    window.localStorage.removeItem(STORAGE_KEYS.clientId);
-  } catch {
-    // Le stockage local peut être indisponible en navigation privée.
-  }
-}
-
-function readSessionString(key) {
-  try {
-    return window.sessionStorage.getItem(key) || "";
-  } catch {
-    return "";
-  }
-}
-
-function saveSessionString(key, value) {
-  try {
-    window.sessionStorage.setItem(key, value);
-  } catch {
-    // Le stockage de session peut être indisponible en navigation privée.
-  }
-}
-
-function readLocalString(key) {
-  try {
-    return window.localStorage.getItem(key) || "";
-  } catch {
-    return "";
-  }
-}
-
-function readLocalJson(key, fallback) {
-  try {
-    const value = window.localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function saveLocalString(key, value) {
-  try {
-    window.localStorage.setItem(key, value);
-  } catch {
-    // Le stockage local peut être indisponible en navigation privée.
-  }
-}
-
-function saveLocalJson(key, value) {
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // Le stockage local peut être indisponible en navigation privée.
   }
 }
 
