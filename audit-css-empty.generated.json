@@ -1,92 +1,12 @@
 {
-  "generatedAt": "2026-10-10T09:57:22.466Z",
+  "generatedAt": "2026-10-10T10:10:07.068Z",
   "source": "public/js/ui/theme-styles.js",
-  "layerCount": 6,
-  "layers": [
-    {
-      "order": 1,
-      "name": "injectLegacyThemeFoundationV42",
-      "line": 33,
-      "cssChars": 102968,
-      "ruleCount": 507,
-      "emptyRuleCount": 0,
-      "whitespaceOnlyRuleCount": 0
-    },
-    {
-      "order": 2,
-      "name": "injectTopLaunchEndScreenLayoutV39",
-      "line": 3608,
-      "cssChars": 10976,
-      "ruleCount": 44,
-      "emptyRuleCount": 0,
-      "whitespaceOnlyRuleCount": 0
-    },
-    {
-      "order": 3,
-      "name": "injectRulesHelpOptionsPanelV38",
-      "line": 3983,
-      "cssChars": 5980,
-      "ruleCount": 24,
-      "emptyRuleCount": 0,
-      "whitespaceOnlyRuleCount": 0
-    },
-    {
-      "order": 4,
-      "name": "injectFoundWordsPanelV37",
-      "line": 4194,
-      "cssChars": 8093,
-      "ruleCount": 46,
-      "emptyRuleCount": 0,
-      "whitespaceOnlyRuleCount": 0
-    },
-    {
-      "order": 5,
-      "name": "injectFinalBoardInputV36",
-      "line": 4447,
-      "cssChars": 1649,
-      "ruleCount": 5,
-      "emptyRuleCount": 0,
-      "whitespaceOnlyRuleCount": 0
-    },
-    {
-      "order": 6,
-      "name": "injectFinalButtonsV34",
-      "line": 4511,
-      "cssChars": 4048,
-      "ruleCount": 13,
-      "emptyRuleCount": 0,
-      "whitespaceOnlyRuleCount": 0
-    }
-  ],
+  "layerCount": 0,
+  "layers": [],
   "emptyRuleCount": 0,
   "emptyRules": [],
-  "suspiciousBlankGapCount": 6,
-  "suspiciousBlankGaps": [
-    {
-      "layer": "injectLegacyThemeFoundationV42",
-      "approxLine": 3596
-    },
-    {
-      "layer": "injectTopLaunchEndScreenLayoutV39",
-      "approxLine": 3972
-    },
-    {
-      "layer": "injectRulesHelpOptionsPanelV38",
-      "approxLine": 4183
-    },
-    {
-      "layer": "injectFoundWordsPanelV37",
-      "approxLine": 4436
-    },
-    {
-      "layer": "injectFinalBoardInputV36",
-      "approxLine": 4500
-    },
-    {
-      "layer": "injectFinalButtonsV34",
-      "approxLine": 4632
-    }
-  ],
+  "suspiciousBlankGapCount": 0,
+  "suspiciousBlankGaps": [],
   "notes": [
     "Cet audit ne modifie aucun fichier.",
     "Les règles vides peuvent généralement être supprimées sans impact visuel, mais il faut conserver les blocs @keyframes et les media queries contenant encore des règles utiles.",

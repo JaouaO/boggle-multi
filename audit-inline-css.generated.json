@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-10T09:57:20.360Z",
-  "findingCount": 18,
-  "filesWithFindings": 3,
+  "generatedAt": "2026-10-10T10:10:05.075Z",
+  "findingCount": 10,
+  "filesWithFindings": 2,
   "findingsByFile": {
     "public/js/main.js": [
       {
@@ -65,56 +65,6 @@
         "line": 811,
         "type": "element.style access",
         "snippet": "invalidWordPenaltyLabel.style.opacity = enabled ? \"1\" : \"0.45\";"
-      }
-    ],
-    "public/js/ui/theme-styles.js": [
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 19,
-        "type": "create style element helper",
-        "snippet": "function createStyleElementOnce(id) {"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 24,
-        "type": "create style element",
-        "snippet": "const style = document.createElement(\"style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 34,
-        "type": "create style element helper",
-        "snippet": "const style = createStyleElementOnce(\"boggle-legacy-theme-foundation-v42-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 3609,
-        "type": "create style element helper",
-        "snippet": "const style = createStyleElementOnce(\"boggle-top-launch-end-screen-v39-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 3984,
-        "type": "create style element helper",
-        "snippet": "const style = createStyleElementOnce(\"boggle-rules-help-options-v38-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 4195,
-        "type": "create style element helper",
-        "snippet": "const style = createStyleElementOnce(\"boggle-found-words-panel-v37-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 4448,
-        "type": "create style element helper",
-        "snippet": "const style = createStyleElementOnce(\"boggle-final-board-input-v36-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 4512,
-        "type": "create style element helper",
-        "snippet": "const style = createStyleElementOnce(\"boggle-final-buttons-v34-style\");"
       }
     ]
   }
