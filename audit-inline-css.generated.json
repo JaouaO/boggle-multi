@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T09:35:47.860Z",
+  "generatedAt": "2026-10-10T09:45:00.097Z",
   "scannedRoots": [
     "public"
   ],
@@ -15,25 +15,25 @@
       },
       {
         "file": "public/js/main.js",
-        "line": 2297,
+        "line": 2299,
         "type": "element.style access",
         "snippet": "piece.style.left = `${Math.random() * 100}vw`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2298,
+        "line": 2300,
         "type": "element.style access",
         "snippet": "piece.style.background = colors[index % colors.length];"
       },
       {
         "file": "public/js/main.js",
-        "line": 2299,
+        "line": 2301,
         "type": "element.style access",
         "snippet": "piece.style.animationDelay = `${Math.random() * 1.4}s`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2300,
+        "line": 2302,
         "type": "element.style access",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       },
@@ -45,7 +45,7 @@
       },
       {
         "file": "public/js/main.js",
-        "line": 2300,
+        "line": 2302,
         "type": "style.setProperty",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       },
@@ -87,13 +87,13 @@
       },
       {
         "file": "public/js/main.js",
-        "line": 2479,
+        "line": 2481,
         "type": "innerHTML",
         "snippet": "boardElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 2527,
+        "line": 2529,
         "type": "innerHTML",
         "snippet": "boardElement.innerHTML = \"\";"
       }

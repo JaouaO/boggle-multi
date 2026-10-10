@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-10T09:35:48.529Z",
+  "generatedAt": "2026-10-10T09:45:00.917Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
   ],
   "main": {
     "path": "public/js/main.js",
-    "lines": 2562,
-    "chars": 69444
+    "lines": 2564,
+    "chars": 69449
   },
   "injectionCalls": [
     {
@@ -903,43 +903,43 @@
     {
       "name": "isCurrentPlayerWinning",
       "file": "public/js/main.js",
-      "line": 2218,
+      "line": 2220,
       "references": 2
     },
     {
       "name": "playVictorySound",
       "file": "public/js/main.js",
-      "line": 2230,
+      "line": 2232,
       "references": 2
     },
     {
       "name": "launchConfetti",
       "file": "public/js/main.js",
-      "line": 2286,
+      "line": 2288,
       "references": 2
     },
     {
       "name": "startCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2322,
+      "line": 2324,
       "references": 2
     },
     {
       "name": "playCountdownTick",
       "file": "public/js/main.js",
-      "line": 2363,
+      "line": 2365,
       "references": 2
     },
     {
       "name": "playCountdownTone",
       "file": "public/js/main.js",
-      "line": 2396,
+      "line": 2398,
       "references": 2
     },
     {
       "name": "createFoundCellCounts",
       "file": "public/js/main.js",
-      "line": 2424,
+      "line": 2426,
       "references": 2
     },
     {
@@ -1089,13 +1089,13 @@
     {
       "name": "getElapsedDurationSeconds",
       "file": "public/js/main.js",
-      "line": 2414,
+      "line": 2416,
       "references": 3
     },
     {
       "name": "resetGameUiToWaiting",
       "file": "public/js/main.js",
-      "line": 2515,
+      "line": 2517,
       "references": 3
     },
     {
@@ -1125,13 +1125,13 @@
     {
       "name": "renderCurrentEndScreen",
       "file": "public/js/main.js",
-      "line": 2308,
+      "line": 2310,
       "references": 4
     },
     {
       "name": "getFoundWordList",
       "file": "public/js/main.js",
-      "line": 2436,
+      "line": 2438,
       "references": 4
     },
     {
@@ -1161,7 +1161,7 @@
     {
       "name": "updateGameStatus",
       "file": "public/js/main.js",
-      "line": 2440,
+      "line": 2442,
       "references": 5
     },
     {
@@ -1227,7 +1227,7 @@
     {
       "name": "playVictoryTone",
       "file": "public/js/main.js",
-      "line": 2268,
+      "line": 2270,
       "references": 7
     },
     {
@@ -1263,7 +1263,7 @@
     {
       "name": "stopCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2353,
+      "line": 2355,
       "references": 9
     },
     {
