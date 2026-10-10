@@ -1,105 +1,51 @@
 {
-  "generatedAt": "2026-10-10T09:20:54.925Z",
+  "generatedAt": "2026-10-10T09:24:22.978Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 48,
+  "findingCount": 39,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
       {
         "file": "public/js/main.js",
-        "line": 932,
-        "type": "element.style access",
-        "snippet": "element.style.minHeight = \"0\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 933,
-        "type": "element.style access",
-        "snippet": "element.style.overflowY = \"auto\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 934,
-        "type": "element.style access",
-        "snippet": "element.style.overflowX = \"hidden\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 935,
-        "type": "element.style access",
-        "snippet": "element.style.overscrollBehavior = \"contain\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 936,
-        "type": "element.style access",
-        "snippet": "element.style.paddingRight = \"0.35rem\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 937,
-        "type": "element.style access",
-        "snippet": "element.style.boxSizing = \"border-box\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 938,
-        "type": "element.style access",
-        "snippet": "element.style.display = \"block\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 939,
-        "type": "element.style access",
-        "snippet": "element.style.flex = \"1 1 auto\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 940,
-        "type": "element.style access",
-        "snippet": "element.style.maxHeight = \"none\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 2074,
+        "line": 2066,
         "type": "element.style access",
         "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2305,
+        "line": 2297,
         "type": "element.style access",
         "snippet": "piece.style.left = `${Math.random() * 100}vw`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2306,
+        "line": 2298,
         "type": "element.style access",
         "snippet": "piece.style.background = colors[index % colors.length];"
       },
       {
         "file": "public/js/main.js",
-        "line": 2307,
+        "line": 2299,
         "type": "element.style access",
         "snippet": "piece.style.animationDelay = `${Math.random() * 1.4}s`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2308,
+        "line": 2300,
         "type": "element.style access",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2074,
+        "line": 2066,
         "type": "style.setProperty",
         "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2308,
+        "line": 2300,
         "type": "style.setProperty",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       },
@@ -117,37 +63,37 @@
       },
       {
         "file": "public/js/main.js",
-        "line": 1735,
+        "line": 1727,
         "type": "innerHTML",
         "snippet": "body.innerHTML = bodyHtml;"
       },
       {
         "file": "public/js/main.js",
-        "line": 1938,
+        "line": 1930,
         "type": "innerHTML",
         "snippet": "rulesSummaryElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 1956,
+        "line": 1948,
         "type": "innerHTML",
         "snippet": "rulesSummaryElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 1962,
+        "line": 1954,
         "type": "innerHTML",
         "snippet": "rulesSummaryElement.innerHTML = badges.join(\"\");"
       },
       {
         "file": "public/js/main.js",
-        "line": 2487,
+        "line": 2479,
         "type": "innerHTML",
         "snippet": "boardElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 2535,
+        "line": 2527,
         "type": "innerHTML",
         "snippet": "boardElement.innerHTML = \"\";"
       }

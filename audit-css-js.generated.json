@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-10T09:20:55.604Z",
+  "generatedAt": "2026-10-10T09:24:23.644Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
   ],
   "main": {
     "path": "public/js/main.js",
-    "lines": 2570,
-    "chars": 69742
+    "lines": 2562,
+    "chars": 69444
   },
   "injectionCalls": [
     {
@@ -735,211 +735,211 @@
     {
       "name": "bindFoundWordHover",
       "file": "public/js/main.js",
-      "line": 1036,
+      "line": 1028,
       "references": 2
     },
     {
       "name": "normalizeFoundWordPath",
       "file": "public/js/main.js",
-      "line": 1056,
+      "line": 1048,
       "references": 2
     },
     {
       "name": "getInvalidCountForSelectedPlayer",
       "file": "public/js/main.js",
-      "line": 1066,
+      "line": 1058,
       "references": 2
     },
     {
       "name": "getSelectedFoundWordsPlayer",
       "file": "public/js/main.js",
-      "line": 1086,
+      "line": 1078,
       "references": 2
     },
     {
       "name": "getFoundWordsForSelectedPlayer",
       "file": "public/js/main.js",
-      "line": 1105,
+      "line": 1097,
       "references": 2
     },
     {
       "name": "createFoundWordsPlayerTabs",
       "file": "public/js/main.js",
-      "line": 1121,
+      "line": 1113,
       "references": 2
     },
     {
       "name": "handleWordAccepted",
       "file": "public/js/main.js",
-      "line": 1148,
+      "line": 1140,
       "references": 2
     },
     {
       "name": "handleWordRejected",
       "file": "public/js/main.js",
-      "line": 1184,
+      "line": 1176,
       "references": 2
     },
     {
       "name": "getCurrentTargetScore",
       "file": "public/js/main.js",
-      "line": 1223,
+      "line": 1215,
       "references": 2
     },
     {
       "name": "handleSolutionsStats",
       "file": "public/js/main.js",
-      "line": 1255,
+      "line": 1247,
       "references": 2
     },
     {
       "name": "handleBoardCellClick",
       "file": "public/js/main.js",
-      "line": 1279,
+      "line": 1271,
       "references": 2
     },
     {
       "name": "handleCellHelpClick",
       "file": "public/js/main.js",
-      "line": 1292,
+      "line": 1284,
       "references": 2
     },
     {
       "name": "handleCellPointerDown",
       "file": "public/js/main.js",
-      "line": 1296,
+      "line": 1288,
       "references": 2
     },
     {
       "name": "handleCellPointerEnter",
       "file": "public/js/main.js",
-      "line": 1310,
+      "line": 1302,
       "references": 2
     },
     {
       "name": "handleCellPointerMove",
       "file": "public/js/main.js",
-      "line": 1314,
+      "line": 1306,
       "references": 2
     },
     {
       "name": "handleCellPointerCancel",
       "file": "public/js/main.js",
-      "line": 1318,
+      "line": 1310,
       "references": 2
     },
     {
       "name": "handleBoardPointerUp",
       "file": "public/js/main.js",
-      "line": 1322,
+      "line": 1314,
       "references": 2
     },
     {
       "name": "handleCellPointerUp",
       "file": "public/js/main.js",
-      "line": 1374,
+      "line": 1366,
       "references": 2
     },
     {
       "name": "updateHelpCell",
       "file": "public/js/main.js",
-      "line": 1437,
+      "line": 1429,
       "references": 2
     },
     {
       "name": "handleGameStarted",
       "file": "public/js/main.js",
-      "line": 1525,
+      "line": 1517,
       "references": 2
     },
     {
       "name": "handleGameEnded",
       "file": "public/js/main.js",
-      "line": 1626,
+      "line": 1618,
       "references": 2
     },
     {
       "name": "renderRulesHelpCardV22",
       "file": "public/js/main.js",
-      "line": 1744,
+      "line": 1736,
       "references": 2
     },
     {
       "name": "handleRulesHelpButtonClickV22",
       "file": "public/js/main.js",
-      "line": 1824,
+      "line": 1816,
       "references": 2
     },
     {
       "name": "getRulesHelpDetailsV22",
       "file": "public/js/main.js",
-      "line": 1844,
+      "line": 1836,
       "references": 2
     },
     {
       "name": "createSolutionListV22",
       "file": "public/js/main.js",
-      "line": 1880,
+      "line": 1872,
       "references": 2
     },
     {
       "name": "updateBoardFitV31",
       "file": "public/js/main.js",
-      "line": 2021,
+      "line": 2013,
       "references": 2
     },
     {
       "name": "showEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2127,
+      "line": 2119,
       "references": 2
     },
     {
       "name": "ensureEndScreenBackdrop",
       "file": "public/js/main.js",
-      "line": 2133,
+      "line": 2125,
       "references": 2
     },
     {
       "name": "isCurrentPlayerWinning",
       "file": "public/js/main.js",
-      "line": 2226,
+      "line": 2218,
       "references": 2
     },
     {
       "name": "playVictorySound",
       "file": "public/js/main.js",
-      "line": 2238,
+      "line": 2230,
       "references": 2
     },
     {
       "name": "launchConfetti",
       "file": "public/js/main.js",
-      "line": 2294,
+      "line": 2286,
       "references": 2
     },
     {
       "name": "startCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2330,
+      "line": 2322,
       "references": 2
     },
     {
       "name": "playCountdownTick",
       "file": "public/js/main.js",
-      "line": 2371,
+      "line": 2363,
       "references": 2
     },
     {
       "name": "playCountdownTone",
       "file": "public/js/main.js",
-      "line": 2404,
+      "line": 2396,
       "references": 2
     },
     {
       "name": "createFoundCellCounts",
       "file": "public/js/main.js",
-      "line": 2432,
+      "line": 2424,
       "references": 2
     },
     {
@@ -1017,85 +1017,85 @@
     {
       "name": "canSelectFoundWordsPlayer",
       "file": "public/js/main.js",
-      "line": 1082,
+      "line": 1074,
       "references": 3
     },
     {
       "name": "renderTargetScoreStatus",
       "file": "public/js/main.js",
-      "line": 1240,
+      "line": 1232,
       "references": 3
     },
     {
       "name": "addCellToDragPath",
       "file": "public/js/main.js",
-      "line": 1326,
+      "line": 1318,
       "references": 3
     },
     {
       "name": "addClickedLetterToSelection",
       "file": "public/js/main.js",
-      "line": 1402,
+      "line": 1394,
       "references": 3
     },
     {
       "name": "areAdjacentCells",
       "file": "public/js/main.js",
-      "line": 1483,
+      "line": 1475,
       "references": 3
     },
     {
       "name": "changeHelpLevel",
       "file": "public/js/main.js",
-      "line": 1491,
+      "line": 1483,
       "references": 3
     },
     {
       "name": "clampCurrentHelpLevel",
       "file": "public/js/main.js",
-      "line": 1515,
+      "line": 1507,
       "references": 3
     },
     {
       "name": "updateOptionCardText",
       "file": "public/js/main.js",
-      "line": 1731,
+      "line": 1723,
       "references": 3
     },
     {
       "name": "getRemainingSolutionWordsV22",
       "file": "public/js/main.js",
-      "line": 1904,
+      "line": 1896,
       "references": 3
     },
     {
       "name": "showEndScreenNow",
       "file": "public/js/main.js",
-      "line": 2115,
+      "line": 2107,
       "references": 3
     },
     {
       "name": "renderVictoryModalV16",
       "file": "public/js/main.js",
-      "line": 2146,
+      "line": 2138,
       "references": 3
     },
     {
       "name": "closeEndScreenPopup",
       "file": "public/js/main.js",
-      "line": 2204,
+      "line": 2196,
       "references": 3
     },
     {
       "name": "getElapsedDurationSeconds",
       "file": "public/js/main.js",
-      "line": 2422,
+      "line": 2414,
       "references": 3
     },
     {
       "name": "resetGameUiToWaiting",
       "file": "public/js/main.js",
-      "line": 2523,
+      "line": 2515,
       "references": 3
     },
     {
@@ -1119,19 +1119,19 @@
     {
       "name": "syncRulesSummarySlotVisibility",
       "file": "public/js/main.js",
-      "line": 1931,
+      "line": 1923,
       "references": 4
     },
     {
       "name": "renderCurrentEndScreen",
       "file": "public/js/main.js",
-      "line": 2316,
+      "line": 2308,
       "references": 4
     },
     {
       "name": "getFoundWordList",
       "file": "public/js/main.js",
-      "line": 2444,
+      "line": 2436,
       "references": 4
     },
     {
@@ -1143,25 +1143,25 @@
     {
       "name": "isSameCell",
       "file": "public/js/main.js",
-      "line": 1487,
+      "line": 1479,
       "references": 5
     },
     {
       "name": "renderPlayerPreferences",
       "file": "public/js/main.js",
-      "line": 1681,
+      "line": 1673,
       "references": 5
     },
     {
       "name": "scheduleBoardFitV31",
       "file": "public/js/main.js",
-      "line": 2015,
+      "line": 2007,
       "references": 5
     },
     {
       "name": "updateGameStatus",
       "file": "public/js/main.js",
-      "line": 2448,
+      "line": 2440,
       "references": 5
     },
     {
@@ -1179,25 +1179,25 @@
     {
       "name": "updateSelectedWordFromPath",
       "file": "public/js/main.js",
-      "line": 1450,
+      "line": 1442,
       "references": 6
     },
     {
       "name": "pathToWord",
       "file": "public/js/main.js",
-      "line": 1479,
+      "line": 1471,
       "references": 6
     },
     {
       "name": "getMaxHelpLevel",
       "file": "public/js/main.js",
-      "line": 1502,
+      "line": 1494,
       "references": 6
     },
     {
       "name": "hideEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2210,
+      "line": 2202,
       "references": 6
     },
     {
@@ -1209,25 +1209,25 @@
     {
       "name": "updateWordInputFromPath",
       "file": "public/js/main.js",
-      "line": 1458,
+      "line": 1450,
       "references": 7
     },
     {
       "name": "clearSelectedLetters",
       "file": "public/js/main.js",
-      "line": 1464,
+      "line": 1456,
       "references": 7
     },
     {
       "name": "renderModePanel",
       "file": "public/js/main.js",
-      "line": 1968,
+      "line": 1960,
       "references": 7
     },
     {
       "name": "playVictoryTone",
       "file": "public/js/main.js",
-      "line": 2276,
+      "line": 2268,
       "references": 7
     },
     {
@@ -1257,19 +1257,19 @@
     {
       "name": "refreshHelpDisplay",
       "file": "public/js/main.js",
-      "line": 1978,
+      "line": 1970,
       "references": 8
     },
     {
       "name": "stopCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2361,
+      "line": 2353,
       "references": 9
     },
     {
       "name": "renderMousePanel",
       "file": "public/js/main.js",
-      "line": 2107,
+      "line": 2099,
       "references": 12
     },
     {
@@ -1281,19 +1281,19 @@
     {
       "name": "renderRulesSummary",
       "file": "public/js/main.js",
-      "line": 1935,
+      "line": 1927,
       "references": 14
     },
     {
       "name": "refreshRightRulesPanel",
       "file": "public/js/main.js",
-      "line": 1695,
+      "line": 1687,
       "references": 16
     },
     {
       "name": "renderCurrentBoardWithHelp",
       "file": "public/js/main.js",
-      "line": 2078,
+      "line": 2070,
       "references": 19
     }
   ],

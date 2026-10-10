@@ -929,15 +929,7 @@ function ensureSelectedFoundWordsPlayer() {
 
 function renderFoundWords(element, words, options = {}) {
   element.innerHTML = "";
-  element.style.minHeight = "0";
-  element.style.overflowY = "auto";
-  element.style.overflowX = "hidden";
-  element.style.overscrollBehavior = "contain";
-  element.style.paddingRight = "0.35rem";
-  element.style.boxSizing = "border-box";
-  element.style.display = "block";
-  element.style.flex = "1 1 auto";
-  element.style.maxHeight = "none";
+  element.classList.add("boggle-scroll-panel-runtime");
 
   const viewer = document.createElement("div");
   viewer.className = "found-words-viewer";

@@ -1123,3 +1123,20 @@ section,
 .boggle-player-badge-score {
   line-height: 1;
 }
+
+
+/* ==========================================================================
+   V76 — migration styles inline panneau scroll
+   ========================================================================== */
+
+.boggle-scroll-panel-runtime {
+  display: block;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.35rem;
+}
