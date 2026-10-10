@@ -2613,3 +2613,294 @@ function resetGameUiToWaiting() {
   refreshRightRulesPanel();
   refreshHomeVisibility();
 }
+
+/* V87-HOME-SCREEN START */
+
+/*
+ * V87 — nouvel accueil.
+ *
+ * L'écran existant reste intact : il est simplement masqué tant que
+ * l'utilisateur est sur le hub d'accueil.
+ */
+
+function createHomePreviewLettersV87() {
+  const pool = "AAAAABBCCDDEEEEEEEFFGHIJKLMNOOOPQRSTUUVV";
+  const letters = pool.split("");
+
+  for (let index = letters.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    const current = letters[index];
+
+    letters[index] = letters[swapIndex];
+    letters[swapIndex] = current;
+  }
+
+  return letters.slice(0, 16);
+}
+
+function getDailyRoomIdV87() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return "grille-du-jour-" + year + "-" + month + "-" + day;
+}
+
+function setHomeNoticeV87(message) {
+  const notice = document.querySelector("#home-v87-notice");
+
+  if (!notice) {
+    return;
+  }
+
+  notice.textContent = message;
+  notice.hidden = false;
+
+  window.setTimeout(() => {
+    if (notice.textContent === message) {
+      notice.hidden = true;
+    }
+  }, 4800);
+}
+
+function showGameFromHomeV87() {
+  document.body.classList.remove("v87-home-active");
+  document.body.classList.add("v87-game-active");
+
+  if (typeof scheduleBoardFitV31 === "function") {
+    scheduleBoardFitV31();
+  }
+}
+
+function ensurePlayerNameFromHomeV87() {
+  if (!nameInput) {
+    return;
+  }
+
+  if (!nameInput.value.trim()) {
+    nameInput.value = "Joueur";
+  }
+}
+
+function waitAndStartGridFromHomeV87() {
+  let attempts = 0;
+  const maxAttempts = 80;
+
+  const interval = window.setInterval(() => {
+    attempts += 1;
+
+    if (startButton && !startButton.disabled) {
+      window.clearInterval(interval);
+      startButton.click();
+      return;
+    }
+
+    if (attempts >= maxAttempts) {
+      window.clearInterval(interval);
+      setHomeNoticeV87("Connexion en cours : cliquez sur Lancer une grille si la partie ne démarre pas automatiquement.");
+    }
+  }, 100);
+}
+
+function startDailyGridFromHomeV87() {
+  ensurePlayerNameFromHomeV87();
+
+  if (roomInput) {
+    roomInput.value = getDailyRoomIdV87();
+  }
+
+  showGameFromHomeV87();
+
+  const statusText = statusElement ? statusElement.textContent.toLowerCase() : "";
+  const alreadyConnected = statusText.includes("connecté") && !statusText.includes("non connecté");
+
+  if (!alreadyConnected && connectButton) {
+    connectButton.click();
+  }
+
+  waitAndStartGridFromHomeV87();
+}
+
+function openPrivateRoomFromHomeV87() {
+  showGameFromHomeV87();
+
+  if (roomInput) {
+    roomInput.focus();
+    roomInput.select();
+  }
+}
+
+function openSoloFromHomeV87() {
+  ensurePlayerNameFromHomeV87();
+
+  if (roomInput && !roomInput.value.trim()) {
+    roomInput.value = "solo-" + Math.random().toString(36).slice(2, 8);
+  }
+
+  showGameFromHomeV87();
+
+  if (startButton) {
+    startButton.focus();
+  }
+}
+
+function setupHomeScreenV87() {
+  if (document.querySelector("#home-v87")) {
+    return;
+  }
+
+  const home = document.createElement("section");
+
+  home.id = "home-v87";
+  home.className = "home-v87";
+  home.setAttribute("aria-label", "Accueil Boggle");
+
+  home.innerHTML = [
+    '<div class="home-v87-shell">',
+      '<header class="home-v87-header">',
+        '<div class="home-v87-logo" aria-label="Boggle">',
+          '<span class="home-v87-logo-text">Boggle</span>',
+          '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
+        '</div>',
+        '<nav class="home-v87-actions" aria-label="Actions rapides">',
+          '<button class="home-v87-top-button" type="button" data-home-action="account">',
+            '<span aria-hidden="true">👤</span>',
+            '<span>Compte</span>',
+          '</button>',
+          '<button class="home-v87-top-button" type="button" data-home-action="options">',
+            '<span aria-hidden="true">⚙️</span>',
+            '<span>Options</span>',
+          '</button>',
+        '</nav>',
+      '</header>',
+
+      '<div id="home-v87-notice" class="home-v87-notice" hidden></div>',
+
+      '<main class="home-v87-main">',
+        '<section class="home-v87-hero" aria-labelledby="home-v87-daily-title">',
+          '<div class="home-v87-hero-copy">',
+            '<p class="home-v87-eyebrow">',
+              '<span aria-hidden="true">📅</span>',
+              '<span>Défi quotidien</span>',
+            '</p>',
+            '<h1 id="home-v87-daily-title">Grille du jour</h1>',
+            '<p class="home-v87-subtitle">Trouvez un maximum de mots dans la grille du jour&nbsp;!</p>',
+            '<button class="home-v87-primary-button" type="button" data-home-action="daily">',
+              '<span aria-hidden="true">▶</span>',
+              '<span>Jouer</span>',
+            '</button>',
+          '</div>',
+          '<div class="home-v87-board-wrap" aria-hidden="true">',
+            '<div class="home-v87-board"></div>',
+          '</div>',
+          '<div class="home-v87-fruit home-v87-fruit-orange" aria-hidden="true">🍊</div>',
+          '<div class="home-v87-fruit home-v87-fruit-apple" aria-hidden="true">🍎</div>',
+        '</section>',
+
+        '<aside class="home-v87-top" aria-labelledby="home-v87-top-title">',
+          '<div class="home-v87-card-heading">',
+            '<span aria-hidden="true">🏆</span>',
+            '<h2 id="home-v87-top-title">Top du jour</h2>',
+            '<button type="button" data-home-action="top">Voir tout</button>',
+          '</div>',
+          '<ol class="home-v87-ranking">',
+            '<li><span class="home-v87-rank home-v87-gold">1</span><span class="home-v87-avatar">🍊</span><strong>Lulu</strong><span>1457</span></li>',
+            '<li><span class="home-v87-rank home-v87-silver">2</span><span class="home-v87-avatar">🍑</span><strong>Mango</strong><span>1120</span></li>',
+            '<li><span class="home-v87-rank home-v87-bronze">3</span><span class="home-v87-avatar">🥝</span><strong>Kiwi</strong><span>1054</span></li>',
+            '<li><span class="home-v87-rank">4</span><span class="home-v87-avatar">🍇</span><strong>Noisette</strong><span>628</span></li>',
+            '<li><span class="home-v87-rank">5</span><span class="home-v87-avatar">🍋</span><strong>Citron</strong><span>522</span></li>',
+          '</ol>',
+        '</aside>',
+
+        '<section class="home-v87-modes" aria-label="Modes de jeu">',
+          '<button class="home-v87-mode home-v87-mode-public" type="button" data-home-action="public">',
+            '<span class="home-v87-mode-icon" aria-hidden="true">🌐</span>',
+            '<span class="home-v87-mode-text">',
+              '<strong>Salon public</strong>',
+              '<span>Jouez en ligne avec d’autres joueurs.</span>',
+            '</span>',
+            '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
+          '</button>',
+          '<button class="home-v87-mode home-v87-mode-private" type="button" data-home-action="private">',
+            '<span class="home-v87-mode-icon" aria-hidden="true">👥</span>',
+            '<span class="home-v87-mode-text">',
+              '<strong>Salon privé</strong>',
+              '<span>Créez une salle et jouez avec vos amis.</span>',
+            '</span>',
+            '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
+          '</button>',
+          '<button class="home-v87-mode home-v87-mode-solo" type="button" data-home-action="solo">',
+            '<span class="home-v87-mode-icon" aria-hidden="true">👑</span>',
+            '<span class="home-v87-mode-text">',
+              '<strong>Jouer seul</strong>',
+              '<span>Entraînez-vous à votre rythme sur une nouvelle grille.</span>',
+            '</span>',
+            '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
+          '</button>',
+        '</section>',
+      '</main>',
+    '</div>',
+  ].join("");
+
+  document.body.insertBefore(home, document.body.firstChild);
+
+  const board = home.querySelector(".home-v87-board");
+  const letters = createHomePreviewLettersV87();
+
+  for (const letter of letters) {
+    const cell = document.createElement("span");
+    cell.textContent = letter;
+    board.append(cell);
+  }
+
+  home.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-home-action]");
+
+    if (!button) {
+      return;
+    }
+
+    const action = button.dataset.homeAction;
+
+    if (action === "daily") {
+      startDailyGridFromHomeV87();
+      return;
+    }
+
+    if (action === "public") {
+      setHomeNoticeV87("Les salons publics seront ajoutés dans l’écran suivant.");
+      return;
+    }
+
+    if (action === "private") {
+      openPrivateRoomFromHomeV87();
+      return;
+    }
+
+    if (action === "solo") {
+      openSoloFromHomeV87();
+      return;
+    }
+
+    if (action === "top") {
+      setHomeNoticeV87("Le classement complet sera ajouté avec la grille du jour.");
+      return;
+    }
+
+    if (action === "account") {
+      setHomeNoticeV87("Le compte sera ajouté plus tard.");
+      return;
+    }
+
+    if (action === "options") {
+      setHomeNoticeV87("Les options sons, musique et animations seront ajoutées plus tard.");
+    }
+  });
+
+  document.body.classList.add("v87-home-active");
+}
+
+setupHomeScreenV87();
+
+/* V87-HOME-SCREEN END */
