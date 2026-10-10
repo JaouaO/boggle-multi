@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-10T09:54:40.275Z",
-  "findingCount": 22,
+  "generatedAt": "2026-10-10T09:57:20.360Z",
+  "findingCount": 18,
   "filesWithFindings": 3,
   "findingsByFile": {
     "public/js/main.js": [
@@ -38,55 +38,31 @@
     "public/js/ui/mode-ui.js": [
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 699,
-        "type": "element.style access",
-        "snippet": "input.style.marginTop = \"0.15rem\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 708,
-        "type": "element.style access",
-        "snippet": "description.style.display = \"block\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 709,
-        "type": "element.style access",
-        "snippet": "description.style.opacity = \"0.75\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 710,
-        "type": "element.style access",
-        "snippet": "description.style.fontWeight = \"400\";"
-      },
-      {
-        "file": "public/js/ui/mode-ui.js",
-        "line": 774,
+        "line": 772,
         "type": "element.style access",
         "snippet": "if (durationSecondsLabel) {\r  durationSecondsLabel.style.display = isTimer ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 777,
+        "line": 775,
         "type": "element.style access",
         "snippet": "if (targetScoreModeLabel) {\r  targetScoreModeLabel.style.display = isTargetScore ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 780,
+        "line": 778,
         "type": "element.style access",
         "snippet": "if (targetScorePercentLabel) {\r  targetScorePercentLabel.style.display = isTargetScore && !isFixedTarget ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 783,
+        "line": 781,
         "type": "element.style access",
         "snippet": "if (targetScoreLabel) {\r  targetScoreLabel.style.display = isTargetScore && isFixedTarget ? \"\" : \"none\";"
       },
       {
         "file": "public/js/ui/mode-ui.js",
-        "line": 813,
+        "line": 811,
         "type": "element.style access",
         "snippet": "invalidWordPenaltyLabel.style.opacity = enabled ? \"1\" : \"0.45\";"
       }

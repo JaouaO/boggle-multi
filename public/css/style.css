@@ -1298,3 +1298,18 @@ section,
 .boggle-board-size-5 {
   grid-template-columns: repeat(5, minmax(48px, 1fr));
 }
+
+
+/* ==========================================================================
+   V80 — migration styles statiques mode-ui.js
+   ========================================================================== */
+
+.boggle-mode-option-input {
+  margin-top: 0.15rem;
+}
+
+.boggle-mode-option-description-muted {
+  display: block;
+  opacity: 0.75;
+  font-weight: 400;
+}

@@ -696,7 +696,7 @@ function createCheckboxLabel(id, labelText, descriptionText) {
   const input = document.createElement("input");
   input.id = id;
   input.type = "checkbox";
-  input.style.marginTop = "0.15rem";
+  input.classList.add("boggle-mode-option-input");
 
   const body = document.createElement("span");
 
@@ -705,9 +705,7 @@ function createCheckboxLabel(id, labelText, descriptionText) {
 
   const description = document.createElement("small");
   description.textContent = descriptionText;
-  description.style.display = "block";
-description.style.opacity = "0.75";
-description.style.fontWeight = "400";
+  description.classList.add("boggle-mode-option-description-muted");
 
   body.append(title, description);
   label.append(input, body);
