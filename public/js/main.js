@@ -2028,47 +2028,90 @@ function updateBoardFitV31() {
 
   const center = document.querySelector("#boggle-center");
   const statusPanel = document.querySelector("#play-status-panel");
+  const feedbackElement = document.querySelector("#word-feedback");
 
   if (!center) {
     return;
   }
 
-  const centerRect = center.getBoundingClientRect();
   const centerStyle = window.getComputedStyle(center);
-  const paddingTop = parseFloat(centerStyle.paddingTop) || 0;
-  const paddingBottom = parseFloat(centerStyle.paddingBottom) || 0;
-  const paddingLeft = parseFloat(centerStyle.paddingLeft) || 0;
-  const paddingRight = parseFloat(centerStyle.paddingRight) || 0;
-  const rowGap = parseFloat(centerStyle.rowGap || centerStyle.gap) || 12;
+  const paddingLeft = Number.parseFloat(centerStyle.paddingLeft) || 0;
+  const paddingRight = Number.parseFloat(centerStyle.paddingRight) || 0;
 
-  const statusHeight = statusPanel?.getBoundingClientRect().height ?? 0;
-  const formHeight = wordForm.getBoundingClientRect().height || 0;
-  // V82 : la zone #word-feedback réserve déjà sa hauteur en CSS.
-  // Ne pas réduire la grille quand un message apparaît, sinon le plateau bouge à chaque mot.
-  const feedbackHeight = 0;
-const viewportBottom = window.innerHeight - 14;
-  const availableVerticalSpace = Math.max(
-    260,
-    viewportBottom -
-      centerRect.top -
-      paddingTop -
-      paddingBottom -
-      statusHeight -
-      formHeight -
-      feedbackHeight -
-      rowGap * 3 -
-      16
+  const centerWidth =
+    center.clientWidth ||
+    center.getBoundingClientRect().width ||
+    window.innerWidth;
+
+  const horizontalSpace = Math.max(
+    220,
+    centerWidth - paddingLeft - paddingRight - 8
   );
 
-  const availableHorizontalSpace = Math.max(
-    260,
-    centerRect.width - paddingLeft - paddingRight - 8
+  function stableOuterHeight(element, fallback = 0) {
+    if (!element) {
+      return fallback;
+    }
+
+    const style = window.getComputedStyle(element);
+
+    if (style.display === "none") {
+      return 0;
+    }
+
+    const marginTop = Number.parseFloat(style.marginTop) || 0;
+    const marginBottom = Number.parseFloat(style.marginBottom) || 0;
+    const minHeight = Number.parseFloat(style.minHeight) || 0;
+    const height = element.offsetHeight || minHeight || fallback;
+
+    return height + marginTop + marginBottom;
+  }
+
+  /*
+   * V85.1 : le calcul vertical ne dépend plus de la position visible
+   * du plateau dans le viewport. Sinon, un clic avec la grille partiellement
+   * visible par le haut ou par le bas provoque des tailles opposées.
+   */
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 720;
+  const isNarrow = window.innerWidth <= 760;
+  const isShort = viewportHeight <= 760;
+
+  const statusHeight = stableOuterHeight(statusPanel, isNarrow ? 86 : 56);
+  const formHeight = stableOuterHeight(wordForm, isNarrow ? 96 : 58);
+
+  /*
+   * La zone feedback est réservée en CSS. On prend sa hauteur minimale stable,
+   * pas sa hauteur de contenu, pour éviter les variations à chaque message.
+   */
+  const feedbackStyle = feedbackElement ? window.getComputedStyle(feedbackElement) : null;
+  const feedbackMinHeight = feedbackStyle
+    ? Number.parseFloat(feedbackStyle.minHeight) || 0
+    : 0;
+
+  const chromeReserve = isNarrow
+    ? 108
+    : isShort
+      ? 92
+      : 128;
+
+  /*
+   * V85.2 : on accepte de faire scroller la page plutôt que de réduire
+   * le plateau jusqu'à une taille inutilisable.
+   */
+  const minimumUsableBoardSize = isNarrow ? 280 : 330;
+
+  const verticalSpace = Math.max(
+    minimumUsableBoardSize,
+    viewportHeight - statusHeight - formHeight - feedbackMinHeight - chromeReserve
   );
+
+  const minBoardSize = minimumUsableBoardSize;
+  const maxBoardSize = isNarrow ? 620 : 690;
 
   const boardSize = Math.floor(
     Math.max(
-      260,
-      Math.min(availableHorizontalSpace, availableVerticalSpace, 690)
+      minBoardSize,
+      Math.min(horizontalSpace, verticalSpace, maxBoardSize)
     )
   );
 

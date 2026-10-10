@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-10T12:44:01.035Z",
+  "generatedAt": "2026-10-10T13:14:48.409Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
   ],
   "main": {
     "path": "public/js/main.js",
-    "lines": 2573,
-    "chars": 69888
+    "lines": 2616,
+    "chars": 71146
   },
   "injectionCalls": [],
   "injectionFunctions": [],
@@ -463,55 +463,55 @@
     {
       "name": "showEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2128,
+      "line": 2171,
       "references": 2
     },
     {
       "name": "ensureEndScreenBackdrop",
       "file": "public/js/main.js",
-      "line": 2134,
+      "line": 2177,
       "references": 2
     },
     {
       "name": "isCurrentPlayerWinning",
       "file": "public/js/main.js",
-      "line": 2229,
+      "line": 2272,
       "references": 2
     },
     {
       "name": "playVictorySound",
       "file": "public/js/main.js",
-      "line": 2241,
+      "line": 2284,
       "references": 2
     },
     {
       "name": "launchConfetti",
       "file": "public/js/main.js",
-      "line": 2297,
+      "line": 2340,
       "references": 2
     },
     {
       "name": "startCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2333,
+      "line": 2376,
       "references": 2
     },
     {
       "name": "playCountdownTick",
       "file": "public/js/main.js",
-      "line": 2374,
+      "line": 2417,
       "references": 2
     },
     {
       "name": "playCountdownTone",
       "file": "public/js/main.js",
-      "line": 2407,
+      "line": 2450,
       "references": 2
     },
     {
       "name": "createFoundCellCounts",
       "file": "public/js/main.js",
-      "line": 2435,
+      "line": 2478,
       "references": 2
     },
     {
@@ -605,33 +605,39 @@
       "references": 3
     },
     {
+      "name": "stableOuterHeight",
+      "file": "public/js/main.js",
+      "line": 2051,
+      "references": 3
+    },
+    {
       "name": "showEndScreenNow",
       "file": "public/js/main.js",
-      "line": 2116,
+      "line": 2159,
       "references": 3
     },
     {
       "name": "renderVictoryModalV16",
       "file": "public/js/main.js",
-      "line": 2147,
+      "line": 2190,
       "references": 3
     },
     {
       "name": "closeEndScreenPopup",
       "file": "public/js/main.js",
-      "line": 2205,
+      "line": 2248,
       "references": 3
     },
     {
       "name": "getElapsedDurationSeconds",
       "file": "public/js/main.js",
-      "line": 2425,
+      "line": 2468,
       "references": 3
     },
     {
       "name": "resetGameUiToWaiting",
       "file": "public/js/main.js",
-      "line": 2526,
+      "line": 2569,
       "references": 3
     },
     {
@@ -661,13 +667,13 @@
     {
       "name": "renderCurrentEndScreen",
       "file": "public/js/main.js",
-      "line": 2319,
+      "line": 2362,
       "references": 4
     },
     {
       "name": "getFoundWordList",
       "file": "public/js/main.js",
-      "line": 2447,
+      "line": 2490,
       "references": 4
     },
     {
@@ -697,7 +703,7 @@
     {
       "name": "updateGameStatus",
       "file": "public/js/main.js",
-      "line": 2451,
+      "line": 2494,
       "references": 5
     },
     {
@@ -733,7 +739,7 @@
     {
       "name": "hideEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2211,
+      "line": 2254,
       "references": 6
     },
     {
@@ -763,7 +769,7 @@
     {
       "name": "playVictoryTone",
       "file": "public/js/main.js",
-      "line": 2279,
+      "line": 2322,
       "references": 7
     },
     {
@@ -787,13 +793,13 @@
     {
       "name": "stopCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2364,
+      "line": 2407,
       "references": 9
     },
     {
       "name": "renderMousePanel",
       "file": "public/js/main.js",
-      "line": 2108,
+      "line": 2151,
       "references": 12
     },
     {
@@ -817,7 +823,7 @@
     {
       "name": "renderCurrentBoardWithHelp",
       "file": "public/js/main.js",
-      "line": 2079,
+      "line": 2122,
       "references": 19
     }
   ],

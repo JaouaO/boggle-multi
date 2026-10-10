@@ -256,21 +256,11 @@ section,
 }
 
 #mode-controls {
-  margin: 12px 0 0 !important;
-  padding: 12px !important;
   background: var(--paper-2) !important;
 }
 
-#mode-controls[hidden],
-#end-screen[hidden],
-#technical-log-panel[hidden] {
-  display: none !important;
-}
-
 #mode-controls textarea {
-  max-width: 100% !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  letter-spacing: 0.06em !important;
 }
 
 #start-solution-mode {
@@ -287,26 +277,8 @@ section,
   color: var(--ink);
 }
 
-#play-status-panel {
-  width: min(100%, 720px);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-}
-
-#play-status-panel h2 {
-  display: none;
-}
-
 #game-status,
 #timer {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 6px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--paper-2);
@@ -321,9 +293,6 @@ section,
 }
 
 #board {
-  width: min(100%, 720px);
-  margin: 0;
-  padding: 14px;
   border: 2px solid var(--board-line);
   border-radius: var(--radius-lg);
   background: var(--board);
@@ -432,12 +401,6 @@ section,
   color: var(--danger);
 }
 
-#players-panel,
-#found-words-panel,
-#help-panel {
-  min-height: 80px;
-}
-
 #players,
 #found-words {
   margin: 0;
@@ -462,14 +425,7 @@ section,
 }
 
 #help-panel {
-  width: 100%;
-  margin: 0 !important;
-  padding: 12px !important;
   border-left: 6px solid var(--secondary) !important;
-}
-
-#help-panel h2 {
-  margin-bottom: 8px;
 }
 
 #help-level-button {
@@ -507,10 +463,6 @@ section,
     grid-template-columns: 300px minmax(560px, 1fr) 350px;
     gap: 16px;
   }
-
-  #board {
-    width: min(100%, 760px);
-  }
 }
 
 @media (max-width: 1060px) {
@@ -531,16 +483,6 @@ section,
 
   #boggle-right {
     grid-area: right;
-  }
-
-  #board,
-  #word-form,
-  #mouse-input-panel,
-  #word-feedback,
-  #end-screen,
-  #play-status-panel,
-  #launch-panel {
-    width: min(100%, 760px);
   }
 }
 
@@ -583,20 +525,6 @@ section,
     order: 3;
   }
 
-  #launch-panel,
-  #board,
-  #word-form,
-  #mouse-input-panel,
-  #word-feedback,
-  #end-screen,
-  #play-status-panel {
-    width: 100%;
-  }
-
-  #board {
-    padding: 8px;
-  }
-
   .board-cell {
     min-height: clamp(48px, 18vw, 68px) !important;
   }
@@ -612,15 +540,7 @@ section,
   button {
     width: 100%;
   }
-
-  #game-status,
-  #timer {
-    width: 100%;
-  }
 }
-
-
-#board { padding: 16px; }
 .board-cell { border-width: 0 !important; }
 #launch-panel { border-color: var(--primary) !important; }
 
@@ -691,29 +611,10 @@ section,
     flex: 0 0 auto;
   }
 
-  #found-words-panel,
-  #help-panel {
-    flex: 1 1 auto;
-    min-height: 360px;
-  }
-
-  #found-words-panel,
-  #help-panel {
-    display: flex;
-    flex-direction: column;
-  }
-
   #found-words {
     flex: 1 1 auto;
     min-height: 0;
     max-height: none !important;
-    overflow: auto;
-  }
-
-  #help-cell-body,
-  #help-panel > div:last-child {
-    flex: 1 1 auto;
-    min-height: 0;
     overflow: auto;
   }
 }
@@ -727,7 +628,6 @@ section,
 #players-panel h2,
 #found-words-panel h2,
 #help-panel h2 {
-  padding-bottom: 8px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -1018,23 +918,6 @@ section,
     0 0 0 3px rgba(216, 144, 18, 0.20),
     0 0.42rem 0.85rem rgba(126, 83, 39, 0.16) !important;
   transform: translateY(-1px) !important;
-}
-
-
-/* ==========================================================================
-   V72 — ajustement affichage règles et options
-   ========================================================================== */
-
-#mode-controls {
-  display: grid;
-  gap: 0.85rem;
-}
-
-#mode-controls h2,
-#mode-controls h3,
-.boggle-mode-title-topless,
-.boggle-mode-title-compact {
-  margin-bottom: 0.45rem;
 }
 
 .boggle-mode-description {
@@ -1375,20 +1258,12 @@ section,
     #timer,
     #status,
     .rule-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 1.85rem;
-      padding: 0 0.58rem;
-      border: 1px solid rgba(90, 59, 35, 0.16);
-      border-radius: var(--boggle-radius-badge);
-      background: var(--boggle-pill);
-      color: var(--boggle-ink);
-      font-weight: 850;
-      line-height: 1.1;
-      white-space: nowrap;
-
-    }
+  border: 1px solid rgba(90, 59, 35, 0.16);
+  border-radius: var(--boggle-radius-badge);
+  background: var(--boggle-pill);
+  color: var(--boggle-ink);
+  font-weight: 850;
+}
     .info-badge,
     #game-status,
     #timer,
@@ -1528,34 +1403,9 @@ section,
       display: none !important;
     }
 
-    #game-status {
-      width: fit-content;
-    }
-
     #timer {
-      margin: 0;
-      font-variant-numeric: tabular-nums;
-    }
-
-    #play-status-panel {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-    }
-
-    #play-status-panel #game-status,
-    #play-status-panel #timer,
-    #play-status-panel #end-game {
-      align-self: center;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    #play-status-panel > h2 {
-      flex-basis: 100%;
-      width: 100%;
-    }
+  font-variant-numeric: tabular-nums;
+}
 
     #connection-status-line {
       display: inline-flex;
@@ -1756,21 +1606,9 @@ section,
     }
 
     #rules-summary {
-      width: 100%;
-      box-sizing: border-box;
-      margin: 0 0 0.65rem;
-      padding: 0 0 0.55rem;
-      border-bottom: 1px solid rgba(90, 59, 35, 0.12);
-    }
-
-    #rules-summary[hidden] {
-      display: none !important;
-    }
-
-    #help-panel {
-      max-height: none;
-      overflow: visible;
-    }
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(90, 59, 35, 0.12);
+}
 
     #welcome-panel {
       display: flex;
@@ -1824,10 +1662,8 @@ section,
     }
 
     .rule-pill {
-      gap: 0.35rem;
-      margin: 0.15rem 0.35rem 0.15rem 0;
-      font-weight: 900;
-    }
+  font-weight: 900;
+}
 
     .rule-pill-danger {
       border: 2px solid rgba(169, 67, 63, 0.46);
@@ -1923,12 +1759,6 @@ section,
       color: var(--fruit-brown) !important;
       font-weight: 900 !important;
 
-    }
-    .connection-field-label,
-    #launch-panel > h2,
-    #play-status-panel > h2,
-    #help-panel > h2 {
-      letter-spacing: 0.01em;
     }
 
     #players-panel > h2::before { content: "👥 "; }
@@ -2029,30 +1859,25 @@ section,
     }
 
     #game-status {
-      background: rgba(255,252,240,0.98) !important;
-      font-size: 1rem;
-      padding-inline: 0.95rem !important;
-    }
+  background: rgba(255,252,240,0.98) !important;
+}
 
     #timer {
-      background: linear-gradient(180deg, #f8e7aa, #f4d66d) !important;
-      color: #6b481c !important;
-      border-color: rgba(173, 135, 52, 0.18) !important;
-      padding-inline: 1rem !important;
-      font-size: 1.1rem;
-    }
+  background: linear-gradient(180deg, #f8e7aa, #f4d66d) !important;
+  color: #6b481c !important;
+  border-color: rgba(173, 135, 52, 0.18) !important;
+}
 
     #board {
-      position: relative;
-      padding: 1rem !important;
-      border-radius: 1.55rem !important;
-      background:
+  position: relative;
+  border-radius: 1.55rem !important;
+  background:
         linear-gradient(180deg, rgba(233, 204, 131, 0.82), rgba(217, 178, 99, 0.72)) !important;
-      border: 1px solid rgba(147, 103, 50, 0.16) !important;
-      box-shadow:
+  border: 1px solid rgba(147, 103, 50, 0.16) !important;
+  box-shadow:
         inset 0 0 0 1px rgba(255,255,255,0.2),
         0 0.9rem 2rem rgba(99,70,40,0.12) !important;
-    }
+}
 
     #board .board-cell {
       border: 1px solid rgba(131, 98, 63, 0.13) !important;
@@ -2085,25 +1910,6 @@ section,
       color: var(--fruit-brown-soft);
       font-weight: 800;
       text-align: center;
-    }
-
-    #players-panel,
-    #found-words-panel,
-    #help-panel,
-    #launch-panel,
-    #play-status-panel {
-      overflow: hidden;
-    }
-
-    #help-panel > h2,
-    #play-status-panel > h2,
-    #launch-panel > h2 {
-      margin-bottom: 0.8rem !important;
-    }
-    #help-panel > h2,
-    #play-status-panel > h2,
-    #launch-panel > h2 {
-      font-size: 1rem !important;
     }
 
     .player-row {
@@ -2166,16 +1972,11 @@ section,
     }
 
     #rules-summary {
-      display: flex !important;
-      flex-wrap: wrap !important;
-      gap: 0.55rem !important;
-      padding: 0.2rem 0 0.8rem !important;
-      margin: 0 0 0.2rem !important;
-      border: 0 !important;
-      border-bottom: 1px solid rgba(122,87,52,0.08) !important;
-      box-shadow: none !important;
-      background: transparent !important;
-    }
+  border: 0 !important;
+  border-bottom: 1px solid rgba(122,87,52,0.08) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
 
     .rule-pill-danger {
       background: rgba(221, 241, 201, 0.95) !important;
@@ -2190,21 +1991,18 @@ section,
     }
 
     #help-panel {
-      position: relative;
-      padding-top: 0.95rem !important;
-    }
+  position: relative;
+}
 
     #help-panel::after {
-      content: "";
-      position: absolute;
-      right: 0.9rem;
-      bottom: 0.65rem;
-      width: 4rem;
-      height: 4rem;
-      background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27260%27%20height%3D%27220%27%20viewBox%3D%270%200%20260%20220%27%3E%0A%3Crect%20width%3D%27260%27%20height%3D%27220%27%20fill%3D%27none%27/%3E%0A%3Cg%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%0A%3Cpath%20d%3D%27M35%2058c18-14%2034-14%2047%202-16-1-30%206-40%2020%27%20stroke%3D%27%239EB87C%27%20stroke-width%3D%278%27%20opacity%3D%27.22%27/%3E%0A%3Cpath%20d%3D%27M54%2076c-9%2011-10%2020-4%2031%27%20stroke%3D%27%239EB87C%27%20stroke-width%3D%276%27%20opacity%3D%27.16%27/%3E%0A%3Cpath%20d%3D%27M194%2042c9%200%2017%206%2021%2015-9-2-18%200-25%207%27%20stroke%3D%27%23A7C287%27%20stroke-width%3D%278%27%20opacity%3D%27.18%27/%3E%0A%3Ccircle%20cx%3D%27174%27%20cy%3D%27140%27%20r%3D%277%27%20fill%3D%27%23F2A76A%27%20opacity%3D%27.18%27/%3E%0A%3Ccircle%20cx%3D%27189%27%20cy%3D%27151%27%20r%3D%275%27%20fill%3D%27%23E7C760%27%20opacity%3D%27.18%27/%3E%0A%3Ccircle%20cx%3D%27203%27%20cy%3D%27139%27%20r%3D%274%27%20fill%3D%27%23E6A97A%27%20opacity%3D%27.16%27/%3E%0A%3Cpath%20d%3D%27M100%20176h34%27%20stroke%3D%27%23D09A61%27%20stroke-width%3D%275%27%20opacity%3D%27.14%27/%3E%0A%3Cpath%20d%3D%27M107%20164h34%27%20stroke%3D%27%23D09A61%27%20stroke-width%3D%275%27%20opacity%3D%27.10%27/%3E%0A%3Cpath%20d%3D%27M209%20174c11-6%2019-4%2028%206-10-1-18%201-25%208%27%20stroke%3D%27%239EB87C%27%20stroke-width%3D%277%27%20opacity%3D%27.16%27/%3E%0A%3Cpath%20d%3D%27M121%2077l6%206%206-6%206%206%206-6%27%20stroke%3D%27%23F2B06C%27%20stroke-width%3D%274%27%20opacity%3D%27.16%27/%3E%0A%3C/g%3E%0A%3C/svg%3E") center / 140% auto no-repeat;
-      opacity: 0.28;
-      pointer-events: none;
-    }
+  content: "";
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.65rem;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27260%27%20height%3D%27220%27%20viewBox%3D%270%200%20260%20220%27%3E%0A%3Crect%20width%3D%27260%27%20height%3D%27220%27%20fill%3D%27none%27/%3E%0A%3Cg%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%0A%3Cpath%20d%3D%27M35%2058c18-14%2034-14%2047%202-16-1-30%206-40%2020%27%20stroke%3D%27%239EB87C%27%20stroke-width%3D%278%27%20opacity%3D%27.22%27/%3E%0A%3Cpath%20d%3D%27M54%2076c-9%2011-10%2020-4%2031%27%20stroke%3D%27%239EB87C%27%20stroke-width%3D%276%27%20opacity%3D%27.16%27/%3E%0A%3Cpath%20d%3D%27M194%2042c9%200%2017%206%2021%2015-9-2-18%200-25%207%27%20stroke%3D%27%23A7C287%27%20stroke-width%3D%278%27%20opacity%3D%27.18%27/%3E%0A%3Ccircle%20cx%3D%27174%27%20cy%3D%27140%27%20r%3D%277%27%20fill%3D%27%23F2A76A%27%20opacity%3D%27.18%27/%3E%0A%3Ccircle%20cx%3D%27189%27%20cy%3D%27151%27%20r%3D%275%27%20fill%3D%27%23E7C760%27%20opacity%3D%27.18%27/%3E%0A%3Ccircle%20cx%3D%27203%27%20cy%3D%27139%27%20r%3D%274%27%20fill%3D%27%23E6A97A%27%20opacity%3D%27.16%27/%3E%0A%3Cpath%20d%3D%27M100%20176h34%27%20stroke%3D%27%23D09A61%27%20stroke-width%3D%275%27%20opacity%3D%27.14%27/%3E%0A%3Cpath%20d%3D%27M107%20164h34%27%20stroke%3D%27%23D09A61%27%20stroke-width%3D%275%27%20opacity%3D%27.10%27/%3E%0A%3Cpath%20d%3D%27M209%20174c11-6%2019-4%2028%206-10-1-18%201-25%208%27%20stroke%3D%27%239EB87C%27%20stroke-width%3D%277%27%20opacity%3D%27.16%27/%3E%0A%3Cpath%20d%3D%27M121%2077l6%206%206-6%206%206%206-6%27%20stroke%3D%27%23F2B06C%27%20stroke-width%3D%274%27%20opacity%3D%27.16%27/%3E%0A%3C/g%3E%0A%3C/svg%3E") center / 140% auto no-repeat;
+  opacity: 0.28;
+  pointer-events: none;
+}
 
     #help-panel .help-block,
     #help-panel .help-section,
@@ -2419,15 +2217,13 @@ section,
     #mode-options-toggle,
     #player-preferences > button,
     #end-game {
-
-      border: 1px solid transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-      font-weight: 950 !important;
-      letter-spacing: 0 !important;
-      transition: transform 120ms ease, filter 120ms ease, background 120ms ease !important;
-    }
+  border: 1px solid transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  font-weight: 950 !important;
+  transition: transform 120ms ease, filter 120ms ease, background 120ms ease !important;
+}
     button:not(.board-cell),
     .ui-button,
     #connect,
@@ -2559,12 +2355,11 @@ section,
     }
 
     #mode-controls {
-      padding: 0 !important;
-      background: transparent !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      border-radius: 0 !important;
-    }
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
 
     #mode-options-body {
       background: #fffaf0 !important;
@@ -2575,114 +2370,82 @@ section,
     }
 
     #play-status-panel {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1fr) auto auto !important;
-      align-items: center !important;
-      gap: 0.75rem !important;
-      padding: 0.9rem 1rem !important;
-      background: #fff8e8 !important;
-    }
+  background: #fff8e8 !important;
+}
 
     #play-status-panel > h2 {
-      display: block !important;
-      grid-column: 1 / 2 !important;
-      grid-row: 1 !important;
-      margin: 0 !important;
-      font-size: 1.25rem !important;
-      color: var(--mk-ink) !important;
-    }
+  color: var(--mk-ink) !important;
+}
 
     #play-status-panel > h2::before {
-      content: "🎮 ";
-      font-size: 1rem;
-    }
+  content: "🎮 ";
+}
 
     #game-status {
-      justify-self: start !important;
-      min-height: 2.25rem !important;
-      padding: 0 0.9rem !important;
-      border-radius: var(--mk-pill) !important;
-      background: #fffaf0 !important;
-      color: var(--mk-ink) !important;
-      border: 1px solid var(--mk-line) !important;
-      font-weight: 950 !important;
-    }
+  border-radius: var(--mk-pill) !important;
+  background: #fffaf0 !important;
+  color: var(--mk-ink) !important;
+  border: 1px solid var(--mk-line) !important;
+  font-weight: 950 !important;
+}
 
     #timer {
-      justify-self: end !important;
-      min-height: 2.9rem !important;
-      padding: 0 1.25rem !important;
-      background: var(--mk-yellow) !important;
-      border: 1px solid rgba(168, 132, 43, 0.24) !important;
-      border-radius: var(--mk-pill) !important;
-      color: #5d351e !important;
-      font-size: 1.28rem !important;
-      font-weight: 950 !important;
-    }
+  background: var(--mk-yellow) !important;
+  border: 1px solid rgba(168, 132, 43, 0.24) !important;
+  border-radius: var(--mk-pill) !important;
+  color: #5d351e !important;
+  font-weight: 950 !important;
+}
 
     #timer::before {
-      content: "⏱";
-      margin-right: 0.45rem;
-    }
+  content: "⏱";
+}
 
     #end-game {
-      min-height: 2.9rem !important;
-      padding: 0 1.25rem !important;
-      background: var(--mk-red) !important;
-      border-color: rgba(180, 63, 53, 0.24) !important;
-      color: white !important;
-    }
+  background: var(--mk-red) !important;
+  border-color: rgba(180, 63, 53, 0.24) !important;
+  color: white !important;
+}
 
     #board {
-
-      padding: 0.95rem !important;
-      gap: 0.65rem !important;
-      border-radius: 1.55rem !important;
-      background: #e7c47a !important;
-      border: 1px solid rgba(143, 99, 49, 0.2) !important;
-      box-shadow: 0 0.5rem 1rem rgba(103, 71, 38, 0.09) !important;
-    }
+  border-radius: 1.55rem !important;
+  background: #e7c47a !important;
+  border: 1px solid rgba(143, 99, 49, 0.2) !important;
+  box-shadow: 0 0.5rem 1rem rgba(103, 71, 38, 0.09) !important;
+}
 
     #board .board-cell {
-      min-height: clamp(4.4rem, 8vw, 7rem) !important;
-      aspect-ratio: 1 / 1 !important;
-      border-radius: 1rem !important;
-      border: 1px solid rgba(111, 73, 40, 0.12) !important;
-      background: #fff7df !important;
-      color: #5a321b !important;
-      box-shadow: none !important;
-    }
+  border-radius: 1rem !important;
+  border: 1px solid rgba(111, 73, 40, 0.12) !important;
+  background: #fff7df !important;
+  color: #5a321b !important;
+  box-shadow: none !important;
+}
 
     #board .board-letter {
-      font-size: clamp(1.9rem, 4.3vw, 3.6rem) !important;
-      color: #5a321b !important;
-      font-weight: 950 !important;
-      line-height: 1 !important;
-    }
+  color: #5a321b !important;
+  font-weight: 950 !important;
+}
 
     #board .board-cell::before {
-      content: "";
-      position: absolute;
-      left: 0.7rem;
-      top: 0.7rem;
-      width: 0.32rem;
-      height: 0.32rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.85);
-      pointer-events: none;
-    }
+  content: "";
+  position: absolute;
+  left: 0.7rem;
+  top: 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
 
     #board .board-cell::after {
-      content: "";
-      position: absolute;
-      right: 0.7rem;
-      bottom: 0.7rem;
-      width: 0.32rem;
-      height: 0.32rem;
-      border-radius: 999px;
-      background: rgba(218, 178, 102, 0.25);
-      pointer-events: none;
-    }
+  content: "";
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  border-radius: 999px;
+  background: rgba(218, 178, 102, 0.25);
+  pointer-events: none;
+}
 
     #word-form {
 
@@ -2738,16 +2501,10 @@ section,
     #players-panel > h2,
     #found-words-panel > h2,
     #help-panel > h2 {
-      margin: 0 0 0.85rem !important;
-      padding-bottom: 0.65rem !important;
-      border-bottom: 1px solid var(--mk-line) !important;
-      color: var(--mk-ink) !important;
-
-      font-weight: 950 !important;
-    }
-    #help-panel > h2 {
-      font-size: 1.2rem !important;
-    }
+  border-bottom: 1px solid var(--mk-line) !important;
+  color: var(--mk-ink) !important;
+  font-weight: 950 !important;
+}
 
     #players-panel > h2::before { content: "👥 "; }
     #found-words-panel > h2::before { content: "📖 "; }
@@ -2833,50 +2590,24 @@ section,
     }
 
     #help-panel {
-      min-height: 18rem !important;
-      background: var(--mk-panel) !important;
-    }
+  background: var(--mk-panel) !important;
+}
 
     #help-panel > * {
       color: var(--mk-ink) !important;
     }
 
     #rules-summary {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 0.8rem !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      overflow: visible !important;
-    }
-
-    #rules-summary[hidden] {
-      display: none !important;
-    }
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
 
     #rules-summary .rule-pill {
-      width: 100% !important;
-      min-height: 5.7rem !important;
-      justify-content: flex-start !important;
-      align-items: flex-start !important;
-      white-space: normal !important;
-      text-align: left !important;
-      box-sizing: border-box !important;
-      padding: 1rem 1.1rem !important;
-      border-radius: 1.25rem !important;
-      font-size: 1rem !important;
-      line-height: 1.35 !important;
-      box-shadow: var(--mk-shadow) !important;
-    }
-
-    #rules-summary .rule-pill::before {
-      margin-right: 0.65rem !important;
-      font-size: 1.4rem !important;
-      line-height: 1 !important;
-    }
+  box-sizing: border-box !important;
+  border-radius: 1.25rem !important;
+  box-shadow: var(--mk-shadow) !important;
+}
 
     .rule-pill-danger {
       background: var(--mk-green-soft) !important;
@@ -2895,17 +2626,12 @@ section,
     }
 
     .rule-pill-warning::before {
-      content: "!";
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.75rem;
-      height: 1.75rem;
-      border-radius: 999px;
-      background: var(--mk-red);
-      color: white;
-      font-weight: 950;
-    }
+  content: "!";
+  border-radius: 999px;
+  background: var(--mk-red);
+  color: white;
+  font-weight: 950;
+}
 
     #welcome-panel {
       background: var(--mk-panel) !important;
@@ -3024,71 +2750,32 @@ section,
     }
 
     #play-status-panel {
-      display: grid !important;
-      grid-template-columns: minmax(8rem, 1fr) auto auto auto !important;
-      grid-template-rows: auto !important;
-      gap: 0.75rem !important;
-      align-items: center !important;
-      min-height: 4.25rem !important;
-      padding: 0.85rem 1rem !important;
-      border-radius: 1.35rem !important;
-    }
+  border-radius: 1.35rem !important;
+}
 
     #play-status-panel > h2 {
-      display: block !important;
-      grid-column: 1 !important;
-      grid-row: 1 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      font-size: 1.25rem !important;
-      line-height: 1.1 !important;
-      white-space: nowrap !important;
-    }
+  border: 0 !important;
+}
 
     #game-status {
-      grid-column: 2 !important;
-      grid-row: 1 !important;
-      justify-self: end !important;
-      min-height: 2.45rem !important;
-      padding-inline: 1rem !important;
-      border-radius: 9999px !important;
-      background: #fff8ed !important;
-      font-size: 0.94rem !important;
-    }
+  border-radius: 9999px !important;
+  background: #fff8ed !important;
+}
 
     #timer {
-      grid-column: 3 !important;
-      grid-row: 1 !important;
-      min-height: 2.65rem !important;
-      padding-inline: 1rem !important;
-      border-radius: 9999px !important;
-      background: #f5d872 !important;
-      white-space: nowrap !important;
-    }
+  border-radius: 9999px !important;
+  background: #f5d872 !important;
+}
 
     #end-game {
-      grid-column: 4 !important;
-      grid-row: 1 !important;
-      min-height: 2.7rem !important;
-      min-width: 10rem !important;
-      padding-inline: 1.25rem !important;
-      background: #ef6255 !important;
-      color: white !important;
-      border-color: rgba(176, 58, 47, 0.25) !important;
-      white-space: nowrap !important;
-    }
-
-    #board {
-
-      gap: 0.58rem !important;
-      padding: 0.85rem !important;
-    }
+  background: #ef6255 !important;
+  color: white !important;
+  border-color: rgba(176, 58, 47, 0.25) !important;
+}
 
     #board .board-cell {
-      min-height: clamp(4.5rem, 7vw, 6.45rem) !important;
-      border-radius: 0.95rem !important;
-    }
+  border-radius: 0.95rem !important;
+}
 
     #word-form {
 
@@ -3287,16 +2974,6 @@ section,
         display: grid !important;
         grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)) !important;
       }
-
-      #play-status-panel {
-        grid-template-columns: 1fr auto !important;
-      }
-
-      #game-status,
-      #timer,
-      #end-game {
-        grid-column: auto !important;
-      }
     }
 
     /* Ancienne couche : injectMockupCloserThemeV3. */
@@ -3407,51 +3084,38 @@ section,
     }
 
     #play-status-panel {
-      grid-template-columns: minmax(8rem, 1fr) auto auto auto !important;
-      background: #fff8e8 !important;
-      border-radius: 1.35rem !important;
-      align-items: center !important;
-    }
+  background: #fff8e8 !important;
+  border-radius: 1.35rem !important;
+}
 
     #play-status-panel > h2 {
-      font-size: 1.36rem !important;
-      color: #5d351e !important;
-      letter-spacing: -0.02em !important;
-    }
+  color: #5d351e !important;
+}
 
     #game-status {
-      background: transparent !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      padding: 0 !important;
-      min-height: auto !important;
-      color: #7c6048 !important;
-      font-size: 1rem !important;
-      font-weight: 850 !important;
-      border-radius: 0 !important;
-      justify-self: start !important;
-    }
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #7c6048 !important;
+  font-weight: 850 !important;
+  border-radius: 0 !important;
+}
 
     #game-status::before {
-      content: "•";
-      margin-right: 0.35rem;
-      color: #f07f32;
-      font-weight: 950;
-    }
+  content: "•";
+  color: #f07f32;
+  font-weight: 950;
+}
 
     #timer {
-      min-height: 2.8rem !important;
-      padding-inline: 1.05rem !important;
-      border-radius: 9999px !important;
-      box-shadow: none !important;
-    }
+  border-radius: 9999px !important;
+  box-shadow: none !important;
+}
 
     #end-game {
-      min-height: 2.85rem !important;
-      min-width: 11rem !important;
-      border-radius: 9999px !important;
-      box-shadow: none !important;
-    }
+  border-radius: 9999px !important;
+  box-shadow: none !important;
+}
 
     #players-panel,
     #found-words-panel,
@@ -3799,121 +3463,72 @@ section,
      * aucun badge visible autour de “Partie en cours”.
      */
     #play-status-panel {
-      grid-template-columns: minmax(13rem, 1fr) auto auto !important;
-      gap: 1rem !important;
-      min-height: 5.3rem !important;
-      padding: 1rem 1.15rem !important;
-      align-items: center !important;
-      background: rgba(255, 248, 232, 0.96) !important;
-    }
+  background: rgba(255, 248, 232, 0.96) !important;
+}
 
     #play-status-panel > h2 {
-      display: grid !important;
-      grid-template-columns: auto 1fr !important;
-      grid-template-rows: auto auto !important;
-      column-gap: 0.7rem !important;
-      align-items: center !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      color: var(--brown-dark) !important;
-      font-size: 1.58rem !important;
-      font-weight: 700 !important;
-      letter-spacing: -0.035em !important;
-      line-height: 1 !important;
-    }
+  border: 0 !important;
+  color: var(--brown-dark) !important;
+  font-weight: 700 !important;
+}
 
     #play-status-panel > h2::before {
-      content: "🎮" !important;
-      grid-row: 1 / span 2 !important;
-      font-size: 1.55rem !important;
-      transform: translateY(0.08rem) !important;
-    }
+  content: "🎮" !important;
+  transform: translateY(0.08rem) !important;
+}
 
     #play-status-panel > h2::after {
-      content: "Trouvez un maximum de mots !" !important;
-      grid-column: 2 !important;
-      grid-row: 2 !important;
-      color: var(--brown-muted) !important;
-      font-size: 1.02rem !important;
-      font-weight: 500 !important;
-      letter-spacing: 0 !important;
-      margin-top: 0.18rem !important;
-    }
+  content: "Trouvez un maximum de mots !" !important;
+  color: var(--brown-muted) !important;
+  font-weight: 500 !important;
+}
 
     #game-status {
-      grid-column: 1 !important;
-      grid-row: 1 !important;
-      align-self: end !important;
-      justify-self: start !important;
-      transform: translate(2.65rem, 1.25rem) !important;
-      display: inline-flex !important;
-      background: transparent !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      padding: 0 !important;
-      min-height: 0 !important;
-      height: auto !important;
-      color: var(--brown-muted) !important;
-      font-size: 0.98rem !important;
-      font-weight: 600 !important;
-      line-height: 1 !important;
-    }
+  transform: translate(2.65rem, 1.25rem) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--brown-muted) !important;
+  font-weight: 600 !important;
+}
 
     #game-status::before {
-      content: "" !important;
-      margin: 0 !important;
-    }
+  content: "" !important;
+}
 
     #timer {
-      grid-column: 2 !important;
-      min-height: 3.05rem !important;
-      height: 3.05rem !important;
-      padding: 0 1.22rem !important;
-      border-radius: var(--button-radius) !important;
-      background: var(--yellow) !important;
-      color: var(--brown-dark) !important;
-      border: 2px solid rgba(158, 118, 37, 0.12) !important;
-      font-size: 1.32rem !important;
-      font-weight: 700 !important;
-    }
+  border-radius: var(--button-radius) !important;
+  background: var(--yellow) !important;
+  color: var(--brown-dark) !important;
+  border: 2px solid rgba(158, 118, 37, 0.12) !important;
+  font-weight: 700 !important;
+}
 
     #end-game {
-      grid-column: 3 !important;
-      height: 3.1rem !important;
-      min-height: 3.1rem !important;
-      min-width: 12rem !important;
-      border-radius: var(--button-radius) !important;
-      background: var(--red) !important;
-      color: white !important;
-      border: 0 !important;
-      font-size: 1.05rem !important;
-      font-weight: 700 !important;
-    }
+  border-radius: var(--button-radius) !important;
+  background: var(--red) !important;
+  color: white !important;
+  border: 0 !important;
+  font-weight: 700 !important;
+}
 
     #board {
-
-      padding: 1.05rem !important;
-      gap: 0.72rem !important;
-      border-radius: 1.75rem !important;
-      background: #e8c36f !important;
-      border: 2px solid rgba(139, 92, 38, 0.11) !important;
-    }
+  border-radius: 1.75rem !important;
+  background: #e8c36f !important;
+  border: 2px solid rgba(139, 92, 38, 0.11) !important;
+}
 
     #board .board-cell {
-      min-height: clamp(5rem, 7.1vw, 7.2rem) !important;
-      border-radius: 1.18rem !important;
-      background: #fff6df !important;
-      border: 2px solid rgba(111, 73, 40, 0.08) !important;
-    }
+  border-radius: 1.18rem !important;
+  background: #fff6df !important;
+  border: 2px solid rgba(111, 73, 40, 0.08) !important;
+}
 
     #board .board-letter {
-      font-family: var(--cute-font) !important;
-      font-size: clamp(2.15rem, 4.3vw, 3.85rem) !important;
-      font-weight: 700 !important;
-      color: #5c2f17 !important;
-      letter-spacing: -0.03em !important;
-    }
+  font-family: var(--cute-font) !important;
+  font-weight: 700 !important;
+  color: #5c2f17 !important;
+}
 
     #word-form {
 
@@ -4172,103 +3787,54 @@ section,
       min-height: 3.55rem !important;
     }
 
-    #mode-controls {
-      width: min(100%, 42rem) !important;
-      margin: 0.7rem auto 0 !important;
-    }
-
     /*
      * Barre Partie intégrée, sans carte/sous-zone nette.
      */
     #play-status-panel {
-      grid-template-columns: minmax(15rem, 1fr) auto auto !important;
-      gap: 1rem !important;
-      margin: 0.15rem 0 0.8rem !important;
-      padding: 0.3rem 0.1rem 0.55rem !important;
-      min-height: 3.9rem !important;
-      background: transparent !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      overflow: visible !important;
-      align-items: center !important;
-    }
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 
     #play-status-panel > h2 {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 0.65rem !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      font-size: 1.65rem !important;
-      line-height: 1 !important;
-    }
+  border: 0 !important;
+}
 
     #play-status-panel > h2::before {
-      content: "🎮" !important;
-      font-size: 1.45rem !important;
-      transform: none !important;
-    }
+  content: "🎮" !important;
+  transform: none !important;
+}
 
     #play-status-panel > h2::after {
-      display: none !important;
-      content: none !important;
-    }
+  content: none !important;
+}
 
     #game-status {
-      position: static !important;
-      transform: none !important;
-      grid-column: 1 !important;
-      grid-row: auto !important;
-      align-self: center !important;
-      justify-self: start !important;
-      margin-left: 3.1rem !important;
-      margin-top: -0.35rem !important;
-      display: block !important;
-      background: transparent !important;
-      border: 0 !important;
-      padding: 0 !important;
-      color: #8a6447 !important;
-      font-size: 1.02rem !important;
-      font-weight: 600 !important;
-      box-shadow: none !important;
-    }
+  position: static !important;
+  transform: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: #8a6447 !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
 
     #game-status::before {
       content: "" !important;
-    }
-
-    #timer {
-      grid-column: 2 !important;
-      height: 3rem !important;
-      min-height: 3rem !important;
-      padding: 0 1.25rem !important;
-      font-size: 1.28rem !important;
-    }
-
-    #end-game {
-      grid-column: 3 !important;
-      height: 3rem !important;
-      min-height: 3rem !important;
-      min-width: 12.5rem !important;
-      padding: 0 1.35rem !important;
     }
 
     /*
      * Plateau agrandi pour occuper la largeur centrale.
      */
     #board {
-      padding: clamp(0.9rem, 1vw, 1.15rem) !important;
-      gap: clamp(0.55rem, 0.75vw, 0.82rem) !important;
-      border-radius: 1.8rem !important;
-      background: #e8c36f !important;
-    }
+  border-radius: 1.8rem !important;
+  background: #e8c36f !important;
+}
 
     #board .board-cell {
-      min-height: clamp(4.9rem, 6.9vw, 7.35rem) !important;
-      border-radius: 1.15rem !important;
-    }
+  border-radius: 1.15rem !important;
+}
 
     #word-form {
 
@@ -4364,20 +3930,6 @@ section,
         max-width: 48rem !important;
         margin: 0 auto !important;
       }
-
-      #play-status-panel {
-        grid-template-columns: 1fr auto !important;
-      }
-
-      #end-game {
-        grid-column: 1 / -1 !important;
-        justify-self: start !important;
-      }
-
-      #game-status {
-        margin-left: 0 !important;
-        margin-top: 0.25rem !important;
-      }
     }
 
     /* Ancienne couche : injectMockupFullWidthThemeV6. */
@@ -4451,53 +4003,16 @@ section,
       max-width: none !important;
     }
 
-    /*
-     * Statut placé à droite du titre quand l'écran est large.
-     */
-    #play-status-panel {
-      grid-template-columns: auto minmax(7rem, 1fr) auto auto !important;
-      column-gap: 0.95rem !important;
-      row-gap: 0.15rem !important;
-      align-items: center !important;
-    }
-
-    #play-status-panel > h2 {
-      grid-column: 1 !important;
-      grid-row: 1 !important;
-      white-space: nowrap !important;
-    }
-
     #game-status {
-      grid-column: 2 !important;
-      grid-row: 1 !important;
-      justify-self: start !important;
-      align-self: center !important;
-      margin: 0 !important;
-      transform: none !important;
-      font-size: 1.02rem !important;
-      line-height: 1 !important;
-      color: #8a6447 !important;
-      white-space: nowrap !important;
-    }
+  transform: none !important;
+  color: #8a6447 !important;
+}
 
     #game-status::before {
-      content: "•" !important;
-      margin-right: 0.38rem !important;
-      color: #f47f2f !important;
-      font-weight: 900 !important;
-    }
-
-    #timer {
-      grid-column: 3 !important;
-      grid-row: 1 !important;
-      justify-self: end !important;
-    }
-
-    #end-game {
-      grid-column: 4 !important;
-      grid-row: 1 !important;
-      justify-self: end !important;
-    }
+  content: "•" !important;
+  color: #f47f2f !important;
+  font-weight: 900 !important;
+}
 
     #players-panel {
       height: clamp(14rem, 22vh, 18rem) !important;
@@ -4538,15 +4053,6 @@ section,
           minmax(34rem, 1.62fr)
           minmax(16rem, 0.95fr) !important;
       }
-
-      #play-status-panel {
-        grid-template-columns: auto minmax(6rem, 1fr) auto !important;
-      }
-
-      #end-game {
-        grid-column: 1 / -1 !important;
-        justify-self: end !important;
-      }
     }
 
     @media (max-width: 78rem) {
@@ -4558,19 +4064,6 @@ section,
 
       #boggle-layout {
         grid-template-columns: 1fr !important;
-      }
-
-      #play-status-panel {
-        grid-template-columns: auto 1fr !important;
-      }
-
-      #game-status {
-        grid-column: 2 !important;
-      }
-
-      #timer,
-      #end-game {
-        grid-column: auto !important;
       }
     }
 
@@ -4692,44 +4185,9 @@ section,
       min-height: clamp(2.65rem, 3.9vh, 3.05rem) !important;
     }
 
-    #play-status-panel {
-      margin: 0 0 clamp(0.55rem, 0.9vh, 0.75rem) !important;
-      padding-bottom: clamp(0.35rem, 0.65vh, 0.55rem) !important;
-      min-height: auto !important;
-    }
-
-    #play-status-panel > h2 {
-      font-size: clamp(1.35rem, 2.1vw, 1.65rem) !important;
-    }
-
-    #game-status {
-      font-size: clamp(0.88rem, 1vw, 1.02rem) !important;
-    }
-
-    #timer,
-    #end-game {
-      height: clamp(2.55rem, 4.1vh, 3rem) !important;
-      min-height: clamp(2.55rem, 4.1vh, 3rem) !important;
-    }
-
-    #end-game {
-      min-width: clamp(9.5rem, 11vw, 12rem) !important;
-    }
-
-    #board {
-
-      padding: clamp(0.72rem, 1vh, 1rem) !important;
-      gap: clamp(0.42rem, 0.8vh, 0.68rem) !important;
-    }
-
     #board .board-cell {
-      min-height: clamp(3.9rem, 8.2vh, 6.25rem) !important;
-      border-radius: clamp(0.8rem, 1.3vw, 1.1rem) !important;
-    }
-
-    #board .board-letter {
-      font-size: clamp(1.8rem, 5.4vh, 3.35rem) !important;
-    }
+  border-radius: clamp(0.8rem, 1.3vw, 1.1rem) !important;
+}
 
     #word-form {
 
@@ -4840,10 +4298,6 @@ section,
       #mode-options-toggle {
         height: 2.5rem !important;
         min-height: 2.5rem !important;
-      }
-
-      #board .board-cell {
-        min-height: clamp(3.65rem, 7.4vh, 5.6rem) !important;
       }
 
     }
@@ -5039,18 +4493,10 @@ section,
     }
 
     #boggle-layout:has(#launch-panel:not([hidden])) #play-status-panel {
-      margin: 0 !important;
-      padding: clamp(0.9rem, 1.2vw, 1.15rem) !important;
-      border: 2px solid rgba(111, 73, 40, 0.105) !important;
-      border-radius: 1.65rem !important;
-      background: rgba(255, 248, 232, 0.76) !important;
-    }
-
-    #boggle-layout:has(#launch-panel:not([hidden])) #board:empty,
-    #boggle-layout:has(#launch-panel:not([hidden])) #word-form,
-    #boggle-layout:has(#launch-panel:not([hidden])) #word-feedback {
-      display: none !important;
-    }
+  border: 2px solid rgba(111, 73, 40, 0.105) !important;
+  border-radius: 1.65rem !important;
+  background: rgba(255, 248, 232, 0.76) !important;
+}
 
     #boggle-layout:has(#launch-panel:not([hidden])) #mockup-right-cards {
       height: auto !important;
@@ -5726,24 +5172,10 @@ section,
       contain: none !important;
     }
 
-    #play-status-panel {
-      flex: 0 0 auto !important;
-      margin-bottom: 0 !important;
-    }
-
     #board {
-      flex: 0 0 auto !important;
-      align-self: center !important;
-      width: var(--board-fit-size-v31, min(100%, 36rem)) !important;
-      height: var(--board-fit-size-v31, min(100vw, 36rem)) !important;
-      max-width: 100% !important;
-      max-height: var(--board-fit-size-v31, 36rem) !important;
-      aspect-ratio: 1 / 1 !important;
-      margin: 0 auto !important;
-      transform: none !important;
-      overflow: visible !important;
-      box-sizing: border-box !important;
-    }
+  transform: none !important;
+  box-sizing: border-box !important;
+}
 
     #word-form {
       flex: 0 0 auto !important;
@@ -5817,23 +5249,18 @@ section,
 
     #mode-controls #start-solution-mode,
     #mode-controls #fill-example-board {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      min-height: 2.65rem !important;
-      padding: 0.55rem 1rem !important;
-      border-radius: 999px !important;
-      background-image: none !important;
-      color: #4b3322 !important;
-      border: 2px solid rgba(122, 75, 29, 0.34) !important;
-      box-shadow: 0 0.28rem 0.75rem rgba(97, 65, 35, 0.13) !important;
-      font-weight: 950 !important;
-      text-shadow: none !important;
-      cursor: pointer !important;
-      pointer-events: auto !important;
-    }
+  visibility: visible !important;
+  opacity: 1 !important;
+  border-radius: 999px !important;
+  background-image: none !important;
+  color: #4b3322 !important;
+  border: 2px solid rgba(122, 75, 29, 0.34) !important;
+  box-shadow: 0 0.28rem 0.75rem rgba(97, 65, 35, 0.13) !important;
+  font-weight: 950 !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
 
     #mode-controls #start-solution-mode {
       background: #ea7e33 !important;
@@ -5999,19 +5426,16 @@ section,
 }
 
 /* ==========================================================================
-   V84.2 — couche responsive canonique plateau statut règles
+   V85 — responsive canonique nettoyé
    ========================================================================== */
 
 /*
- * Ce bloc remplace la première couche V84.
- * Il ne cherche pas encore à supprimer toutes les anciennes règles historiques,
- * mais il reprend proprement la main sur les zones qui se contredisaient :
- * - plateau ;
- * - barre Partie / timer / bouton fin ;
- * - règles.
+ * V85 réduit les contradictions :
+ * - les anciennes couches gardent leurs styles visuels ;
+ * - leurs propriétés de layout/tailles sur plateau/statut/règles ont été retirées ;
+ * - ce bloc devient la source canonique pour ces zones.
  */
 
-/* Base anti-débordement */
 html,
 body {
   max-width: 100%;
@@ -6038,24 +5462,30 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Plateau : une seule logique finale
+   Plateau canonique
    -------------------------------------------------------------------------- */
 
 #board {
-  --board-effective-size-v84: min(
+  --board-effective-size-v85: min(
     var(--board-fit-size-v31, 36rem),
     calc(100vw - 1.5rem)
   );
 
-  width: var(--board-effective-size-v84) !important;
-  height: var(--board-effective-size-v84) !important;
+  width: var(--board-effective-size-v85) !important;
+  height: var(--board-effective-size-v85) !important;
   max-width: 100% !important;
-  max-height: var(--board-effective-size-v84) !important;
+  max-height: var(--board-effective-size-v85) !important;
 
   display: grid !important;
   align-items: stretch !important;
   justify-items: stretch !important;
-  overflow: hidden !important;
+
+  padding: clamp(0.42rem, calc(var(--board-effective-size-v85) / 52), 0.86rem) !important;
+  gap: clamp(0.22rem, calc(var(--board-effective-size-v85) / 82), 0.56rem) !important;
+
+  aspect-ratio: 1 / 1 !important;
+  overflow: visible !important;
+  margin-inline: auto !important;
 }
 
 #board.boggle-board-size-3 {
@@ -6086,38 +5516,40 @@ body {
   justify-content: center !important;
 
   aspect-ratio: 1 / 1 !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+  padding-inline: 0.04em !important;
 }
 
 #board .board-letter {
   display: block !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
 
-  line-height: 0.95 !important;
+  line-height: 1.05 !important;
   white-space: nowrap !important;
   text-align: center !important;
+  letter-spacing: -0.025em !important;
+  transform: translateX(-0.01em) !important;
 }
 
 /*
- * Taille des lettres calculée à partir de la taille réelle visée du plateau.
- * Cela évite le cas : petites cases + lettres énormes.
+ * Polices légèrement réduites vs v84 pour éviter les lettres coupées.
  */
 #board.boggle-board-size-3 .board-letter {
-  font-size: clamp(1.4rem, calc(var(--board-effective-size-v84) / 6.5), 3.9rem) !important;
+  font-size: clamp(1.3rem, calc(var(--board-effective-size-v85) / 7), 3.65rem) !important;
 }
 
 #board.boggle-board-size-4 .board-letter {
-  font-size: clamp(1.15rem, calc(var(--board-effective-size-v84) / 8.4), 3.35rem) !important;
+  font-size: clamp(1.08rem, calc(var(--board-effective-size-v85) / 9), 3.05rem) !important;
 }
 
 #board.boggle-board-size-5 .board-letter {
-  font-size: clamp(0.9rem, calc(var(--board-effective-size-v84) / 10.4), 2.65rem) !important;
+  font-size: clamp(0.84rem, calc(var(--board-effective-size-v85) / 11.2), 2.35rem) !important;
 }
 
 /* --------------------------------------------------------------------------
-   Barre Partie : on masque le titre "Partie" et on garde les infos utiles
+   Barre Partie canonique
    -------------------------------------------------------------------------- */
 
 #play-status-panel {
@@ -6126,13 +5558,19 @@ body {
   grid-template-areas: "status timer end" !important;
   align-items: center !important;
   gap: 0.55rem !important;
+
   width: 100% !important;
   max-width: 100% !important;
   overflow: hidden !important;
 }
 
-/* Le titre "Partie" n'apporte rien et chevauche parfois "Partie en cours". */
 #play-status-panel > h2 {
+  display: none !important;
+}
+
+#play-status-panel > h2::before,
+#play-status-panel > h2::after {
+  content: none !important;
   display: none !important;
 }
 
@@ -6162,16 +5600,29 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Règles : retour à la ligne propre, pas de chevauchement
+   Règles canonique
    -------------------------------------------------------------------------- */
+
+#help-panel {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
 
 #rules-summary {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)) !important;
   gap: 0.55rem !important;
+
   width: 100% !important;
   max-width: 100% !important;
-  overflow: visible !important;
+  max-height: clamp(8rem, 26vh, 14rem) !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+
+  padding: 0 0.2rem 0.2rem 0 !important;
 }
 
 #rules-summary[hidden] {
@@ -6179,8 +5630,14 @@ body {
 }
 
 #rules-summary .rule-pill {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.45rem !important;
+
   min-width: 0 !important;
   max-width: 100% !important;
+  width: auto !important;
   height: auto !important;
   min-height: 0 !important;
 
@@ -6188,23 +5645,18 @@ body {
   overflow: visible !important;
   overflow-wrap: anywhere !important;
   word-break: normal !important;
+  text-align: left !important;
 
   line-height: 1.28 !important;
-  padding: 0.65rem 0.75rem !important;
+  padding: 0.58rem 0.68rem !important;
 }
 
 #rules-summary .rule-pill::before {
   flex: 0 0 auto !important;
 }
 
-#mode-controls,
-#help-panel {
-  min-width: 0 !important;
-  max-width: 100% !important;
-}
-
 /* --------------------------------------------------------------------------
-   Largeur intermédiaire : grille en priorité, panneaux ensuite
+   Largeur intermédiaire
    -------------------------------------------------------------------------- */
 
 @media (max-width: 78rem) {
@@ -6268,14 +5720,13 @@ body {
 
 @media (max-width: 760px) {
   #board {
-    --board-effective-size-v84: min(
+    --board-effective-size-v85: min(
       var(--board-fit-size-v31, 100vw),
       calc(100vw - 1.25rem)
     );
 
-    padding: clamp(0.45rem, 2vw, 0.75rem) !important;
-    gap: clamp(0.28rem, 1.55vw, 0.48rem) !important;
-    border-radius: clamp(1rem, 4vw, 1.45rem) !important;
+    padding: clamp(0.38rem, 1.8vw, 0.68rem) !important;
+    gap: clamp(0.2rem, 1.45vw, 0.45rem) !important;
   }
 
   #play-status-panel {
@@ -6293,10 +5744,10 @@ body {
 
   #rules-summary {
     grid-template-columns: minmax(0, 1fr) !important;
+    max-height: clamp(7rem, 30vh, 13rem) !important;
   }
 
   #rules-summary .rule-pill {
-    padding: 0.58rem 0.65rem !important;
     font-size: 0.92rem !important;
   }
 }
@@ -6319,10 +5770,6 @@ body {
     white-space: normal !important;
   }
 
-  #timer {
-    justify-self: end !important;
-  }
-
   #found-words-panel {
     height: clamp(12rem, 34vh, 20rem) !important;
     min-height: 12rem !important;
@@ -6340,14 +5787,14 @@ body {
   }
 
   #board {
-    --board-effective-size-v84: min(
+    --board-effective-size-v85: min(
       var(--board-fit-size-v31, 36rem),
       calc(100vh - 12rem),
       calc(100vw - 1.5rem)
     );
 
-    padding: clamp(0.45rem, 1vh, 0.72rem) !important;
-    gap: clamp(0.32rem, 0.8vh, 0.52rem) !important;
+    padding: clamp(0.36rem, 0.8vh, 0.64rem) !important;
+    gap: clamp(0.2rem, 0.65vh, 0.45rem) !important;
   }
 
   #mode-controls,
@@ -6355,5 +5802,429 @@ body {
     max-height: min(58vh, 26rem) !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
+  }
+}
+
+/* ==========================================================================
+   V85.1 — stabilisation plateau statut règles
+   ========================================================================== */
+
+/*
+ * Complément à V85 :
+ * - la barre de partie reprend une vraie place ;
+ * - les règles deviennent scrollables ;
+ * - les lettres ne sont plus rognées à droite ;
+ * - le plateau conserve une taille plus stable.
+ */
+
+#boggle-center {
+  gap: clamp(0.5rem, 1.1vh, 0.85rem) !important;
+  overflow: visible !important;
+}
+
+#play-status-panel {
+  position: relative !important;
+  z-index: 4 !important;
+
+  min-height: clamp(3.05rem, 5vh, 3.75rem) !important;
+  padding: 0.55rem 0.75rem !important;
+  margin-bottom: clamp(0.4rem, 0.9vh, 0.7rem) !important;
+
+  background: rgba(255, 248, 232, 0.96) !important;
+  border-radius: 1.15rem !important;
+  overflow: hidden !important;
+}
+
+#game-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding-left: 0.35rem !important;
+}
+
+#game-status::before {
+  flex: 0 0 auto !important;
+  margin-right: 0.42rem !important;
+}
+
+#timer,
+#end-game {
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+#board {
+  position: relative !important;
+  z-index: 1 !important;
+
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+
+  padding: clamp(0.36rem, calc(var(--board-effective-size-v85, 36rem) / 58), 0.78rem) !important;
+  gap: clamp(0.18rem, calc(var(--board-effective-size-v85, 36rem) / 96), 0.48rem) !important;
+}
+
+#board .board-cell {
+  overflow: visible !important;
+  padding-inline: 0.08em !important;
+}
+
+#board .board-letter {
+  max-width: none !important;
+  overflow: visible !important;
+  letter-spacing: 0 !important;
+  line-height: 1.08 !important;
+  transform: none !important;
+}
+
+/* Petite réduction supplémentaire pour éviter les rognages à droite. */
+#board.boggle-board-size-3 .board-letter {
+  font-size: clamp(1.25rem, calc(var(--board-effective-size-v85, 36rem) / 7.4), 3.45rem) !important;
+}
+
+#board.boggle-board-size-4 .board-letter {
+  font-size: clamp(1.02rem, calc(var(--board-effective-size-v85, 36rem) / 9.5), 2.85rem) !important;
+}
+
+#board.boggle-board-size-5 .board-letter {
+  font-size: clamp(0.8rem, calc(var(--board-effective-size-v85, 36rem) / 11.9), 2.2rem) !important;
+}
+
+#help-panel {
+  overflow: hidden !important;
+}
+
+#rules-summary {
+  max-height: clamp(7rem, 24vh, 13rem) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+  padding-right: 0.35rem !important;
+}
+
+#rules-summary .rule-pill {
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  white-space: normal !important;
+}
+
+@media (max-width: 760px) {
+  #play-status-panel {
+    min-height: auto !important;
+    padding: 0.55rem 0.65rem !important;
+  }
+
+  #rules-summary {
+    max-height: clamp(7rem, 30vh, 12rem) !important;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 78rem) {
+  #play-status-panel {
+    min-height: clamp(2.8rem, 4.6vh, 3.25rem) !important;
+    padding-block: 0.42rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  #rules-summary {
+    max-height: clamp(6rem, 22vh, 10rem) !important;
+  }
+}
+
+/* ==========================================================================
+   V85.2 — cas extrêmes hauteur largeur
+   ========================================================================== */
+
+/*
+ * V85.2 :
+ * - le plateau garde une taille minimale utilisable ;
+ * - les règles scrollent au lieu de déborder ;
+ * - le chrono garde une taille lisible.
+ */
+
+/* Le centre peut scroller verticalement, mais le plateau ne doit plus s'écraser. */
+#boggle-center {
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+/*
+ * On retire la contrainte précédente basée sur calc(100vh - 12rem),
+ * qui rendait le plateau minuscule sur petites hauteurs.
+ * Si la fenêtre est trop basse, la page doit scroller.
+ */
+#board {
+  --board-effective-size-v85: min(
+    var(--board-fit-size-v31, 36rem),
+    calc(100vw - 1.5rem)
+  ) !important;
+
+  min-width: min(100%, 17.5rem) !important;
+  min-height: min(100vw - 1.5rem, 17.5rem) !important;
+}
+
+/* Sur desktop/tablette, taille minimale plus confortable. */
+@media (min-width: 761px) {
+  #board {
+    min-width: 20.5rem !important;
+    min-height: 20.5rem !important;
+  }
+}
+
+/*
+ * Les cases ne doivent jamais se chevaucher visuellement.
+ */
+#board .board-cell {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+#board .board-letter {
+  overflow: visible !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/*
+ * Sécurité supplémentaire : quand la hauteur est très basse, on garde
+ * une grille jouable plutôt que de tout compresser.
+ */
+@media (max-height: 680px) {
+  #board {
+    --board-effective-size-v85: min(
+      var(--board-fit-size-v31, 34rem),
+      calc(100vw - 1.5rem)
+    ) !important;
+  }
+
+  #board.boggle-board-size-3 .board-letter {
+    font-size: clamp(1.2rem, calc(var(--board-effective-size-v85, 34rem) / 7.6), 3.25rem) !important;
+  }
+
+  #board.boggle-board-size-4 .board-letter {
+    font-size: clamp(0.98rem, calc(var(--board-effective-size-v85, 34rem) / 9.8), 2.65rem) !important;
+  }
+
+  #board.boggle-board-size-5 .board-letter {
+    font-size: clamp(0.76rem, calc(var(--board-effective-size-v85, 34rem) / 12.3), 2.05rem) !important;
+  }
+}
+
+/* Barre de partie : moins haute, mais pas écrasée. */
+#play-status-panel {
+  align-items: center !important;
+  min-height: 3.2rem !important;
+  padding-block: 0.48rem !important;
+  padding-inline: 0.8rem !important;
+  gap: 0.65rem !important;
+}
+
+#game-status {
+  padding-left: 0.45rem !important;
+  line-height: 1.15 !important;
+}
+
+#timer {
+  align-self: center !important;
+  min-height: 2.15rem !important;
+  padding-block: 0.28rem !important;
+  padding-inline: 0.7rem !important;
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem) !important;
+  line-height: 1.15 !important;
+}
+
+#end-game {
+  align-self: center !important;
+}
+
+/*
+ * Règles : le conteneur scrolle toujours, même en très petite hauteur.
+ */
+#help-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+#rules-summary {
+  flex: 0 1 auto !important;
+  min-height: 0 !important;
+  max-height: clamp(4.8rem, 22vh, 12rem) !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+
+  padding-right: 0.45rem !important;
+}
+
+#rules-summary .rule-pill {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+
+  white-space: normal !important;
+  overflow: visible !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+
+  line-height: 1.25 !important;
+}
+
+/* En hauteur extrême, on compacte les règles mais elles restent scrollables. */
+@media (max-height: 620px) {
+  #rules-summary {
+    max-height: clamp(4rem, 20vh, 8rem) !important;
+  }
+
+  #rules-summary .rule-pill {
+    padding-block: 0.46rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.2 !important;
+  }
+
+  #play-status-panel {
+    min-height: 2.9rem !important;
+    padding-block: 0.38rem !important;
+  }
+
+  #timer {
+    min-height: 1.95rem !important;
+    padding-block: 0.22rem !important;
+  }
+}
+
+/* En largeur très faible, on évite que le chrono et le bouton s'écrasent. */
+@media (max-width: 520px) {
+  #play-status-panel {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "status timer"
+      "end end" !important;
+  }
+
+  #timer {
+    justify-self: end !important;
+  }
+
+  #end-game {
+    width: 100% !important;
+    justify-self: stretch !important;
+  }
+}
+
+/* ==========================================================================
+   V85.3 — règles scrollables en hauteur extrême
+   ========================================================================== */
+
+/*
+ * Cas extrême : quand la colonne droite devient très basse, le contenu
+ * de l'onglet Règles ne doit jamais sortir de la carte.
+ *
+ * La carte garde une hauteur bornée, et #rules-summary devient la seule
+ * zone scrollable interne.
+ */
+
+#boggle-right {
+  min-height: 0 !important;
+}
+
+#help-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+
+  /*
+   * On borne le panneau lui-même. Si la fenêtre est très basse,
+   * le contenu interne scrolle au lieu de déborder sur les cartes suivantes.
+   */
+  max-height: clamp(12rem, 39vh, 24rem) !important;
+  overflow: hidden !important;
+}
+
+#help-panel > h2 {
+  flex: 0 0 auto !important;
+}
+
+#rules-summary {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+
+  /*
+   * Important : plus de hauteur minimale implicite.
+   * Le scroll doit s'adapter à la hauteur réellement restante dans la carte.
+   */
+  max-height: none !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+
+  padding-right: 0.45rem !important;
+  padding-bottom: 0.45rem !important;
+}
+
+#rules-summary > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+#rules-summary .rule-pill {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/*
+ * Hauteur basse : on réduit la carte Règles, mais sans jamais laisser
+ * le texte sortir de son panneau.
+ */
+@media (max-height: 720px) {
+  #help-panel {
+    max-height: clamp(10rem, 37vh, 19rem) !important;
+  }
+
+  #rules-summary {
+    padding-right: 0.4rem !important;
+  }
+
+  #rules-summary .rule-pill {
+    padding-block: 0.42rem !important;
+    line-height: 1.18 !important;
+  }
+}
+
+@media (max-height: 620px) {
+  #help-panel {
+    max-height: clamp(8.5rem, 35vh, 15rem) !important;
+  }
+
+  #rules-summary .rule-pill {
+    font-size: 0.86rem !important;
+    line-height: 1.15 !important;
+  }
+}
+
+/*
+ * Si la largeur est aussi très faible, on garde une seule colonne
+ * et on évite les longues pastilles horizontales.
+ */
+@media (max-width: 760px) {
+  #help-panel {
+    max-height: clamp(10rem, 42vh, 22rem) !important;
+  }
+
+  #rules-summary {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 }
