@@ -544,22 +544,214 @@ function takePendingSubmissionPath() {
   return path;
 }
 
-function connectToRoom() {
-  const roomId = roomInput.value.trim() || "TEST";
-  const playerName = nameInput.value.trim() || "joueur";
-  const clientId = getOrCreateClientId();
+/* V90.1-CLEAN-SESSION START */
 
-  saveLocalString(STORAGE_KEYS.lastRoomId, roomId);
-  saveLocalString(STORAGE_KEYS.playerName, playerName);
+/*
+ * V90.1 — session propre.
+ *
+ * Objectif :
+ * - ne plus déclencher les connexions internes via connectButton.click() ;
+ * - ne plus utiliser les champs Room/Pseudo comme source de vérité des nouveaux parcours ;
+ * - garder temporairement l'ancien DOM uniquement pour compatibilité manuelle ;
+ * - préparer sa suppression complète en v90.2/v90.3.
+ *
+ * TODO v90-cleanup :
+ * - supprimer #room, #name, #connect, #status de index.html ;
+ * - supprimer moveConnectionControls() de layout-ui.js ;
+ * - supprimer les règles CSS #room/#name/#connect/#status ;
+ * - remplacer le mot "connexion" par "rejoindre une partie" côté UI.
+ */
 
-  if (
+const GAME_CONTEXTS_V901 = {
+  SOLO: "solo",
+  DAILY: "daily",
+  PUBLIC: "public",
+  PRIVATE: "private",
+  MANUAL: "manual",
+};
+
+function normalizeSessionRoomIdV901(roomId, fallback = "TEST") {
+  return String(roomId || fallback).trim();
+}
+
+function normalizeSessionPlayerNameV901(playerName, fallback = "Joueur") {
+  return String(playerName || fallback).trim();
+}
+
+function getStoredPlayerNameV901() {
+  const saved = loadLocalSettings();
+
+  return normalizeSessionPlayerNameV901(
+    state.playerName || saved.playerName || "",
+    "Joueur"
+  );
+}
+
+function getTechnicalPlayerNameV901() {
+  /*
+   * Nom technique temporaire.
+   * La vraie identité joueur deviendra pseudo + fruit dans une étape suivante.
+   */
+  return getStoredPlayerNameV901();
+}
+
+function setSessionContextV901(context) {
+  state.gameContext = context;
+
+  document.body.classList.toggle("game-context-solo", context === GAME_CONTEXTS_V901.SOLO);
+  document.body.classList.toggle("game-context-daily", context === GAME_CONTEXTS_V901.DAILY);
+  document.body.classList.toggle("game-context-public", context === GAME_CONTEXTS_V901.PUBLIC);
+  document.body.classList.toggle("game-context-private", context === GAME_CONTEXTS_V901.PRIVATE);
+}
+
+function isSocketForRoomOpenOrOpeningV901(roomId) {
+  return Boolean(
     state.socket &&
     state.roomId === roomId &&
-    (state.socket.readyState === WebSocket.CONNECTING ||
-      state.socket.readyState === WebSocket.OPEN)
-  ) {
-    addLog(logElement, `[système] Vous êtes déjà connecté à la room ${roomId}.`);
-    return;
+    (
+      state.socket.readyState === WebSocket.CONNECTING ||
+      state.socket.readyState === WebSocket.OPEN
+    )
+  );
+}
+
+function connectToSessionV901({
+  roomId,
+  playerName,
+  context = GAME_CONTEXTS_V901.MANUAL,
+  persistRoom = false,
+  persistPlayerName = false,
+  updateUrl = true,
+} = {}) {
+  const normalizedRoomId = normalizeSessionRoomIdV901(roomId);
+  const normalizedPlayerName = normalizeSessionPlayerNameV901(playerName);
+
+  setSessionContextV901(context);
+
+  return connectToRoom({
+    roomId: normalizedRoomId,
+    playerName: normalizedPlayerName,
+    context,
+    persistRoom,
+    persistPlayerName,
+    updateUrl,
+  });
+}
+
+function getPrivateRoomValueV901({ createIfMissing = false } = {}) {
+  const privateRoomInput = getPrivateRoomInputV89();
+
+  if (!privateRoomInput) {
+    return "";
+  }
+
+  let roomValue = normalizeRoomCodeV89(privateRoomInput.value);
+
+  if (!roomValue && createIfMissing) {
+    roomValue = createPrivateRoomCodeV89();
+    privateRoomInput.value = roomValue;
+  }
+
+  return roomValue;
+}
+
+function getPrivatePlayerNameV901() {
+  const privateNameInput = getPrivateNameInputV89();
+  const privateName = privateNameInput ? privateNameInput.value.trim() : "";
+
+  return normalizeSessionPlayerNameV901(privateName || getStoredPlayerNameV901());
+}
+
+function validatePrivateSessionV901({ createIfMissing = false } = {}) {
+  const privateRoomInput = getPrivateRoomInputV89();
+  const privateNameInput = getPrivateNameInputV89();
+
+  const roomValue = getPrivateRoomValueV901({ createIfMissing });
+  const playerName = getPrivatePlayerNameV901();
+
+  if (!roomValue) {
+    setPrivateNoticeV89("Indiquez un code de salon ou créez un nouveau salon.");
+
+    if (privateRoomInput) {
+      privateRoomInput.focus();
+    }
+
+    return null;
+  }
+
+  if (!playerName) {
+    setPrivateNoticeV89("Indiquez un pseudo.");
+
+    if (privateNameInput) {
+      privateNameInput.focus();
+    }
+
+    return null;
+  }
+
+  if (privateNameInput && !privateNameInput.value.trim()) {
+    privateNameInput.value = playerName;
+  }
+
+  saveLocalString(STORAGE_KEYS.playerName, playerName);
+
+  return {
+    roomId: roomValue,
+    playerName,
+  };
+}
+
+/* V90.1-CLEAN-SESSION END */
+
+function connectToRoom(options = {}) {
+  const hasExplicitSession = Boolean(
+    options &&
+    typeof options === "object" &&
+    (
+      Object.prototype.hasOwnProperty.call(options, "roomId") ||
+      Object.prototype.hasOwnProperty.call(options, "playerName")
+    )
+  );
+
+  const roomId = normalizeSessionRoomIdV901(
+    hasExplicitSession ? options.roomId : roomInput.value.trim(),
+    "TEST"
+  );
+
+  const playerName = normalizeSessionPlayerNameV901(
+    hasExplicitSession ? options.playerName : nameInput.value.trim(),
+    "joueur"
+  );
+
+  const context = hasExplicitSession
+    ? options.context || GAME_CONTEXTS_V901.MANUAL
+    : GAME_CONTEXTS_V901.MANUAL;
+
+  const shouldPersistRoom = hasExplicitSession
+    ? options.persistRoom === true
+    : true;
+
+  const shouldPersistPlayerName = hasExplicitSession
+    ? options.persistPlayerName !== false
+    : true;
+
+  const shouldUpdateUrl = hasExplicitSession
+    ? options.updateUrl !== false
+    : true;
+
+  const clientId = getOrCreateClientId();
+
+  if (shouldPersistRoom) {
+    saveLocalString(STORAGE_KEYS.lastRoomId, roomId);
+  }
+
+  if (shouldPersistPlayerName) {
+    saveLocalString(STORAGE_KEYS.playerName, playerName);
+  }
+
+  if (isSocketForRoomOpenOrOpeningV901(roomId)) {
+    addLog(logElement, "[système] Session déjà ouverte pour cette partie.");
+    return state.socket;
   }
 
   if (state.socket) {
@@ -571,7 +763,11 @@ function connectToRoom() {
 
   state.roomId = roomId;
   state.playerName = playerName;
-  updateRoomUrl(roomId);
+
+  if (shouldUpdateUrl) {
+    updateRoomUrl(roomId);
+  }
+
   updateInviteButton();
 
   const { socket, url } = createRoomSocket(roomId);
@@ -589,7 +785,7 @@ function connectToRoom() {
     updateHostControls();
     renderRulesSummary();
 
-    addLog(logElement, `Connecté à ${url}`);
+    addLog(logElement, "Session ouverte : " + url);
 
     send({
       type: "join",
@@ -618,7 +814,7 @@ function connectToRoom() {
     startButton.disabled = true;
     renderRulesSummary();
     stopLocalTimer();
-    addLog(logElement, "Connexion fermée.");
+    addLog(logElement, "Session fermée.");
   });
 
   socket.addEventListener("error", () => {
@@ -628,6 +824,8 @@ function connectToRoom() {
 
     addLog(logElement, "Erreur WebSocket.");
   });
+
+  return socket;
 }
 
 function startRandomTimedGame() {
@@ -2674,12 +2872,16 @@ function showGameFromHomeV87() {
 }
 
 function ensurePlayerNameFromHomeV87() {
+  /*
+   * Compatibilité temporaire.
+   * Les nouveaux parcours ne doivent plus s'appuyer sur #name comme source de vérité.
+   */
   if (!nameInput) {
     return;
   }
 
   if (!nameInput.value.trim()) {
-    nameInput.value = "Joueur";
+    nameInput.value = getStoredPlayerNameV901();
   }
 }
 
@@ -2704,20 +2906,18 @@ function waitAndStartGridFromHomeV87() {
 }
 
 function startDailyGridFromHomeV87() {
-  ensurePlayerNameFromHomeV87();
-
-  if (roomInput) {
-    roomInput.value = getDailyRoomIdV87();
-  }
+  const roomId = getDailyRoomIdV87();
 
   showGameFromHomeV87();
 
-  const statusText = statusElement ? statusElement.textContent.toLowerCase() : "";
-  const alreadyConnected = statusText.includes("connecté") && !statusText.includes("non connecté");
-
-  if (!alreadyConnected && connectButton) {
-    connectButton.click();
-  }
+  connectToSessionV901({
+    roomId,
+    playerName: getTechnicalPlayerNameV901(),
+    context: GAME_CONTEXTS_V901.DAILY,
+    persistRoom: false,
+    persistPlayerName: false,
+    updateUrl: false,
+  });
 
   waitAndStartGridFromHomeV87();
 }
@@ -2732,11 +2932,7 @@ function openPrivateRoomFromHomeV87() {
 }
 
 function openSoloFromHomeV87() {
-  ensurePlayerNameFromHomeV87();
-
-  if (roomInput && !roomInput.value.trim()) {
-    roomInput.value = "solo-" + Math.random().toString(36).slice(2, 8);
-  }
+  setSessionContextV901(GAME_CONTEXTS_V901.SOLO);
 
   showGameFromHomeV87();
 
@@ -3003,22 +3199,18 @@ function startPublicRoomV88(modeKey) {
     return;
   }
 
-  ensurePlayerNameFromHomeV87();
-
-  if (roomInput) {
-    roomInput.value = roomConfig.room;
-  }
-
   document.body.classList.remove("v88-public-active");
 
   showGameFromHomeV87();
 
-  const statusText = statusElement ? statusElement.textContent.toLowerCase() : "";
-  const alreadyConnected = statusText.includes("connecté") && !statusText.includes("non connecté");
-
-  if (!alreadyConnected && connectButton) {
-    connectButton.click();
-  }
+  connectToSessionV901({
+    roomId: roomConfig.room,
+    playerName: getTechnicalPlayerNameV901(),
+    context: GAME_CONTEXTS_V901.PUBLIC,
+    persistRoom: false,
+    persistPlayerName: false,
+    updateUrl: false,
+  });
 
   waitAndStartGridFromHomeV87();
 }
@@ -3252,7 +3444,9 @@ function openPrivateRoomScreenV89() {
 }
 
 function enterPrivateRoomV89({ createIfMissing = false } = {}) {
-  if (!syncPrivateFormToExistingV89({ createIfMissing })) {
+  const privateSession = validatePrivateSessionV901({ createIfMissing });
+
+  if (!privateSession) {
     return;
   }
 
@@ -3260,12 +3454,14 @@ function enterPrivateRoomV89({ createIfMissing = false } = {}) {
 
   showGameFromHomeV87();
 
-  const statusText = statusElement ? statusElement.textContent.toLowerCase() : "";
-  const alreadyConnected = statusText.includes("connecté") && !statusText.includes("non connecté");
-
-  if (!alreadyConnected && connectButton) {
-    connectButton.click();
-  }
+  connectToSessionV901({
+    roomId: privateSession.roomId,
+    playerName: privateSession.playerName,
+    context: GAME_CONTEXTS_V901.PRIVATE,
+    persistRoom: false,
+    persistPlayerName: true,
+    updateUrl: true,
+  });
 }
 
 async function copyPrivateRoomLinkV89() {
