@@ -5928,3 +5928,72 @@ section,
 #word-form {
   flex: 0 0 auto;
 }
+
+/* ==========================================================================
+   V83 — panneau mots trouvés à hauteur stable
+   ========================================================================== */
+
+/*
+ * Le panneau "Mots trouvés" doit garder une hauteur contrainte pendant
+ * et après la partie. Sinon, en fin de partie, il se déplie entièrement
+ * au lieu de laisser #found-words scroller.
+ */
+#found-words-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  height: clamp(18rem, 44vh, 31rem) !important;
+  min-height: 18rem !important;
+  max-height: 31rem !important;
+  overflow: hidden !important;
+}
+
+/*
+ * La seule zone scrollable du panneau doit être #found-words.
+ */
+#found-words {
+  display: block !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+}
+
+/*
+ * En fin de partie / mode solution, les onglets joueurs, le résumé et la table
+ * restent à l'intérieur de la même zone scrollable.
+ */
+#found-words.found-words-end-mode .found-words-viewer {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.65rem !important;
+  min-height: min-content !important;
+}
+
+#found-words.found-words-end-mode .found-words-player-tabs,
+#found-words.found-words-end-mode .found-words-summary,
+#found-words.found-words-end-mode .found-words-table {
+  flex: 0 0 auto !important;
+}
+
+/*
+ * Sur très petit écran, on évite de réserver trop de hauteur au panneau.
+ */
+@media (max-height: 760px) {
+  #found-words-panel {
+    height: clamp(14rem, 34vh, 23rem) !important;
+    min-height: 14rem !important;
+    max-height: 23rem !important;
+  }
+}
+
+@media (max-width: 760px) {
+  #found-words-panel {
+    height: clamp(13rem, 36vh, 22rem) !important;
+    min-height: 13rem !important;
+    max-height: 22rem !important;
+  }
+}

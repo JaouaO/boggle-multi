@@ -1,36 +1,36 @@
 {
-  "generatedAt": "2026-10-10T11:55:47.203Z",
+  "generatedAt": "2026-10-10T12:23:15.654Z",
   "findingCount": 10,
   "filesWithFindings": 2,
   "findingsByFile": {
     "public/js/main.js": [
       {
         "file": "public/js/main.js",
-        "line": 2064,
+        "line": 2075,
         "type": "style.setProperty",
         "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2297,
+        "line": 2308,
         "type": "element.style access",
         "snippet": "piece.style.left = `${Math.random() * 100}vw`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2298,
+        "line": 2309,
         "type": "element.style access",
         "snippet": "piece.style.background = colors[index % colors.length];"
       },
       {
         "file": "public/js/main.js",
-        "line": 2299,
+        "line": 2310,
         "type": "element.style access",
         "snippet": "piece.style.animationDelay = `${Math.random() * 1.4}s`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2300,
+        "line": 2311,
         "type": "style.setProperty",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       }

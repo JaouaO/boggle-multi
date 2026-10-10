@@ -935,6 +935,11 @@ function renderFoundWords(element, words, options = {}) {
   viewer.className = "found-words-viewer";
 
   const canSelectPlayer = canSelectFoundWordsPlayer();
+
+  // V83 : marque le mode live/end du panneau mots trouvés
+  element.classList.toggle("found-words-live-mode", !canSelectPlayer);
+  element.classList.toggle("found-words-end-mode", canSelectPlayer);
+
   const selectedPlayer = canSelectPlayer ? getSelectedFoundWordsPlayer() : null;
   const displayedWords = canSelectPlayer
     ? getFoundWordsForSelectedPlayer(selectedPlayer)
@@ -1188,16 +1193,22 @@ function handleWordRejected(data) {
   const penalty = Number(data.penalty ?? 0);
   const label = penalty ? `-${penalty}` : "!";
 
+  // V83 : libellé spécifique pour les mots trop courts
+  const rejectedWord = String(data.word ?? state.selectedWord ?? wordInput.value ?? "").trim();
+  const isTooShortWord = rejectedWord.length > 0 && rejectedWord.length < 3;
+
   const alreadyTriedInvalid =
     feedbackType === "invalid" && !penalty && String(data.reason || "").includes("Déjà tenté");
 
   setWordFeedback(
     wordFeedbackElement,
-    feedbackType === "invalid"
-      ? alreadyTriedInvalid
-        ? "Mot invalide déjà tenté"
-        : `Mot invalide${penalty ? ` -${penalty} point${penalty > 1 ? "s" : ""}` : ""}`
-      : "Déjà trouvé"
+    isTooShortWord
+      ? "Mot trop court"
+      : feedbackType === "invalid"
+        ? alreadyTriedInvalid
+          ? "Mot invalide déjà tenté"
+          : `Mot invalide${penalty ? ` -${penalty} point${penalty > 1 ? "s" : ""}` : ""}`
+        : "Déjà trouvé"
   );
 
   refreshRightRulesPanel();
