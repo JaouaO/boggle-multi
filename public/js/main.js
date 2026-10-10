@@ -2215,6 +2215,8 @@ function hideEndScreenOverlay() {
   }
 }
 
+
+
 function isCurrentPlayerWinning() {
   if (!state.playerId || !Array.isArray(state.players) || !state.players.length) {
     return false;
