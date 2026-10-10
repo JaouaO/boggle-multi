@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-10T09:24:22.978Z",
+  "generatedAt": "2026-10-10T09:32:03.790Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 39,
-  "filesWithFindings": 8,
+  "findingCount": 37,
+  "filesWithFindings": 7,
   "findingsByFile": {
     "public/js/main.js": [
       {
@@ -118,20 +118,6 @@
         "line": 38,
         "type": "innerHTML",
         "snippet": "panel.ranking.innerHTML = \"\";"
-      }
-    ],
-    "public/js/ui/feedback-ui.js": [
-      {
-        "file": "public/js/ui/feedback-ui.js",
-        "line": 191,
-        "type": "html style attribute",
-        "snippet": "const style = document.createElement(\"style\");"
-      },
-      {
-        "file": "public/js/ui/feedback-ui.js",
-        "line": 191,
-        "type": "create style element",
-        "snippet": "const style = document.createElement(\"style\");"
       }
     ],
     "public/js/ui/help-ui.js": [
