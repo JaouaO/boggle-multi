@@ -14,7 +14,16 @@ export function renderBoard(boardElement, board, options = {}) {
   const selectedKeys = new Set(options.selectedCells || []);
 
   boardElement.classList.add("boggle-board-grid-runtime");
-  boardElement.style.gridTemplateColumns = `repeat(${board[0]?.length || 0}, minmax(48px, 1fr))`;
+  const boardSize = board[0]?.length || 0;
+  boardElement.classList.remove(
+    "boggle-board-size-3",
+    "boggle-board-size-4",
+    "boggle-board-size-5"
+  );
+
+  if (boardSize >= 3 && boardSize <= 5) {
+    boardElement.classList.add(`boggle-board-size-${boardSize}`);
+  }
 
   if (canClickCells) {
     boardElement.onpointermove = (event) => {

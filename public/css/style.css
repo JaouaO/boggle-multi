@@ -1281,3 +1281,20 @@ section,
         animation: none !important;
       }
     }
+
+
+/* ==========================================================================
+   V78 — classes de taille plateau
+   ========================================================================== */
+
+.boggle-board-size-3 {
+  grid-template-columns: repeat(3, minmax(48px, 1fr));
+}
+
+.boggle-board-size-4 {
+  grid-template-columns: repeat(4, minmax(48px, 1fr));
+}
+
+.boggle-board-size-5 {
+  grid-template-columns: repeat(5, minmax(48px, 1fr));
+}

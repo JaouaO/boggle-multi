@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-10T09:32:03.790Z",
+  "generatedAt": "2026-10-10T09:35:47.860Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 37,
+  "findingCount": 36,
   "filesWithFindings": 7,
   "findingsByFile": {
     "public/js/main.js": [
@@ -99,12 +99,6 @@
       }
     ],
     "public/js/ui/board-ui.js": [
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 17,
-        "type": "element.style access",
-        "snippet": "boardElement.style.gridTemplateColumns = `repeat(${board[0]?.length || 0}, minmax(48px, 1fr))`;"
-      },
       {
         "file": "public/js/ui/board-ui.js",
         "line": 5,
