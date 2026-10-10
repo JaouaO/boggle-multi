@@ -2869,7 +2869,7 @@ function setupHomeScreenV87() {
     }
 
     if (action === "public") {
-      setHomeNoticeV87("Les salons publics seront ajoutés dans l’écran suivant.");
+      openPublicRoomsScreenV88();
       return;
     }
 
@@ -2947,3 +2947,179 @@ function setupHomeReturnButtonV87() {
 setupHomeReturnButtonV87();
 
 /* V87.2-HOME-JS-HTML-BRIDGE END */
+
+/* V88-PUBLIC-ROOMS-SCREEN START */
+
+/*
+ * V88 — écran intermédiaire Salon public.
+ *
+ * Pour l'instant, les salons publics utilisent des rooms temporaires.
+ * Le vrai matchmaking / file d'attente pourra être ajouté ensuite.
+ */
+
+const PUBLIC_ROOMS_V88 = {
+  rapid: {
+    room: "public-rapide",
+    title: "Partie rapide",
+  },
+  classic: {
+    room: "public-classique",
+    title: "Partie classique",
+  },
+  relaxed: {
+    room: "public-detente",
+    title: "Partie détente",
+  },
+};
+
+function cleanupHomeTopButtonV88() {
+  document.querySelectorAll('#home-v87 [data-home-action="top"]').forEach((button) => {
+    button.remove();
+  });
+}
+
+function showHomeFromPublicV88() {
+  document.body.classList.remove("v88-public-active");
+  document.body.classList.remove("v87-game-active");
+  document.body.classList.add("v87-home-active");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openPublicRoomsScreenV88() {
+  setupPublicRoomsScreenV88();
+
+  document.body.classList.remove("v87-home-active");
+  document.body.classList.remove("v87-game-active");
+  document.body.classList.add("v88-public-active");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function startPublicRoomV88(modeKey) {
+  const roomConfig = PUBLIC_ROOMS_V88[modeKey];
+
+  if (!roomConfig) {
+    return;
+  }
+
+  ensurePlayerNameFromHomeV87();
+
+  if (roomInput) {
+    roomInput.value = roomConfig.room;
+  }
+
+  document.body.classList.remove("v88-public-active");
+
+  showGameFromHomeV87();
+
+  const statusText = statusElement ? statusElement.textContent.toLowerCase() : "";
+  const alreadyConnected = statusText.includes("connecté") && !statusText.includes("non connecté");
+
+  if (!alreadyConnected && connectButton) {
+    connectButton.click();
+  }
+
+  waitAndStartGridFromHomeV87();
+}
+
+function setupPublicRoomsScreenV88() {
+  if (document.querySelector("#public-v88")) {
+    return;
+  }
+
+  const screen = document.createElement("section");
+
+  screen.id = "public-v88";
+  screen.className = "home-v87 public-v88";
+  screen.setAttribute("aria-label", "Salons publics");
+
+  screen.innerHTML = [
+    '<div class="home-v87-shell public-v88-shell">',
+      '<header class="home-v87-header public-v88-header">',
+        '<div class="home-v87-logo" aria-label="Boggle">',
+          '<span class="home-v87-logo-text">Boggle</span>',
+          '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
+        '</div>',
+        '<nav class="home-v87-actions public-v88-actions" aria-label="Actions rapides">',
+          '<button class="home-v87-top-button ui-button" type="button" data-public-action="home">Accueil</button>',
+          '<button class="home-v87-top-button ui-button" type="button" data-public-action="options">Options</button>',
+        '</nav>',
+      '</header>',
+
+      '<main class="public-v88-main">',
+        '<section class="public-v88-intro">',
+          '<p class="home-v87-eyebrow"><span aria-hidden="true">🌐</span><span>Multijoueur en ligne</span></p>',
+          '<h1>Salon public</h1>',
+          '<p>Choisissez un type de partie et rejoignez une room publique. Pour l’instant, ces salons sont des rooms fixes temporaires.</p>',
+        '</section>',
+
+        '<section class="public-v88-grid" aria-label="Choix du salon public">',
+          '<button class="home-v87-mode public-v88-room public-v88-room-rapid ui-button" type="button" data-public-mode="rapid">',
+            '<span class="home-v87-mode-icon" aria-hidden="true">⚡</span>',
+            '<span class="home-v87-mode-text">',
+              '<strong>Partie rapide</strong>',
+              '<span>Un format court pour lancer une partie sans attendre.</span>',
+              '<span class="public-v88-chips"><span>Rapide</span><span>Room publique</span></span>',
+            '</span>',
+            '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
+          '</button>',
+
+          '<button class="home-v87-mode public-v88-room public-v88-room-classic ui-button" type="button" data-public-mode="classic">',
+            '<span class="home-v87-mode-icon" aria-hidden="true">🏆</span>',
+            '<span class="home-v87-mode-text">',
+              '<strong>Partie classique</strong>',
+              '<span>Le mode standard pour jouer contre d’autres joueurs.</span>',
+              '<span class="public-v88-chips"><span>Classique</span><span>Room publique</span></span>',
+            '</span>',
+            '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
+          '</button>',
+
+          '<button class="home-v87-mode public-v88-room public-v88-room-relaxed ui-button" type="button" data-public-mode="relaxed">',
+            '<span class="home-v87-mode-icon" aria-hidden="true">🌿</span>',
+            '<span class="home-v87-mode-text">',
+              '<strong>Partie détente</strong>',
+              '<span>Un salon plus tranquille, pensé pour jouer sans pression.</span>',
+              '<span class="public-v88-chips"><span>Détente</span><span>Room publique</span></span>',
+            '</span>',
+            '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
+          '</button>',
+        '</section>',
+      '</main>',
+    '</div>',
+  ].join("");
+
+  screen.addEventListener("click", (event) => {
+    const modeButton = event.target.closest("[data-public-mode]");
+
+    if (modeButton) {
+      startPublicRoomV88(modeButton.dataset.publicMode);
+      return;
+    }
+
+    const actionButton = event.target.closest("[data-public-action]");
+
+    if (!actionButton) {
+      return;
+    }
+
+    const action = actionButton.dataset.publicAction;
+
+    if (action === "home") {
+      showHomeFromPublicV88();
+      return;
+    }
+
+    if (action === "options") {
+      setHomeNoticeV87("Les options sons, musique et animations seront ajoutées plus tard.");
+      showHomeFromPublicV88();
+    }
+  });
+
+  document.body.insertBefore(screen, document.body.firstChild);
+}
+
+cleanupHomeTopButtonV88();
+setupPublicRoomsScreenV88();
+
+/* V88-PUBLIC-ROOMS-SCREEN END */
