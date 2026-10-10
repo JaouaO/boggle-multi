@@ -2874,7 +2874,7 @@ function setupHomeScreenV87() {
     }
 
     if (action === "private") {
-      openPrivateRoomFromHomeV87();
+      openPrivateRoomScreenV89();
       return;
     }
 
@@ -3123,3 +3123,274 @@ cleanupHomeTopButtonV88();
 setupPublicRoomsScreenV88();
 
 /* V88-PUBLIC-ROOMS-SCREEN END */
+
+/* V89-PRIVATE-ROOM-SCREEN START */
+
+/*
+ * V89 — écran intermédiaire Salon privé.
+ *
+ * Cet écran sert de sas propre avant l'écran de jeu existant.
+ * La configuration détaillée des règles reste gérée par l'interface actuelle.
+ */
+
+function createPrivateRoomCodeV89() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+
+  for (let index = 0; index < 5; index += 1) {
+    code += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return code;
+}
+
+function getPrivateRoomInputV89() {
+  return document.querySelector("#private-v89-room");
+}
+
+function getPrivateNameInputV89() {
+  return document.querySelector("#private-v89-name");
+}
+
+function getPrivateNoticeV89() {
+  return document.querySelector("#private-v89-notice");
+}
+
+function setPrivateNoticeV89(message) {
+  const notice = getPrivateNoticeV89();
+
+  if (!notice) {
+    return;
+  }
+
+  notice.textContent = message;
+  notice.hidden = false;
+
+  window.setTimeout(() => {
+    if (notice.textContent === message) {
+      notice.hidden = true;
+    }
+  }, 4500);
+}
+
+function normalizeRoomCodeV89(value) {
+  return value
+    .trim()
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+}
+
+function fillPrivateFormFromExistingV89() {
+  const privateRoomInput = getPrivateRoomInputV89();
+  const privateNameInput = getPrivateNameInputV89();
+
+  if (privateRoomInput && roomInput && roomInput.value.trim()) {
+    privateRoomInput.value = roomInput.value.trim();
+  }
+
+  if (privateNameInput && nameInput && nameInput.value.trim()) {
+    privateNameInput.value = nameInput.value.trim();
+  }
+}
+
+function syncPrivateFormToExistingV89({ createIfMissing = false } = {}) {
+  const privateRoomInput = getPrivateRoomInputV89();
+  const privateNameInput = getPrivateNameInputV89();
+
+  let roomValue = privateRoomInput ? normalizeRoomCodeV89(privateRoomInput.value) : "";
+  const nameValue = privateNameInput ? privateNameInput.value.trim() : "";
+
+  if (!roomValue && createIfMissing) {
+    roomValue = createPrivateRoomCodeV89().toLowerCase();
+
+    if (privateRoomInput) {
+      privateRoomInput.value = roomValue.toUpperCase();
+    }
+  }
+
+  if (!roomValue) {
+    setPrivateNoticeV89("Indiquez un code de salon ou créez un nouveau salon.");
+    return false;
+  }
+
+  if (roomInput) {
+    roomInput.value = roomValue;
+  }
+
+  if (nameInput) {
+    nameInput.value = nameValue || "Joueur";
+  }
+
+  return true;
+}
+
+function showHomeFromPrivateV89() {
+  document.body.classList.remove("v89-private-active");
+  document.body.classList.remove("v88-public-active");
+  document.body.classList.remove("v87-game-active");
+  document.body.classList.add("v87-home-active");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openPrivateRoomScreenV89() {
+  setupPrivateRoomScreenV89();
+  fillPrivateFormFromExistingV89();
+
+  document.body.classList.remove("v87-home-active");
+  document.body.classList.remove("v88-public-active");
+  document.body.classList.remove("v87-game-active");
+  document.body.classList.add("v89-private-active");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const privateNameInput = getPrivateNameInputV89();
+
+  if (privateNameInput && !privateNameInput.value.trim()) {
+    privateNameInput.focus();
+  }
+}
+
+function enterPrivateRoomV89({ createIfMissing = false } = {}) {
+  if (!syncPrivateFormToExistingV89({ createIfMissing })) {
+    return;
+  }
+
+  document.body.classList.remove("v89-private-active");
+
+  showGameFromHomeV87();
+
+  const statusText = statusElement ? statusElement.textContent.toLowerCase() : "";
+  const alreadyConnected = statusText.includes("connecté") && !statusText.includes("non connecté");
+
+  if (!alreadyConnected && connectButton) {
+    connectButton.click();
+  }
+}
+
+async function copyPrivateRoomLinkV89() {
+  const privateRoomInput = getPrivateRoomInputV89();
+
+  if (!privateRoomInput) {
+    return;
+  }
+
+  if (!privateRoomInput.value.trim()) {
+    privateRoomInput.value = createPrivateRoomCodeV89();
+  }
+
+  const roomCode = normalizeRoomCodeV89(privateRoomInput.value);
+  const url = new URL(window.location.href);
+
+  url.searchParams.set("room", roomCode);
+
+  try {
+    await navigator.clipboard.writeText(url.toString());
+    setPrivateNoticeV89("Lien du salon copié.");
+  } catch (error) {
+    setPrivateNoticeV89("Code du salon : " + roomCode.toUpperCase());
+  }
+}
+
+function setupPrivateRoomScreenV89() {
+  if (document.querySelector("#private-v89")) {
+    return;
+  }
+
+  const screen = document.createElement("section");
+
+  screen.id = "private-v89";
+  screen.className = "home-v87 private-v89";
+  screen.setAttribute("aria-label", "Salon privé");
+
+  screen.innerHTML = [
+    '<div class="home-v87-shell private-v89-shell">',
+      '<header class="home-v87-header private-v89-header">',
+        '<div class="home-v87-logo" aria-label="Boggle">',
+          '<span class="home-v87-logo-text">Boggle</span>',
+          '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
+        '</div>',
+        '<nav class="home-v87-actions private-v89-actions" aria-label="Actions rapides">',
+          '<button class="home-v87-top-button ui-button" type="button" data-private-action="home">Accueil</button>',
+          '<button class="home-v87-top-button ui-button" type="button" data-private-action="options">Options</button>',
+        '</nav>',
+      '</header>',
+
+      '<main class="private-v89-main">',
+        '<section class="private-v89-card">',
+          '<div class="private-v89-copy">',
+            '<p class="home-v87-eyebrow"><span aria-hidden="true">🔒</span><span>Partie entre amis</span></p>',
+            '<h1>Salon privé</h1>',
+            '<p>Créez une salle ou rejoignez vos amis grâce à un code de salon.</p>',
+          '</div>',
+
+          '<div class="private-v89-form" aria-label="Connexion à un salon privé">',
+            '<label class="private-v89-field" for="private-v89-name">',
+              '<span>Pseudo</span>',
+              '<input id="private-v89-name" type="text" autocomplete="nickname" placeholder="Votre pseudo">',
+            '</label>',
+
+            '<label class="private-v89-field" for="private-v89-room">',
+              '<span>Code du salon</span>',
+              '<input id="private-v89-room" type="text" autocomplete="off" placeholder="Ex. FRUITS42">',
+            '</label>',
+
+            '<div class="private-v89-buttons">',
+              '<button class="ui-button private-v89-primary" type="button" data-private-action="create">Créer un salon</button>',
+              '<button class="ui-button private-v89-secondary" type="button" data-private-action="join">Rejoindre</button>',
+              '<button class="ui-button private-v89-link" type="button" data-private-action="copy">Copier le lien</button>',
+            '</div>',
+
+            '<p id="private-v89-notice" class="home-v87-notice private-v89-notice" hidden></p>',
+
+            '<p class="private-v89-helper">Les règles de la partie restent réglables dans l’écran de jeu après connexion.</p>',
+          '</div>',
+        '</section>',
+      '</main>',
+    '</div>',
+  ].join("");
+
+  screen.addEventListener("click", (event) => {
+    const actionButton = event.target.closest("[data-private-action]");
+
+    if (!actionButton) {
+      return;
+    }
+
+    const action = actionButton.dataset.privateAction;
+
+    if (action === "home") {
+      showHomeFromPrivateV89();
+      return;
+    }
+
+    if (action === "options") {
+      setPrivateNoticeV89("Les options sons, musique et animations seront ajoutées plus tard.");
+      return;
+    }
+
+    if (action === "create") {
+      enterPrivateRoomV89({ createIfMissing: true });
+      return;
+    }
+
+    if (action === "join") {
+      enterPrivateRoomV89();
+      return;
+    }
+
+    if (action === "copy") {
+      copyPrivateRoomLinkV89();
+    }
+  });
+
+  screen.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+
+  document.body.insertBefore(screen, document.body.firstChild);
+}
+
+setupPrivateRoomScreenV89();
+
+/* V89-PRIVATE-ROOM-SCREEN END */

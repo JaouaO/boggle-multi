@@ -7490,3 +7490,304 @@ body.v88-public-active #public-v88 {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   V89-PRIVATE-ROOM-SCREEN — écran Salon privé
+   ========================================================================== */
+
+#private-v89 {
+  display: none;
+}
+
+body.v89-private-active {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body.v89-private-active .page,
+body.v89-private-active #home-v87,
+body.v89-private-active #public-v88 {
+  display: none !important;
+}
+
+body.v89-private-active #private-v89 {
+  display: block !important;
+}
+
+.private-v89-main {
+  display: grid;
+  gap: clamp(1rem, 1.6vw, 1.3rem);
+}
+
+.private-v89-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(22rem, 1.1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: start;
+
+  padding: clamp(1.2rem, 2.2vw, 1.8rem);
+  border: 1px solid rgba(114, 78, 48, 0.16);
+  border-radius: 1.35rem;
+  background: rgba(255, 248, 232, 0.92);
+  box-shadow:
+    0 0.35rem 1.15rem rgba(77, 50, 27, 0.08),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.58);
+}
+
+.private-v89-copy h1 {
+  margin: 0;
+  color: #4b2617;
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.private-v89-copy p:last-child {
+  max-width: 34rem;
+  margin: 0.75rem 0 0;
+  color: rgba(75, 51, 34, 0.76);
+  font-size: clamp(1rem, 1.25vw, 1.16rem);
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.private-v89-form {
+  display: grid;
+  gap: 0.9rem;
+  padding: clamp(1rem, 1.8vw, 1.25rem);
+  border: 1px solid rgba(104, 73, 43, 0.12);
+  border-radius: 1.2rem;
+  background: rgba(255, 250, 238, 0.72);
+}
+
+.private-v89-field {
+  display: grid;
+  gap: 0.4rem;
+  color: #5a3320;
+  font-weight: 850;
+}
+
+.private-v89-field input {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 0.95rem;
+  border: 1px solid rgba(104, 73, 43, 0.22);
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 247, 0.88);
+  color: #4b2617;
+  font: inherit;
+  font-weight: 800;
+  outline: none;
+  box-shadow: inset 0 0.1rem 0.25rem rgba(88, 54, 26, 0.05);
+}
+
+.private-v89-field input:focus {
+  border-color: rgba(251, 120, 39, 0.78);
+  box-shadow:
+    0 0 0 0.18rem rgba(251, 120, 39, 0.16),
+    inset 0 0.1rem 0.25rem rgba(88, 54, 26, 0.05);
+}
+
+.private-v89-buttons {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.private-v89-buttons .ui-button {
+  min-height: 3rem !important;
+  padding: 0.65rem 0.9rem !important;
+  border-radius: 999px !important;
+  font-weight: 900 !important;
+}
+
+.private-v89-primary {
+  border: 1px solid rgba(122, 61, 24, 0.28) !important;
+  background: #fb7827 !important;
+  color: #ffffff !important;
+}
+
+.private-v89-secondary {
+  border: 1px solid rgba(68, 119, 55, 0.28) !important;
+  background: rgba(190, 226, 166, 0.72) !important;
+  color: #24551f !important;
+}
+
+.private-v89-link {
+  border: 1px solid rgba(104, 73, 43, 0.18) !important;
+  background: rgba(255, 250, 238, 0.88) !important;
+  color: #5a3320 !important;
+}
+
+.private-v89-notice {
+  margin: 0 !important;
+}
+
+.private-v89-helper {
+  margin: 0;
+  color: rgba(75, 51, 34, 0.66);
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Renforce aussi les boutons des écrans intermédiaires, trop pâles en v88. */
+.public-v88-actions .home-v87-top-button,
+.private-v89-actions .home-v87-top-button {
+  border: 1px solid rgba(94, 58, 34, 0.34) !important;
+  background: rgba(255, 250, 236, 0.96) !important;
+  color: #5a3320 !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 900px) {
+  .private-v89-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .private-v89-buttons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .private-v89-card {
+    padding: 1rem;
+  }
+
+  .private-v89-copy h1 {
+    font-size: clamp(2.05rem, 10vw, 2.9rem);
+  }
+
+  .private-v89-form {
+    padding: 0.9rem;
+  }
+}
+
+/* ==========================================================================
+   V89.1-PRIVATE-BUTTONS-VISIBLE — boutons salon privé visibles
+   ========================================================================== */
+
+/*
+ * Correctif v89.1 :
+ * Les boutons de l'écran Salon privé doivent rester visibles malgré les styles
+ * globaux de .ui-button hérités de l'écran de jeu.
+ */
+
+body.v89-private-active #private-v89 button,
+body.v89-private-active #private-v89 .ui-button {
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-indent: 0 !important;
+  font-family: "Fredoka", system-ui, sans-serif !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+/* Boutons Accueil / Options du header privé */
+body.v89-private-active #private-v89 .private-v89-actions .home-v87-top-button,
+body.v89-private-active #private-v89 .private-v89-actions .home-v87-top-button.ui-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-width: 6.2rem !important;
+  min-height: 2.75rem !important;
+  padding: 0.55rem 1rem !important;
+
+  border: 1px solid rgba(94, 58, 34, 0.34) !important;
+  border-radius: 999px !important;
+
+  background: rgba(255, 250, 236, 0.96) !important;
+  color: #5a3320 !important;
+
+  box-shadow:
+    0 0.25rem 0.75rem rgba(77, 50, 27, 0.1),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+/* Zone des boutons du formulaire */
+body.v89-private-active #private-v89 .private-v89-buttons {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  gap: 0.65rem !important;
+  align-items: center !important;
+}
+
+/* Tous les boutons du formulaire */
+body.v89-private-active #private-v89 .private-v89-buttons button,
+body.v89-private-active #private-v89 .private-v89-buttons .ui-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 3.05rem !important;
+  padding: 0.68rem 1rem !important;
+
+  border-radius: 999px !important;
+  font-size: 0.98rem !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+
+  box-shadow:
+    inset 0 0.12rem 0 rgba(255, 255, 255, 0.35),
+    0 0.28rem 0.8rem rgba(77, 50, 27, 0.12) !important;
+}
+
+/* Créer un salon */
+body.v89-private-active #private-v89 .private-v89-primary,
+body.v89-private-active #private-v89 button[data-private-action="create"] {
+  border: 1px solid rgba(122, 61, 24, 0.34) !important;
+  background: #fb7827 !important;
+  color: #ffffff !important;
+  text-shadow: 0 0.08rem 0 rgba(90, 39, 13, 0.18) !important;
+}
+
+/* Rejoindre */
+body.v89-private-active #private-v89 .private-v89-secondary,
+body.v89-private-active #private-v89 button[data-private-action="join"] {
+  border: 1px solid rgba(68, 119, 55, 0.32) !important;
+  background: #d7edc0 !important;
+  color: #24551f !important;
+}
+
+/* Copier le lien */
+body.v89-private-active #private-v89 .private-v89-link,
+body.v89-private-active #private-v89 button[data-private-action="copy"] {
+  border: 1px solid rgba(104, 73, 43, 0.22) !important;
+  background: rgba(255, 250, 238, 0.96) !important;
+  color: #5a3320 !important;
+}
+
+body.v89-private-active #private-v89 .private-v89-buttons button:hover,
+body.v89-private-active #private-v89 .private-v89-actions button:hover {
+  filter: brightness(0.98) !important;
+  transform: translateY(-1px) !important;
+}
+
+@media (max-width: 900px) {
+  body.v89-private-active #private-v89 .private-v89-buttons {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.v89-private-active #private-v89 .private-v89-buttons button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 620px) {
+  body.v89-private-active #private-v89 .private-v89-actions .home-v87-top-button {
+    min-width: auto !important;
+    min-height: 2.35rem !important;
+    padding: 0.45rem 0.7rem !important;
+    font-size: 0.86rem !important;
+  }
+
+  body.v89-private-active #private-v89 .private-v89-buttons button {
+    min-height: 2.85rem !important;
+    font-size: 0.94rem !important;
+  }
+}
