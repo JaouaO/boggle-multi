@@ -1,118 +1,149 @@
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
-const roots = ['public'];
-const extensions = new Set(['.html', '.js', '.mjs', '.ts', '.jsx', '.tsx']);
-const ignoredParts = [
+const ROOT = process.cwd();
+const OUTPUT_PATH = join(ROOT, 'audit-inline-css.generated.json');
+
+const INCLUDED_DIRS = [
+  'public/js',
+];
+
+const EXCLUDED_DIR_NAMES = new Set([
   'node_modules',
-  '.wrangler',
   '.git',
+  '.wrangler',
   'dist',
   'build',
-  '.generated.',
-];
+]);
 
-const patterns = [
-  { name: 'html style attribute', regex: /\sstyle\s*=/g },
-  { name: 'element.style access', regex: /\.style(?:\.|\[)/g },
-  { name: 'style.setProperty', regex: /\.style\.setProperty\s*\(/g },
-  { name: 'cssText', regex: /\.cssText\s*=/g },
-  { name: 'create style element', regex: /createElement\s*\(\s*["'`]style["'`]\s*\)/g },
-  { name: 'style tag', regex: /<style\b/g },
-  { name: 'insertRule', regex: /\.insertRule\s*\(/g },
-  { name: 'adoptedStyleSheets', regex: /adoptedStyleSheets/g },
-  { name: 'innerHTML', regex: /\.innerHTML\s*=/g },
-  { name: 'insertAdjacentHTML', regex: /\.insertAdjacentHTML\s*\(/g },
-];
+function walk(dir) {
+  const entries = readdirSync(dir);
+  const files = [];
 
-function hasIgnoredPart(path) {
-  return ignoredParts.some((part) => path.includes(part));
-}
+  for (const entry of entries) {
+    const fullPath = join(dir, entry);
+    const stat = statSync(fullPath);
 
-function getExtension(path) {
-  const match = path.match(/\.[^.]+$/);
-  return match ? match[0] : '';
-}
+    if (stat.isDirectory()) {
+      if (!EXCLUDED_DIR_NAMES.has(entry)) {
+        files.push(...walk(fullPath));
+      }
 
-function walk(dir, files = []) {
-  for (const entry of readdirSync(dir)) {
-    const path = join(dir, entry);
-    const rel = relative(process.cwd(), path).replaceAll('\\', '/');
-
-    if (hasIgnoredPart(rel)) {
       continue;
     }
 
-    const info = statSync(path);
-
-    if (info.isDirectory()) {
-      walk(path, files);
-      continue;
-    }
-
-    if (extensions.has(getExtension(path))) {
-      files.push(path);
+    if (stat.isFile() && fullPath.endsWith('.js')) {
+      files.push(fullPath);
     }
   }
 
   return files;
 }
 
-function getLineNumber(text, index) {
-  return text.slice(0, index).split('\n').length;
+function getLineNumber(source, index) {
+  return source.slice(0, index).split(/\r?\n/).length;
 }
 
-function getLine(text, lineNumber) {
-  return text.split('\n')[lineNumber - 1]?.trim() || '';
+function getLineAt(source, index) {
+  const lineStart = source.lastIndexOf('\n', index) + 1;
+  const lineEnd = source.indexOf('\n', index);
+
+  return source
+    .slice(lineStart, lineEnd === -1 ? source.length : lineEnd)
+    .trim();
 }
 
-const findings = [];
+function addFinding(findings, file, source, index, type) {
+  findings.push({
+    file,
+    line: getLineNumber(source, index),
+    type,
+    snippet: getLineAt(source, index),
+  });
+}
 
-for (const root of roots) {
-  for (const file of walk(root)) {
-    const rel = relative(process.cwd(), file).replaceAll('\\', '/');
-    const text = readFileSync(file, 'utf8');
+function findAll(source, pattern) {
+  const matches = [];
 
-    for (const pattern of patterns) {
-      for (const match of text.matchAll(pattern.regex)) {
-        const line = getLineNumber(text, match.index ?? 0);
-        findings.push({
-          file: rel,
-          line,
-          type: pattern.name,
-          snippet: getLine(text, line).slice(0, 240),
-        });
-      }
-    }
+  for (const match of source.matchAll(pattern)) {
+    matches.push(match.index ?? 0);
   }
+
+  return matches;
 }
 
-const grouped = findings.reduce((acc, finding) => {
-  acc[finding.file] ||= [];
-  acc[finding.file].push(finding);
-  return acc;
-}, {});
+function analyzeFile(filePath) {
+  const source = readFileSync(filePath, 'utf8');
+  const file = relative(ROOT, filePath).replaceAll('\\', '/');
+  const findings = [];
 
-const report = {
+  for (const index of findAll(source, /\b\w+\.style\.[A-Za-z_$][\w$]*\s*=/g)) {
+    addFinding(findings, file, source, index, 'element.style access');
+  }
+
+  for (const index of findAll(source, /\b\w+\.style\.setProperty\s*\(/g)) {
+    addFinding(findings, file, source, index, 'style.setProperty');
+  }
+
+  for (const index of findAll(source, /\b\w+\.style\.cssText\s*=/g)) {
+    addFinding(findings, file, source, index, 'style.cssText');
+  }
+
+  for (const index of findAll(source, /\.setAttribute\s*\(\s*["']style["']/g)) {
+    addFinding(findings, file, source, index, 'html style attribute');
+  }
+
+  for (const index of findAll(source, /document\.createElement\s*\(\s*["']style["']\s*\)/g)) {
+    addFinding(findings, file, source, index, 'create style element');
+  }
+
+  for (const index of findAll(source, /createStyleElementOnce\s*\(/g)) {
+    addFinding(findings, file, source, index, 'create style element helper');
+  }
+
+  return findings.sort((a, b) => a.line - b.line || a.type.localeCompare(b.type));
+}
+
+const files = INCLUDED_DIRS.flatMap((dir) => walk(join(ROOT, dir)));
+const findingsByFile = {};
+let findingCount = 0;
+
+for (const filePath of files) {
+  const findings = analyzeFile(filePath);
+
+  if (!findings.length) {
+    continue;
+  }
+
+  const file = relative(ROOT, filePath).replaceAll('\\', '/');
+  findingsByFile[file] = findings;
+  findingCount += findings.length;
+}
+
+const result = {
   generatedAt: new Date().toISOString(),
-  scannedRoots: roots,
-  findingCount: findings.length,
-  filesWithFindings: Object.keys(grouped).length,
-  findingsByFile: grouped,
+  findingCount,
+  filesWithFindings: Object.keys(findingsByFile).length,
+  findingsByFile,
 };
 
-writeFileSync('audit-inline-css.generated.json', JSON.stringify(report, null, 2), 'utf8');
+writeFileSync(OUTPUT_PATH, JSON.stringify(result, null, 2) + '\n', 'utf8');
 
-console.log(`Audit écrit dans audit-inline-css.generated.json`);
-console.log(`${findings.length} occurrence(s) trouvée(s).`);
-console.log(`${Object.keys(grouped).length} fichier(s) concerné(s).`);
+console.log('Audit écrit dans audit-inline-css.generated.json');
+console.log(result.findingCount + ' occurrence(s) trouvée(s).');
+console.log(result.filesWithFindings + ' fichier(s) concerné(s).');
 
-for (const [file, items] of Object.entries(grouped)) {
-  console.log(`\n${file}`);
-  for (const item of items.slice(0, 20)) {
-    console.log(`  L${item.line} [${item.type}] ${item.snippet}`);
+for (const [file, findings] of Object.entries(findingsByFile)) {
+  console.log('');
+  console.log(file);
+
+  const visibleFindings = findings.slice(0, 20);
+
+  for (const finding of visibleFindings) {
+    console.log('  L' + finding.line + ' [' + finding.type + '] ' + finding.snippet);
   }
-  if (items.length > 20) {
-    console.log(`  ... ${items.length - 20} occurrence(s) supplémentaire(s)`);
+
+  if (findings.length > visibleFindings.length) {
+    console.log('  ... ' + (findings.length - visibleFindings.length) + ' occurrence(s) supplémentaire(s)');
   }
 }

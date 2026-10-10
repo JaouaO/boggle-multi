@@ -1,16 +1,13 @@
 {
-  "generatedAt": "2026-10-10T09:45:00.097Z",
-  "scannedRoots": [
-    "public"
-  ],
-  "findingCount": 36,
-  "filesWithFindings": 7,
+  "generatedAt": "2026-10-10T09:54:40.275Z",
+  "findingCount": 22,
+  "filesWithFindings": 3,
   "findingsByFile": {
     "public/js/main.js": [
       {
         "file": "public/js/main.js",
         "line": 2066,
-        "type": "element.style access",
+        "type": "style.setProperty",
         "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
       },
       {
@@ -34,92 +31,8 @@
       {
         "file": "public/js/main.js",
         "line": 2302,
-        "type": "element.style access",
-        "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 2066,
-        "type": "style.setProperty",
-        "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 2302,
         "type": "style.setProperty",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 745,
-        "type": "innerHTML",
-        "snippet": "element.innerHTML = \"\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 931,
-        "type": "innerHTML",
-        "snippet": "element.innerHTML = \"\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 1727,
-        "type": "innerHTML",
-        "snippet": "body.innerHTML = bodyHtml;"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 1930,
-        "type": "innerHTML",
-        "snippet": "rulesSummaryElement.innerHTML = \"\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 1948,
-        "type": "innerHTML",
-        "snippet": "rulesSummaryElement.innerHTML = \"\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 1954,
-        "type": "innerHTML",
-        "snippet": "rulesSummaryElement.innerHTML = badges.join(\"\");"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 2481,
-        "type": "innerHTML",
-        "snippet": "boardElement.innerHTML = \"\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 2529,
-        "type": "innerHTML",
-        "snippet": "boardElement.innerHTML = \"\";"
-      }
-    ],
-    "public/js/ui/board-ui.js": [
-      {
-        "file": "public/js/ui/board-ui.js",
-        "line": 5,
-        "type": "innerHTML",
-        "snippet": "boardElement.innerHTML = \"\";"
-      }
-    ],
-    "public/js/ui/end-screen-ui.js": [
-      {
-        "file": "public/js/ui/end-screen-ui.js",
-        "line": 38,
-        "type": "innerHTML",
-        "snippet": "panel.ranking.innerHTML = \"\";"
-      }
-    ],
-    "public/js/ui/help-ui.js": [
-      {
-        "file": "public/js/ui/help-ui.js",
-        "line": 109,
-        "type": "innerHTML",
-        "snippet": "container.innerHTML = \"\";"
       }
     ],
     "public/js/ui/mode-ui.js": [
@@ -181,59 +94,51 @@
     "public/js/ui/theme-styles.js": [
       {
         "file": "public/js/ui/theme-styles.js",
-        "line": 24,
-        "type": "html style attribute",
-        "snippet": "const style = document.createElement(\"style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 34,
-        "type": "html style attribute",
-        "snippet": "const style = createStyleElementOnce(\"boggle-legacy-theme-foundation-v42-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 3609,
-        "type": "html style attribute",
-        "snippet": "const style = createStyleElementOnce(\"boggle-top-launch-end-screen-v39-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 3984,
-        "type": "html style attribute",
-        "snippet": "const style = createStyleElementOnce(\"boggle-rules-help-options-v38-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 4195,
-        "type": "html style attribute",
-        "snippet": "const style = createStyleElementOnce(\"boggle-found-words-panel-v37-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 4448,
-        "type": "html style attribute",
-        "snippet": "const style = createStyleElementOnce(\"boggle-final-board-input-v36-style\");"
-      },
-      {
-        "file": "public/js/ui/theme-styles.js",
-        "line": 4512,
-        "type": "html style attribute",
-        "snippet": "const style = createStyleElementOnce(\"boggle-final-buttons-v34-style\");"
+        "line": 19,
+        "type": "create style element helper",
+        "snippet": "function createStyleElementOnce(id) {"
       },
       {
         "file": "public/js/ui/theme-styles.js",
         "line": 24,
         "type": "create style element",
         "snippet": "const style = document.createElement(\"style\");"
-      }
-    ],
-    "public/js/ui/words-ui.js": [
+      },
       {
-        "file": "public/js/ui/words-ui.js",
-        "line": 2,
-        "type": "innerHTML",
-        "snippet": "foundWordsElement.innerHTML = \"\";"
+        "file": "public/js/ui/theme-styles.js",
+        "line": 34,
+        "type": "create style element helper",
+        "snippet": "const style = createStyleElementOnce(\"boggle-legacy-theme-foundation-v42-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 3609,
+        "type": "create style element helper",
+        "snippet": "const style = createStyleElementOnce(\"boggle-top-launch-end-screen-v39-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 3984,
+        "type": "create style element helper",
+        "snippet": "const style = createStyleElementOnce(\"boggle-rules-help-options-v38-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 4195,
+        "type": "create style element helper",
+        "snippet": "const style = createStyleElementOnce(\"boggle-found-words-panel-v37-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 4448,
+        "type": "create style element helper",
+        "snippet": "const style = createStyleElementOnce(\"boggle-final-board-input-v36-style\");"
+      },
+      {
+        "file": "public/js/ui/theme-styles.js",
+        "line": 4512,
+        "type": "create style element helper",
+        "snippet": "const style = createStyleElementOnce(\"boggle-final-buttons-v34-style\");"
       }
     ]
   }
