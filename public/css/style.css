@@ -5887,3 +5887,44 @@ section,
         animation: none !important;
       }
     }
+
+/* ==========================================================================
+   V82 — stabilité grille et feedback
+   ========================================================================== */
+
+/*
+ * Réserve une zone constante pour les retours "bon mot", "mot invalide",
+ * "déjà trouvé", etc. Cela évite que le plateau soit recalculé plus petit
+ * lorsqu'un message apparaît.
+ */
+#word-feedback {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: min(100%, 49rem) !important;
+  min-height: 2.75rem !important;
+  margin: 0.42rem auto 0 !important;
+}
+
+/*
+ * Quand il n'y a pas de message, la zone reste réservée mais invisible.
+ * On conserve donc la même hauteur avant/après validation d'un mot.
+ */
+#word-feedback:empty {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: transparent !important;
+  opacity: 0 !important;
+}
+
+#word-feedback:not(:empty) {
+  opacity: 1 !important;
+}
+
+/*
+ * Le formulaire de saisie ne doit pas provoquer de recalcul agressif
+ * de l'espace central.
+ */
+#word-form {
+  flex: 0 0 auto;
+}

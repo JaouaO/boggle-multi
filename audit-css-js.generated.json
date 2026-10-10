@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-10T10:10:05.715Z",
+  "generatedAt": "2026-10-10T11:55:47.883Z",
   "analyzedSources": [
     "public/js/main.js",
     "public/js/ui/theme-styles.js"
   ],
   "main": {
     "path": "public/js/main.js",
-    "lines": 2564,
-    "chars": 69449
+    "lines": 2562,
+    "chars": 69417
   },
   "injectionCalls": [],
   "injectionFunctions": [],
@@ -463,55 +463,55 @@
     {
       "name": "showEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2119,
+      "line": 2117,
       "references": 2
     },
     {
       "name": "ensureEndScreenBackdrop",
       "file": "public/js/main.js",
-      "line": 2125,
+      "line": 2123,
       "references": 2
     },
     {
       "name": "isCurrentPlayerWinning",
       "file": "public/js/main.js",
-      "line": 2220,
+      "line": 2218,
       "references": 2
     },
     {
       "name": "playVictorySound",
       "file": "public/js/main.js",
-      "line": 2232,
+      "line": 2230,
       "references": 2
     },
     {
       "name": "launchConfetti",
       "file": "public/js/main.js",
-      "line": 2288,
+      "line": 2286,
       "references": 2
     },
     {
       "name": "startCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2324,
+      "line": 2322,
       "references": 2
     },
     {
       "name": "playCountdownTick",
       "file": "public/js/main.js",
-      "line": 2365,
+      "line": 2363,
       "references": 2
     },
     {
       "name": "playCountdownTone",
       "file": "public/js/main.js",
-      "line": 2398,
+      "line": 2396,
       "references": 2
     },
     {
       "name": "createFoundCellCounts",
       "file": "public/js/main.js",
-      "line": 2426,
+      "line": 2424,
       "references": 2
     },
     {
@@ -607,31 +607,31 @@
     {
       "name": "showEndScreenNow",
       "file": "public/js/main.js",
-      "line": 2107,
+      "line": 2105,
       "references": 3
     },
     {
       "name": "renderVictoryModalV16",
       "file": "public/js/main.js",
-      "line": 2138,
+      "line": 2136,
       "references": 3
     },
     {
       "name": "closeEndScreenPopup",
       "file": "public/js/main.js",
-      "line": 2196,
+      "line": 2194,
       "references": 3
     },
     {
       "name": "getElapsedDurationSeconds",
       "file": "public/js/main.js",
-      "line": 2416,
+      "line": 2414,
       "references": 3
     },
     {
       "name": "resetGameUiToWaiting",
       "file": "public/js/main.js",
-      "line": 2517,
+      "line": 2515,
       "references": 3
     },
     {
@@ -661,13 +661,13 @@
     {
       "name": "renderCurrentEndScreen",
       "file": "public/js/main.js",
-      "line": 2310,
+      "line": 2308,
       "references": 4
     },
     {
       "name": "getFoundWordList",
       "file": "public/js/main.js",
-      "line": 2438,
+      "line": 2436,
       "references": 4
     },
     {
@@ -697,7 +697,7 @@
     {
       "name": "updateGameStatus",
       "file": "public/js/main.js",
-      "line": 2442,
+      "line": 2440,
       "references": 5
     },
     {
@@ -733,7 +733,7 @@
     {
       "name": "hideEndScreenOverlay",
       "file": "public/js/main.js",
-      "line": 2202,
+      "line": 2200,
       "references": 6
     },
     {
@@ -763,7 +763,7 @@
     {
       "name": "playVictoryTone",
       "file": "public/js/main.js",
-      "line": 2270,
+      "line": 2268,
       "references": 7
     },
     {
@@ -787,13 +787,13 @@
     {
       "name": "stopCountdownWarning",
       "file": "public/js/main.js",
-      "line": 2355,
+      "line": 2353,
       "references": 9
     },
     {
       "name": "renderMousePanel",
       "file": "public/js/main.js",
-      "line": 2099,
+      "line": 2097,
       "references": 12
     },
     {
@@ -817,7 +817,7 @@
     {
       "name": "renderCurrentBoardWithHelp",
       "file": "public/js/main.js",
-      "line": 2070,
+      "line": 2068,
       "references": 19
     }
   ],

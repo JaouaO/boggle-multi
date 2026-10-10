@@ -2032,12 +2032,10 @@ function updateBoardFitV31() {
 
   const statusHeight = statusPanel?.getBoundingClientRect().height ?? 0;
   const formHeight = wordForm.getBoundingClientRect().height || 0;
-  const feedbackVisible = wordFeedbackElement && wordFeedbackElement.textContent.trim().length > 0;
-  const feedbackHeight = feedbackVisible
-    ? wordFeedbackElement.getBoundingClientRect().height || 0
-    : 0;
-
-  const viewportBottom = window.innerHeight - 14;
+  // V82 : la zone #word-feedback réserve déjà sa hauteur en CSS.
+  // Ne pas réduire la grille quand un message apparaît, sinon le plateau bouge à chaque mot.
+  const feedbackHeight = 0;
+const viewportBottom = window.innerHeight - 14;
   const availableVerticalSpace = Math.max(
     260,
     viewportBottom -
