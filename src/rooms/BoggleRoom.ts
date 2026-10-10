@@ -242,7 +242,18 @@ export class BoggleRoom extends DurableObject {
     }
   }
 
+
   async webSocketClose(ws: WebSocket) {
+    await this.handleDisconnectedSocket(ws);
+  }
+
+
+  async webSocketError(ws: WebSocket) {
+    await this.handleDisconnectedSocket(ws);
+  }
+
+
+  private async handleDisconnectedSocket(ws: WebSocket) {
     const attachment = this.getPlayerAttachment(ws);
 
     if (!attachment.joined) {
@@ -250,58 +261,39 @@ export class BoggleRoom extends DurableObject {
     }
 
     this.updatePlayerSnapshot(attachment);
-    await this.saveRoomState();
 
-    if (this.isPlayerConnected(attachment.id, ws)) {
+    const name = attachment.name;
+    const wasHost = this.hostPlayerId === attachment.id;
+    const samePlayerStillConnected = this.isPlayerConnected(attachment.id, ws);
+
+    if (samePlayerStillConnected) {
+      await this.saveRoomState();
       this.broadcastPlayers();
       return;
     }
 
-    const name = attachment.name;
-    const wasHost = this.hostPlayerId === attachment.id;
+    let nextHost: PlayerAttachment | null = null;
 
-    if (wasHost) {
-      this.hostPlayerId = null;
-      const nextHost = this.assignHostFromConnectedPlayers(ws);
-
-      if (nextHost) {
-        await this.saveRoomState();
-
-        this.broadcast({
-          type: "system",
-          text: `${name} a quitté la room. ${nextHost.name} devient l’hébergeur de la salle.`,
-        });
-      } else {
-        await this.saveRoomState();
-
-        this.broadcast({
-          type: "system",
-          text: `${name} a quitté la room.`,
-        });
+    if (wasHost || !this.isHostConnected(ws)) {
+      if (wasHost) {
+        this.hostPlayerId = null;
       }
+
+      nextHost = this.assignHostFromConnectedPlayers(ws);
+    }
+
+    await this.saveRoomState();
+
+    if (wasHost && nextHost) {
+      this.broadcast({
+        type: "system",
+        text: `${name} a quitté la room. ${nextHost.name} devient l’hébergeur de la salle.`,
+      });
     } else {
       this.broadcast({
         type: "system",
         text: `${name} a quitté la room.`,
       });
-    }
-
-    this.broadcastPlayers(attachment.id);
-  }
-
-  async webSocketError(ws: WebSocket) {
-    const attachment = this.getPlayerAttachment(ws);
-
-    if (!attachment.joined) {
-      return;
-    }
-
-    this.updatePlayerSnapshot(attachment);
-    await this.saveRoomState();
-
-    if (this.isPlayerConnected(attachment.id, ws)) {
-      this.broadcastPlayers();
-      return;
     }
 
     this.broadcastPlayers(attachment.id);
@@ -742,6 +734,8 @@ export class BoggleRoom extends DurableObject {
     }
   }
 
+
+
   private async endGameIfNeeded(force = false) {
     if (this.status !== "playing") {
       return;
@@ -761,6 +755,7 @@ export class BoggleRoom extends DurableObject {
 
     this.status = "ended";
     this.endedAt = Date.now();
+    this.playerSnapshots.clear();
     this.updateAllConnectedPlayerSnapshots();
 
     await this.saveRoomState();
@@ -904,6 +899,7 @@ export class BoggleRoom extends DurableObject {
     await this.ctx.storage.put(ROOM_STATE_KEY, roomState);
   }
 
+
   private ensureHost(playerId: string) {
     if (this.hostPlayerId && this.isHostConnected()) {
       return false;
@@ -913,17 +909,21 @@ export class BoggleRoom extends DurableObject {
     return true;
   }
 
+
   private isHost(ws: WebSocket) {
     const attachment = this.getPlayerAttachment(ws);
 
-    if (!this.hostPlayerId) {
-      this.ensureHost(attachment.id);
+    if (!attachment.joined) {
+      return false;
     }
+
+    this.ensureHost(attachment.id);
 
     return this.hostPlayerId === attachment.id;
   }
 
-  private isHostConnected() {
+
+  private isHostConnected(excludedWs?: WebSocket) {
     if (!this.hostPlayerId) {
       return false;
     }
@@ -931,6 +931,10 @@ export class BoggleRoom extends DurableObject {
     return this.ctx
       .getWebSockets()
       .some((socket) => {
+        if (socket === excludedWs) {
+          return false;
+        }
+
         const attachment = this.getPlayerAttachment(socket);
         return attachment.joined && attachment.id === this.hostPlayerId;
       });
