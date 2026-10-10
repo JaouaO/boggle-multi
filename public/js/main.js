@@ -2764,11 +2764,11 @@ function setupHomeScreenV87() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button" type="button" data-home-action="account">',
+          '<button class="home-v87-top-button ui-button" type="button" data-home-action="account">',
             '<span aria-hidden="true">👤</span>',
             '<span>Compte</span>',
           '</button>',
-          '<button class="home-v87-top-button" type="button" data-home-action="options">',
+          '<button class="home-v87-top-button ui-button" type="button" data-home-action="options">',
             '<span aria-hidden="true">⚙️</span>',
             '<span>Options</span>',
           '</button>',
@@ -2786,7 +2786,7 @@ function setupHomeScreenV87() {
             '</p>',
             '<h1 id="home-v87-daily-title">Grille du jour</h1>',
             '<p class="home-v87-subtitle">Trouvez un maximum de mots dans la grille du jour&nbsp;!</p>',
-            '<button class="home-v87-primary-button" type="button" data-home-action="daily">',
+            '<button class="home-v87-primary-button ui-button" type="button" data-home-action="daily">',
               '<span aria-hidden="true">▶</span>',
               '<span>Jouer</span>',
             '</button>',
@@ -2802,7 +2802,7 @@ function setupHomeScreenV87() {
           '<div class="home-v87-card-heading">',
             '<span aria-hidden="true">🏆</span>',
             '<h2 id="home-v87-top-title">Top du jour</h2>',
-            '<button type="button" data-home-action="top">Voir tout</button>',
+            '<button class="home-v87-secondary-button ui-button" type="button" data-home-action="top">Voir tout</button>',
           '</div>',
           '<ol class="home-v87-ranking">',
             '<li><span class="home-v87-rank home-v87-gold">1</span><span class="home-v87-avatar">🍊</span><strong>Lulu</strong><span>1457</span></li>',
@@ -2814,7 +2814,7 @@ function setupHomeScreenV87() {
         '</aside>',
 
         '<section class="home-v87-modes" aria-label="Modes de jeu">',
-          '<button class="home-v87-mode home-v87-mode-public" type="button" data-home-action="public">',
+          '<button class="home-v87-mode home-v87-mode-public ui-button" type="button" data-home-action="public">',
             '<span class="home-v87-mode-icon" aria-hidden="true">🌐</span>',
             '<span class="home-v87-mode-text">',
               '<strong>Salon public</strong>',
@@ -2822,7 +2822,7 @@ function setupHomeScreenV87() {
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
-          '<button class="home-v87-mode home-v87-mode-private" type="button" data-home-action="private">',
+          '<button class="home-v87-mode home-v87-mode-private ui-button" type="button" data-home-action="private">',
             '<span class="home-v87-mode-icon" aria-hidden="true">👥</span>',
             '<span class="home-v87-mode-text">',
               '<strong>Salon privé</strong>',
@@ -2830,7 +2830,7 @@ function setupHomeScreenV87() {
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
-          '<button class="home-v87-mode home-v87-mode-solo" type="button" data-home-action="solo">',
+          '<button class="home-v87-mode home-v87-mode-solo ui-button" type="button" data-home-action="solo">',
             '<span class="home-v87-mode-icon" aria-hidden="true">👑</span>',
             '<span class="home-v87-mode-text">',
               '<strong>Jouer seul</strong>',
@@ -2904,3 +2904,46 @@ function setupHomeScreenV87() {
 setupHomeScreenV87();
 
 /* V87-HOME-SCREEN END */
+
+/* V87.2-HOME-JS-HTML-BRIDGE START */
+
+/*
+ * V87.2 :
+ * - bouton global de retour à l'accueil ;
+ * - permet de quitter les écrans intermédiaires / l'écran de jeu sans recharger.
+ */
+
+function returnToHomeV87() {
+  document.body.classList.add("v87-home-active");
+  document.body.classList.remove("v87-game-active");
+
+  const home = document.querySelector("#home-v87");
+
+  if (home) {
+    home.scrollIntoView({ block: "start" });
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function setupHomeReturnButtonV87() {
+  if (document.querySelector("#home-v87-return")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+
+  button.id = "home-v87-return";
+  button.className = "home-v87-return ui-button";
+  button.type = "button";
+  button.textContent = "← Accueil";
+  button.setAttribute("aria-label", "Revenir à l'accueil");
+
+  button.addEventListener("click", returnToHomeV87);
+
+  document.body.append(button);
+}
+
+setupHomeReturnButtonV87();
+
+/* V87.2-HOME-JS-HTML-BRIDGE END */

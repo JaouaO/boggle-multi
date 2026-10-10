@@ -6801,3 +6801,513 @@ body.v87-home-active #home-v87 {
     font-size: 2rem;
   }
 }
+
+/* ==========================================================================
+   V87.1-HOME-EXISTING-STYLE — accueil rapproché du style existant
+   ========================================================================== */
+
+/*
+ * V87.1 :
+ * La structure v87 est conservée, mais le rendu revient vers le style déjà
+ * validé de l'écran de jeu : fond crème, cartes sobres, boutons orange,
+ * bordures douces, badges/pilules simples.
+ *
+ * Les fruits/SVG décoratifs seront traités plus tard.
+ */
+
+body.v87-home-active {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(245, 205, 108, 0.1), transparent 14rem),
+    radial-gradient(circle at 88% 18%, rgba(124, 166, 91, 0.08), transparent 18rem),
+    #f7edd3 !important;
+}
+
+.home-v87 {
+  min-height: 100vh !important;
+  padding: clamp(0.85rem, 1.6vw, 1.35rem) !important;
+
+  color: #4b3322 !important;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(244, 196, 96, 0.08), transparent 13rem),
+    radial-gradient(circle at 86% 22%, rgba(126, 163, 91, 0.08), transparent 16rem),
+    #f7edd3 !important;
+
+  font-family: "Fredoka", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+.home-v87-shell {
+  width: min(100%, 96rem) !important;
+}
+
+/* Header proche de la barre actuelle : logo simple, actions sobres. */
+.home-v87-header {
+  margin-bottom: clamp(0.8rem, 1.4vw, 1.2rem) !important;
+}
+
+.home-v87-logo {
+  color: #8a461b !important;
+}
+
+.home-v87-logo-text {
+  font-size: clamp(2.55rem, 4.4vw, 4rem) !important;
+  letter-spacing: -0.075em !important;
+  text-shadow:
+    0 0.08rem 0 rgba(255, 255, 255, 0.85),
+    0 0.16rem 0 rgba(95, 55, 24, 0.08) !important;
+}
+
+.home-v87-top-button {
+  min-height: 2.85rem !important;
+  padding: 0.58rem 1.05rem !important;
+
+  border: 0.11rem solid rgba(94, 58, 34, 0.28) !important;
+  border-radius: 999px !important;
+
+  background: rgba(255, 250, 236, 0.82) !important;
+  color: #5a3320 !important;
+
+  font-size: 0.98rem !important;
+  font-weight: 800 !important;
+
+  box-shadow:
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.68),
+    0 0.22rem 0.7rem rgba(70, 45, 25, 0.08) !important;
+}
+
+/* Layout : on garde la structure, mais avec des proportions plus proches du jeu. */
+.home-v87-main {
+  gap: clamp(0.9rem, 1.45vw, 1.2rem) !important;
+}
+
+/* Cartes : même famille visuelle que Joueurs / Règles / Mots trouvés. */
+.home-v87-hero,
+.home-v87-top,
+.home-v87-mode {
+  border: 1px solid rgba(114, 78, 48, 0.16) !important;
+  border-radius: 1.35rem !important;
+
+  background: rgba(255, 248, 232, 0.9) !important;
+
+  box-shadow:
+    0 0.35rem 1.15rem rgba(77, 50, 27, 0.08),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.58) !important;
+}
+
+/* Bloc Grille du jour : moins illustratif, plus interface. */
+.home-v87-hero {
+  min-height: 20.5rem !important;
+  padding: clamp(1.2rem, 2vw, 1.8rem) !important;
+  gap: clamp(1rem, 2vw, 1.5rem) !important;
+  overflow: hidden !important;
+}
+
+.home-v87-hero::before {
+  display: none !important;
+}
+
+.home-v87-eyebrow {
+  margin-bottom: 0.45rem !important;
+  color: #8a5b35 !important;
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+}
+
+.home-v87-hero h1 {
+  color: #4b2617 !important;
+  font-size: clamp(2.35rem, 3.6vw, 3.65rem) !important;
+  letter-spacing: -0.045em !important;
+}
+
+.home-v87-subtitle {
+  max-width: 26rem !important;
+  margin: 0.75rem 0 1.25rem !important;
+  color: rgba(75, 51, 34, 0.78) !important;
+  font-size: clamp(1.02rem, 1.25vw, 1.18rem) !important;
+  font-weight: 650 !important;
+}
+
+/* CTA principal : même esprit que le bouton Valider / Connexion actuel. */
+.home-v87-primary-button {
+  min-width: min(100%, 17rem) !important;
+  min-height: 3.65rem !important;
+  padding: 0.75rem 1.65rem !important;
+
+  border-radius: 999px !important;
+  background: #fb7827 !important;
+  color: #ffffff !important;
+
+  font-size: clamp(1.25rem, 1.7vw, 1.55rem) !important;
+  font-weight: 900 !important;
+
+  box-shadow:
+    inset 0 0.12rem 0 rgba(255, 255, 255, 0.35),
+    0 0.28rem 0.8rem rgba(182, 83, 33, 0.22) !important;
+}
+
+/* Preview de grille : proche du plateau, sans décor excessif. */
+.home-v87-board-wrap {
+  width: min(100%, 16.2rem) !important;
+  padding: 0.45rem !important;
+
+  border-radius: 1.1rem !important;
+  background: #edc65c !important;
+
+  box-shadow:
+    inset 0 0 0 0.18rem rgba(118, 80, 36, 0.12),
+    0 0.42rem 0.9rem rgba(83, 52, 25, 0.14) !important;
+}
+
+.home-v87-board {
+  gap: 0.32rem !important;
+}
+
+.home-v87-board span {
+  border-radius: 0.52rem !important;
+  background: #fff7e3 !important;
+  color: #5a2b17 !important;
+
+  font-size: clamp(1.2rem, 1.85vw, 1.75rem) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+
+  box-shadow:
+    inset 0 0.12rem 0 rgba(255, 255, 255, 0.82),
+    0 0.15rem 0 rgba(113, 74, 30, 0.12) !important;
+}
+
+/* On garde les éléments fruits provisoires mais on les rend très discrets. */
+.home-v87-fruit {
+  opacity: 0.42 !important;
+  filter: none !important;
+  transform: scale(0.82) !important;
+}
+
+.home-v87-fruit-orange {
+  left: 0.6rem !important;
+  bottom: 0.5rem !important;
+}
+
+.home-v87-fruit-apple {
+  right: 0.6rem !important;
+  bottom: 0.5rem !important;
+}
+
+/* Top du jour : plus sobre, cohérent avec les panneaux latéraux. */
+.home-v87-top {
+  padding: clamp(1rem, 1.6vw, 1.25rem) !important;
+}
+
+.home-v87-card-heading {
+  gap: 0.55rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0.65rem !important;
+  border-bottom: 1px solid rgba(104, 73, 43, 0.16) !important;
+}
+
+.home-v87-card-heading h2 {
+  color: #4b2617 !important;
+  font-size: clamp(1.55rem, 1.85vw, 2rem) !important;
+  letter-spacing: -0.025em !important;
+}
+
+.home-v87-card-heading button {
+  border: 1px solid rgba(104, 73, 43, 0.18) !important;
+  background: rgba(255, 250, 238, 0.72) !important;
+  color: #5a3320 !important;
+  font-size: 0.9rem !important;
+}
+
+.home-v87-ranking {
+  gap: 0.42rem !important;
+}
+
+.home-v87-ranking li {
+  min-height: 2.45rem !important;
+  padding: 0.32rem 0.55rem !important;
+
+  border: 1px solid rgba(104, 73, 43, 0.08) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 240, 191, 0.4) !important;
+
+  color: #4b3322 !important;
+  font-size: 0.95rem !important;
+}
+
+.home-v87-rank {
+  width: 1.72rem !important;
+  height: 1.72rem !important;
+  font-size: 0.82rem !important;
+}
+
+.home-v87-avatar {
+  font-size: 1.05rem !important;
+}
+
+/* Cartes de navigation : moins illustration, plus gros boutons du hub. */
+.home-v87-modes {
+  gap: clamp(0.9rem, 1.45vw, 1.2rem) !important;
+}
+
+.home-v87-mode {
+  min-height: 8.7rem !important;
+  padding: clamp(1rem, 1.6vw, 1.25rem) !important;
+  border-radius: 1.25rem !important;
+}
+
+.home-v87-mode::after {
+  display: none !important;
+}
+
+.home-v87-mode-public,
+.home-v87-mode-private,
+.home-v87-mode-solo {
+  background: rgba(255, 248, 232, 0.92) !important;
+}
+
+.home-v87-mode-icon {
+  width: 3.35rem !important;
+  height: 3.35rem !important;
+
+  border: 1px solid rgba(104, 73, 43, 0.12) !important;
+  background: rgba(246, 224, 156, 0.38) !important;
+
+  font-size: 1.65rem !important;
+}
+
+.home-v87-mode-public .home-v87-mode-icon {
+  background: rgba(178, 214, 144, 0.3) !important;
+}
+
+.home-v87-mode-private .home-v87-mode-icon {
+  background: rgba(255, 199, 137, 0.28) !important;
+}
+
+.home-v87-mode-solo .home-v87-mode-icon {
+  background: rgba(246, 213, 108, 0.32) !important;
+}
+
+.home-v87-mode-text strong {
+  color: #4b2617 !important;
+  font-size: clamp(1.55rem, 2vw, 2.05rem) !important;
+  letter-spacing: -0.025em !important;
+}
+
+.home-v87-mode-text span {
+  color: rgba(75, 51, 34, 0.74) !important;
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem) !important;
+  line-height: 1.25 !important;
+}
+
+.home-v87-mode-arrow {
+  width: 2.85rem !important;
+  height: 2.85rem !important;
+
+  border: 1px solid rgba(104, 73, 43, 0.12) !important;
+  background: rgba(255, 250, 238, 0.78) !important;
+
+  color: #8a5b35 !important;
+  font-size: 2rem !important;
+}
+
+/* Notice : badge proche des messages existants. */
+.home-v87-notice {
+  border: 1px solid rgba(104, 73, 43, 0.18) !important;
+  border-radius: 1rem !important;
+  background: rgba(255, 248, 232, 0.94) !important;
+  color: #5a3320 !important;
+  font-weight: 800 !important;
+}
+
+/* Mobile : mêmes contenus, plus compact, sans Top du jour. */
+@media (max-width: 900px) {
+  .home-v87-main {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "hero"
+      "modes" !important;
+  }
+
+  .home-v87-top {
+    display: none !important;
+  }
+
+  .home-v87-hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .home-v87-board-wrap {
+    width: min(100%, 14.8rem) !important;
+  }
+
+  .home-v87-modes {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .home-v87 {
+    padding: 0.85rem !important;
+  }
+
+  .home-v87-header {
+    gap: 0.6rem !important;
+  }
+
+  .home-v87-logo-text {
+    font-size: clamp(2.2rem, 12vw, 3rem) !important;
+  }
+
+  .home-v87-actions {
+    gap: 0.4rem !important;
+  }
+
+  .home-v87-top-button {
+    min-height: 2.35rem !important;
+    padding: 0.48rem 0.62rem !important;
+    font-size: 0.86rem !important;
+  }
+
+  .home-v87-hero {
+    padding: 1rem !important;
+  }
+
+  .home-v87-hero h1 {
+    font-size: clamp(2rem, 10vw, 2.85rem) !important;
+  }
+
+  .home-v87-primary-button {
+    width: 100% !important;
+    min-height: 3.3rem !important;
+    font-size: 1.35rem !important;
+  }
+
+  .home-v87-mode {
+    min-height: 7.1rem !important;
+    padding: 0.9rem !important;
+  }
+
+  .home-v87-mode-icon {
+    width: 3rem !important;
+    height: 3rem !important;
+    font-size: 1.4rem !important;
+  }
+
+  .home-v87-mode-text strong {
+    font-size: 1.55rem !important;
+  }
+
+  .home-v87-mode-text span {
+    font-size: 0.94rem !important;
+  }
+}
+
+/* ==========================================================================
+   V87.2-HOME-JS-HTML-BRIDGE — pont avec styles existants
+   ========================================================================== */
+
+/*
+ * La structure v87 garde ses classes propres, mais les boutons utilisent aussi
+ * .ui-button pour rester plus proches du style général du jeu.
+ */
+
+/* Correction du bouton Grille du jour : pas de blanc sur blanc. */
+#home-v87 .home-v87-primary-button,
+#home-v87 .home-v87-primary-button.ui-button,
+body.v87-home-active #home-v87 .home-v87-primary-button,
+body.v87-home-active #home-v87 .home-v87-primary-button.ui-button {
+  border: 1px solid rgba(122, 61, 24, 0.28) !important;
+  background: #fb7827 !important;
+  color: #ffffff !important;
+  text-shadow: 0 0.08rem 0 rgba(90, 39, 13, 0.18) !important;
+}
+
+#home-v87 .home-v87-primary-button *,
+#home-v87 .home-v87-primary-button.ui-button * {
+  color: inherit !important;
+}
+
+#home-v87 .home-v87-primary-button:hover,
+#home-v87 .home-v87-primary-button.ui-button:hover {
+  background: #ee681e !important;
+  color: #ffffff !important;
+}
+
+/* Boutons Compte / Options : proches des boutons existants, mais plus doux. */
+#home-v87 .home-v87-top-button.ui-button,
+#home-v87 .home-v87-secondary-button.ui-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+
+  border-color: rgba(94, 58, 34, 0.24) !important;
+  background: rgba(255, 250, 236, 0.86) !important;
+  color: #5a3320 !important;
+}
+
+/* Les grosses cartes restent des cartes, malgré .ui-button. */
+#home-v87 .home-v87-mode.ui-button {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  border-color: rgba(114, 78, 48, 0.16) !important;
+  color: #512715 !important;
+  text-decoration: none !important;
+}
+
+#home-v87 .home-v87-mode.ui-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow:
+    0 0.42rem 1.25rem rgba(77, 50, 27, 0.12),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.62) !important;
+}
+
+/* Bouton retour accueil depuis l'écran de jeu / futurs écrans intermédiaires. */
+#home-v87-return {
+  display: none;
+}
+
+body.v87-game-active #home-v87-return {
+  position: fixed;
+  z-index: 1000;
+  top: 0.75rem;
+  left: 0.75rem;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+
+  min-height: 2.6rem !important;
+  padding: 0.55rem 0.9rem !important;
+
+  border: 1px solid rgba(94, 58, 34, 0.28) !important;
+  border-radius: 999px !important;
+
+  background: rgba(255, 250, 236, 0.94) !important;
+  color: #5a3320 !important;
+
+  font-family: "Fredoka", system-ui, sans-serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+
+  box-shadow:
+    0 0.35rem 1rem rgba(77, 50, 27, 0.12),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.68) !important;
+}
+
+body.v87-home-active #home-v87-return {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  body.v87-game-active #home-v87-return {
+    top: 0.5rem;
+    left: 0.5rem;
+    min-height: 2.35rem !important;
+    padding: 0.45rem 0.72rem !important;
+    font-size: 0.86rem !important;
+  }
+}
