@@ -767,17 +767,11 @@ function createPlayerRow(player, rank) {
   item.className = player.id === state.playerId
     ? "player-row player-row-current"
     : "player-row";
-  item.style.display = "flex";
-  item.style.justifyContent = "space-between";
-  item.style.alignItems = "center";
-  item.style.gap = "0.22rem";
+  item.classList.add("boggle-player-list-item");
 
   const nameLine = document.createElement("span");
   nameLine.className = "player-name-line";
-  nameLine.style.display = "flex";
-  nameLine.style.alignItems = "center";
-  nameLine.style.gap = "0.18rem";
-  nameLine.style.flexWrap = "nowrap";
+  nameLine.classList.add("boggle-player-name-line");
 
   const rankElement = document.createElement("span");
   rankElement.className = "player-rank";
@@ -785,9 +779,7 @@ function createPlayerRow(player, rank) {
 
   const name = document.createElement("strong");
   name.textContent = player.name;
-  name.style.overflow = "hidden";
-  name.style.textOverflow = "ellipsis";
-  name.style.whiteSpace = "nowrap";
+  name.classList.add("boggle-player-name-text");
 
   nameLine.append(rankElement, name);
 
@@ -796,15 +788,13 @@ function createPlayerRow(player, rank) {
 
   if (player.id === state.playerId) {
     const selfBadge = createPlayerBadge("Vous");
-    selfBadge.style.background = "rgba(90, 59, 35, 0.08)";
-    selfBadge.style.color = "#5a3b23";
+    selfBadge.classList.add("boggle-player-badge-self");
     badges.append(selfBadge);
   }
 
   if (player.isHost) {
     const hostBadge = createPlayerBadge("Hôte");
-    hostBadge.style.background = "#5a3b23";
-    hostBadge.style.color = "#fff8ea";
+    hostBadge.classList.add("boggle-player-badge-host");
     badges.append(hostBadge);
   }
 
@@ -825,7 +815,7 @@ function createPlayerBadge(label) {
   const badge = document.createElement("span");
   badge.textContent = label;
   badge.className = "info-badge compact-badge";
-  badge.style.lineHeight = "1";
+  badge.classList.add("boggle-player-badge-score");
 
   return badge;
 }

@@ -1,201 +1,105 @@
 {
-  "generatedAt": "2026-10-09T19:18:14.459Z",
+  "generatedAt": "2026-10-10T09:20:54.925Z",
   "scannedRoots": [
     "public"
   ],
-  "findingCount": 64,
+  "findingCount": 48,
   "filesWithFindings": 8,
   "findingsByFile": {
     "public/js/main.js": [
       {
         "file": "public/js/main.js",
-        "line": 770,
-        "type": "element.style access",
-        "snippet": "item.style.display = \"flex\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 771,
-        "type": "element.style access",
-        "snippet": "item.style.justifyContent = \"space-between\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 772,
-        "type": "element.style access",
-        "snippet": "item.style.alignItems = \"center\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 773,
-        "type": "element.style access",
-        "snippet": "item.style.gap = \"0.22rem\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 777,
-        "type": "element.style access",
-        "snippet": "nameLine.style.display = \"flex\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 778,
-        "type": "element.style access",
-        "snippet": "nameLine.style.alignItems = \"center\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 779,
-        "type": "element.style access",
-        "snippet": "nameLine.style.gap = \"0.18rem\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 780,
-        "type": "element.style access",
-        "snippet": "nameLine.style.flexWrap = \"nowrap\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 788,
-        "type": "element.style access",
-        "snippet": "name.style.overflow = \"hidden\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 789,
-        "type": "element.style access",
-        "snippet": "name.style.textOverflow = \"ellipsis\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 790,
-        "type": "element.style access",
-        "snippet": "name.style.whiteSpace = \"nowrap\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 799,
-        "type": "element.style access",
-        "snippet": "selfBadge.style.background = \"rgba(90, 59, 35, 0.08)\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 800,
-        "type": "element.style access",
-        "snippet": "selfBadge.style.color = \"#5a3b23\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 806,
-        "type": "element.style access",
-        "snippet": "hostBadge.style.background = \"#5a3b23\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 807,
-        "type": "element.style access",
-        "snippet": "hostBadge.style.color = \"#fff8ea\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 828,
-        "type": "element.style access",
-        "snippet": "badge.style.lineHeight = \"1\";"
-      },
-      {
-        "file": "public/js/main.js",
-        "line": 942,
+        "line": 932,
         "type": "element.style access",
         "snippet": "element.style.minHeight = \"0\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 943,
+        "line": 933,
         "type": "element.style access",
         "snippet": "element.style.overflowY = \"auto\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 944,
+        "line": 934,
         "type": "element.style access",
         "snippet": "element.style.overflowX = \"hidden\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 945,
+        "line": 935,
         "type": "element.style access",
         "snippet": "element.style.overscrollBehavior = \"contain\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 946,
+        "line": 936,
         "type": "element.style access",
         "snippet": "element.style.paddingRight = \"0.35rem\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 947,
+        "line": 937,
         "type": "element.style access",
         "snippet": "element.style.boxSizing = \"border-box\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 948,
+        "line": 938,
         "type": "element.style access",
         "snippet": "element.style.display = \"block\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 949,
+        "line": 939,
         "type": "element.style access",
         "snippet": "element.style.flex = \"1 1 auto\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 950,
+        "line": 940,
         "type": "element.style access",
         "snippet": "element.style.maxHeight = \"none\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 2084,
+        "line": 2074,
         "type": "element.style access",
         "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2315,
+        "line": 2305,
         "type": "element.style access",
         "snippet": "piece.style.left = `${Math.random() * 100}vw`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2316,
+        "line": 2306,
         "type": "element.style access",
         "snippet": "piece.style.background = colors[index % colors.length];"
       },
       {
         "file": "public/js/main.js",
-        "line": 2317,
+        "line": 2307,
         "type": "element.style access",
         "snippet": "piece.style.animationDelay = `${Math.random() * 1.4}s`;"
       },
       {
         "file": "public/js/main.js",
-        "line": 2318,
+        "line": 2308,
         "type": "element.style access",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2084,
+        "line": 2074,
         "type": "style.setProperty",
         "snippet": "boardElement.style.setProperty(\"--board-fit-size-v31\", `${boardSize}px`);"
       },
       {
         "file": "public/js/main.js",
-        "line": 2318,
+        "line": 2308,
         "type": "style.setProperty",
         "snippet": "piece.style.setProperty(\"--confetti-drift\", `${(Math.random() - 0.5) * 18}rem`);"
       },
@@ -207,43 +111,43 @@
       },
       {
         "file": "public/js/main.js",
-        "line": 941,
+        "line": 931,
         "type": "innerHTML",
         "snippet": "element.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 1745,
+        "line": 1735,
         "type": "innerHTML",
         "snippet": "body.innerHTML = bodyHtml;"
       },
       {
         "file": "public/js/main.js",
-        "line": 1948,
+        "line": 1938,
         "type": "innerHTML",
         "snippet": "rulesSummaryElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 1966,
+        "line": 1956,
         "type": "innerHTML",
         "snippet": "rulesSummaryElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 1972,
+        "line": 1962,
         "type": "innerHTML",
         "snippet": "rulesSummaryElement.innerHTML = badges.join(\"\");"
       },
       {
         "file": "public/js/main.js",
-        "line": 2497,
+        "line": 2487,
         "type": "innerHTML",
         "snippet": "boardElement.innerHTML = \"\";"
       },
       {
         "file": "public/js/main.js",
-        "line": 2545,
+        "line": 2535,
         "type": "innerHTML",
         "snippet": "boardElement.innerHTML = \"\";"
       }

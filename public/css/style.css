@@ -1083,3 +1083,43 @@ section,
     display: grid;
   }
 }
+
+
+/* ==========================================================================
+   V73 — migration styles inline liste joueurs
+   ========================================================================== */
+
+.boggle-player-list-item {
+  display: flex;
+  gap: 0.22rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.boggle-player-name-line {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.18rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.boggle-player-name-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.boggle-player-badge-self {
+  background: rgba(90, 59, 35, 0.08);
+  color: #5a3b23;
+}
+
+.boggle-player-badge-host {
+  background: #5a3b23;
+  color: #fff8ea;
+}
+
+.boggle-player-badge-score {
+  line-height: 1;
+}
