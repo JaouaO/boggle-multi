@@ -88,7 +88,8 @@ function syncLayout() {
       return;
     }
 
-    ensureBrand(top);moveDirect("#welcome-panel", center);
+    ensureBrand(top);
+    moveDirect("#welcome-panel", center);
 
     const welcomePanel = document.querySelector("#welcome-panel");
     if (welcomePanel) {

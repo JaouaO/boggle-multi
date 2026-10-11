@@ -159,7 +159,8 @@ boardElement.insertAdjacentElement("beforebegin", welcomePanel);
 applyThemeStyles();
 
 
-function setupConnectionFields() {inviteRoomButton.hidden = true;
+function setupConnectionFields() {
+  inviteRoomButton.hidden = true;
   connectionStatusLine.hidden = true;
 }startButton.addEventListener("click", startRandomTimedGame);
 wordForm.addEventListener("submit", submitWord);
@@ -288,7 +289,8 @@ function updateInviteButton() {
    */
   document.body.classList.toggle("boggle-session-connected", isConnected);
 
-  connectionStatusLine.hidden = true;inviteRoomButton.hidden = true;
+  connectionStatusLine.hidden = true;
+  inviteRoomButton.hidden = true;
   refreshHomeVisibility();
 }
 
@@ -555,7 +557,7 @@ function takePendingSubmissionPath() {
  * V90.1 — session propre.
  *
  * Objectif :
- * - ne plus déclencher les connexions internes via l'ancien bouton Connexion ;
+ * - ne plus déclencher les connexions internes via l'ancien bouton de connexion ;
  * - ne plus utiliser les champs Room/Pseudo comme source de vérité des nouveaux parcours ;
  * - garder temporairement l'ancien DOM uniquement pour compatibilité manuelle ;
  * - préparer sa suppression complète en v90.2/v90.3.
@@ -1262,7 +1264,9 @@ function connectToRoom(options = {}) {
   socket.addEventListener("open", () => {
     if (state.socket !== socket) {
       return;
-    }updateInviteButton();
+    }
+
+    updateInviteButton();
     updateHostControls();
     renderRulesSummary();
 
@@ -3392,7 +3396,7 @@ function openPrivateRoomFromHomeV87() {
 function openSoloFromHomeV87() {
   /*
    * F1 :
-   * Le mode solo ne doit plus dépendre d'un clic manuel sur Connexion.
+   * Le mode solo ne doit plus dépendre d'un clic manuel sur l'ancien bouton de connexion.
    * On ouvre une session technique solo, puis on laisse l'écran règles /
    * lancement existant s'afficher quand la socket est prête.
    *
