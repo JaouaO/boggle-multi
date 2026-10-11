@@ -8378,3 +8378,79 @@ body.player-identity-modal-open-v902 {
 }
 
 /* V90.2.8C.1-FRUITS-STICKY-CLOSE END */
+
+/* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME START */
+
+#global-actions-bar-v908l {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+#global-actions-bar-v908l[hidden] {
+  display: none !important;
+}
+
+#global-actions-bar-v908l > .global-action-button-v908l,
+#global-actions-bar-v908l > button,
+#global-actions-bar-v908l > a {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  rotate: none !important;
+  writing-mode: horizontal-tb !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 2.35rem !important;
+  min-width: 5.75rem;
+  margin: 0 !important;
+  padding: 0.55rem 0.8rem !important;
+  flex: 0 0 auto;
+  white-space: nowrap;
+
+  border-radius: 0.65rem !important;
+  border: 1px solid rgba(116, 69, 31, 0.35) !important;
+  background: #fff8e8 !important;
+  color: #4b3322 !important;
+  box-shadow: 0 0.25rem 0.7rem rgba(75, 51, 34, 0.16) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+}
+
+#global-home-button-v908l {
+  order: 1;
+}
+
+#global-actions-bar-v908l .global-options-button-in-bar-v908l {
+  order: 2;
+}
+
+@media (max-width: 520px) {
+  #global-actions-bar-v908l {
+    top: max(0.5rem, env(safe-area-inset-top));
+    right: max(0.5rem, env(safe-area-inset-right));
+    gap: 0.35rem;
+  }
+
+  #global-actions-bar-v908l > .global-action-button-v908l,
+  #global-actions-bar-v908l > button,
+  #global-actions-bar-v908l > a {
+    min-height: 2.25rem !important;
+    min-width: auto;
+    padding-inline: 0.6rem !important;
+  }
+}
+
+/* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME END */

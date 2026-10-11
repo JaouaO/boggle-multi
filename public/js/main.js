@@ -4509,3 +4509,244 @@ setupGlobalOptionsOverlayV908B();
 
 /* V90.2.8B-GLOBAL-OPTIONS-OVERLAY END */
 
+/* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME START */
+
+/*
+ * D1l :
+ * Barre globale source unique.
+ * - Options existe toujours.
+ * - Accueil est créé uniquement hors accueil.
+ * - Accueil est supprimé du DOM sur l'accueil.
+ */
+
+function isVisibleElementV908L(element) {
+  if (!(element instanceof HTMLElement)) {
+    return false;
+  }
+
+  if (element.hidden) {
+    return false;
+  }
+
+  const style = window.getComputedStyle(element);
+
+  return style.display !== "none" &&
+    style.visibility !== "hidden" &&
+    element.getClientRects().length > 0;
+}
+
+function getGlobalOptionsButtonV908L() {
+  return document.querySelector([
+    "#global-options-button-v908b",
+    ".global-options-button-v908b",
+    "#global-options-launcher-v908b",
+    ".global-options-launcher-v908b",
+    "#global-options-toggle-v908b",
+    ".global-options-toggle-v908b",
+    "#global-options-open-v908b",
+    ".global-options-open-v908b"
+  ].join(", "));
+}
+
+function ensureGlobalActionsBarV908L() {
+  let bar = document.querySelector("#global-actions-bar-v908l");
+
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "global-actions-bar-v908l";
+    bar.className = "global-actions-bar-v908l";
+    bar.setAttribute("aria-label", "Actions globales");
+    document.body.appendChild(bar);
+  }
+
+  return bar;
+}
+
+function getCurrentGlobalScreenV908L() {
+  if (isVisibleElementV908L(document.querySelector("#private-v89"))) {
+    return "private";
+  }
+
+  if (isVisibleElementV908L(document.querySelector("#public-v88"))) {
+    return "public";
+  }
+
+  const home = document.querySelector("#home-v87");
+
+  if (isVisibleElementV908L(home) && document.body.classList.contains("v87-home-active")) {
+    return "home";
+  }
+
+  if (document.body.classList.contains("v87-game-active")) {
+    return "game";
+  }
+
+  return "home";
+}
+
+function removeLegacyHomeButtonsV908L() {
+  const legacyButtons = document.querySelectorAll([
+    "#public-v88 [data-public-action=\"home\"]",
+    "#private-v89 [data-private-action=\"home\"]",
+    "#home-return-v87",
+    ".home-return-v87",
+    "#home-v87-return",
+    ".home-v87-return",
+    "#back-home-v87",
+    ".back-home-v87",
+    "#return-home-v87",
+    ".return-home-v87",
+    "[data-global-action=\"home\"]",
+    "[data-action=\"home\"]"
+  ].join(", "));
+
+  for (const button of legacyButtons) {
+    if (button.id === "global-home-button-v908l") {
+      continue;
+    }
+
+    if (/accueil/i.test(button.textContent || "")) {
+      button.remove();
+    }
+  }
+}
+
+function ensureGlobalHomeButtonV908L() {
+  let button = document.querySelector("#global-home-button-v908l");
+
+  if (!button) {
+    button = document.createElement("button");
+    button.id = "global-home-button-v908l";
+    button.className = "global-action-button-v908l global-home-button-v908l";
+    button.type = "button";
+    button.textContent = "← Accueil";
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const screen = getCurrentGlobalScreenV908L();
+
+      if (screen === "private") {
+        if (typeof showHomeFromPrivateV89 === "function") {
+          showHomeFromPrivateV89();
+        } else {
+          document.querySelector("#private-v89")?.remove();
+          document.body.classList.add("v87-home-active");
+          document.body.classList.remove("v87-game-active");
+        }
+
+        syncGlobalActionsBarV908L();
+        return;
+      }
+
+      if (screen === "public") {
+        if (typeof showHomeFromPublicV88 === "function") {
+          showHomeFromPublicV88();
+        } else {
+          document.querySelector("#public-v88")?.remove();
+          document.body.classList.add("v87-home-active");
+          document.body.classList.remove("v87-game-active");
+        }
+
+        syncGlobalActionsBarV908L();
+        return;
+      }
+
+      if (screen === "game" && typeof returnToHomeV87 === "function") {
+        returnToHomeV87();
+      }
+
+      syncGlobalActionsBarV908L();
+    });
+  }
+
+  return button;
+}
+
+function removeGlobalHomeButtonOnHomeV908L() {
+  const button = document.querySelector("#global-home-button-v908l");
+
+  if (button) {
+    button.remove();
+  }
+}
+
+function cleanupOldGlobalActionsBarsV908L() {
+  for (const selector of [
+    "#global-actions-bar-v908h",
+    "#global-actions-bar-v908j",
+    "#global-actions-bar-v908k"
+  ]) {
+    document.querySelector(selector)?.remove();
+  }
+
+  for (const selector of [
+    "#global-home-button-v908j",
+    "#global-home-button-v908k"
+  ]) {
+    document.querySelector(selector)?.remove();
+  }
+}
+
+function syncGlobalActionsBarV908L() {
+  cleanupOldGlobalActionsBarsV908L();
+  removeLegacyHomeButtonsV908L();
+
+  const bar = ensureGlobalActionsBarV908L();
+  const optionsButton = getGlobalOptionsButtonV908L();
+  const screen = getCurrentGlobalScreenV908L();
+
+  if (screen === "home") {
+    removeGlobalHomeButtonOnHomeV908L();
+  } else {
+    const homeButton = ensureGlobalHomeButtonV908L();
+
+    if (homeButton.parentElement !== bar) {
+      bar.appendChild(homeButton);
+    }
+  }
+
+  if (optionsButton && optionsButton.parentElement !== bar) {
+    optionsButton.classList.add("global-action-button-v908l");
+    optionsButton.classList.add("global-options-button-in-bar-v908l");
+    bar.appendChild(optionsButton);
+  }
+
+  bar.hidden = !optionsButton && screen === "home";
+}
+
+function setupGlobalActionsBarV908L() {
+  if (window.__globalActionsBarV908L === true) {
+    return;
+  }
+
+  window.__globalActionsBarV908L = true;
+
+  const schedule = () => {
+    window.requestAnimationFrame(syncGlobalActionsBarV908L);
+  };
+
+  schedule();
+
+  const observer = new MutationObserver(schedule);
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "hidden", "style"]
+  });
+
+  window.addEventListener("resize", schedule);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupGlobalActionsBarV908L, {
+    once: true,
+  });
+} else {
+  setupGlobalActionsBarV908L();
+}
+
+/* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME END */
