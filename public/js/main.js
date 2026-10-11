@@ -182,6 +182,7 @@ startButton.textContent = "Lancer une grille aléatoire";
 updateInviteButton();
 
 renderModePanel();
+startPlayerIdentityOptionsObserverV902();
 
 renderMouseInputPanel(wordForm, {
   word: "",
@@ -587,11 +588,514 @@ function getStoredPlayerNameV901() {
   );
 }
 
+/* V90.2-PLAYER-IDENTITY START */
+
+/*
+ * V90.2 — identité joueur locale.
+ *
+ * Objectif :
+ * - pseudo + fruit enregistrés dans le navigateur ;
+ * - identité modifiable dans Options ;
+ * - identité réutilisée automatiquement pour les salons publics/privés ;
+ * - demande uniquement si l'identité manque ;
+ * - aucune dépendance à l'IP, aucun compte utilisateur.
+ *
+ * TODO v90-cleanup :
+ * - supprimer le champ privé #private-v89-name quand les derniers flux n'en dépendent plus ;
+ * - supprimer l'ancien #name global ;
+ * - envoyer pseudo et fruit séparément au serveur si le protocole WebSocket évolue.
+ */
+
+const PLAYER_IDENTITY_STORAGE_KEY_V902 = "boggle.playerIdentity.v1";
+
+const PLAYER_FRUITS_V902 = [
+  { value: "🍓", label: "Fraise" },
+  { value: "🍊", label: "Orange" },
+  { value: "🍋", label: "Citron" },
+  { value: "🍐", label: "Poire" },
+  { value: "🍎", label: "Pomme" },
+  { value: "🍇", label: "Raisin" },
+  { value: "🍒", label: "Cerise" },
+  { value: "🥝", label: "Kiwi" },
+  { value: "🍍", label: "Ananas" },
+  { value: "🍉", label: "Pastèque" },
+];
+
+function getDefaultFruitV902() {
+  return PLAYER_FRUITS_V902[0].value;
+}
+
+function isKnownFruitV902(fruit) {
+  return PLAYER_FRUITS_V902.some((item) => item.value === fruit);
+}
+
+function normalizePlayerPseudoV902(pseudo) {
+  return String(pseudo || "")
+    .normalize("NFC")
+    .replace(/[^\p{L}\p{M} '\u2019-]/gu, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 24);
+}
+
+function normalizePlayerFruitV902(fruit) {
+  const value = String(fruit || "").trim();
+
+  return isKnownFruitV902(value) ? value : "";
+}
+
+function normalizePlayerIdentityV902(identity) {
+  if (!identity || typeof identity !== "object") {
+    return null;
+  }
+
+  const pseudo = normalizePlayerPseudoV902(identity.pseudo);
+  const fruit = normalizePlayerFruitV902(identity.fruit);
+
+  if (!pseudo || !fruit) {
+    return null;
+  }
+
+  return {
+    pseudo,
+    fruit,
+  };
+}
+
+function readPlayerIdentityV902() {
+  try {
+    return normalizePlayerIdentityV902(
+      JSON.parse(localStorage.getItem(PLAYER_IDENTITY_STORAGE_KEY_V902) || "null")
+    );
+  } catch {
+    return null;
+  }
+}
+
+function getLegacyPseudoV902() {
+  const saved = loadLocalSettings();
+  let value = String(
+    state.playerName ||
+    saved.playerName ||
+    ""
+  ).trim();
+
+  /*
+   * Nettoyage des anciennes valeurs du type "🍒 🍉 Miche".
+   * Le fruit doit rester une option séparée, jamais une partie du pseudo.
+   */
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+
+    for (const fruit of PLAYER_FRUITS_V902) {
+      if (value.startsWith(fruit.value)) {
+        value = value.slice(fruit.value.length).trim();
+        changed = true;
+      }
+    }
+  }
+
+  return normalizePlayerPseudoV902(value);
+}
+
+function savePlayerIdentityV902(identity) {
+  const normalized = normalizePlayerIdentityV902(identity);
+
+  if (!normalized) {
+    return null;
+  }
+
+  localStorage.setItem(
+    PLAYER_IDENTITY_STORAGE_KEY_V902,
+    JSON.stringify(normalized)
+  );
+
+  saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
+
+  if (nameInput && !nameInput.value.trim()) {
+    nameInput.value = normalized.pseudo;
+  }
+
+  updatePlayerIdentityOptionsV902();
+
+  return normalized;
+}
+
+function formatPlayerNameV902(identity = readPlayerIdentityV902()) {
+  const normalized = normalizePlayerIdentityV902(identity);
+
+  if (!normalized) {
+    return getStoredPlayerNameV901();
+  }
+
+  return normalized.fruit + " " + normalized.pseudo;
+}
+
+function getPlayerIdentityReasonTextV902(reason) {
+  if (reason === "public") {
+    return "Choisissez votre joueur pour rejoindre un salon public.";
+  }
+
+  if (reason === "private") {
+    return "Choisissez votre joueur pour rejoindre un salon privé.";
+  }
+
+  if (reason === "daily-score") {
+    return "Choisissez votre joueur pour enregistrer votre score.";
+  }
+
+  return "Choisissez votre joueur.";
+}
+
+function ensurePlayerIdentityModalV902() {
+  let modal = document.querySelector("#player-identity-modal-v902");
+
+  if (modal) {
+    return modal;
+  }
+
+  modal = document.createElement("div");
+  modal.id = "player-identity-modal-v902";
+  modal.className = "player-identity-modal-v902";
+  modal.hidden = true;
+  modal.innerHTML = [
+    '<div class="player-identity-modal-v902-card" role="dialog" aria-modal="true" aria-labelledby="player-identity-modal-title-v902">',
+      '<h2 id="player-identity-modal-title-v902">Votre joueur</h2>',
+      '<p id="player-identity-modal-text-v902">Choisissez votre pseudo et votre fruit.</p>',
+      '<form id="player-identity-form-v902">',
+        '<label class="player-identity-field-v902" for="player-identity-pseudo-v902">',
+          '<span>Pseudo</span>',
+          '<input id="player-identity-pseudo-v902" type="text" autocomplete="off" maxlength="24" required>',
+        '</label>',
+        '<fieldset class="player-identity-fruits-v902">',
+          '<legend>Fruit</legend>',
+          '<div class="player-identity-fruit-list-v902"></div>',
+        '</fieldset>',
+        '<p id="player-identity-error-v902" class="player-identity-error-v902" hidden></p>',
+        '<div class="player-identity-actions-v902">',
+          '<button class="ui-button" type="button" data-player-identity-action="cancel">Annuler</button>',
+          '<button class="ui-button primary-button" type="submit">Continuer</button>',
+        '</div>',
+      '</form>',
+    '</div>',
+  ].join("");
+
+  document.body.append(modal);
+
+  const fruitList = modal.querySelector(".player-identity-fruit-list-v902");
+
+  for (const fruit of PLAYER_FRUITS_V902) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "player-identity-fruit-v902";
+    button.dataset.fruit = fruit.value;
+    button.textContent = fruit.value;
+    button.setAttribute("aria-label", fruit.label);
+    button.setAttribute("aria-pressed", "false");
+
+    button.addEventListener("click", () => {
+      setSelectedFruitInModalV902(modal, fruit.value);
+    });
+
+    fruitList.append(button);
+  }
+
+  return modal;
+}
+
+function setSelectedFruitInModalV902(modal, fruit) {
+  const normalizedFruit = normalizePlayerFruitV902(fruit) || getDefaultFruitV902();
+
+  modal.dataset.selectedFruit = normalizedFruit;
+
+  for (const button of modal.querySelectorAll("[data-fruit]")) {
+    const selected = button.dataset.fruit === normalizedFruit;
+
+    button.setAttribute("aria-pressed", String(selected));
+    button.classList.toggle("is-selected", selected);
+  }
+}
+
+function closePlayerIdentityModalV902(modal) {
+  modal.hidden = true;
+  document.body.classList.remove("player-identity-modal-open-v902");
+}
+
+function requestPlayerIdentityV902({ reason = "default" } = {}) {
+  const existing = readPlayerIdentityV902();
+
+  if (existing) {
+    return Promise.resolve(existing);
+  }
+
+  const modal = ensurePlayerIdentityModalV902();
+  const form = modal.querySelector("#player-identity-form-v902");
+  const input = modal.querySelector("#player-identity-pseudo-v902");
+  const text = modal.querySelector("#player-identity-modal-text-v902");
+  const error = modal.querySelector("#player-identity-error-v902");
+  const cancel = modal.querySelector('[data-player-identity-action="cancel"]');
+
+  attachPseudoInputSanitizerV902(input);
+
+  const legacyPseudo = getLegacyPseudoV902();
+
+  text.textContent = getPlayerIdentityReasonTextV902(reason);
+  input.value = legacyPseudo;
+  error.hidden = true;
+  error.textContent = "";
+  setSelectedFruitInModalV902(modal, getDefaultFruitV902());
+
+  modal.hidden = false;
+  document.body.classList.add("player-identity-modal-open-v902");
+
+  window.setTimeout(() => {
+    input.focus();
+    input.select();
+  }, 0);
+
+  return new Promise((resolve) => {
+    form.onsubmit = (event) => {
+      event.preventDefault();
+
+      const identity = savePlayerIdentityV902({
+        pseudo: input.value,
+        fruit: modal.dataset.selectedFruit,
+      });
+
+      if (!identity) {
+        error.textContent = "Indiquez un pseudo et choisissez un fruit.";
+        error.hidden = false;
+        return;
+      }
+
+      closePlayerIdentityModalV902(modal);
+      resolve(identity);
+    };
+
+    cancel.onclick = () => {
+      closePlayerIdentityModalV902(modal);
+      resolve(null);
+    };
+  });
+}
+
+function getPlayerIdentityOptionsTargetV902() {
+  const panel = document.querySelector("#player-preferences");
+
+  if (!panel) {
+    return null;
+  }
+
+  const soundControl = panel.querySelector("#personal-sound-enabled");
+  const inferredBody = soundControl ? soundControl.closest("label")?.parentElement : null;
+
+  return inferredBody || panel;
+}
+
+function setupPlayerIdentityOptionsV902() {
+  const target = getPlayerIdentityOptionsTargetV902();
+
+  if (!target || target.querySelector("#player-identity-options-v902")) {
+    return;
+  }
+
+  const section = document.createElement("section");
+  section.id = "player-identity-options-v902";
+  section.className = "player-identity-options-v902";
+  section.innerHTML = [
+    '<h3>Joueur</h3>',
+    '<p class="player-identity-help-v902">Ce pseudo et ce fruit seront réutilisés pour les salons publics, les salons privés et les classements.</p>',
+    '<label class="player-identity-field-v902" for="player-identity-options-pseudo-v902">',
+      '<span>Pseudo</span>',
+      '<input id="player-identity-options-pseudo-v902" type="text" autocomplete="off" maxlength="24" placeholder="Votre pseudo">',
+    '</label>',
+    '<fieldset class="player-identity-fruits-v902">',
+      '<legend>Fruit</legend>',
+      '<div class="player-identity-options-fruit-list-v902"></div>',
+    '</fieldset>',
+    '<p id="player-identity-options-status-v902" class="player-identity-options-status-v902" aria-live="polite"></p>',
+  ].join("");
+
+  target.append(section);
+
+  const fruitList = section.querySelector(".player-identity-options-fruit-list-v902");
+
+  for (const fruit of PLAYER_FRUITS_V902) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "player-identity-fruit-v902";
+    button.dataset.fruit = fruit.value;
+    button.textContent = fruit.value;
+    button.setAttribute("aria-label", fruit.label);
+    button.setAttribute("aria-pressed", "false");
+
+    button.addEventListener("click", () => {
+      const input = section.querySelector("#player-identity-options-pseudo-v902");
+      const identity = savePlayerIdentityV902({
+        pseudo: input.value,
+        fruit: fruit.value,
+      });
+
+      if (!identity) {
+        section.dataset.selectedFruit = fruit.value;
+        updatePlayerIdentityOptionsV902();
+      }
+    });
+
+    fruitList.append(button);
+  }
+
+  const input = section.querySelector("#player-identity-options-pseudo-v902");
+
+  attachPseudoInputSanitizerV902(input);
+
+  input.addEventListener("input", () => {
+    const selectedFruit = section.dataset.selectedFruit || readPlayerIdentityV902()?.fruit || getDefaultFruitV902();
+
+    savePlayerIdentityV902({
+      pseudo: input.value,
+      fruit: selectedFruit,
+    });
+
+    updatePlayerIdentityOptionsV902();
+  });
+
+  updatePlayerIdentityOptionsV902();
+}
+
+function updatePlayerIdentityOptionsV902() {
+  const section = document.querySelector("#player-identity-options-v902");
+
+  if (!section) {
+    return;
+  }
+
+  const identity = readPlayerIdentityV902();
+  const input = section.querySelector("#player-identity-options-pseudo-v902");
+  const status = section.querySelector("#player-identity-options-status-v902");
+  const fallbackPseudo = getLegacyPseudoV902();
+  const selectedFruit = identity?.fruit || section.dataset.selectedFruit || getDefaultFruitV902();
+
+  section.dataset.selectedFruit = selectedFruit;
+
+  if (input && document.activeElement !== input) {
+    input.value = identity?.pseudo || fallbackPseudo || "";
+  }
+
+  for (const button of section.querySelectorAll("[data-fruit]")) {
+    const selected = button.dataset.fruit === selectedFruit;
+
+    button.setAttribute("aria-pressed", String(selected));
+    button.classList.toggle("is-selected", selected);
+  }
+
+  if (status) {
+    status.textContent = identity
+      ? "Identité enregistrée : " + formatPlayerNameV902(identity)
+      : "Aucune identité complète enregistrée.";
+  }
+}
+
+/* V90.2.1-PLAYER-IDENTITY-UI-FIXES START */
+
+function attachPseudoInputSanitizerV902(input) {
+  if (!input || input.dataset.pseudoSanitizerV902 === "true") {
+    return;
+  }
+
+  input.dataset.pseudoSanitizerV902 = "true";
+  input.setAttribute("autocomplete", "off");
+  input.setAttribute("autocorrect", "off");
+  input.setAttribute("spellcheck", "false");
+  input.setAttribute("inputmode", "text");
+
+  input.addEventListener("input", () => {
+    const cleaned = normalizePlayerPseudoV902(input.value);
+
+    if (input.value !== cleaned) {
+      input.value = cleaned;
+    }
+  });
+}
+
+function startPlayerIdentityOptionsObserverV902() {
+  if (window.__playerIdentityOptionsObserverV902) {
+    setupPlayerIdentityOptionsV902();
+    updatePlayerIdentityOptionsV902();
+    return;
+  }
+
+  let pending = false;
+
+  const setup = () => {
+    if (pending) {
+      return;
+    }
+
+    pending = true;
+
+    window.requestAnimationFrame(() => {
+      pending = false;
+      setupPlayerIdentityOptionsV902();
+      updatePlayerIdentityOptionsV902();
+    });
+  };
+
+  window.__playerIdentityOptionsObserverV902 = new MutationObserver(() => {
+    const panel = document.querySelector("#player-preferences");
+
+    if (panel && !panel.querySelector("#player-identity-options-v902")) {
+      setup();
+    }
+  });
+
+  window.__playerIdentityOptionsObserverV902.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const button = target ? target.closest("button, [role='button']") : null;
+    const text = button ? button.textContent.trim().toLowerCase() : "";
+
+    if (text.includes("option") || text.includes("réglage")) {
+      setup();
+      window.setTimeout(setup, 80);
+    }
+  });
+
+  setup();
+}
+
+/* V90.2.1-PLAYER-IDENTITY-UI-FIXES END */
+
+/* V90.2.3-ROLLBACK-SHARED-OPTIONS START */
+
+/*
+ * Rollback ciblé v90.2.2 :
+ * - suppression des sélecteurs larges sur tous les panneaux d'options ;
+ * - retour à une seule cible sûre : #player-preferences ;
+ * - observer limité et sans écoute d'attributs pour éviter les boucles DOM.
+ */
+
+/* V90.2.3-ROLLBACK-SHARED-OPTIONS END */
+
+/* V90.2-PLAYER-IDENTITY END */
+
 function getTechnicalPlayerNameV901() {
   /*
-   * Nom technique temporaire.
-   * La vraie identité joueur deviendra pseudo + fruit dans une étape suivante.
+   * Si une identité joueur locale existe, elle devient la source de vérité.
+   * Sinon on garde un nom technique temporaire pour les flux qui n'ont pas encore besoin d'identité.
    */
+  const identity = readPlayerIdentityV902();
+
+  if (identity) {
+    return formatPlayerNameV902(identity);
+  }
+
   return getStoredPlayerNameV901();
 }
 
@@ -664,10 +1168,8 @@ function getPrivatePlayerNameV901() {
 
 function validatePrivateSessionV901({ createIfMissing = false } = {}) {
   const privateRoomInput = getPrivateRoomInputV89();
-  const privateNameInput = getPrivateNameInputV89();
 
   const roomValue = getPrivateRoomValueV901({ createIfMissing });
-  const playerName = getPrivatePlayerNameV901();
 
   if (!roomValue) {
     setPrivateNoticeV89("Indiquez un code de salon ou créez un nouveau salon.");
@@ -679,25 +1181,8 @@ function validatePrivateSessionV901({ createIfMissing = false } = {}) {
     return null;
   }
 
-  if (!playerName) {
-    setPrivateNoticeV89("Indiquez un pseudo.");
-
-    if (privateNameInput) {
-      privateNameInput.focus();
-    }
-
-    return null;
-  }
-
-  if (privateNameInput && !privateNameInput.value.trim()) {
-    privateNameInput.value = playerName;
-  }
-
-  saveLocalString(STORAGE_KEYS.playerName, playerName);
-
   return {
     roomId: roomValue,
-    playerName,
   };
 }
 
@@ -3192,10 +3677,16 @@ function openPublicRoomsScreenV88() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function startPublicRoomV88(modeKey) {
+async function startPublicRoomV88(modeKey) {
   const roomConfig = PUBLIC_ROOMS_V88[modeKey];
 
   if (!roomConfig) {
+    return;
+  }
+
+  const identity = await requestPlayerIdentityV902({ reason: "public" });
+
+  if (!identity) {
     return;
   }
 
@@ -3205,7 +3696,7 @@ function startPublicRoomV88(modeKey) {
 
   connectToSessionV901({
     roomId: roomConfig.room,
-    playerName: getTechnicalPlayerNameV901(),
+    playerName: formatPlayerNameV902(identity),
     context: GAME_CONTEXTS_V901.PUBLIC,
     persistRoom: false,
     persistPlayerName: false,
@@ -3443,10 +3934,16 @@ function openPrivateRoomScreenV89() {
   }
 }
 
-function enterPrivateRoomV89({ createIfMissing = false } = {}) {
+async function enterPrivateRoomV89({ createIfMissing = false } = {}) {
   const privateSession = validatePrivateSessionV901({ createIfMissing });
 
   if (!privateSession) {
+    return;
+  }
+
+  const identity = await requestPlayerIdentityV902({ reason: "private" });
+
+  if (!identity) {
     return;
   }
 
@@ -3456,10 +3953,10 @@ function enterPrivateRoomV89({ createIfMissing = false } = {}) {
 
   connectToSessionV901({
     roomId: privateSession.roomId,
-    playerName: privateSession.playerName,
+    playerName: formatPlayerNameV902(identity),
     context: GAME_CONTEXTS_V901.PRIVATE,
     persistRoom: false,
-    persistPlayerName: true,
+    persistPlayerName: false,
     updateUrl: true,
   });
 }
@@ -3523,7 +4020,7 @@ function setupPrivateRoomScreenV89() {
           '<div class="private-v89-form" aria-label="Connexion à un salon privé">',
             '<label class="private-v89-field" for="private-v89-name">',
               '<span>Pseudo</span>',
-              '<input id="private-v89-name" type="text" autocomplete="nickname" placeholder="Votre pseudo">',
+              '<input id="private-v89-name" type="text" autocomplete="off" placeholder="Votre pseudo">',
             '</label>',
 
             '<label class="private-v89-field" for="private-v89-room">',
