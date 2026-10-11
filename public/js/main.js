@@ -2365,15 +2365,14 @@ function handleGameEnded(data) {
 }
 
 function renderPlayerPreferences() {
-  renderPlayerPreferencesPanel(endGameButton, state.playerPreferences, (preferences) => {
-    state.playerPreferences = {
-      ...state.playerPreferences,
-      ...preferences,
-    };
-
-    saveLocalJson(STORAGE_KEYS.playerPreferences, state.playerPreferences);
-    renderPlayerPreferences();
-  });
+  /*
+   * V90.2.8D1b :
+   * L'ancien panneau Options joueur / Confort personnel n'est plus rendu.
+   * Les options joueur sont gérées par l'overlay global.
+   */
+  for (const panel of document.querySelectorAll("#player-preferences")) {
+    panel.remove();
+  }
 }
 
 
