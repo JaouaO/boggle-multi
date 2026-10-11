@@ -131,11 +131,7 @@ endGameButton.addEventListener("click", () => {
 
 const inviteRoomButton = document.createElement("button");
 inviteRoomButton.id = "copy-room-link";
-inviteRoomButton.type = "button";
-inviteRoomButton.textContent = "Copier le lien de la room";
-inviteRoomButton.hidden = true;
-inviteRoomButton.addEventListener("click", copyRoomInviteLink);// Inséré après setupAppLayout(), sinon la mise en page sépare les libellés des champs.
-
+inviteRoomButton.type = "button";inviteRoomButton.hidden = true;
 
 timerElement.insertAdjacentElement("afterend", endGameButton);
 
@@ -285,27 +281,7 @@ function updateInviteButton() {
 }
 
 
-async function copyRoomInviteLink() {
-  const inviteUrl = createRoomInviteUrl();
 
-  try {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(inviteUrl);
-      addLog(logElement, `[système] Lien de room copié : ${inviteUrl}`);
-    } else {
-      window.prompt("Copiez ce lien d’invitation :", inviteUrl);
-      addLog(logElement, "[système] Lien de room affiché.");
-    }
-
-    inviteRoomButton.textContent = "Lien copié";
-    window.setTimeout(() => {
-      inviteRoomButton.textContent = "Copier le lien de la room";
-    }, 1400);
-  } catch {
-    window.prompt("Copiez ce lien d’invitation :", inviteUrl);
-    addLog(logElement, "[système] Copie automatique impossible, lien affiché.");
-  }
-}
 
 function handleGlobalPointerUp(event) {
   if (!state.isDraggingLetters) {
