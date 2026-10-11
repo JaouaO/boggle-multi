@@ -134,15 +134,7 @@ inviteRoomButton.id = "copy-room-link";
 inviteRoomButton.type = "button";
 inviteRoomButton.textContent = "Copier le lien de la room";
 inviteRoomButton.hidden = true;
-inviteRoomButton.addEventListener("click", copyRoomInviteLink);
-
-
-const connectionStatusLine = document.createElement("div");
-connectionStatusLine.id = "connection-status-line";
-connectionStatusLine.className = "connection-status-wrapper";
-connectionStatusLine.classList.add("boggle-connection-status-line");
-
-// Inséré après setupAppLayout(), sinon la mise en page sépare les libellés des champs.
+inviteRoomButton.addEventListener("click", copyRoomInviteLink);// Inséré après setupAppLayout(), sinon la mise en page sépare les libellés des champs.
 
 
 timerElement.insertAdjacentElement("afterend", endGameButton);
@@ -161,8 +153,9 @@ applyThemeStyles();
 
 function setupConnectionFields() {
   inviteRoomButton.hidden = true;
-  connectionStatusLine.hidden = true;
-}startButton.addEventListener("click", startRandomTimedGame);
+}
+
+startButton.addEventListener("click", startRandomTimedGame);
 wordForm.addEventListener("submit", submitWord);
 wordInput.addEventListener("input", handleKeyboardWordInput);
 document.addEventListener("pointerup", handleGlobalPointerUp);
@@ -287,10 +280,7 @@ function updateInviteButton() {
    * F2/F4d :
    * L'état connecté est porté par <body>, sans ancien badge DOM.
    */
-  document.body.classList.toggle("boggle-session-connected", isConnected);
-
-  connectionStatusLine.hidden = true;
-  inviteRoomButton.hidden = true;
+  document.body.classList.toggle("boggle-session-connected", isConnected);inviteRoomButton.hidden = true;
   refreshHomeVisibility();
 }
 

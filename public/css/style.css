@@ -632,14 +632,6 @@ section,
   font-weight: 900;
 }
 
-.boggle-connection-status-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-  margin: 0.5rem 0;
-}
-
 .boggle-rules-summary {
   display: flex;
   flex-wrap: wrap;
