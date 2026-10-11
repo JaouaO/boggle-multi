@@ -4087,3 +4087,61 @@ function setupPrivateRoomScreenV89() {
 setupPrivateRoomScreenV89();
 
 /* V89-PRIVATE-ROOM-SCREEN END */
+
+/* V90.2.8A-GLOBAL-OPTIONS-BUTTON START */
+
+/*
+ * Étape A : bouton Options global minimal.
+ *
+ * Objectif :
+ * - vérifier qu'un bouton global fixe peut exister sans casser l'accueil ni le jeu ;
+ * - ne pas ouvrir encore de panneau ;
+ * - ne supprimer aucun ancien bouton ;
+ * - ne pas modifier le DOM existant hors ajout du bouton.
+ */
+
+function ensureGlobalOptionsButtonV908A() {
+  let button = document.querySelector("#global-options-button-v908a");
+
+  if (button) {
+    return button;
+  }
+
+  button = document.createElement("button");
+  button.id = "global-options-button-v908a";
+  button.className = "global-options-button-v908a";
+  button.type = "button";
+  button.textContent = "Options";
+  button.title = "Options globales";
+  button.setAttribute("aria-label", "Ouvrir les options globales");
+
+  button.addEventListener("click", () => {
+    button.dataset.clicked = "true";
+    button.textContent = "Options ✓";
+    console.info("[Boggle] Bouton Options global OK");
+
+    window.setTimeout(() => {
+      button.dataset.clicked = "false";
+      button.textContent = "Options";
+    }, 900);
+  });
+
+  document.body.append(button);
+
+  return button;
+}
+
+function setupGlobalOptionsButtonV908A() {
+  if (!document.body) {
+    window.addEventListener("DOMContentLoaded", setupGlobalOptionsButtonV908A, {
+      once: true,
+    });
+    return;
+  }
+
+  ensureGlobalOptionsButtonV908A();
+}
+
+setupGlobalOptionsButtonV908A();
+
+/* V90.2.8A-GLOBAL-OPTIONS-BUTTON END */

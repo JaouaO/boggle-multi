@@ -8012,3 +8012,59 @@ body.player-identity-modal-open-v902 {
 }
 
 /* V90.2.3-ROLLBACK-SHARED-OPTIONS END */
+
+/* V90.2.8A-GLOBAL-OPTIONS-BUTTON START */
+
+#global-options-button-v908a {
+  position: fixed !important;
+  top: 0.85rem !important;
+  right: 0.85rem !important;
+  z-index: 1200 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+
+  min-width: 5.8rem !important;
+  min-height: 2.35rem !important;
+  padding: 0.45rem 0.8rem !important;
+
+  border: 1px solid rgba(91, 58, 36, 0.42) !important;
+  border-radius: 0.65rem !important;
+  background: #fff8e8 !important;
+  color: #4b3322 !important;
+
+  font: inherit !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  text-indent: 0 !important;
+  text-decoration: none !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+
+  box-shadow: 0 0.35rem 1rem rgba(47, 33, 24, 0.18) !important;
+}
+
+#global-options-button-v908a:hover,
+#global-options-button-v908a:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 0.5rem 1.25rem rgba(47, 33, 24, 0.22) !important;
+}
+
+#global-options-button-v908a[data-clicked="true"] {
+  border-color: rgba(46, 125, 50, 0.65) !important;
+}
+
+@media (max-width: 720px) {
+  #global-options-button-v908a {
+    top: auto !important;
+    right: 0.75rem !important;
+    bottom: 0.75rem !important;
+  }
+}
+
+/* V90.2.8A-GLOBAL-OPTIONS-BUTTON END */
