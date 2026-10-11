@@ -4689,6 +4689,27 @@ function cleanupOldGlobalActionsBarsV908L() {
   }
 }
 
+
+function normalizeGlobalOptionsButtonV908L(button) {
+  if (!(button instanceof HTMLElement)) {
+    return;
+  }
+
+  /*
+   * E1 :
+   * Le bouton Options global ne doit plus dépendre des styles historiques
+   * .ui-button / home-v87-top-button / player-preferences.
+   */
+  button.classList.remove(
+    "ui-button",
+    "home-v87-top-button",
+    "global-options-button-v908b-old"
+  );
+
+  button.classList.add("global-action-button-v908l");
+  button.classList.add("global-options-button-in-bar-v908l");
+}
+
 function syncGlobalActionsBarV908L() {
   cleanupOldGlobalActionsBarsV908L();
   removeLegacyHomeButtonsV908L();
@@ -4707,10 +4728,12 @@ function syncGlobalActionsBarV908L() {
     }
   }
 
-  if (optionsButton && optionsButton.parentElement !== bar) {
-    optionsButton.classList.add("global-action-button-v908l");
-    optionsButton.classList.add("global-options-button-in-bar-v908l");
-    bar.appendChild(optionsButton);
+  if (optionsButton) {
+    normalizeGlobalOptionsButtonV908L(optionsButton);
+
+    if (optionsButton.parentElement !== bar) {
+      bar.appendChild(optionsButton);
+    }
   }
 
   bar.hidden = !optionsButton && screen === "home";
