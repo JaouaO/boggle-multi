@@ -66,36 +66,40 @@ let foundWordHoverTimer = null;
 let countdownWarningInterval = null;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
-
-
-function createLegacyConnectionInputF2(kind) {
-  const input = document.createElement("input");
-
-  input.type = "hidden";
-  input.hidden = true;
-  input.dataset.legacyConnectionShim = "true";
-
-  if (kind === "room") {
-    input.value = "TEST";
-  }
-
-  return input;
-}
-
-
 /*
- * F2 :
- * La zone visible Room / Pseudo / Connexion / Connecté est supprimée.
- *
- * Ces éléments détachés restent temporairement pour les anciens accès JS.
- * Ils ne sont pas insérés dans le DOM.
+ * F4e :
+ * L'ancien champ Room n'existe plus dans le DOM.
+ * On conserve uniquement une valeur interne pour les derniers fallbacks.
  *
  * TODO v90-cleanup :
- * remplacer roomInput par des valeurs
- * internes quand les derniers fallbacks legacy auront été supprimés.
+ * supprimer legacyRoomIdF4E quand tous les anciens chemins manuels auront disparu.
  */
-const roomInput =
-  document.querySelector("#room") ?? createLegacyConnectionInputF2("room");
+let legacyRoomIdF4E = "TEST";
+
+function normalizeLegacyRoomIdF4E(value) {
+  return String(value ?? "")
+    .trim()
+    .slice(0, 60) || "TEST";
+}
+
+function getLegacyRoomIdF4E() {
+  return normalizeLegacyRoomIdF4E(legacyRoomIdF4E);
+}
+
+function setLegacyRoomIdF4E(value, { persist = false, refresh = false } = {}) {
+  legacyRoomIdF4E = normalizeLegacyRoomIdF4E(value);
+
+  if (persist) {
+    saveLocalString(STORAGE_KEYS.lastRoomId, legacyRoomIdF4E);
+  }
+
+  if (refresh) {
+    updateInviteButton();
+  }
+
+  return legacyRoomIdF4E;
+}
+
 const startButton = document.querySelector("#start");
 const gameStatusElement = document.querySelector("#game-status");
 const timerElement = document.querySelector("#timer");
@@ -107,9 +111,6 @@ const wordInput = document.querySelector("#word-input");
 const wordSubmitButton = document.querySelector("#word-submit");
 const wordFeedbackElement = document.querySelector("#word-feedback");
 const foundWordsElement = document.querySelector("#found-words");
-
-roomInput.placeholder = "Room";
-roomInput.setAttribute("aria-label", "Room");
 
 const endGameButton = document.createElement("button");
 endGameButton.id = "end-game";
@@ -166,19 +167,11 @@ wordInput.addEventListener("input", handleKeyboardWordInput);
 document.addEventListener("pointerup", handleGlobalPointerUp);
 window.addEventListener("resize", scheduleBoardFitV31);
 window.addEventListener("orientationchange", scheduleBoardFitV31);
-roomInput.addEventListener("input", () => {
-  updateInviteButton();
-  saveLocalString(STORAGE_KEYS.lastRoomId, roomInput.value.trim());
-});
 
 const savedSettings = loadLocalSettings();
 const initialRoomId = getInitialRoomIdFromUrl();
+setLegacyRoomIdF4E(initialRoomId || savedSettings.lastRoomId || "TEST");
 
-if (initialRoomId) {
-  roomInput.value = initialRoomId;
-} else if (savedSettings.lastRoomId) {
-  roomInput.value = savedSettings.lastRoomId;
-}
 
 state.playerPreferences = {
   ...state.playerPreferences,
@@ -266,7 +259,7 @@ function getInitialRoomIdFromUrl() {
 }
 
 function getCurrentRoomIdForInvite() {
-  return (state.roomId || roomInput.value.trim() || "TEST").trim();
+  return (state.roomId || getLegacyRoomIdF4E() || "TEST").trim();
 }
 
 function createRoomInviteUrl(roomId = getCurrentRoomIdForInvite()) {
@@ -568,9 +561,9 @@ function takePendingSubmissionPath() {
  * - préparer sa suppression complète en v90.2/v90.3.
  *
  * TODO v90-cleanup :
- * - supprimer #room de index.html ;
+ * - supprimer ancien champ Room de index.html ;
  * - supprimer moveConnectionControls() de layout-ui.js ;
- * - supprimer les règles CSS #room ;
+ * - supprimer les règles CSS ancien champ Room ;
  * - remplacer le mot "connexion" par "rejoindre une partie" côté UI.
  */
 
@@ -1206,7 +1199,7 @@ function connectToRoom(options = {}) {
   );
 
   const roomId = normalizeSessionRoomIdV901(
-    hasExplicitSession ? options.roomId : roomInput.value.trim(),
+    hasExplicitSession ? options.roomId : getLegacyRoomIdF4E(),
     "TEST"
   );
 
@@ -3393,12 +3386,7 @@ function startDailyGridFromHomeV87() {
 }
 
 function openPrivateRoomFromHomeV87() {
-  showGameFromHomeV87();
-
-  if (roomInput) {
-    roomInput.focus();
-    roomInput.select();
-  }
+  openPrivateRoomScreenV89();
 }
 
 function openSoloFromHomeV87() {
@@ -3872,9 +3860,15 @@ function normalizeRoomCodeV89(value) {
 
 function fillPrivateFormFromExistingV89() {
   const privateRoomInput = getPrivateRoomInputV89();
+  const legacyRoomId = getLegacyRoomIdF4E();
 
-  if (privateRoomInput && roomInput?.value) {
-    privateRoomInput.value = roomInput.value;
+  if (
+    privateRoomInput &&
+    !privateRoomInput.value.trim() &&
+    legacyRoomId &&
+    legacyRoomId !== "TEST"
+  ) {
+    privateRoomInput.value = legacyRoomId;
   }
 }
 
@@ -3882,8 +3876,8 @@ function fillPrivateFormFromExistingV89() {
 function syncPrivateFormToExistingV89() {
   const privateRoomInput = getPrivateRoomInputV89();
 
-  if (privateRoomInput && roomInput) {
-    roomInput.value = privateRoomInput.value.trim();
+  if (privateRoomInput) {
+    setLegacyRoomIdF4E(privateRoomInput.value.trim());
   }
 }
 
