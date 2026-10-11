@@ -82,15 +82,6 @@ function createLegacyConnectionInputF2(kind) {
   return input;
 }
 
-function createLegacyConnectionButtonF2() {
-  const button = document.createElement("button");
-
-  button.type = "button";
-  button.hidden = true;
-  button.dataset.legacyConnectionShim = "true";
-
-  return button;
-}
 
 function createLegacyConnectionStatusF2() {
   const status = document.createElement("p");
@@ -109,16 +100,13 @@ function createLegacyConnectionStatusF2() {
  * Ils ne sont pas insérés dans le DOM.
  *
  * TODO v90-cleanup :
- * remplacer roomInput/nameInput/connectButton/statusElement par des valeurs
+ * remplacer roomInput/nameInput/statusElement par des valeurs
  * internes quand les derniers fallbacks legacy auront été supprimés.
  */
 const roomInput =
   document.querySelector("#room") ?? createLegacyConnectionInputF2("room");
 const nameInput =
-  document.querySelector("#name") ?? createLegacyConnectionInputF2("name");
-const connectButton =
-  document.querySelector("#connect") ?? createLegacyConnectionButtonF2();
-const startButton = document.querySelector("#start");
+  document.querySelector("#name") ?? createLegacyConnectionInputF2("name");const startButton = document.querySelector("#start");
 const statusElement =
   document.querySelector("#status") ?? createLegacyConnectionStatusF2();
 const gameStatusElement = document.querySelector("#game-status");
@@ -191,10 +179,7 @@ function setupConnectionFields() {
 
   inviteRoomButton.hidden = true;
   connectionStatusLine.hidden = true;
-}
-
-connectButton.addEventListener("click", connectToRoom);
-startButton.addEventListener("click", startRandomTimedGame);
+}startButton.addEventListener("click", startRandomTimedGame);
 wordForm.addEventListener("submit", submitWord);
 wordInput.addEventListener("input", handleKeyboardWordInput);
 document.addEventListener("pointerup", handleGlobalPointerUp);
@@ -607,7 +592,7 @@ function takePendingSubmissionPath() {
  * V90.1 — session propre.
  *
  * Objectif :
- * - ne plus déclencher les connexions internes via connectButton.click() ;
+ * - ne plus déclencher les connexions internes via l'ancien bouton Connexion ;
  * - ne plus utiliser les champs Room/Pseudo comme source de vérité des nouveaux parcours ;
  * - garder temporairement l'ancien DOM uniquement pour compatibilité manuelle ;
  * - préparer sa suppression complète en v90.2/v90.3.
