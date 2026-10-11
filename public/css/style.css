@@ -189,20 +189,6 @@ section,
   width: 150px;
 }
 
-#connect {
-  min-height: 36px;
-}
-
-#status {
-  min-height: 34px;
-  padding: 8px 10px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--paper-2);
-  color: var(--muted);
-  font-weight: 750;
-}
-
 #boggle-layout {
   display: grid;
   grid-template-columns: 280px minmax(500px, 1fr) 330px;
@@ -562,19 +548,6 @@ section,
 
 #boggle-top input {
   height: 38px !important;
-}
-
-#connect,
-#status {
-  align-self: end !important;
-  min-height: 38px !important;
-  height: 38px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-}
-
-#status {
-  margin: 0 !important;
 }
 
 #launch-panel[hidden] {
@@ -1256,7 +1229,6 @@ section,
     .info-badge,
     #game-status,
     #timer,
-    #status,
     .rule-pill {
   border: 1px solid rgba(90, 59, 35, 0.16);
   border-radius: var(--boggle-radius-badge);
@@ -1271,8 +1243,7 @@ section,
       box-sizing: border-box;
     }
 
-    .info-badge-strong,
-    #status.connected-badge {
+    .info-badge-strong{
       border-color: rgba(90, 59, 35, 0.28);
       background: rgba(255, 248, 234, 0.9);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
@@ -1298,25 +1269,10 @@ section,
       flex-wrap: wrap;
     }
 
-    #connection-controls {
-
-      align-items: center;
-      gap: 0.55rem;
-
-    }
-
 .connection-control {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      min-height: 2.3rem;
-    }
-
-    #connection-actions {
-
-      align-items: center;
-      gap: 0.55rem;
-      flex-wrap: wrap;
       min-height: 2.3rem;
     }
 
@@ -1395,31 +1351,6 @@ section,
     #timer {
   font-variant-numeric: tabular-nums;
 }
-
-    #connection-status-line {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-left: 0;
-      padding: 0.28rem 0.45rem;
-      border-radius: 999px;
-      background: rgba(255, 248, 234, 0.7);
-      line-height: 1.1;
-      min-height: 2.15rem;
-    }
-
-    #connection-status-line[hidden] {
-      display: none !important;
-    }
-
-    #connection-status-line:not([hidden]) {
-      display: inline-flex !important;
-    }
-
-    #status {
-      flex-shrink: 0;
-    }
 
     .connection-field-label {
       display: inline-flex;
@@ -1702,14 +1633,10 @@ section,
       opacity: 0.95;
       pointer-events: none;
     }
-
-    #connection-controls,
-    #connection-actions,
     .connection-control {
 
       z-index: 1;
     }
-    #connection-actions,
     .connection-control {
       position: relative;
     }
@@ -1787,7 +1714,6 @@ section,
     .info-badge,
     #game-status,
     #timer,
-    #status,
     .rule-pill {
       border: 1px solid rgba(122, 87, 52, 0.12) !important;
       background: rgba(255, 250, 238, 0.96) !important;
@@ -1795,19 +1721,6 @@ section,
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
       border-radius: 999px !important;
       font-weight: 900 !important;
-    }
-
-    #status.connected-badge {
-      background: rgba(239, 249, 223, 0.98) !important;
-      color: #577e2c !important;
-      border-color: rgba(122, 163, 74, 0.22) !important;
-    }
-
-    #status.connected-badge::before {
-      content: "●";
-      color: #77b42b;
-      margin-right: 0.45rem;
-      font-size: 0.95em;
     }
 
     #game-status {
@@ -2114,13 +2027,6 @@ section,
     .brand-dot-yellow { background: #f4c951 !important; }
     .brand-dot-green { background: #94b96d !important; }
 
-    #connection-controls {
-
-      align-items: center !important;
-      gap: 0.75rem !important;
-
-    }
-
     .connection-control {
       display: grid !important;
       grid-template-rows: auto auto !important;
@@ -2136,44 +2042,16 @@ section,
       padding-left: 0.18rem !important;
     }
 
-    #room,
-    #name {
-      width: clamp(8rem, 13vw, 13rem) !important;
-      min-height: 2.25rem !important;
-      padding: 0 0.9rem !important;
-      border-radius: var(--mk-pill) !important;
-      border: 1px solid var(--mk-line) !important;
-      background: #fffaf0 !important;
-      color: var(--mk-ink) !important;
-      box-shadow: none !important;
-      font-weight: 850 !important;
-    }
-
-    #connection-actions {
-
-      align-items: center !important;
-      gap: 0.75rem !important;
-      margin-left: 0.1rem !important;
-    }
-
 button:not(.board-cell):hover,
     .ui-button:hover {
       transform: translateY(-1px) !important;
       filter: brightness(1.02) !important;
     }
-
-    #connect,
     #start,
     #word-submit {
       background: var(--mk-orange) !important;
       color: #fffaf3 !important;
       border-color: rgba(185, 92, 36, 0.28) !important;
-    }
-
-    #connect {
-      min-width: 7.6rem !important;
-      min-height: 2.7rem !important;
-      padding-inline: 1.2rem !important;
     }
 
     #start {
@@ -2203,22 +2081,6 @@ button:not(.board-cell):hover,
       content: "⚙";
       margin-right: 0.55rem;
       opacity: 0.82;
-    }
-
-#status.connected-badge,
-    #status {
-      min-height: 2.4rem !important;
-      padding: 0 1rem !important;
-      background: var(--mk-green-soft) !important;
-      color: #4d762c !important;
-      border-color: rgba(101, 150, 58, 0.24) !important;
-      border-radius: var(--mk-pill) !important;
-    }
-
-    #status.connected-badge::before {
-      content: "●";
-      margin-right: 0.45rem;
-      color: #61a80f;
     }
 
     #boggle-layout {
@@ -2583,19 +2445,6 @@ button:not(.board-cell):hover,
       font-size: clamp(2.05rem, 3vw, 2.8rem) !important;
     }
 
-    #connection-controls {
-
-      grid-template-columns: minmax(8rem, 12rem) minmax(8rem, 12rem) auto auto minmax(6rem, 1fr) auto !important;
-      align-items: center !important;
-      gap: 0.55rem !important;
-    }
-
-    #room,
-    #name {
-      width: 100% !important;
-      box-sizing: border-box !important;
-    }
-
 #boggle-layout {
       grid-template-columns: minmax(17rem, 21rem) minmax(32rem, 43rem) minmax(17rem, 21rem) !important;
       align-items: start !important;
@@ -2910,31 +2759,12 @@ button:not(.board-cell):hover,
       margin-left: 0.1rem !important;
     }
 
-    #connection-controls {
-
-      grid-template-columns: minmax(9rem, 13rem) minmax(9rem, 13rem) auto auto 1fr auto !important;
-      gap: 0.7rem !important;
-      align-items: center !important;
-
-    }
-
     .connection-field-label {
       font-size: 0.92rem !important;
       font-weight: 950 !important;
       color: #6b3b1f !important;
       padding-left: 0.25rem !important;
       margin-bottom: 0.08rem !important;
-    }
-
-    #room,
-    #name {
-      min-height: 2.55rem !important;
-      border-radius: 9999px !important;
-      background: rgba(255, 249, 235, 0.9) !important;
-      border: 1px solid rgba(123, 83, 47, 0.2) !important;
-      box-shadow: none !important;
-      font-size: 1rem !important;
-      padding: 0 1rem !important;
     }
 
 #boggle-layout {
@@ -3182,13 +3012,6 @@ button:not(.board-cell):hover,
       height: 0.62rem !important;
     }
 
-    #connection-controls {
-
-      grid-template-columns: minmax(10rem, 14rem) minmax(10rem, 14rem) auto auto 1fr auto !important;
-      gap: 0.85rem !important;
-      align-items: center !important;
-    }
-
     .connection-control {
       gap: 0.18rem !important;
     }
@@ -3199,41 +3022,6 @@ button:not(.board-cell):hover,
       color: var(--brown) !important;
       padding-left: 0.75rem !important;
       line-height: 1 !important;
-    }
-
-    #room,
-    #name {
-      height: 2.75rem !important;
-      border-radius: var(--button-radius) !important;
-      background: rgba(255, 248, 232, 0.92) !important;
-      border: 2px solid rgba(111, 73, 40, 0.14) !important;
-      box-shadow: inset 0 0.08rem 0 rgba(255, 255, 255, 0.9) !important;
-      padding: 0 1.05rem !important;
-      color: var(--brown-dark) !important;
-      font-size: 1.04rem !important;
-      font-weight: 600 !important;
-    }
-
-    #connect {
-      height: 3rem !important;
-      min-height: 3rem !important;
-      padding-inline: 1.65rem !important;
-      background: var(--orange) !important;
-      border: 2px solid rgba(182, 88, 34, 0.16) !important;
-      color: white !important;
-      font-size: 1.06rem !important;
-      font-weight: 700 !important;
-    }
-
-    #status {
-      height: 2.8rem !important;
-      min-height: 2.8rem !important;
-
-      background: var(--green-soft) !important;
-      border: 2px solid rgba(103, 157, 70, 0.15) !important;
-      color: #4f7b2e !important;
-      font-weight: 700 !important;
-      font-size: 1rem !important;
     }
 
 #boggle-layout {
@@ -3550,16 +3338,6 @@ button:not(.board-cell):hover,
       margin: 0 auto 1rem !important;
       padding: 0.15rem 0.65rem !important;
       box-sizing: border-box !important;
-    }
-
-    #connection-controls {
-      grid-template-columns:
-        minmax(10rem, 14rem)
-        minmax(10rem, 14rem)
-        auto
-        auto
-        minmax(1rem, 1fr)
-        auto !important;
     }
 
     #boggle-layout {
@@ -4216,71 +3994,6 @@ button:not(.board-cell):hover,
       flex: 0 0 auto !important;
     }
 
-    #connection-controls {
-      display: block !important;
-      position: static !important;
-      width: auto !important;
-      flex: 1 1 auto !important;
-      min-width: 0 !important;
-    }
-
-    #connection-core {
-      position: absolute !important;
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      width: clamp(43rem, 46vw, 50rem) !important;
-      display: grid !important;
-      grid-template-columns:
-        minmax(10.5rem, 14rem)
-        minmax(10.5rem, 14rem)
-        minmax(8.4rem, auto)
-        8.8rem !important;
-      gap: clamp(0.55rem, 0.8vw, 0.85rem) !important;
-      align-items: end !important;
-      z-index: 2 !important;
-      pointer-events: auto !important;
-    }
-
-    #room-control {
-      grid-column: 1 !important;
-      justify-self: stretch !important;
-      min-width: 0 !important;
-    }
-
-    #name-control {
-      grid-column: 2 !important;
-      justify-self: stretch !important;
-      min-width: 0 !important;
-    }
-
-    #connect {
-      grid-column: 3 !important;
-      justify-self: center !important;
-      align-self: end !important;
-    }
-
-    #status {
-      grid-column: 4 !important;
-      justify-self: start !important;
-      align-self: end !important;
-      width: 8.8rem !important;
-      min-width: 8.8rem !important;
-      box-sizing: border-box !important;
-      padding-inline: 0.85rem !important;
-    }
-
-    #status[hidden] {
-      display: inline-flex !important;
-      visibility: hidden !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
-    #connection-actions {
-      display: none !important;
-    }
-
 #boggle-layout:has(#launch-panel:not([hidden])),
     #boggle-layout:has(#welcome-panel:not([hidden])) {
       height: auto !important;
@@ -4490,19 +4203,6 @@ button:not(.board-cell):hover,
     }
 
     @media (min-width: 100rem) {
-      #connection-core {
-        width: clamp(46rem, 44vw, 52rem) !important;
-        grid-template-columns:
-          minmax(11rem, 14.5rem)
-          minmax(11rem, 14.5rem)
-          minmax(8.8rem, auto)
-          8.9rem !important;
-      }
-
-      #status {
-        width: 8.9rem !important;
-        min-width: 8.9rem !important;
-      }
     }
 
     @media (max-width: 78rem) {
@@ -4510,24 +4210,6 @@ button:not(.board-cell):hover,
         display: grid !important;
         grid-template-columns: 1fr !important;
         gap: 0.75rem !important;
-      }
-
-      #connection-controls {
-        display: flex !important;
-        flex-wrap: wrap !important;
-      }
-
-      #connection-core {
-        position: static !important;
-        transform: none !important;
-        width: 100% !important;
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: flex-start !important;
-      }
-
-      #status[hidden] {
-        display: none !important;
       }
 
 #victory-modal-v16 {
@@ -6759,8 +6441,6 @@ body.v87-home-active {
   font-size: clamp(1.02rem, 1.25vw, 1.18rem) !important;
   font-weight: 650 !important;
 }
-
-/* CTA principal : même esprit que le bouton Valider / Connexion actuel. */
 .home-v87-primary-button {
   min-width: min(100%, 17rem) !important;
   min-height: 3.65rem !important;
