@@ -3416,14 +3416,55 @@ function openPrivateRoomFromHomeV87() {
 }
 
 function openSoloFromHomeV87() {
-  setSessionContextV901(GAME_CONTEXTS_V901.SOLO);
+  /*
+   * F1 :
+   * Le mode solo ne doit plus dépendre d'un clic manuel sur Connexion.
+   * On ouvre une session technique solo, puis on laisse l'écran règles /
+   * lancement existant s'afficher quand la socket est prête.
+   *
+   * Aucun DOM legacy n'est supprimé dans cette étape.
+   */
+  const clientId = getOrCreateClientId();
+  const roomId = normalizeSessionRoomIdV901(
+    `solo-${clientId}`,
+    "solo"
+  );
 
   showGameFromHomeV87();
 
-  if (startButton) {
-    startButton.focus();
-  }
+  connectToSessionV901({
+    roomId,
+    playerName: getTechnicalPlayerNameV901(),
+    context: GAME_CONTEXTS_V901.SOLO,
+    persistRoom: false,
+    persistPlayerName: false,
+    updateUrl: false
+  });
+
+  let attempts = 0;
+  const maxAttempts = 80;
+
+  const interval = window.setInterval(() => {
+    attempts += 1;
+
+    const launchPanel = document.querySelector("#launch-panel");
+
+    if (launchPanel && launchPanel.hidden === false) {
+      if (startButton && !startButton.disabled) {
+        startButton.focus();
+      }
+
+      window.clearInterval(interval);
+      return;
+    }
+
+    if (attempts >= maxAttempts) {
+      window.clearInterval(interval);
+      setHomeNoticeV87("Connexion au mode solo en cours : réessayez dans un instant si l’écran de lancement n’apparaît pas.");
+    }
+  }, 100);
 }
+
 
 function setupHomeScreenV87() {
   if (document.querySelector("#home-v87")) {
