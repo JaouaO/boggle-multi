@@ -88,10 +88,7 @@ function syncLayout() {
       return;
     }
 
-    ensureBrand(top);
-    moveConnectionControls(top);
-
-    moveDirect("#welcome-panel", center);
+    ensureBrand(top);moveDirect("#welcome-panel", center);
 
     const welcomePanel = document.querySelector("#welcome-panel");
     if (welcomePanel) {
@@ -322,73 +319,16 @@ function ensureSlot(parent, id, className) {
   return slot;
 }
 
-function moveConnectionControls() {
-  /*
-   * F2 :
-   * L'ancienne zone Room / Pseudo / Connexion / Connecté n'existe plus.
-   * Fonction conservée temporairement en no-op pour ne pas perturber syncLayout().
-   */
-}
 
 
-function ensureConnectionCore(parent) {
-  let core = document.querySelector("#connection-core");
 
-  if (!core) {
-    core = document.createElement("div");
-    core.id = "connection-core";
-  }
 
-  moveElementInto(core, parent);
 
-  return core;
-}
 
-function ensureConnectionControls(parent) {
-  let controls = document.querySelector("#connection-controls");
 
-  if (!controls) {
-    controls = document.createElement("div");
-    controls.id = "connection-controls";
-  }
 
-  moveElementInto(controls, parent);
 
-  return controls;
-}
 
-function ensureConnectionControl(parent, id, labelText) {
-  let control = document.querySelector(`#${id}`);
-
-  if (!control) {
-    control = document.createElement("label");
-    control.id = id;
-    control.className = "connection-control";
-
-    const label = document.createElement("span");
-    label.className = "connection-field-label";
-    label.textContent = labelText;
-
-    control.appendChild(label);
-  }
-
-  moveElementInto(control, parent);
-
-  return control;
-}
-
-function ensureConnectionActions(parent) {
-  let actions = document.querySelector("#connection-actions");
-
-  if (!actions) {
-    actions = document.createElement("div");
-    actions.id = "connection-actions";
-  }
-
-  moveElementInto(actions, parent);
-
-  return actions;
-}
 
 function moveNodeInto(selector, parent) {
   const node = document.querySelector(selector);
