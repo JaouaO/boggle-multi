@@ -4541,3 +4541,58 @@ function setupGlobalOptionsOverlayV908B() {
 setupGlobalOptionsOverlayV908B();
 
 /* V90.2.8B-GLOBAL-OPTIONS-OVERLAY END */
+
+/* V90.2.8D1A-REMOVE-HOME-LEGACY-ACTIONS START */
+
+/*
+ * D1a :
+ * - supprime uniquement les anciens boutons du header accueil : Compte + Options ;
+ * - ne touche pas à setupHomeScreenV87 ;
+ * - ne touche pas à l'ancien panneau Confort personnel du jeu ;
+ * - ne touche pas au bouton Options global.
+ */
+
+function removeHomeLegacyActionsV908D1A() {
+  const home = document.querySelector("#home-v87");
+
+  if (!home) {
+    return false;
+  }
+
+  for (const selector of [
+    '[data-home-action="account"]',
+    '[data-home-action="options"]',
+  ]) {
+    const button = home.querySelector(selector);
+
+    if (button) {
+      button.remove();
+    }
+  }
+
+  return true;
+}
+
+function setupHomeLegacyActionsCleanupV908D1A() {
+  let tries = 0;
+
+  const run = () => {
+    tries += 1;
+
+    const done = removeHomeLegacyActionsV908D1A();
+
+    if (!done && tries < 30) {
+      window.setTimeout(run, 100);
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run, { once: true });
+  } else {
+    run();
+  }
+}
+
+setupHomeLegacyActionsCleanupV908D1A();
+
+/* V90.2.8D1A-REMOVE-HOME-LEGACY-ACTIONS END */
