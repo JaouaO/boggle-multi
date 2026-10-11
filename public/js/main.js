@@ -68,11 +68,59 @@ let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
 
 
-const roomInput = document.querySelector("#room");
-const nameInput = document.querySelector("#name");
-const connectButton = document.querySelector("#connect");
+function createLegacyConnectionInputF2(kind) {
+  const input = document.createElement("input");
+
+  input.type = "hidden";
+  input.hidden = true;
+  input.dataset.legacyConnectionShim = "true";
+
+  if (kind === "room") {
+    input.value = "TEST";
+  }
+
+  return input;
+}
+
+function createLegacyConnectionButtonF2() {
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.hidden = true;
+  button.dataset.legacyConnectionShim = "true";
+
+  return button;
+}
+
+function createLegacyConnectionStatusF2() {
+  const status = document.createElement("p");
+
+  status.hidden = true;
+  status.dataset.legacyConnectionShim = "true";
+
+  return status;
+}
+
+/*
+ * F2 :
+ * La zone visible Room / Pseudo / Connexion / Connecté est supprimée.
+ *
+ * Ces éléments détachés restent temporairement pour les anciens accès JS.
+ * Ils ne sont pas insérés dans le DOM.
+ *
+ * TODO v90-cleanup :
+ * remplacer roomInput/nameInput/connectButton/statusElement par des valeurs
+ * internes quand les derniers fallbacks legacy auront été supprimés.
+ */
+const roomInput =
+  document.querySelector("#room") ?? createLegacyConnectionInputF2("room");
+const nameInput =
+  document.querySelector("#name") ?? createLegacyConnectionInputF2("name");
+const connectButton =
+  document.querySelector("#connect") ?? createLegacyConnectionButtonF2();
 const startButton = document.querySelector("#start");
-const statusElement = document.querySelector("#status");
+const statusElement =
+  document.querySelector("#status") ?? createLegacyConnectionStatusF2();
 const gameStatusElement = document.querySelector("#game-status");
 const timerElement = document.querySelector("#timer");
 const playersElement = document.querySelector("#players");
@@ -214,7 +262,7 @@ function createWelcomePanel() {
 
   const caption = document.createElement("p");
   caption.className = "welcome-caption";
-  caption.textContent = "Connectez-vous à une room pour lancer ou rejoindre une partie.";
+  caption.textContent = "Préparation de la partie…";
 
   panel.append(welcomeBoard, caption);
 
@@ -282,12 +330,20 @@ function updateInviteButton() {
   const isConnected =
     Boolean(state.socket) && state.socket.readyState === WebSocket.OPEN;
 
+  /*
+   * F2 :
+   * layout-ui.js ne doit plus déduire l'état connecté depuis #status,
+   * car #status n'est plus visible dans le DOM.
+   */
+  document.body.classList.toggle("boggle-session-connected", isConnected);
+
   connectionStatusLine.hidden = true;
-  statusElement.hidden = !isConnected;
-  statusElement.textContent = "Connecté";
+  statusElement.hidden = true;
+  statusElement.textContent = isConnected ? "Connecté" : "Déconnecté";
   inviteRoomButton.hidden = true;
   refreshHomeVisibility();
 }
+
 
 async function copyRoomInviteLink() {
   const inviteUrl = createRoomInviteUrl();
@@ -1294,6 +1350,7 @@ function connectToRoom(options = {}) {
     }
 
     statusElement.textContent = "Déconnecté";
+    document.body.classList.remove("boggle-session-connected");
     state.socket = null;
     updateInviteButton();
     startButton.disabled = true;
@@ -3384,7 +3441,7 @@ function waitAndStartGridFromHomeV87() {
 
     if (attempts >= maxAttempts) {
       window.clearInterval(interval);
-      setHomeNoticeV87("Connexion en cours : cliquez sur Lancer une grille si la partie ne démarre pas automatiquement.");
+      setHomeNoticeV87("Ouverture de la partie : cliquez sur Lancer une grille si la partie ne démarre pas automatiquement.");
     }
   }, 100);
 }
@@ -3460,7 +3517,7 @@ function openSoloFromHomeV87() {
 
     if (attempts >= maxAttempts) {
       window.clearInterval(interval);
-      setHomeNoticeV87("Connexion au mode solo en cours : réessayez dans un instant si l’écran de lancement n’apparaît pas.");
+      setHomeNoticeV87("Ouverture du mode solo en cours : réessayez dans un instant si l’écran de lancement n’apparaît pas.");
     }
   }, 100);
 }
@@ -4010,7 +4067,7 @@ function setupPrivateRoomScreenV89() {
             '<p>Créez une salle ou rejoignez vos amis grâce à un code de salon.</p>',
           '</div>',
 
-          '<div class="private-v89-form" aria-label="Connexion à un salon privé">',
+          '<div class="private-v89-form" aria-label="Accès à un salon privé">',
 
             '<label class="private-v89-field" for="private-v89-room">',
               '<span>Code du salon</span>',

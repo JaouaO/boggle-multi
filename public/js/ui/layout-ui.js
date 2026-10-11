@@ -288,10 +288,14 @@ function createMockupInfoCard({ id, modifier, icon, title, body, items = [] }) {
 
 
 function isConnected() {
-  const status = document.querySelector("#status");
-
-  return Boolean(status && !status.hidden);
+  /*
+   * F2 :
+   * L'état connecté est maintenant porté par main.js sur <body>,
+   * et non par l'ancien badge visible #status.
+   */
+  return document.body.classList.contains("boggle-session-connected");
 }
+
 
 function isGridActive() {
   const statusText = document
@@ -318,33 +322,14 @@ function ensureSlot(parent, id, className) {
   return slot;
 }
 
-function moveConnectionControls(top) {
-  const connectionControls = ensureConnectionControls(top);
-  const connectionCore = ensureConnectionCore(connectionControls);
-  const roomControl = ensureConnectionControl(connectionCore, "room-control", "Room :");
-  const nameControl = ensureConnectionControl(connectionCore, "name-control", "Pseudo :");
-  ensureConnectionActions(connectionControls);
-
-  moveNodeInto("#room", roomControl);
-  moveNodeInto("#name", nameControl);
-  moveNodeInto("#connect", connectionCore);
-
-  const connectionStatusLine = document.querySelector("#connection-status-line");
-  const status = document.querySelector("#status");
-  const invite = document.querySelector("#copy-room-link");
-
-  if (status) {
-    moveElementInto(status, connectionCore);
-  }
-
-  if (invite) {
-    moveElementInto(invite, connectionCore);
-  }
-
-  if (connectionStatusLine) {
-    connectionStatusLine.hidden = true;
-  }
+function moveConnectionControls() {
+  /*
+   * F2 :
+   * L'ancienne zone Room / Pseudo / Connexion / Connecté n'existe plus.
+   * Fonction conservée temporairement en no-op pour ne pas perturber syncLayout().
+   */
 }
+
 
 function ensureConnectionCore(parent) {
   let core = document.querySelector("#connection-core");
