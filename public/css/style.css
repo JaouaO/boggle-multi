@@ -8202,3 +8202,179 @@ body.player-identity-modal-open-v902 {
 }
 
 /* V90.2.8B.3-VISIBLE-CLOSE-BUTTON END */
+
+/* V90.2.8C-GLOBAL-OPTIONS-CONTENT START */
+
+.global-options-content-v908b {
+  display: grid !important;
+  gap: 1rem !important;
+}
+
+.global-options-section-v908c {
+  display: grid !important;
+  gap: 0.75rem !important;
+  padding: 0.85rem !important;
+  border: 1px solid rgba(90, 59, 35, 0.14) !important;
+  border-radius: 0.9rem !important;
+  background: rgba(255, 255, 255, 0.42) !important;
+}
+
+.global-options-section-v908c h3,
+.global-options-section-v908c p {
+  margin: 0 !important;
+}
+
+.global-options-help-v908c {
+  opacity: 0.76 !important;
+}
+
+.global-options-field-v908c {
+  display: grid !important;
+  gap: 0.35rem !important;
+  font-weight: 800 !important;
+}
+
+#global-options-pseudo-v908c {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0.65rem 0.75rem !important;
+  border: 1px solid rgba(91, 58, 36, 0.32) !important;
+  border-radius: 0.65rem !important;
+  background: #fffef8 !important;
+  color: #4b3322 !important;
+  font: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.global-options-fruits-v908c {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.45rem !important;
+}
+
+.global-options-fruit-v908c,
+#global-options-save-player-v908c {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 2.25rem !important;
+  padding: 0.45rem 0.7rem !important;
+  border: 1px solid rgba(91, 58, 36, 0.32) !important;
+  border-radius: 0.65rem !important;
+  background: #fff8e8 !important;
+  color: #4b3322 !important;
+  font: inherit !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.global-options-fruit-v908c {
+  min-width: 2.45rem !important;
+  font-size: 1.25rem !important;
+}
+
+.global-options-fruit-v908c.is-selected {
+  outline: 3px solid rgba(180, 123, 43, 0.45) !important;
+  background: #f8e6af !important;
+  border-color: rgba(91, 58, 36, 0.58) !important;
+}
+
+.global-options-actions-v908c {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.65rem !important;
+}
+
+#global-options-player-notice-v908c {
+  min-height: 1.2rem !important;
+  margin: 0 !important;
+  font-weight: 700 !important;
+}
+
+#global-options-player-notice-v908c[data-status="success"] {
+  color: #2f6f3e !important;
+}
+
+#global-options-player-notice-v908c[data-status="error"] {
+  color: #b42318 !important;
+}
+
+.global-options-row-v908c {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  padding: 0.75rem !important;
+  border-radius: 0.8rem !important;
+  background: rgba(255, 255, 255, 0.48) !important;
+  border: 1px solid rgba(90, 59, 35, 0.12) !important;
+}
+
+.global-options-row-v908c small {
+  display: block !important;
+  margin-top: 0.15rem !important;
+  opacity: 0.72 !important;
+}
+
+.global-options-row-stack-v908c {
+  align-items: stretch !important;
+  flex-direction: column !important;
+}
+
+.global-options-row-v908c input[type="range"] {
+  width: 100% !important;
+}
+
+#global-options-sound-v908c,
+#global-options-effects-v908c {
+  width: 1.35rem !important;
+  height: 1.35rem !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* V90.2.8C-GLOBAL-OPTIONS-CONTENT END */
+
+/* V90.2.8C.1-FRUITS-STICKY-CLOSE START */
+
+.global-options-header-v908b {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 3 !important;
+  background: #fff8e8 !important;
+  box-shadow: 0 0.35rem 0.85rem rgba(47, 33, 24, 0.08) !important;
+}
+
+.global-options-close-v908b {
+  position: relative !important;
+  z-index: 4 !important;
+  flex-shrink: 0 !important;
+}
+
+.global-options-fruits-v908c {
+  min-height: 2.7rem !important;
+}
+
+.global-options-fruit-v908c {
+  color: #2f2118 !important;
+  -webkit-text-fill-color: #2f2118 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+
+.global-options-fruit-v908c::before,
+.global-options-fruit-v908c::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* V90.2.8C.1-FRUITS-STICKY-CLOSE END */

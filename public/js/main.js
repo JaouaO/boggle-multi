@@ -4088,6 +4088,331 @@ setupPrivateRoomScreenV89();
 
 /* V89-PRIVATE-ROOM-SCREEN END */
 
+/* V90.2.8C-GLOBAL-OPTIONS-CONTENT START */
+
+/*
+ * Étape C : contenu réel de l'overlay Options global.
+ *
+ * Important :
+ * - ne supprime pas encore les anciens boutons Options ;
+ * - ne déplace pas #player-preferences ;
+ * - réutilise les fonctions V90.2 d'identité joueur ;
+ * - utilise des IDs dédiés v908c pour éviter les collisions.
+ */
+
+function renderGlobalOptionsContentV908C() {
+  const { overlay } = ensureGlobalOptionsOverlayV908B();
+  const content = overlay.querySelector(".global-options-content-v908b");
+  const headerDescription = overlay.querySelector(".global-options-header-v908b p");
+
+  if (!content) {
+    return;
+  }
+
+  if (headerDescription) {
+    headerDescription.textContent = "Préférences locales de ce navigateur.";
+  }
+
+  if (content.dataset.renderedV908C !== "true") {
+    content.dataset.renderedV908C = "true";
+
+    content.innerHTML = [
+      '<section class="global-options-section-v908c" aria-labelledby="global-options-player-title-v908c">',
+        '<h3 id="global-options-player-title-v908c">Joueur</h3>',
+        '<p class="global-options-help-v908c">Pseudo et fruit utilisés pour les salons publics, privés et les scores.</p>',
+        '<label class="global-options-field-v908c" for="global-options-pseudo-v908c">',
+          '<span>Pseudo</span>',
+          '<input id="global-options-pseudo-v908c" type="text" autocomplete="nickname" maxlength="24">',
+        '</label>',
+        '<div class="global-options-fruits-v908c" role="group" aria-label="Choisir un fruit"></div>',
+        '<div class="global-options-actions-v908c">',
+          '<button id="global-options-save-player-v908c" type="button">Enregistrer le joueur</button>',
+          '<p id="global-options-player-notice-v908c" aria-live="polite"></p>',
+        '</div>',
+      '</section>',
+      '<section class="global-options-section-v908c" aria-labelledby="global-options-comfort-title-v908c">',
+        '<h3 id="global-options-comfort-title-v908c">Confort</h3>',
+        '<label class="global-options-row-v908c">',
+          '<span>',
+            '<strong>Sons activés</strong>',
+            '<small>Active ou coupe les sons sur ce navigateur.</small>',
+          '</span>',
+          '<input id="global-options-sound-v908c" type="checkbox">',
+        '</label>',
+        '<label class="global-options-row-v908c global-options-row-stack-v908c">',
+          '<span>',
+            '<strong>Volume</strong>',
+            '<small>Volume des sons locaux.</small>',
+          '</span>',
+          '<input id="global-options-volume-v908c" type="range" min="0" max="100" step="5">',
+        '</label>',
+        '<label class="global-options-row-v908c">',
+          '<span>',
+            '<strong>Effets visuels</strong>',
+            '<small>Active ou coupe les animations de feedback.</small>',
+          '</span>',
+          '<input id="global-options-effects-v908c" type="checkbox">',
+        '</label>',
+      '</section>',
+    ].join("");
+
+    setupGlobalOptionsIdentityControlsV908C(content);
+    setupGlobalOptionsComfortControlsV908C(content);
+  }
+
+  syncGlobalOptionsIdentityControlsV908C(content);
+  syncGlobalOptionsComfortControlsV908C(content);
+}
+
+function setupGlobalOptionsIdentityControlsV908C(content) {
+  const pseudoInput = content.querySelector("#global-options-pseudo-v908c");
+  const fruitList = content.querySelector(".global-options-fruits-v908c");
+  const saveButton = content.querySelector("#global-options-save-player-v908c");
+
+  if (!pseudoInput || !fruitList || !saveButton) {
+    return;
+  }
+
+  if (typeof attachPseudoInputSanitizerV902 === "function") {
+    attachPseudoInputSanitizerV902(pseudoInput);
+  }
+
+  fruitList.innerHTML = "";
+
+  for (const fruit of PLAYER_FRUITS_V902) {
+    const fruitValue = getGlobalOptionsFruitValueV908C1(fruit);
+    const fruitLabel = getGlobalOptionsFruitLabelV908C1(fruit, fruitValue);
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "global-options-fruit-v908c";
+    button.textContent = fruitValue;
+    button.dataset.fruit = fruitValue;
+    button.title = fruitLabel;
+    button.setAttribute("aria-label", `Choisir ${fruitLabel}`);
+
+    button.addEventListener("click", () => {
+      fruitList.dataset.selectedFruit = fruitValue;
+      syncGlobalOptionsFruitSelectionV908C(content);
+      saveGlobalOptionsIdentityV908C(content);
+    });
+
+    fruitList.append(button);
+  }
+
+  saveButton.addEventListener("click", () => {
+    saveGlobalOptionsIdentityV908C(content);
+  });
+
+  pseudoInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      saveGlobalOptionsIdentityV908C(content);
+    }
+  });
+
+  pseudoInput.addEventListener("blur", () => {
+    pseudoInput.value = normalizePlayerPseudoV902(pseudoInput.value);
+  });
+}
+
+function syncGlobalOptionsIdentityControlsV908C(content) {
+  const identity = readPlayerIdentityV902();
+  const pseudoInput = content.querySelector("#global-options-pseudo-v908c");
+  const fruitList = content.querySelector(".global-options-fruits-v908c");
+
+  if (!pseudoInput || !fruitList) {
+    return;
+  }
+
+  const pseudo = identity?.pseudo || getLegacyPseudoV902();
+  const fruit = normalizePlayerFruitV902(
+    fruitList.dataset.selectedFruit || identity?.fruit || getDefaultFruitV902()
+  );
+
+  if (document.activeElement !== pseudoInput) {
+    pseudoInput.value = pseudo;
+  }
+
+  fruitList.dataset.selectedFruit = fruit;
+  syncGlobalOptionsFruitSelectionV908C(content);
+}
+
+function syncGlobalOptionsFruitSelectionV908C(content) {
+  const fruitList = content.querySelector(".global-options-fruits-v908c");
+
+  if (!fruitList) {
+    return;
+  }
+
+  const selectedFruit = normalizePlayerFruitV902(
+    fruitList.dataset.selectedFruit || getDefaultFruitV902()
+  );
+
+  for (const button of fruitList.querySelectorAll(".global-options-fruit-v908c")) {
+    const selected = button.dataset.fruit === selectedFruit;
+
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  }
+}
+
+function saveGlobalOptionsIdentityV908C(content) {
+  const pseudoInput = content.querySelector("#global-options-pseudo-v908c");
+  const fruitList = content.querySelector(".global-options-fruits-v908c");
+  const notice = content.querySelector("#global-options-player-notice-v908c");
+
+  if (!pseudoInput || !fruitList) {
+    return;
+  }
+
+  const identity = savePlayerIdentityV902({
+    pseudo: pseudoInput.value,
+    fruit: fruitList.dataset.selectedFruit || getDefaultFruitV902(),
+  });
+
+  if (!identity) {
+    if (notice) {
+      notice.textContent = "Indiquez un pseudo pour enregistrer le joueur.";
+      notice.dataset.status = "error";
+    }
+
+    syncGlobalOptionsFruitSelectionV908C(content);
+    return;
+  }
+
+  pseudoInput.value = identity.pseudo;
+  fruitList.dataset.selectedFruit = identity.fruit;
+  syncGlobalOptionsFruitSelectionV908C(content);
+
+  if (notice) {
+    notice.textContent = `Joueur enregistré : ${identity.fruit} ${identity.pseudo}`;
+    notice.dataset.status = "success";
+  }
+}
+
+function setupGlobalOptionsComfortControlsV908C(content) {
+  const sound = content.querySelector("#global-options-sound-v908c");
+  const volume = content.querySelector("#global-options-volume-v908c");
+  const effects = content.querySelector("#global-options-effects-v908c");
+
+  if (!sound || !volume || !effects) {
+    return;
+  }
+
+  sound.addEventListener("change", () => {
+    saveGlobalOptionsComfortV908C(content);
+  });
+
+  volume.addEventListener("input", () => {
+    saveGlobalOptionsComfortV908C(content);
+  });
+
+  volume.addEventListener("change", () => {
+    saveGlobalOptionsComfortV908C(content);
+  });
+
+  effects.addEventListener("change", () => {
+    saveGlobalOptionsComfortV908C(content);
+  });
+}
+
+function syncGlobalOptionsComfortControlsV908C(content) {
+  const sound = content.querySelector("#global-options-sound-v908c");
+  const volume = content.querySelector("#global-options-volume-v908c");
+  const effects = content.querySelector("#global-options-effects-v908c");
+
+  if (!sound || !volume || !effects) {
+    return;
+  }
+
+  sound.checked = state.playerPreferences.soundEnabled !== false;
+  volume.value = String(
+    Math.round(clampGlobalOptionsVolumeV908C(state.playerPreferences.masterVolume ?? 0.65) * 100)
+  );
+  effects.checked = state.playerPreferences.visualEffectsEnabled !== false;
+}
+
+function saveGlobalOptionsComfortV908C(content) {
+  const sound = content.querySelector("#global-options-sound-v908c");
+  const volume = content.querySelector("#global-options-volume-v908c");
+  const effects = content.querySelector("#global-options-effects-v908c");
+
+  if (!sound || !volume || !effects) {
+    return;
+  }
+
+  state.playerPreferences = {
+    ...state.playerPreferences,
+    soundEnabled: Boolean(sound.checked),
+    masterVolume: clampGlobalOptionsVolumeV908C(Number(volume.value) / 100),
+    visualEffectsEnabled: Boolean(effects.checked),
+  };
+
+  saveLocalJson(STORAGE_KEYS.playerPreferences, state.playerPreferences);
+}
+
+function clampGlobalOptionsVolumeV908C(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return 0.65;
+  }
+
+  return Math.min(1, Math.max(0, number));
+}
+
+/* V90.2.8C.1-FRUITS-HELPERS START */
+
+function getGlobalOptionsFruitValueV908C1(fruit) {
+  if (typeof fruit === "string") {
+    return normalizePlayerFruitV902(fruit);
+  }
+
+  if (!fruit || typeof fruit !== "object") {
+    return getDefaultFruitV902();
+  }
+
+  const directKeys = ["value", "emoji", "fruit", "icon", "symbol", "id"];
+
+  for (const key of directKeys) {
+    const value = fruit[key];
+
+    if (typeof value === "string" && isKnownFruitV902(value)) {
+      return normalizePlayerFruitV902(value);
+    }
+  }
+
+  for (const value of Object.values(fruit)) {
+    if (typeof value === "string" && isKnownFruitV902(value)) {
+      return normalizePlayerFruitV902(value);
+    }
+  }
+
+  return getDefaultFruitV902();
+}
+
+function getGlobalOptionsFruitLabelV908C1(fruit, fruitValue) {
+  if (!fruit || typeof fruit !== "object") {
+    return fruitValue;
+  }
+
+  for (const key of ["label", "name", "title", "ariaLabel"]) {
+    const value = fruit[key];
+
+    if (typeof value === "string" && value.trim()) {
+      return value.trim();
+    }
+  }
+
+  return fruitValue;
+}
+
+/* V90.2.8C.1-FRUITS-HELPERS END */
+
+/* V90.2.8C-GLOBAL-OPTIONS-CONTENT END */
+
 /* V90.2.8B-GLOBAL-OPTIONS-OVERLAY START */
 
 /*
@@ -4179,12 +4504,17 @@ function ensureGlobalOptionsOverlayV908B() {
 function openGlobalOptionsOverlayV908B() {
   const { button, overlay } = ensureGlobalOptionsOverlayV908B();
 
+  renderGlobalOptionsContentV908C();
+
   overlay.hidden = false;
   button.setAttribute("aria-expanded", "true");
 
+  const firstInput = overlay.querySelector("#global-options-pseudo-v908c");
   const closeButton = overlay.querySelector("[data-global-options-close-v908b]");
 
-  if (closeButton instanceof HTMLElement) {
+  if (firstInput instanceof HTMLElement) {
+    firstInput.focus();
+  } else if (closeButton instanceof HTMLElement) {
     closeButton.focus();
   }
 }
