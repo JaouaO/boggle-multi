@@ -3443,16 +3443,7 @@ function setupHomeScreenV87() {
           '<span class="home-v87-logo-text">Boggle</span>',
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
-        '<nav class="home-v87-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-home-action="account">',
-            '<span aria-hidden="true">👤</span>',
-            '<span>Compte</span>',
-          '</button>',
-          '<button class="home-v87-top-button ui-button" type="button" data-home-action="options">',
-            '<span aria-hidden="true">⚙️</span>',
-            '<span>Options</span>',
-          '</button>',
-        '</nav>',
+        '<nav class="home-v87-actions" aria-label="Actions rapides">',        '</nav>',
       '</header>',
 
       '<div id="home-v87-notice" class="home-v87-notice" hidden></div>',
@@ -3566,15 +3557,6 @@ function setupHomeScreenV87() {
     if (action === "top") {
       setHomeNoticeV87("Le classement complet sera ajouté avec la grille du jour.");
       return;
-    }
-
-    if (action === "account") {
-      setHomeNoticeV87("Le compte sera ajouté plus tard.");
-      return;
-    }
-
-    if (action === "options") {
-      setHomeNoticeV87("Les options sons, musique et animations seront ajoutées plus tard.");
     }
   });
 
@@ -3724,9 +3706,7 @@ function setupPublicRoomsScreenV88() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions public-v88-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-public-action="home">Accueil</button>',
-          '<button class="home-v87-top-button ui-button" type="button" data-public-action="options">Options</button>',
-        '</nav>',
+          '<button class="home-v87-top-button ui-button" type="button" data-public-action="home">Accueil</button>',        '</nav>',
       '</header>',
 
       '<main class="public-v88-main">',
@@ -3790,11 +3770,6 @@ function setupPublicRoomsScreenV88() {
     if (action === "home") {
       showHomeFromPublicV88();
       return;
-    }
-
-    if (action === "options") {
-      setHomeNoticeV87("Les options sons, musique et animations seront ajoutées plus tard.");
-      showHomeFromPublicV88();
     }
   });
 
@@ -4003,9 +3978,7 @@ function setupPrivateRoomScreenV89() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions private-v89-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-private-action="home">Accueil</button>',
-          '<button class="home-v87-top-button ui-button" type="button" data-private-action="options">Options</button>',
-        '</nav>',
+          '<button class="home-v87-top-button ui-button" type="button" data-private-action="home">Accueil</button>',        '</nav>',
       '</header>',
 
       '<main class="private-v89-main">',
@@ -4053,11 +4026,6 @@ function setupPrivateRoomScreenV89() {
 
     if (action === "home") {
       showHomeFromPrivateV89();
-      return;
-    }
-
-    if (action === "options") {
-      setPrivateNoticeV89("Les options sons, musique et animations seront ajoutées plus tard.");
       return;
     }
 
@@ -4541,57 +4509,3 @@ setupGlobalOptionsOverlayV908B();
 
 /* V90.2.8B-GLOBAL-OPTIONS-OVERLAY END */
 
-/* V90.2.8D1A-REMOVE-HOME-LEGACY-ACTIONS START */
-
-/*
- * D1a :
- * - supprime uniquement les anciens boutons du header accueil : Compte + Options ;
- * - ne touche pas à setupHomeScreenV87 ;
- * - ne touche pas à l'ancien panneau Confort personnel du jeu ;
- * - ne touche pas au bouton Options global.
- */
-
-function removeHomeLegacyActionsV908D1A() {
-  const home = document.querySelector("#home-v87");
-
-  if (!home) {
-    return false;
-  }
-
-  for (const selector of [
-    '[data-home-action="account"]',
-    '[data-home-action="options"]',
-  ]) {
-    const button = home.querySelector(selector);
-
-    if (button) {
-      button.remove();
-    }
-  }
-
-  return true;
-}
-
-function setupHomeLegacyActionsCleanupV908D1A() {
-  let tries = 0;
-
-  const run = () => {
-    tries += 1;
-
-    const done = removeHomeLegacyActionsV908D1A();
-
-    if (!done && tries < 30) {
-      window.setTimeout(run, 100);
-    }
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", run, { once: true });
-  } else {
-    run();
-  }
-}
-
-setupHomeLegacyActionsCleanupV908D1A();
-
-/* V90.2.8D1A-REMOVE-HOME-LEGACY-ACTIONS END */
