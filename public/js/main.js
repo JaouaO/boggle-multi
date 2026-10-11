@@ -601,7 +601,7 @@ function getStoredPlayerNameV901() {
  * - aucune dépendance à l'IP, aucun compte utilisateur.
  *
  * TODO v90-cleanup :
- * - supprimer le champ privé #private-v89-name quand les derniers flux n'en dépendent plus ;
+ * - champ privé #private-v89-name supprimé en E6c ;
  * - supprimer l'ancien #name global ;
  * - envoyer pseudo et fruit séparément au serveur si le protocole WebSocket évolue.
  */
@@ -3806,8 +3806,14 @@ function getPrivateRoomInputV89() {
 }
 
 function getPrivateNameInputV89() {
-  return document.querySelector("#private-v89-name");
+  /*
+   * E6c :
+   * Le salon privé ne porte plus l'identité joueur.
+   * L'identité locale pseudo + fruit est gérée par Options / popup.
+   */
+  return null;
 }
+
 
 function getPrivateNoticeV89() {
   return document.querySelector("#private-v89-notice");
@@ -3839,47 +3845,21 @@ function normalizeRoomCodeV89(value) {
 
 function fillPrivateFormFromExistingV89() {
   const privateRoomInput = getPrivateRoomInputV89();
-  const privateNameInput = getPrivateNameInputV89();
 
-  if (privateRoomInput && roomInput && roomInput.value.trim()) {
-    privateRoomInput.value = roomInput.value.trim();
-  }
-
-  if (privateNameInput && nameInput && nameInput.value.trim()) {
-    privateNameInput.value = nameInput.value.trim();
+  if (privateRoomInput && roomInput?.value) {
+    privateRoomInput.value = roomInput.value;
   }
 }
 
-function syncPrivateFormToExistingV89({ createIfMissing = false } = {}) {
+
+function syncPrivateFormToExistingV89() {
   const privateRoomInput = getPrivateRoomInputV89();
-  const privateNameInput = getPrivateNameInputV89();
 
-  let roomValue = privateRoomInput ? normalizeRoomCodeV89(privateRoomInput.value) : "";
-  const nameValue = privateNameInput ? privateNameInput.value.trim() : "";
-
-  if (!roomValue && createIfMissing) {
-    roomValue = createPrivateRoomCodeV89().toLowerCase();
-
-    if (privateRoomInput) {
-      privateRoomInput.value = roomValue.toUpperCase();
-    }
+  if (privateRoomInput && roomInput) {
+    roomInput.value = privateRoomInput.value.trim();
   }
-
-  if (!roomValue) {
-    setPrivateNoticeV89("Indiquez un code de salon ou créez un nouveau salon.");
-    return false;
-  }
-
-  if (roomInput) {
-    roomInput.value = roomValue;
-  }
-
-  if (nameInput) {
-    nameInput.value = nameValue || "Joueur";
-  }
-
-  return true;
 }
+
 
 function showHomeFromPrivateV89() {
   document.body.classList.remove("v89-private-active");
@@ -3989,11 +3969,7 @@ function setupPrivateRoomScreenV89() {
             '<p>Créez une salle ou rejoignez vos amis grâce à un code de salon.</p>',
           '</div>',
 
-          '<div class="private-v89-form" aria-label="Connexion à un salon privé">',
-            '<label class="private-v89-field" for="private-v89-name">',
-              '<span>Pseudo</span>',
-              '<input id="private-v89-name" type="text" autocomplete="off" placeholder="Votre pseudo">',
-            '</label>',
+          '<div class="private-v89-form" aria-label="Connexion à un salon privé">',
 
             '<label class="private-v89-field" for="private-v89-room">',
               '<span>Code du salon</span>',
@@ -4008,7 +3984,7 @@ function setupPrivateRoomScreenV89() {
 
             '<p id="private-v89-notice" class="home-v87-notice private-v89-notice" hidden></p>',
 
-            '<p class="private-v89-helper">Les règles de la partie restent réglables dans l’écran de jeu après connexion.</p>',
+            '<p class="private-v89-helper">Les règles de la partie restent réglables dans l’écran de jeu après avoir rejoint le salon.</p>',
           '</div>',
         '</section>',
       '</main>',
