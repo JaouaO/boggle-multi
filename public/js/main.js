@@ -100,13 +100,12 @@ function createLegacyConnectionStatusF2() {
  * Ils ne sont pas insérés dans le DOM.
  *
  * TODO v90-cleanup :
- * remplacer roomInput/nameInput/statusElement par des valeurs
+ * remplacer roomInput/statusElement par des valeurs
  * internes quand les derniers fallbacks legacy auront été supprimés.
  */
 const roomInput =
   document.querySelector("#room") ?? createLegacyConnectionInputF2("room");
-const nameInput =
-  document.querySelector("#name") ?? createLegacyConnectionInputF2("name");const startButton = document.querySelector("#start");
+const startButton = document.querySelector("#start");
 const statusElement =
   document.querySelector("#status") ?? createLegacyConnectionStatusF2();
 const gameStatusElement = document.querySelector("#game-status");
@@ -122,8 +121,6 @@ const foundWordsElement = document.querySelector("#found-words");
 
 roomInput.placeholder = "Room";
 roomInput.setAttribute("aria-label", "Room");
-nameInput.placeholder = "Pseudo";
-nameInput.setAttribute("aria-label", "Pseudo");
 
 const endGameButton = document.createElement("button");
 endGameButton.id = "end-game";
@@ -189,16 +186,9 @@ roomInput.addEventListener("input", () => {
   updateInviteButton();
   saveLocalString(STORAGE_KEYS.lastRoomId, roomInput.value.trim());
 });
-nameInput.addEventListener("input", () => {
-  saveLocalString(STORAGE_KEYS.playerName, nameInput.value.trim());
-});
 
 const savedSettings = loadLocalSettings();
 const initialRoomId = getInitialRoomIdFromUrl();
-
-if (savedSettings.playerName) {
-  nameInput.value = savedSettings.playerName;
-}
 
 if (initialRoomId) {
   roomInput.value = initialRoomId;
@@ -598,9 +588,9 @@ function takePendingSubmissionPath() {
  * - préparer sa suppression complète en v90.2/v90.3.
  *
  * TODO v90-cleanup :
- * - supprimer #room, #name, #connect, #status de index.html ;
+ * - supprimer #room et #status de index.html ;
  * - supprimer moveConnectionControls() de layout-ui.js ;
- * - supprimer les règles CSS #room/#name/#connect/#status ;
+ * - supprimer les règles CSS #room/#status ;
  * - remplacer le mot "connexion" par "rejoindre une partie" côté UI.
  */
 
@@ -643,7 +633,6 @@ function getStoredPlayerNameV901() {
  *
  * TODO v90-cleanup :
  * - champ privé #private-v89-name supprimé en E6c ;
- * - supprimer l'ancien #name global ;
  * - envoyer pseudo et fruit séparément au serveur si le protocole WebSocket évolue.
  */
 
@@ -754,10 +743,7 @@ function savePlayerIdentityV902(identity) {
   );
 
   saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
-
-  if (nameInput && !nameInput.value.trim()) {
-    nameInput.value = normalized.pseudo;
-  }
+  saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
 
   updatePlayerIdentityOptionsV902();
 
@@ -1245,7 +1231,7 @@ function connectToRoom(options = {}) {
   );
 
   const playerName = normalizeSessionPlayerNameV901(
-    hasExplicitSession ? options.playerName : nameInput.value.trim(),
+    hasExplicitSession ? options.playerName : getTechnicalPlayerNameV901(),
     "joueur"
   );
 
@@ -3397,19 +3383,7 @@ function showGameFromHomeV87() {
   }
 }
 
-function ensurePlayerNameFromHomeV87() {
-  /*
-   * Compatibilité temporaire.
-   * Les nouveaux parcours ne doivent plus s'appuyer sur #name comme source de vérité.
-   */
-  if (!nameInput) {
-    return;
-  }
 
-  if (!nameInput.value.trim()) {
-    nameInput.value = getStoredPlayerNameV901();
-  }
-}
 
 function waitAndStartGridFromHomeV87() {
   let attempts = 0;
