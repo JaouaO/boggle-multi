@@ -4088,60 +4088,126 @@ setupPrivateRoomScreenV89();
 
 /* V89-PRIVATE-ROOM-SCREEN END */
 
-/* V90.2.8A-GLOBAL-OPTIONS-BUTTON START */
+/* V90.2.8B-GLOBAL-OPTIONS-OVERLAY START */
 
 /*
- * Étape A : bouton Options global minimal.
+ * Étape B : bouton Options global + overlay vide.
  *
  * Objectif :
- * - vérifier qu'un bouton global fixe peut exister sans casser l'accueil ni le jeu ;
- * - ne pas ouvrir encore de panneau ;
+ * - garder le bouton global validé en v90.2.8A ;
+ * - ouvrir/fermer un overlay indépendant ;
  * - ne supprimer aucun ancien bouton ;
- * - ne pas modifier le DOM existant hors ajout du bouton.
+ * - ne déplacer aucun panneau existant ;
+ * - ne pas encore intégrer pseudo, fruit, sons ou effets.
  */
 
-function ensureGlobalOptionsButtonV908A() {
-  let button = document.querySelector("#global-options-button-v908a");
+function ensureGlobalOptionsOverlayV908B() {
+  let button = document.querySelector("#global-options-button-v908b");
+  let overlay = document.querySelector("#global-options-overlay-v908b");
 
-  if (button) {
-    return button;
+  if (!button) {
+    button = document.createElement("button");
+    button.id = "global-options-button-v908b";
+    button.className = "global-options-button-v908b";
+    button.type = "button";
+    button.textContent = "Options";
+    button.title = "Options globales";
+    button.setAttribute("aria-label", "Ouvrir les options globales");
+    button.setAttribute("aria-haspopup", "dialog");
+    button.setAttribute("aria-expanded", "false");
+
+    document.body.append(button);
   }
 
-  button = document.createElement("button");
-  button.id = "global-options-button-v908a";
-  button.className = "global-options-button-v908a";
-  button.type = "button";
-  button.textContent = "Options";
-  button.title = "Options globales";
-  button.setAttribute("aria-label", "Ouvrir les options globales");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "global-options-overlay-v908b";
+    overlay.className = "global-options-overlay-v908b";
+    overlay.hidden = true;
 
-  button.addEventListener("click", () => {
-    button.dataset.clicked = "true";
-    button.textContent = "Options ✓";
-    console.info("[Boggle] Bouton Options global OK");
+    overlay.innerHTML = [
+      '<div class="global-options-backdrop-v908b" data-global-options-close-v908b="true"></div>',
+      '<section class="global-options-dialog-v908b" role="dialog" aria-modal="true" aria-labelledby="global-options-title-v908b">',
+        '<header class="global-options-header-v908b">',
+          '<div>',
+            '<h2 id="global-options-title-v908b">Options</h2>',
+            '<p>Overlay global indépendant — contenu à intégrer à l’étape suivante.</p>',
+          '</div>',
+          '<button class="global-options-close-v908b" type="button" data-global-options-close-v908b="true" aria-label="Fermer les options"><span aria-hidden="true">×</span><span>Fermer</span></button>',
+        '</header>',
+        '<div class="global-options-content-v908b">',
+          '<p>Overlay OK.</p>',
+        '</div>',
+      '</section>',
+    ].join("");
 
-    window.setTimeout(() => {
-      button.dataset.clicked = "false";
-      button.textContent = "Options";
-    }, 900);
-  });
+    document.body.append(overlay);
+  }
 
-  document.body.append(button);
+  if (button.dataset.boundV908B !== "true") {
+    button.dataset.boundV908B = "true";
 
-  return button;
+    button.addEventListener("click", () => {
+      openGlobalOptionsOverlayV908B();
+    });
+  }
+
+  if (overlay.dataset.boundV908B !== "true") {
+    overlay.dataset.boundV908B = "true";
+
+    overlay.addEventListener("click", (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+
+      if (target?.closest("[data-global-options-close-v908b]")) {
+        closeGlobalOptionsOverlayV908B();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !overlay.hidden) {
+        closeGlobalOptionsOverlayV908B();
+      }
+    });
+  }
+
+  return {
+    button,
+    overlay,
+  };
 }
 
-function setupGlobalOptionsButtonV908A() {
+function openGlobalOptionsOverlayV908B() {
+  const { button, overlay } = ensureGlobalOptionsOverlayV908B();
+
+  overlay.hidden = false;
+  button.setAttribute("aria-expanded", "true");
+
+  const closeButton = overlay.querySelector("[data-global-options-close-v908b]");
+
+  if (closeButton instanceof HTMLElement) {
+    closeButton.focus();
+  }
+}
+
+function closeGlobalOptionsOverlayV908B() {
+  const { button, overlay } = ensureGlobalOptionsOverlayV908B();
+
+  overlay.hidden = true;
+  button.setAttribute("aria-expanded", "false");
+  button.focus();
+}
+
+function setupGlobalOptionsOverlayV908B() {
   if (!document.body) {
-    window.addEventListener("DOMContentLoaded", setupGlobalOptionsButtonV908A, {
+    window.addEventListener("DOMContentLoaded", setupGlobalOptionsOverlayV908B, {
       once: true,
     });
     return;
   }
 
-  ensureGlobalOptionsButtonV908A();
+  ensureGlobalOptionsOverlayV908B();
 }
 
-setupGlobalOptionsButtonV908A();
+setupGlobalOptionsOverlayV908B();
 
-/* V90.2.8A-GLOBAL-OPTIONS-BUTTON END */
+/* V90.2.8B-GLOBAL-OPTIONS-OVERLAY END */
