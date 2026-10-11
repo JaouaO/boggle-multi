@@ -289,9 +289,9 @@ function createMockupInfoCard({ id, modifier, icon, title, body, items = [] }) {
 
 function isConnected() {
   /*
-   * F2 :
-   * L'état connecté est maintenant porté par main.js sur <body>,
-   * et non par l'ancien badge visible #status.
+   * F2/F4d :
+   * L'état connecté est porté par main.js sur <body>,
+   * sans dépendre d'un ancien badge DOM.
    */
   return document.body.classList.contains("boggle-session-connected");
 }

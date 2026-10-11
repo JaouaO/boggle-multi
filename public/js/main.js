@@ -83,15 +83,6 @@ function createLegacyConnectionInputF2(kind) {
 }
 
 
-function createLegacyConnectionStatusF2() {
-  const status = document.createElement("p");
-
-  status.hidden = true;
-  status.dataset.legacyConnectionShim = "true";
-
-  return status;
-}
-
 /*
  * F2 :
  * La zone visible Room / Pseudo / Connexion / Connecté est supprimée.
@@ -100,14 +91,12 @@ function createLegacyConnectionStatusF2() {
  * Ils ne sont pas insérés dans le DOM.
  *
  * TODO v90-cleanup :
- * remplacer roomInput/statusElement par des valeurs
+ * remplacer roomInput par des valeurs
  * internes quand les derniers fallbacks legacy auront été supprimés.
  */
 const roomInput =
   document.querySelector("#room") ?? createLegacyConnectionInputF2("room");
 const startButton = document.querySelector("#start");
-const statusElement =
-  document.querySelector("#status") ?? createLegacyConnectionStatusF2();
 const gameStatusElement = document.querySelector("#game-status");
 const timerElement = document.querySelector("#timer");
 const playersElement = document.querySelector("#players");
@@ -169,12 +158,7 @@ boardElement.insertAdjacentElement("beforebegin", welcomePanel);
 applyThemeStyles();
 
 
-function setupConnectionFields() {
-  statusElement.classList.add("info-badge", "info-badge-strong", "connected-badge");
-  statusElement.hidden = true;
-  statusElement.textContent = "Connecté";
-
-  inviteRoomButton.hidden = true;
+function setupConnectionFields() {inviteRoomButton.hidden = true;
   connectionStatusLine.hidden = true;
 }startButton.addEventListener("click", startRandomTimedGame);
 wordForm.addEventListener("submit", submitWord);
@@ -306,16 +290,12 @@ function updateInviteButton() {
     Boolean(state.socket) && state.socket.readyState === WebSocket.OPEN;
 
   /*
-   * F2 :
-   * layout-ui.js ne doit plus déduire l'état connecté depuis #status,
-   * car #status n'est plus visible dans le DOM.
+   * F2/F4d :
+   * L'état connecté est porté par <body>, sans ancien badge DOM.
    */
   document.body.classList.toggle("boggle-session-connected", isConnected);
 
-  connectionStatusLine.hidden = true;
-  statusElement.hidden = true;
-  statusElement.textContent = isConnected ? "Connecté" : "Déconnecté";
-  inviteRoomButton.hidden = true;
+  connectionStatusLine.hidden = true;inviteRoomButton.hidden = true;
   refreshHomeVisibility();
 }
 
@@ -588,9 +568,9 @@ function takePendingSubmissionPath() {
  * - préparer sa suppression complète en v90.2/v90.3.
  *
  * TODO v90-cleanup :
- * - supprimer #room et #status de index.html ;
+ * - supprimer #room de index.html ;
  * - supprimer moveConnectionControls() de layout-ui.js ;
- * - supprimer les règles CSS #room/#status ;
+ * - supprimer les règles CSS #room ;
  * - remplacer le mot "connexion" par "rejoindre une partie" côté UI.
  */
 
@@ -1289,11 +1269,7 @@ function connectToRoom(options = {}) {
   socket.addEventListener("open", () => {
     if (state.socket !== socket) {
       return;
-    }
-
-    statusElement.hidden = false;
-    statusElement.textContent = "Connecté";
-    updateInviteButton();
+    }updateInviteButton();
     updateHostControls();
     renderRulesSummary();
 
@@ -1318,10 +1294,7 @@ function connectToRoom(options = {}) {
   socket.addEventListener("close", () => {
     if (state.socket !== socket) {
       return;
-    }
-
-    statusElement.textContent = "Déconnecté";
-    document.body.classList.remove("boggle-session-connected");
+    }document.body.classList.remove("boggle-session-connected");
     state.socket = null;
     updateInviteButton();
     startButton.disabled = true;
@@ -1534,10 +1507,7 @@ function createPlayerBadge(label) {
 function handleServerMessage(data) {
   if (data.type === "connected") {
     state.playerId = data.playerId;
-    state.selectedFoundWordsPlayerId = data.playerId;
-    statusElement.hidden = false;
-    statusElement.textContent = "Connecté";
-    refreshHomeVisibility();
+    state.selectedFoundWordsPlayerId = data.playerId;refreshHomeVisibility();
     updateHostControls();
     renderRulesSummary();
     refreshRightRulesPanel();
@@ -4825,3 +4795,4 @@ if (document.readyState === "loading") {
 }
 
 /* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME END */
+
