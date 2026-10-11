@@ -4746,22 +4746,41 @@ function setupGlobalActionsBarV908L() {
 
   window.__globalActionsBarV908L = true;
 
+  let scheduled = false;
+
   const schedule = () => {
-    window.requestAnimationFrame(syncGlobalActionsBarV908L);
+    if (scheduled) {
+      return;
+    }
+
+    scheduled = true;
+
+    window.requestAnimationFrame(() => {
+      scheduled = false;
+      syncGlobalActionsBarV908L();
+    });
   };
 
   schedule();
 
+  /*
+   * E3 perf :
+   * Avant, on observait tout le document avec subtree + attributes.
+   * C'était trop coûteux pendant une partie : chaque changement de classe
+   * du plateau pouvait relancer la synchronisation de la barre globale.
+   *
+   * On ne surveille plus que les changements de classe du body, qui sont
+   * justement ce qui signale accueil / salon public / salon privé / jeu.
+   */
   const observer = new MutationObserver(schedule);
 
   observer.observe(document.body, {
-    childList: true,
-    subtree: true,
     attributes: true,
-    attributeFilter: ["class", "hidden", "style"]
+    attributeFilter: ["class"]
   });
 
   window.addEventListener("resize", schedule);
+  window.addEventListener("hashchange", schedule);
 }
 
 if (document.readyState === "loading") {
