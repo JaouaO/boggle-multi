@@ -3481,7 +3481,48 @@ setupHomeScreenV87();
  * - permet de quitter les écrans intermédiaires / l'écran de jeu sans recharger.
  */
 
+function leaveActiveGameSessionForHomeV9() {
+  const activeSocket = state.socket;
+
+  stopLocalTimer();
+  stopCountdownWarning();
+
+  if (
+    activeSocket &&
+    activeSocket.readyState !== WebSocket.CLOSED &&
+    activeSocket.readyState !== WebSocket.CLOSING
+  ) {
+    try {
+      activeSocket.close();
+    } catch {
+      // Le retour accueil doit rester possible même si la socket refuse la fermeture.
+    }
+  }
+
+  if (state.socket === activeSocket) {
+    state.socket = null;
+  }
+
+  document.body.classList.remove("boggle-session-connected");
+
+  state.roomId = "";
+  state.playerId = "";
+  state.players = [];
+  state.selectedFoundWordsPlayerId = "";
+
+  resetGameUiToWaiting();
+  renderPlayersWithHostBadges(playersElement, []);
+  updateInviteButton();
+  updateHostControls();
+  renderRulesSummary();
+  refreshRightRulesPanel();
+}
+
 function returnToHomeV87() {
+  leaveActiveGameSessionForHomeV9();
+
+  document.body.classList.remove("v88-public-active");
+  document.body.classList.remove("v89-private-active");
   document.body.classList.add("v87-home-active");
   document.body.classList.remove("v87-game-active");
 
