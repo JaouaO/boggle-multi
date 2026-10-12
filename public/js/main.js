@@ -131,7 +131,8 @@ endGameButton.addEventListener("click", () => {
 
 const inviteRoomButton = document.createElement("button");
 inviteRoomButton.id = "copy-room-link";
-inviteRoomButton.type = "button";inviteRoomButton.hidden = true;
+inviteRoomButton.type = "button";
+inviteRoomButton.hidden = true;
 
 timerElement.insertAdjacentElement("afterend", endGameButton);
 
@@ -148,7 +149,6 @@ applyThemeStyles();
 
 
 function setupConnectionFields() {
-  inviteRoomButton.hidden = true;
 }
 
 startButton.addEventListener("click", startRandomTimedGame);
@@ -276,7 +276,8 @@ function updateInviteButton() {
    * F2/F4d :
    * L'état connecté est porté par <body>, sans ancien badge DOM.
    */
-  document.body.classList.toggle("boggle-session-connected", isConnected);inviteRoomButton.hidden = true;
+  document.body.classList.toggle("boggle-session-connected", isConnected);
+
   refreshHomeVisibility();
 }
 
