@@ -238,15 +238,9 @@ function getInitialRoomIdFromUrl() {
   }
 }
 
-function getCurrentRoomIdForInvite() {
-  return (state.roomId || getLegacyRoomIdF4E() || "TEST").trim();
-}
 
-function createRoomInviteUrl(roomId = getCurrentRoomIdForInvite()) {
-  const url = new URL(window.location.href);
-  url.searchParams.set("room", roomId);
-  return url.toString();
-}
+
+
 
 function updateRoomUrl(roomId) {
   try {
@@ -254,7 +248,7 @@ function updateRoomUrl(roomId) {
     url.searchParams.set("room", roomId);
     window.history.replaceState(null, "", url);
   } catch {
-    // Le lien copiable reste disponible même si l'URL ne peut pas être mise à jour.
+    // L'URL peut rester inchangée si l'historique du navigateur est indisponible.
   }
 }
 
