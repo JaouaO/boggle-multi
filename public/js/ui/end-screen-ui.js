@@ -5,6 +5,7 @@ export function renderEndScreen(anchorElement, options) {
     maxScore,
     totalWords,
     durationSeconds,
+    restartMessage = "",
   } = options;
 
   const panel = ensureEndScreen(anchorElement);
@@ -34,6 +35,9 @@ export function renderEndScreen(anchorElement, options) {
     `Grille : ${totalWords ?? 0} mot(s) possible(s), ` +
     `${maxScore ?? 0} point(s) maximum, ` +
     `durée ${formatDuration(durationSeconds)}.`;
+
+  panel.nextRound.textContent = restartMessage;
+  panel.nextRound.hidden = !restartMessage;
 
   panel.ranking.innerHTML = "";
 
@@ -85,13 +89,18 @@ function ensureEndScreen(anchorElement) {
     const stats = document.createElement("p");
     stats.id = "end-screen-stats";
 
+    const nextRound = document.createElement("p");
+    nextRound.id = "end-screen-next-round";
+    nextRound.classList.add("boggle-end-screen-next-round");
+    nextRound.hidden = true;
+
     const rankingTitle = document.createElement("h3");
     rankingTitle.textContent = "Classement";
 
     const ranking = document.createElement("ol");
     ranking.id = "end-screen-ranking";
 
-    panel.append(title, message, stats, rankingTitle, ranking);
+    panel.append(title, message, stats, nextRound, rankingTitle, ranking);
     anchorElement.insertAdjacentElement("afterend", panel);
   }
 
@@ -100,6 +109,7 @@ function ensureEndScreen(anchorElement) {
     title: panel.querySelector("#end-screen-title"),
     message: panel.querySelector("#end-screen-message"),
     stats: panel.querySelector("#end-screen-stats"),
+    nextRound: panel.querySelector("#end-screen-next-round"),
     ranking: panel.querySelector("#end-screen-ranking"),
   };
 }

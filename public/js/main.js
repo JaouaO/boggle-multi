@@ -2922,6 +2922,18 @@ function launchConfetti() {
   }
 }
 
+function getPublicRestartEndScreenMessageV9E() {
+  if (state.gameContext !== GAME_CONTEXTS_V901.PUBLIC) {
+    return "";
+  }
+
+  if (state.gameStatus !== "ended") {
+    return "";
+  }
+
+  return "Nouvelle partie publique dans 15 secondes.";
+}
+
 function renderCurrentEndScreen() {
   renderEndScreen(boardElement, {
     players: state.players,
@@ -2929,6 +2941,7 @@ function renderCurrentEndScreen() {
     maxScore: state.solutionsStats?.maxScore ?? 0,
     totalWords: state.solutionsStats?.totalWords ?? 0,
     durationSeconds: getElapsedDurationSeconds(),
+    restartMessage: getPublicRestartEndScreenMessageV9E(),
   });
 
   if (document.body.classList.contains("boggle-end-screen-open")) {
