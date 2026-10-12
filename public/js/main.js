@@ -3811,15 +3811,15 @@ function normalizeRoomCodeV89(value) {
 
 function fillPrivateFormFromExistingV89() {
   const privateRoomInput = getPrivateRoomInputV89();
-  const legacyRoomId = getLegacyRoomIdF4E();
 
-  if (
-    privateRoomInput &&
-    !privateRoomInput.value.trim() &&
-    legacyRoomId &&
-    legacyRoomId !== "TEST"
-  ) {
-    privateRoomInput.value = legacyRoomId;
+  if (!privateRoomInput || privateRoomInput.value.trim()) {
+    return;
+  }
+
+  const initialRoomId = normalizeRoomCodeV89(getInitialRoomIdFromUrl());
+
+  if (initialRoomId) {
+    privateRoomInput.value = initialRoomId;
   }
 }
 
@@ -3845,7 +3845,8 @@ function openPrivateRoomScreenV89() {
   document.body.classList.remove("v87-game-active");
   document.body.classList.add("v89-private-active");
 
-  window.scrollTo({ top: 0, behavior: "smooth" });}
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 async function enterPrivateRoomV89({ createIfMissing = false } = {}) {
   const privateSession = validatePrivateSessionV901({ createIfMissing });
