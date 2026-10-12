@@ -127,7 +127,9 @@ endGameButton.addEventListener("click", () => {
   send({
     type: "endGame",
   });
-});timerElement.insertAdjacentElement("afterend", endGameButton);
+});
+
+timerElement.insertAdjacentElement("afterend", endGameButton);
 
 const rulesSummaryElement = document.createElement("section");
 rulesSummaryElement.id = "rules-summary";
@@ -172,7 +174,8 @@ renderMouseInputPanel(wordForm, {
   onClear: clearSelectedLetters,
 });
 
-setupAppLayout();scheduleBoardFitV31();
+setupAppLayout();
+scheduleBoardFitV31();
 renderPlayerPreferences();
 refreshRightRulesPanel();
 
@@ -1242,7 +1245,9 @@ function connectToRoom(options = {}) {
   socket.addEventListener("close", () => {
     if (state.socket !== socket) {
       return;
-    }document.body.classList.remove("boggle-session-connected");
+    }
+
+    document.body.classList.remove("boggle-session-connected");
     state.socket = null;
     updateInviteButton();
     startButton.disabled = true;
@@ -1455,7 +1460,8 @@ function createPlayerBadge(label) {
 function handleServerMessage(data) {
   if (data.type === "connected") {
     state.playerId = data.playerId;
-    state.selectedFoundWordsPlayerId = data.playerId;refreshHomeVisibility();
+    state.selectedFoundWordsPlayerId = data.playerId;
+    refreshHomeVisibility();
     updateHostControls();
     renderRulesSummary();
     refreshRightRulesPanel();
@@ -3413,7 +3419,8 @@ function setupHomeScreenV87() {
           '<span class="home-v87-logo-text">Boggle</span>',
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
-        '<nav class="home-v87-actions" aria-label="Actions rapides">',        '</nav>',
+        '<nav class="home-v87-actions" aria-label="Actions rapides">',
+        '</nav>',
       '</header>',
 
       '<div id="home-v87-notice" class="home-v87-notice" hidden></div>',
@@ -3676,7 +3683,8 @@ function setupPublicRoomsScreenV88() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions public-v88-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-public-action="home">Accueil</button>',        '</nav>',
+          '<button class="home-v87-top-button ui-button" type="button" data-public-action="home">Accueil</button>',
+        '</nav>',
       '</header>',
 
       '<main class="public-v88-main">',
@@ -3934,7 +3942,8 @@ function setupPrivateRoomScreenV89() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions private-v89-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-private-action="home">Accueil</button>',        '</nav>',
+          '<button class="home-v87-top-button ui-button" type="button" data-private-action="home">Accueil</button>',
+        '</nav>',
       '</header>',
 
       '<main class="private-v89-main">',
