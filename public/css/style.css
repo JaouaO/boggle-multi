@@ -1360,12 +1360,7 @@ section,
       align-self: center;
       min-height: 2.15rem;
     }
-
-    #copy-room-link {
-      display: none !important;
-    }
-
-    #boggle-left {
+#boggle-left {
       display: flex;
       flex-direction: column;
       min-height: calc(100vh - 10rem);
