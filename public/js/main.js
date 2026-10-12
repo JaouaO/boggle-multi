@@ -3518,7 +3518,28 @@ function leaveActiveGameSessionForHomeV9() {
   refreshRightRulesPanel();
 }
 
+function shouldConfirmLeaveActiveGameV9() {
+  return (
+    document.body.classList.contains("v87-game-active") &&
+    state.gameStatus === "playing"
+  );
+}
+
+function confirmLeaveActiveGameForHomeV9() {
+  if (!shouldConfirmLeaveActiveGameV9()) {
+    return true;
+  }
+
+  return window.confirm(
+    "Revenir à l’accueil quittera la partie en cours. Continuer ?"
+  );
+}
+
 function returnToHomeV87() {
+  if (!confirmLeaveActiveGameForHomeV9()) {
+    return;
+  }
+
   leaveActiveGameSessionForHomeV9();
 
   document.body.classList.remove("v88-public-active");
