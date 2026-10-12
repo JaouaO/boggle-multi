@@ -1301,9 +1301,7 @@ function updateHostControls() {
     ? "Terminer la partie"
     : "Seul l’hébergeur de la salle peut terminer la partie.";
 
-  if (state.gameStatus !== "playing") {
-    renderModePanel();
-  }
+  // F9G-HOST-CONTROLS-NO-MODE-PANEL : updateHostControls ne doit pas réveiller l’ancien panneau de modes.
 }
 
 function renderPlayersWithHostBadges(element, players) {
