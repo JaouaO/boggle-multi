@@ -1115,12 +1115,7 @@ function getPrivateRoomValueV901({ createIfMissing = false } = {}) {
   return roomValue;
 }
 
-function getPrivatePlayerNameV901() {
-  const privateNameInput = getPrivateNameInputV89();
-  const privateName = privateNameInput ? privateNameInput.value.trim() : "";
 
-  return normalizeSessionPlayerNameV901(privateName || getStoredPlayerNameV901());
-}
 
 function validatePrivateSessionV901({ createIfMissing = false } = {}) {
   const privateRoomInput = getPrivateRoomInputV89();
@@ -3783,14 +3778,7 @@ function getPrivateRoomInputV89() {
   return document.querySelector("#private-v89-room");
 }
 
-function getPrivateNameInputV89() {
-  /*
-   * E6c :
-   * Le salon privé ne porte plus l'identité joueur.
-   * L'identité locale pseudo + fruit est gérée par Options / popup.
-   */
-  return null;
-}
+
 
 
 function getPrivateNoticeV89() {
@@ -3863,14 +3851,7 @@ function openPrivateRoomScreenV89() {
   document.body.classList.remove("v87-game-active");
   document.body.classList.add("v89-private-active");
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
-  const privateNameInput = getPrivateNameInputV89();
-
-  if (privateNameInput && !privateNameInput.value.trim()) {
-    privateNameInput.focus();
-  }
-}
+  window.scrollTo({ top: 0, behavior: "smooth" });}
 
 async function enterPrivateRoomV89({ createIfMissing = false } = {}) {
   const privateSession = validatePrivateSessionV901({ createIfMissing });
