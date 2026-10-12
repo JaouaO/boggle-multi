@@ -3238,7 +3238,7 @@ function showGameFromHomeV87() {
 
 
 
-function waitAndStartGridFromHomeV87() {
+function waitAndStartDailyGridFromHomeV9() {
   let attempts = 0;
   const maxAttempts = 80;
 
@@ -3272,7 +3272,7 @@ function startDailyGridFromHomeV87() {
     updateUrl: false,
   });
 
-  waitAndStartGridFromHomeV87();
+  waitAndStartDailyGridFromHomeV9();
 }
 
 function openPrivateRoomFromHomeV87() {
@@ -3651,9 +3651,7 @@ async function startPublicRoomV88(modeKey) {
     persistPlayerName: false,
     updateUrl: false,
   });
-
-  waitAndStartGridFromHomeV87();
-}
+}
 
 function setupPublicRoomsScreenV88() {
   if (document.querySelector("#public-v88")) {
