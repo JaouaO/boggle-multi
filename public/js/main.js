@@ -2088,6 +2088,7 @@ function clampCurrentHelpLevel() {
 }
 
 function handleGameStarted(data) {
+  clearDismissedEndScreenV9H();
   state.gameStatus = "playing";
   state.gameMode = data.mode ?? "timed";
   state.gameOptions = {
@@ -2717,7 +2718,41 @@ function renderMousePanel() {
   });
 }
 
+/* V9H-END-SCREEN-DISMISS START */
+let dismissedEndScreenGameKeyV9H = "";
+
+function getEndScreenGameKeyV9H() {
+  return state.startedAt ? String(state.startedAt) : "";
+}
+
+function shouldSuppressEndScreenV9H() {
+  const gameKey = getEndScreenGameKeyV9H();
+
+  return Boolean(gameKey && dismissedEndScreenGameKeyV9H === gameKey);
+}
+
+function rememberDismissedEndScreenV9H() {
+  if (state.gameStatus !== "ended") {
+    return;
+  }
+
+  const gameKey = getEndScreenGameKeyV9H();
+
+  if (gameKey) {
+    dismissedEndScreenGameKeyV9H = gameKey;
+  }
+}
+
+function clearDismissedEndScreenV9H() {
+  dismissedEndScreenGameKeyV9H = "";
+}
+/* V9H-END-SCREEN-DISMISS END */
+
 function showEndScreenNow({ withConfetti = true } = {}) {
+  if (shouldSuppressEndScreenV9H()) {
+    return;
+  }
+
   state.endScreenVisible = true;
 
   renderCurrentEndScreen();
@@ -2807,6 +2842,7 @@ function renderVictoryModalV16() {
 
 
 function closeEndScreenPopup() {
+  rememberDismissedEndScreenV9H();
   state.endScreenVisible = false;
   hideEndScreen();
   hideEndScreenOverlay();
