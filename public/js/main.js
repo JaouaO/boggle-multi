@@ -66,40 +66,6 @@ let foundWordHoverTimer = null;
 let countdownWarningInterval = null;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
-/*
- * F4e :
- * L'ancien champ Room n'existe plus dans le DOM.
- * On conserve uniquement une valeur interne pour les derniers fallbacks.
- *
- * TODO v90-cleanup :
- * supprimer legacyRoomIdF4E quand tous les anciens chemins manuels auront disparu.
- */
-let legacyRoomIdF4E = "TEST";
-
-function normalizeLegacyRoomIdF4E(value) {
-  return String(value ?? "")
-    .trim()
-    .slice(0, 60) || "TEST";
-}
-
-function getLegacyRoomIdF4E() {
-  return normalizeLegacyRoomIdF4E(legacyRoomIdF4E);
-}
-
-function setLegacyRoomIdF4E(value, { persist = false, refresh = false } = {}) {
-  legacyRoomIdF4E = normalizeLegacyRoomIdF4E(value);
-
-  if (persist) {
-    saveLocalString(STORAGE_KEYS.lastRoomId, legacyRoomIdF4E);
-  }
-
-  if (refresh) {
-    updateInviteButton();
-  }
-
-  return legacyRoomIdF4E;
-}
-
 const startButton = document.querySelector("#start");
 const gameStatusElement = document.querySelector("#game-status");
 const timerElement = document.querySelector("#timer");
@@ -153,10 +119,6 @@ window.addEventListener("resize", scheduleBoardFitV31);
 window.addEventListener("orientationchange", scheduleBoardFitV31);
 
 const savedSettings = loadLocalSettings();
-const initialRoomId = getInitialRoomIdFromUrl();
-setLegacyRoomIdF4E(initialRoomId || savedSettings.lastRoomId || "TEST");
-
-
 state.playerPreferences = {
   ...state.playerPreferences,
   ...savedSettings.playerPreferences,
@@ -1140,42 +1102,14 @@ function validatePrivateSessionV901({ createIfMissing = false } = {}) {
 /* V90.1-CLEAN-SESSION END */
 
 function connectToRoom(options = {}) {
-  const hasExplicitSession = Boolean(
-    options &&
-    typeof options === "object" &&
-    (
-      Object.prototype.hasOwnProperty.call(options, "roomId") ||
-      Object.prototype.hasOwnProperty.call(options, "playerName")
-    )
-  );
+  const roomId = normalizeSessionRoomIdV901(options.roomId, "TEST");
+  const playerName = normalizeSessionPlayerNameV901(options.playerName, "joueur");
+  const context = options.context || GAME_CONTEXTS_V901.MANUAL;
+  const shouldPersistRoom = options.persistRoom === true;
+  const shouldPersistPlayerName = options.persistPlayerName !== false;
+  const shouldUpdateUrl = options.updateUrl !== false;
 
-  const roomId = normalizeSessionRoomIdV901(
-    hasExplicitSession ? options.roomId : getLegacyRoomIdF4E(),
-    "TEST"
-  );
-
-  const playerName = normalizeSessionPlayerNameV901(
-    hasExplicitSession ? options.playerName : getTechnicalPlayerNameV901(),
-    "joueur"
-  );
-
-  const context = hasExplicitSession
-    ? options.context || GAME_CONTEXTS_V901.MANUAL
-    : GAME_CONTEXTS_V901.MANUAL;
-
-  const shouldPersistRoom = hasExplicitSession
-    ? options.persistRoom === true
-    : true;
-
-  const shouldPersistPlayerName = hasExplicitSession
-    ? options.persistPlayerName !== false
-    : true;
-
-  const shouldUpdateUrl = hasExplicitSession
-    ? options.updateUrl !== false
-    : true;
-
-  const clientId = getOrCreateClientId();
+const clientId = getOrCreateClientId();
 
   if (shouldPersistRoom) {
     saveLocalString(STORAGE_KEYS.lastRoomId, roomId);
