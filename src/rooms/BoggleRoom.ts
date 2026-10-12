@@ -821,6 +821,25 @@ export class BoggleRoom extends DurableObject {
     return PUBLIC_ROOM_IDS_V9D3.has(this.roomId.toUpperCase());
   }
 
+  private getPublicRoomGameOptionsV9D4(): GameOptions {
+    const roomId = this.roomId.toUpperCase();
+
+    const durationSeconds =
+      roomId === "PUBLIC-RAPIDE"
+        ? 60
+        : roomId === "PUBLIC-DETENTE"
+          ? 300
+          : 180;
+
+    return {
+      ...DEFAULT_GAME_OPTIONS,
+      durationMode: "timer",
+      durationSeconds,
+      penalizeInvalidWords: true,
+      invalidWordPenalty: 1,
+    };
+  }
+
   private getConnectedJoinedSocketsV9D3(excludedWs?: WebSocket) {
     return this.ctx.getWebSockets().filter((socket) => {
       if (socket === excludedWs) {
@@ -922,7 +941,12 @@ export class BoggleRoom extends DurableObject {
 
     this.clearPublicRoomRestartTimeoutV9D3();
 
-    await this.startGame(hostSocket, "timed", undefined, this.gameOptions);
+    await this.startGame(
+      hostSocket,
+      "timed",
+      undefined,
+      this.getPublicRoomGameOptionsV9D4()
+    );
   }
 
     private async scheduleNextPublicRoomRoundV9D3() {
