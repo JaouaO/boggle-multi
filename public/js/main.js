@@ -3824,13 +3824,7 @@ function fillPrivateFormFromExistingV89() {
 }
 
 
-function syncPrivateFormToExistingV89() {
-  const privateRoomInput = getPrivateRoomInputV89();
 
-  if (privateRoomInput) {
-    setLegacyRoomIdF4E(privateRoomInput.value.trim());
-  }
-}
 
 
 function showHomeFromPrivateV89() {
