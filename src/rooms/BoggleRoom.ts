@@ -21,6 +21,14 @@ import { ClientMessage, ServerMessage } from "../shared/messages";
 
 const ROOM_STATE_KEY = "roomState";
 
+const PUBLIC_ROOM_IDS_V9D3 = new Set([
+  "PUBLIC-RAPIDE",
+  "PUBLIC-CLASSIQUE",
+  "PUBLIC-DETENTE",
+]);
+
+const PUBLIC_ROOM_RESTART_DELAY_MS_V9D3 = 15_000;
+
 const DEFAULT_GAME_OPTIONS: GameOptions = {
   durationMode: "timer",
   durationSeconds: DEFAULT_GAME_DURATION_SECONDS,
@@ -89,6 +97,7 @@ export class BoggleRoom extends DurableObject {
   private solveDurationMs = 0;
   private globalFoundWords = new Map<string, FoundWordOwner>();
   private playerSnapshots = new Map<string, PlayerSnapshot>();
+  private publicRoomRestartTimeoutV9D3: ReturnType<typeof setTimeout> | null = null;
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -200,6 +209,10 @@ export class BoggleRoom extends DurableObject {
       this.broadcastPlayers();
       await this.sendCurrentGameState(ws);
 
+      if (this.isPublicRoomV9D3()) {
+        await this.startPublicRoomRoundIfNeededV9D3();
+      }
+
       return;
     }
 
@@ -297,10 +310,18 @@ export class BoggleRoom extends DurableObject {
     }
 
     this.broadcastPlayers(attachment.id);
+
+    await this.stopPublicRoomLoopIfEmptyV9D3(ws);
   }
 
   async alarm() {
     await this.loadRoomState();
+
+    if (this.isPublicRoomV9D3()) {
+      await this.handlePublicRoomAlarmV9D3();
+      return;
+    }
+
     await this.endGameIfNeeded(true);
   }
   private async updateGameOptions(
@@ -778,6 +799,10 @@ export class BoggleRoom extends DurableObject {
 
     this.broadcastSolutionStats();
     this.broadcastPlayers();
+
+    if (this.isPublicRoomV9D3()) {
+      await this.scheduleNextPublicRoomRoundV9D3();
+    }
   }
 
   private hasCurrentGameFinished() {
@@ -790,6 +815,175 @@ export class BoggleRoom extends DurableObject {
     }
 
     return isGameFinished(this.startedAt, this.durationSeconds);
+  }
+
+  private isPublicRoomV9D3() {
+    return PUBLIC_ROOM_IDS_V9D3.has(this.roomId.toUpperCase());
+  }
+
+  private getConnectedJoinedSocketsV9D3(excludedWs?: WebSocket) {
+    return this.ctx.getWebSockets().filter((socket) => {
+      if (socket === excludedWs) {
+        return false;
+      }
+
+      const attachment = this.getPlayerAttachment(socket);
+
+      return Boolean(attachment.joined);
+    });
+  }
+
+  private hasConnectedPublicRoomPlayersV9D3(excludedWs?: WebSocket) {
+    return this.getConnectedJoinedSocketsV9D3(excludedWs).length > 0;
+  }
+
+  private clearPublicRoomRestartTimeoutV9D3() {
+    if (this.publicRoomRestartTimeoutV9D3 === null) {
+      return;
+    }
+
+    clearTimeout(this.publicRoomRestartTimeoutV9D3);
+    this.publicRoomRestartTimeoutV9D3 = null;
+  }
+
+  private schedulePublicRoomRestartTimeoutV9D3(restartAt: number) {
+    this.clearPublicRoomRestartTimeoutV9D3();
+
+    const delay = Math.max(0, restartAt - Date.now());
+
+    this.publicRoomRestartTimeoutV9D3 = setTimeout(() => {
+      this.publicRoomRestartTimeoutV9D3 = null;
+
+      this.handlePublicRoomAlarmV9D3().catch((error) => {
+        console.error("Erreur relance salon public", error);
+      });
+    }, delay);
+  }
+
+  private getPublicRoomHostSocketV9D3() {
+    const sockets = this.getConnectedJoinedSocketsV9D3();
+
+    if (!sockets.length) {
+      return null;
+    }
+
+    const hostSocket = sockets.find((socket) => {
+      const attachment = this.getPlayerAttachment(socket);
+
+      return attachment.id === this.hostPlayerId;
+    });
+
+    if (hostSocket) {
+      return hostSocket;
+    }
+
+    const fallbackSocket = sockets[0];
+    const fallbackAttachment = this.getPlayerAttachment(fallbackSocket);
+    this.hostPlayerId = fallbackAttachment.id;
+
+    return fallbackSocket;
+  }
+
+  private async startPublicRoomRoundIfNeededV9D3() {
+    if (!this.isPublicRoomV9D3()) {
+      return;
+    }
+
+    if (this.status === "playing") {
+      await this.endGameIfNeeded();
+
+      if (this.status === "playing") {
+        return;
+      }
+    }
+
+    if (!this.hasConnectedPublicRoomPlayersV9D3()) {
+      await this.resetIdlePublicRoomV9D3();
+      return;
+    }
+
+    if (
+      this.status === "ended" &&
+      this.endedAt &&
+      Date.now() - this.endedAt < PUBLIC_ROOM_RESTART_DELAY_MS_V9D3
+    ) {
+      await this.ctx.storage.setAlarm(
+        this.endedAt + PUBLIC_ROOM_RESTART_DELAY_MS_V9D3
+      );
+      return;
+    }
+
+    const hostSocket = this.getPublicRoomHostSocketV9D3();
+
+    if (!hostSocket) {
+      await this.resetIdlePublicRoomV9D3();
+      return;
+    }
+
+    this.clearPublicRoomRestartTimeoutV9D3();
+
+    await this.startGame(hostSocket, "timed", undefined, this.gameOptions);
+  }
+
+    private async scheduleNextPublicRoomRoundV9D3() {
+    if (!this.hasConnectedPublicRoomPlayersV9D3()) {
+      await this.resetIdlePublicRoomV9D3();
+      return;
+    }
+
+    const restartAt = Date.now() + PUBLIC_ROOM_RESTART_DELAY_MS_V9D3;
+
+    await this.ctx.storage.setAlarm(restartAt);
+    this.schedulePublicRoomRestartTimeoutV9D3(restartAt);
+
+    this.broadcast({
+      type: "system",
+      text: "Nouvelle partie publique dans 15 secondes.",
+    });
+  }
+
+    private async handlePublicRoomAlarmV9D3() {
+    if (!this.isPublicRoomV9D3()) {
+      return;
+    }
+
+    if (this.status === "playing") {
+      await this.endGameIfNeeded(true);
+      return;
+    }
+
+    await this.startPublicRoomRoundIfNeededV9D3();
+  }
+
+  private async stopPublicRoomLoopIfEmptyV9D3(excludedWs?: WebSocket) {
+    if (!this.isPublicRoomV9D3()) {
+      return;
+    }
+
+    if (this.hasConnectedPublicRoomPlayersV9D3(excludedWs)) {
+      return;
+    }
+
+    await this.resetIdlePublicRoomV9D3();
+  }
+
+    private async resetIdlePublicRoomV9D3() {
+    this.clearPublicRoomRestartTimeoutV9D3();
+
+    await this.ctx.storage.deleteAlarm();
+
+    this.status = "waiting";
+    this.hostPlayerId = null;
+    this.board = null;
+    this.startedAt = null;
+    this.endedAt = null;
+    this.durationSeconds = DEFAULT_GAME_DURATION_SECONDS;
+    this.solutions = [];
+    this.solveDurationMs = 0;
+    this.globalFoundWords.clear();
+    this.playerSnapshots.clear();
+
+    await this.saveRoomState();
   }
 
   private async sendCurrentGameState(ws: WebSocket) {
