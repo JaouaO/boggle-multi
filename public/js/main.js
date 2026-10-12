@@ -127,14 +127,7 @@ endGameButton.addEventListener("click", () => {
   send({
     type: "endGame",
   });
-});
-
-const inviteRoomButton = document.createElement("button");
-inviteRoomButton.id = "copy-room-link";
-inviteRoomButton.type = "button";
-inviteRoomButton.hidden = true;
-
-timerElement.insertAdjacentElement("afterend", endGameButton);
+});timerElement.insertAdjacentElement("afterend", endGameButton);
 
 const rulesSummaryElement = document.createElement("section");
 rulesSummaryElement.id = "rules-summary";
@@ -148,8 +141,7 @@ boardElement.insertAdjacentElement("beforebegin", welcomePanel);
 applyThemeStyles();
 
 
-function setupConnectionFields() {
-}
+
 
 startButton.addEventListener("click", startRandomTimedGame);
 wordForm.addEventListener("submit", submitWord);
@@ -180,9 +172,7 @@ renderMouseInputPanel(wordForm, {
   onClear: clearSelectedLetters,
 });
 
-setupAppLayout();
-setupConnectionFields();
-scheduleBoardFitV31();
+setupAppLayout();scheduleBoardFitV31();
 renderPlayerPreferences();
 refreshRightRulesPanel();
 
