@@ -1,13 +1,12 @@
 let layoutInitialized = false;
+
+/*
+ * F9W3-STATIC-LAYOUT-LEGACY-CLEANUP :
+ * les anciens titres/sections statiques de public/index.html ont été supprimés.
+ * layout-ui.js n'a plus besoin de caches génériques par texte ou section vide.
+ */
 let layoutSyncing = false;
 
-const HIDDEN_OLD_HEADINGS = new Set([
-  "grille",
-  "proposer un mot",
-  "mots trouvés",
-  "joueurs",
-  "journal",
-]);
 
 export function setupAppLayout() {
   if (layoutInitialized) {
@@ -127,8 +126,6 @@ function syncLayout() {
     moveRightColumnContent(right);
 
     moveTechnicalLog();
-    hideOldStructuralHeadings();
-    hideEmptyLegacyContainers();
   } finally {
     layoutSyncing = false;
   }
@@ -421,44 +418,4 @@ function moveTechnicalLog() {
   }
 }
 
-function hideOldStructuralHeadings() {
-  for (const heading of document.querySelectorAll("h2, h3")) {
-    if (heading.closest("#boggle-shell")) {
-      continue;
-    }
 
-    const normalizedText = heading.textContent.trim().toLowerCase();
-
-    if (HIDDEN_OLD_HEADINGS.has(normalizedText)) {
-      heading.hidden = true;
-      heading.setAttribute("aria-hidden", "true");
-    }
-  }
-}
-
-function hideEmptyLegacyContainers() {
-  for (const section of document.querySelectorAll("section")) {
-    if (section.closest("#boggle-shell")) {
-      continue;
-    }
-
-    if (section.id === "boggle-shell") {
-      continue;
-    }
-
-    const clone = section.cloneNode(true);
-
-    for (const hiddenNode of clone.querySelectorAll("[hidden], [aria-hidden='true']")) {
-      hiddenNode.remove();
-    }
-
-    const visibleText = clone.textContent.replace(/\s+/g, "").trim();
-    const visibleControls = section.querySelector(
-      "input:not([hidden]), textarea:not([hidden]), button:not([hidden]), #board, #players, #found-words, #help-panel, #rules-summary, #log"
-    );
-
-    if (!visibleText && !visibleControls) {
-      section.hidden = true;
-    }
-  }
-}

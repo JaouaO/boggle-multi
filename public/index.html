@@ -8,6 +8,7 @@
 </head>
 <body>
 <main class="page">
+    <!-- F9W3-STATIC-LAYOUT-LEGACY-CLEANUP : anciens wrappers/titres supprimés, nœuds utiles conservés pour le shell JS. -->
 	<h1>Boggle multi — grille partagée</h1>
 
 <div class="game-panel">
@@ -19,18 +20,10 @@
 		<button id="start" disabled>Lancer une grille aléatoire</button>
 	</div>
 
-	<section>
-		<h2>Joueurs</h2>
 		<ul id="players"></ul>
-	</section>
 
-	<section>
-		<h2>Grille</h2>
 		<div id="board" class="board"></div>
-	</section>
 
-	<section>
-		<h2>Proposer un mot</h2>
 
 		<form id="word-form" class="row">
 			<input id="word-input" placeholder="Votre mot" autocomplete="off" disabled>
@@ -39,14 +32,9 @@
 
 		<p id="word-feedback" class="word-feedback"></p>
 
-		<h3>Mots trouvés</h3>
 		<ul id="found-words" class="found-words"></ul>
-	</section>
 
-	<section>
-		<h2>Journal</h2>
 		<div id="log" class="log"></div>
-	</section>
 </main>
 
 <script type="module" src="/js/main.js"></script>
