@@ -180,15 +180,34 @@ function isSocketConnected() {
   return Boolean(state.socket) && state.socket.readyState === WebSocket.OPEN;
 }
 
+function isPublicRoomSessionV9K() {
+  const context = String(state.gameContext || "").toLowerCase();
+  const roomId = String(state.roomId || "").toLowerCase();
+
+  return (
+    context === "public" ||
+    document.body.classList.contains("game-context-public") ||
+    roomId === "public-rapide" ||
+    roomId === "public-classique" ||
+    roomId === "public-detente" ||
+    roomId.startsWith("public-")
+  );
+}
+
+function removePublicLegacyModeScreenV9K() {
+  document.querySelector("#mode-controls")?.remove();
+}
+
 function refreshHomeVisibility() {
   const connected = isSocketConnected();
   const gameActive = state.gameStatus === "playing";
+  const isPublicRoomSession = isPublicRoomSessionV9K();
   const launchPanel = document.querySelector("#launch-panel");
 
-  welcomePanel.hidden = connected || gameActive;
+  welcomePanel.hidden = isPublicRoomSession || connected || gameActive;
 
   if (launchPanel) {
-    launchPanel.hidden = !connected || gameActive;
+    launchPanel.hidden = isPublicRoomSession || !connected || gameActive;
   }
 }
 
@@ -1285,17 +1304,22 @@ function isCurrentPlayerHost() {
 
 function updateHostControls() {
   const isHost = isCurrentPlayerHost();
+  const isPublicRoomSession = isPublicRoomSessionV9K();
   const canStartGame =
-    Boolean(state.socket) && state.gameStatus !== "playing" && isHost;
-  const canEndGame = state.gameStatus === "playing" && isHost;
+    Boolean(state.socket) &&
+    state.gameStatus !== "playing" &&
+    isHost &&
+    !isPublicRoomSession;
+  const canEndGame =
+    state.gameStatus === "playing" && isHost && !isPublicRoomSession;
 
-  startButton.hidden = state.gameStatus === "playing";
+  startButton.hidden = isPublicRoomSession || state.gameStatus === "playing";
   startButton.disabled = !canStartGame;
   startButton.title = canStartGame
     ? "Lancer une grille aléatoire"
     : "Seul l’hébergeur de la salle peut lancer une partie.";
 
-  endGameButton.hidden = !canEndGame;
+  endGameButton.hidden = isPublicRoomSession || !canEndGame;
   endGameButton.disabled = !canEndGame;
   endGameButton.title = canEndGame
     ? "Terminer la partie"
@@ -2531,6 +2555,11 @@ function renderRulesSummary() {
 
 
 function renderModePanel() {
+  if (isPublicRoomSessionV9K()) {
+    removePublicLegacyModeScreenV9K();
+    return;
+  }
+
   renderModeControls(startButton, {
     visible: state.gameStatus !== "playing",
     disabled: !state.socket || !isCurrentPlayerHost(),
