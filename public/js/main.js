@@ -221,10 +221,12 @@ function setLegacyActionButtonMountedV9Q(button, anchor, shouldMount) {
 function syncPublicLegacyActionButtonsV9Q() {
   /*
    * F9Q-PUBLIC-LEGACY-BUTTONS :
-   * en salon public, les boutons legacy interdits ne sont pas masqués,
-   * ils sont retirés du DOM. Ils restent restaurables pour le salon privé
-   * tant que celui-ci dépend encore de l'ancien flux.
-   * TODO V91 : supprimer #start / endGameButton quand le privé aura ses actions dédiées.
+   * en salon public, les actions manuelles sont pilotées par le serveur.
+   * Les boutons existants restent les actions privées/solo actuelles.
+   * En public, ils sont retirés du DOM pour éviter toute action interdite.
+   *
+   * F9U-LEGACY-CONNECTION-COMMENTS :
+   * ne pas supprimer #start / endGameButton tant que le flux privé actuel les utilise.
    */
   const shouldMountLegacyButtons = !isPublicRoomSessionV9K();
 
@@ -541,9 +543,9 @@ function takePendingSubmissionPath() {
  * - préparer sa suppression complète en v90.2/v90.3.
  *
  * TODO v90-cleanup :
- * - supprimer ancien champ Room de index.html ;
+ * - les salons publics/privés passent désormais par les écrans V88/V89 ;
  * - supprimer moveConnectionControls() de layout-ui.js ;
- * - supprimer les règles CSS ancien champ Room ;
+ * - les anciennes règles CSS de connexion doivent être auditées par blocs avant suppression ;
  * - remplacer le mot "connexion" par "rejoindre une partie" côté UI.
  */
 
@@ -3932,11 +3934,11 @@ setupPrivateRoomScreenV89();
 /*
  * Étape C : contenu réel de l'overlay Options global.
  *
- * Important :
- * - ne supprime pas encore les anciens boutons Options ;
- * - ne déplace pas #player-preferences ;
- * - réutilise les fonctions V90.2 d'identité joueur ;
- * - utilise des IDs dédiés v908c pour éviter les collisions.
+ * F9U-LEGACY-CONNECTION-COMMENTS :
+ * - l'ancien panneau #player-preferences a été supprimé en F9t ;
+ * - l'overlay Options global est désormais la source de vérité pour le joueur,
+ *   les sons, le volume et les effets visuels ;
+ * - les IDs dédiés v908c évitent les collisions avec les anciens panneaux.
  */
 
 function renderGlobalOptionsContentV908C() {
