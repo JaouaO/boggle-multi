@@ -698,7 +698,6 @@ function savePlayerIdentityV902(identity) {
   );
 
   saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
-  saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
 
 
   return normalized;

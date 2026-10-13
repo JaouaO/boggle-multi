@@ -1,6 +1,11 @@
 let layoutInitialized = false;
 
 /*
+ * F9X-DEAD-HELPERS-CLEANUP :
+ * suppression des helpers morts confirmés par audit.
+ */
+
+/*
  * F9W3-STATIC-LAYOUT-LEGACY-CLEANUP :
  * les anciens titres/sections statiques de public/index.html ont été supprimés.
  * layout-ui.js n'a plus besoin de caches génériques par texte ou section vide.
@@ -328,15 +333,6 @@ function ensureSlot(parent, id, className) {
 
 
 
-function moveNodeInto(selector, parent) {
-  const node = document.querySelector(selector);
-
-  if (!node || !parent) {
-    return;
-  }
-
-  moveElementInto(node, parent);
-}
 
 function moveElementInto(node, parent) {
   if (!node || !parent || node.parentElement === parent) {
