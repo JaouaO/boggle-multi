@@ -97,7 +97,7 @@ export class BoggleRoom extends DurableObject {
   private solveDurationMs = 0;
   private globalFoundWords = new Map<string, FoundWordOwner>();
   private playerSnapshots = new Map<string, PlayerSnapshot>();
-  private publicRoomRestartTimeoutV9D3: ReturnType<typeof setTimeout> | null = null;
+  private publicRoomWakeupTimeoutV9N: ReturnType<typeof setTimeout> | null = null;
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -416,11 +416,24 @@ export class BoggleRoom extends DurableObject {
     await this.saveRoomState();
 
     if (this.mode === "timed" && this.gameOptions.durationMode === "timer") {
-      await this.ctx.storage.setAlarm(
-        getGameEndTime(this.startedAt, this.durationSeconds)
-      );
+      const gameEndAt = getGameEndTime(this.startedAt, this.durationSeconds);
+
+      await this.ctx.storage.setAlarm(gameEndAt);
+
+      if (this.isPublicRoomV9D3()) {
+        /*
+         * F9N-PUBLIC-LOOP-TIMEOUT :
+         * en salon public, le serveur doit se réveiller à la fin
+         * de la partie, puis à la fin de la pause de relance.
+         */
+        this.schedulePublicRoomWakeupV9N(gameEndAt);
+      }
     } else {
       await this.ctx.storage.deleteAlarm();
+
+      if (this.isPublicRoomV9D3()) {
+        this.clearPublicRoomWakeupTimeoutV9N();
+      }
     }
 
     this.broadcast({
@@ -856,25 +869,25 @@ export class BoggleRoom extends DurableObject {
     return this.getConnectedJoinedSocketsV9D3(excludedWs).length > 0;
   }
 
-  private clearPublicRoomRestartTimeoutV9D3() {
-    if (this.publicRoomRestartTimeoutV9D3 === null) {
+  private clearPublicRoomWakeupTimeoutV9N() {
+    if (this.publicRoomWakeupTimeoutV9N === null) {
       return;
     }
 
-    clearTimeout(this.publicRoomRestartTimeoutV9D3);
-    this.publicRoomRestartTimeoutV9D3 = null;
+    clearTimeout(this.publicRoomWakeupTimeoutV9N);
+    this.publicRoomWakeupTimeoutV9N = null;
   }
 
-  private schedulePublicRoomRestartTimeoutV9D3(restartAt: number) {
-    this.clearPublicRoomRestartTimeoutV9D3();
+  private schedulePublicRoomWakeupV9N(wakeupAt: number) {
+    this.clearPublicRoomWakeupTimeoutV9N();
 
-    const delay = Math.max(0, restartAt - Date.now());
+    const delay = Math.max(0, wakeupAt - Date.now());
 
-    this.publicRoomRestartTimeoutV9D3 = setTimeout(() => {
-      this.publicRoomRestartTimeoutV9D3 = null;
+    this.publicRoomWakeupTimeoutV9N = setTimeout(() => {
+      this.publicRoomWakeupTimeoutV9N = null;
 
       this.handlePublicRoomAlarmV9D3().catch((error) => {
-        console.error("Erreur relance salon public", error);
+        console.error("Erreur boucle salon public", error);
       });
     }, delay);
   }
@@ -939,7 +952,7 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
-    this.clearPublicRoomRestartTimeoutV9D3();
+    this.clearPublicRoomWakeupTimeoutV9N();
 
     await this.startGame(
       hostSocket,
@@ -958,7 +971,7 @@ export class BoggleRoom extends DurableObject {
     const restartAt = Date.now() + PUBLIC_ROOM_RESTART_DELAY_MS_V9D3;
 
     await this.ctx.storage.setAlarm(restartAt);
-    this.schedulePublicRoomRestartTimeoutV9D3(restartAt);
+    this.schedulePublicRoomWakeupV9N(restartAt);
 
     this.broadcast({
       type: "system",
@@ -992,7 +1005,7 @@ export class BoggleRoom extends DurableObject {
   }
 
     private async resetIdlePublicRoomV9D3() {
-    this.clearPublicRoomRestartTimeoutV9D3();
+    this.clearPublicRoomWakeupTimeoutV9N();
 
     await this.ctx.storage.deleteAlarm();
 
