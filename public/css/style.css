@@ -1476,56 +1476,12 @@ section,
   border-bottom: 1px solid rgba(90, 59, 35, 0.12);
 }
 
-    #welcome-panel {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 1.2rem 0;
-    }
 
-    #welcome-panel[hidden] {
-      display: none !important;
-    }
 
-    .welcome-board {
-      width: min(100%, 24rem);
-      margin: 0 auto;
-    }
 
-    .welcome-board .board-cell {
-      min-height: clamp(2.6rem, 10vw, 4.2rem) !important;
-      pointer-events: none;
-      border: 1px solid rgba(90, 59, 35, 0.22) !important;
-      border-radius: 0.75rem !important;
-      background: rgba(255, 248, 234, 0.94) !important;
-      color: #4b3322 !important;
-      box-shadow: 0 0.25rem 0.65rem rgba(63, 43, 27, 0.08) !important;
-      font-weight: 950 !important;
-    }
 
-    .welcome-board .board-letter {
-      font-size: clamp(1.1rem, 3vw, 1.8rem);
-      font-weight: 950;
-      line-height: 1;
-    }
 
-    .welcome-board .board-cell[data-letter=""] {
-      opacity: 0.38;
-      background: rgba(255, 248, 234, 0.42) !important;
-      box-shadow: inset 0 0 0 1px rgba(90, 59, 35, 0.05) !important;
-    }
 
-    .welcome-caption {
-      max-width: 28rem;
-      margin: 0;
-      text-align: center;
-      color: #4b3322;
-      font-weight: 850;
-      opacity: 0.86;
-    }
 
     .rule-pill {
   font-weight: 900;
@@ -1726,19 +1682,7 @@ section,
       text-shadow: 0 1px 0 rgba(255,255,255,0.44);
     }
 
-    .welcome-board {
-      padding: 0.8rem;
-      border-radius: 1.35rem;
-      background: linear-gradient(180deg, rgba(233, 204, 131, 0.72), rgba(217, 178, 99, 0.62));
-      border: 1px solid rgba(147, 103, 50, 0.14);
-    }
 
-    .welcome-caption {
-      margin-top: 0.85rem;
-      color: var(--fruit-brown-soft);
-      font-weight: 800;
-      text-align: center;
-    }
 
     .player-row {
       border-radius: 0.9rem !important;
@@ -1845,14 +1789,12 @@ section,
     }
 
     #launch-panel,
-    #play-status-panel,
-    #welcome-panel {
+    #play-status-panel {
       position: relative;
     }
 
     #launch-panel::before,
-    #play-status-panel::before,
-    #welcome-panel::before {
+    #play-status-panel::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -1863,8 +1805,7 @@ section,
     }
 
     #launch-panel > *,
-    #play-status-panel > *,
-    #welcome-panel > * {
+    #play-status-panel > * {
       position: relative;
       z-index: 1;
     }
@@ -2355,9 +2296,6 @@ button:not(.board-cell):hover,
   font-weight: 950;
 }
 
-    #welcome-panel {
-      background: var(--mk-panel) !important;
-    }
 
 @media (max-width: 78rem) {
       #boggle-layout {
@@ -2968,8 +2906,7 @@ button:not(.board-cell):hover,
     #found-words-panel,
     #mockup-right-cards .mockup-info-card,
     #launch-panel,
-    #play-status-panel,
-    #welcome-panel {
+    #play-status-panel {
       border-radius: var(--panel-radius) !important;
     }
     .boggle-column > section,
@@ -2977,8 +2914,7 @@ button:not(.board-cell):hover,
     #found-words-panel,
     #mockup-right-cards .mockup-info-card,
     #launch-panel,
-    #play-status-panel,
-    #welcome-panel {
+    #play-status-panel {
       background: rgba(255, 248, 232, 0.94) !important;
     }
     .boggle-column > section,
@@ -2986,8 +2922,7 @@ button:not(.board-cell):hover,
     #found-words-panel,
     #mockup-right-cards .mockup-info-card,
     #launch-panel,
-    #play-status-panel,
-    #welcome-panel {
+    #play-status-panel {
       border: 2px solid rgba(111, 73, 40, 0.105) !important;
     }
     .boggle-column > section,
@@ -2995,8 +2930,7 @@ button:not(.board-cell):hover,
     #found-words-panel,
     #mockup-right-cards .mockup-info-card,
     #launch-panel,
-    #play-status-panel,
-    #welcome-panel {
+    #play-status-panel {
       box-shadow: var(--soft-shadow) !important;
     }
 
@@ -3927,15 +3861,13 @@ button:not(.board-cell):hover,
       flex: 0 0 auto !important;
     }
 
-#boggle-layout:has(#launch-panel:not([hidden])),
-    #boggle-layout:has(#welcome-panel:not([hidden])) {
+#boggle-layout:has(#launch-panel:not([hidden])) {
       height: auto !important;
       min-height: calc(100vh - 7.2rem) !important;
       align-items: start !important;
     }
 
-    #boggle-layout:has(#launch-panel:not([hidden])) #boggle-center,
-    #boggle-layout:has(#welcome-panel:not([hidden])) #boggle-center {
+    #boggle-layout:has(#launch-panel:not([hidden])) #boggle-center {
       display: flex !important;
       flex-direction: column !important;
       gap: 0.9rem !important;
@@ -4135,8 +4067,6 @@ button:not(.board-cell):hover,
       cursor: pointer !important;
     }
 
-    @media (min-width: 100rem) {
-    }
 
     @media (max-width: 78rem) {
       #boggle-top {
@@ -6711,53 +6641,9 @@ body.v87-home-active #home-v87 .home-v87-primary-button.ui-button {
     inset 0 0.08rem 0 rgba(255, 255, 255, 0.62) !important;
 }
 
-/* Bouton retour accueil depuis l'écran de jeu / futurs écrans intermédiaires. */
-#home-v87-return {
-  display: none;
-}
 
-body.v87-game-active #home-v87-return {
-  position: fixed;
-  z-index: 1000;
-  top: 0.75rem;
-  left: 0.75rem;
 
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.35rem !important;
 
-  min-height: 2.6rem !important;
-  padding: 0.55rem 0.9rem !important;
-
-  border: 1px solid rgba(94, 58, 34, 0.28) !important;
-  border-radius: 999px !important;
-
-  background: rgba(255, 250, 236, 0.94) !important;
-  color: #5a3320 !important;
-
-  font-family: "Fredoka", system-ui, sans-serif !important;
-  font-size: 0.95rem !important;
-  font-weight: 900 !important;
-
-  box-shadow:
-    0 0.35rem 1rem rgba(77, 50, 27, 0.12),
-    inset 0 0.08rem 0 rgba(255, 255, 255, 0.68) !important;
-}
-
-body.v87-home-active #home-v87-return {
-  display: none !important;
-}
-
-@media (max-width: 700px) {
-  body.v87-game-active #home-v87-return {
-    top: 0.5rem;
-    left: 0.5rem;
-    min-height: 2.35rem !important;
-    padding: 0.45rem 0.72rem !important;
-    font-size: 0.86rem !important;
-  }
-}
 
 /* ==========================================================================
    V87.3-HOME-SMALL-FIXES — derniers ajustements accueil
@@ -6772,18 +6658,7 @@ body.v87-home-active #home-v87-return {
   grid-template-columns: auto minmax(0, 1fr) !important;
 }
 
-/* Le bouton retour ne doit pas masquer le logo Boggle. */
-body.v87-game-active #home-v87-return {
-  left: auto !important;
-  right: 0.75rem !important;
-}
 
-@media (max-width: 700px) {
-  body.v87-game-active #home-v87-return {
-    left: auto !important;
-    right: 0.5rem !important;
-  }
-}
 
 /* ==========================================================================
    V88-PUBLIC-ROOMS-SCREEN — écran Salon public
@@ -7915,3 +7790,6 @@ body.player-identity-modal-open-v902 {
 }
 
 /* F9V-LEGACY-CONNECTION-CSS : anciens styles Room/Pseudo/Connexion supprimés. */
+
+
+/* F9Z3-OLD-WELCOME-SCREEN-CLEANUP : ancien accueil et ancien bouton retour supprimés. */

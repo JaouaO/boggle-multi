@@ -69,6 +69,8 @@ export function setupAppLayout() {
   syncLayout();
 }
 
+
+/* F9Z3 : layout sans ancien accueil. */
 function syncLayout() {
   if (layoutSyncing) {
     return;
@@ -93,12 +95,7 @@ function syncLayout() {
     }
 
     ensureBrand(top);
-    moveDirect("#welcome-panel", center);
 
-    const welcomePanel = document.querySelector("#welcome-panel");
-    if (welcomePanel) {
-      welcomePanel.hidden = isConnected() || isGridActive();
-    }
 
     const launchPanel = ensurePanel(center, "launch-panel", "Lancer une grille");
     launchPanel.hidden = !isConnected() || isGridActive();

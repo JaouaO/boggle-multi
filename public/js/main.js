@@ -107,8 +107,6 @@ rulesSummaryElement.hidden = true;
 rulesSummaryElement.classList.add("boggle-rules-summary");
 gameStatusElement.insertAdjacentElement("afterend", rulesSummaryElement);
 
-const welcomePanel = createWelcomePanel();
-boardElement.insertAdjacentElement("beforebegin", welcomePanel);
 
 applyThemeStyles();
 
@@ -146,37 +144,7 @@ refreshRightRulesPanel();
 resetGameUiToWaiting();
 refreshHomeVisibility();
 
-function createWelcomePanel() {
-  const panel = document.createElement("section");
-  panel.id = "welcome-panel";
-  panel.setAttribute("aria-label", "Accueil avant connexion");
 
-  const welcomeBoard = document.createElement("div");
-  welcomeBoard.className = "welcome-board";
-  welcomeBoard.setAttribute("aria-hidden", "true");
-
-  renderBoard(welcomeBoard, buildWelcomeGrid(), {
-    canClickCells: false,
-  });
-
-  const caption = document.createElement("p");
-  caption.className = "welcome-caption";
-  caption.textContent = "Préparation de la partie…";
-
-  panel.append(welcomeBoard, caption);
-
-  return panel;
-}
-
-function buildWelcomeGrid() {
-  return [
-    ["C", "O", "N", "N", "E"],
-    ["C", "T", "E", "Z", ""],
-    ["V", "O", "U", "S", ""],
-    ["A", "", "U", "N", "E"],
-    ["R", "O", "O", "M", ""],
-  ];
-}
 
 function isSocketConnected() {
   return Boolean(state.socket) && state.socket.readyState === WebSocket.OPEN;
@@ -242,6 +210,12 @@ function syncPublicLegacyActionButtonsV9Q() {
   );
 }
 
+
+/*
+ * F9Z3-OLD-WELCOME-SCREEN-CLEANUP :
+ * l'ancien accueil est supprimé.
+ * L'écran V87 est désormais l'unique écran d'accueil.
+ */
 function refreshHomeVisibility() {
   const connected = isSocketConnected();
   const gameActive = state.gameStatus === "playing";
@@ -249,7 +223,6 @@ function refreshHomeVisibility() {
   syncPublicLegacyActionButtonsV9Q();
   const launchPanel = document.querySelector("#launch-panel");
 
-  welcomePanel.hidden = isPublicRoomSession || connected || gameActive;
 
   if (launchPanel) {
     launchPanel.hidden = isPublicRoomSession || !connected || gameActive;
