@@ -3492,25 +3492,7 @@ function returnToHomeV87() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function setupHomeReturnButtonV87() {
-  if (document.querySelector("#home-v87-return")) {
-    return;
-  }
 
-  const button = document.createElement("button");
-
-  button.id = "home-v87-return";
-  button.className = "home-v87-return ui-button";
-  button.type = "button";
-  button.textContent = "← Accueil";
-  button.setAttribute("aria-label", "Revenir à l'accueil");
-
-  button.addEventListener("click", returnToHomeV87);
-
-  document.body.append(button);
-}
-
-setupHomeReturnButtonV87();
 
 /* V87.2-HOME-JS-HTML-BRIDGE END */
 
@@ -3608,7 +3590,6 @@ function setupPublicRoomsScreenV88() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions public-v88-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-public-action="home">Accueil</button>',
         '</nav>',
       '</header>',
 
@@ -3670,10 +3651,6 @@ function setupPublicRoomsScreenV88() {
 
     const action = actionButton.dataset.publicAction;
 
-    if (action === "home") {
-      showHomeFromPublicV88();
-      return;
-    }
   });
 
   document.body.insertBefore(screen, document.body.firstChild);
@@ -3848,7 +3825,6 @@ function setupPrivateRoomScreenV89() {
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
         '</div>',
         '<nav class="home-v87-actions private-v89-actions" aria-label="Actions rapides">',
-          '<button class="home-v87-top-button ui-button" type="button" data-private-action="home">Accueil</button>',
         '</nav>',
       '</header>',
 
@@ -3891,10 +3867,6 @@ function setupPrivateRoomScreenV89() {
 
     const action = actionButton.dataset.privateAction;
 
-    if (action === "home") {
-      showHomeFromPrivateV89();
-      return;
-    }
 
     if (action === "create") {
       enterPrivateRoomV89({ createIfMissing: true });
@@ -4457,32 +4429,6 @@ function getCurrentGlobalScreenV908L() {
   return "home";
 }
 
-function removeLegacyHomeButtonsV908L() {
-  const legacyButtons = document.querySelectorAll([
-    "#public-v88 [data-public-action=\"home\"]",
-    "#private-v89 [data-private-action=\"home\"]",
-    "#home-return-v87",
-    ".home-return-v87",
-    "#home-v87-return",
-    ".home-v87-return",
-    "#back-home-v87",
-    ".back-home-v87",
-    "#return-home-v87",
-    ".return-home-v87",
-    "[data-global-action=\"home\"]",
-    "[data-action=\"home\"]"
-  ].join(", "));
-
-  for (const button of legacyButtons) {
-    if (button.id === "global-home-button-v908l") {
-      continue;
-    }
-
-    if (/accueil/i.test(button.textContent || "")) {
-      button.remove();
-    }
-  }
-}
 
 function ensureGlobalHomeButtonV908L() {
   let button = document.querySelector("#global-home-button-v908l");
@@ -4583,9 +4529,14 @@ function normalizeGlobalOptionsButtonV908L(button) {
   button.classList.add("global-options-button-in-bar-v908l");
 }
 
+
+/*
+ * F9Y-LEGACY-HOME-BUTTONS-CLEANUP :
+ * la barre globale est l'unique source du bouton Accueil hors accueil.
+ * Les anciens boutons Accueil public/privé/jeu ont été supprimés à la source.
+ */
 function syncGlobalActionsBarV908L() {
   cleanupOldGlobalActionsBarsV908L();
-  removeLegacyHomeButtonsV908L();
 
   const bar = ensureGlobalActionsBarV908L();
   const optionsButton = getGlobalOptionsButtonV908L();
