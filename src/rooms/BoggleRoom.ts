@@ -217,6 +217,15 @@ export class BoggleRoom extends DurableObject {
     }
 
     if (data.type === "startGame") {
+      if (this.isPublicRoomV9D3()) {
+        /* F9O-PUBLIC-MANUAL-ACTIONS : les salons publics sont pilotés par la boucle serveur. */
+        this.send(ws, {
+          type: "system",
+          text: "Les salons publics démarrent automatiquement.",
+        });
+        return;
+      }
+
       if (!this.isHost(ws)) {
         this.send(ws, {
           type: "system",
@@ -236,6 +245,14 @@ export class BoggleRoom extends DurableObject {
     }
 
     if (data.type === "endGame") {
+      if (this.isPublicRoomV9D3()) {
+        this.send(ws, {
+          type: "system",
+          text: "Les salons publics se terminent automatiquement.",
+        });
+        return;
+      }
+
       if (!this.isHost(ws)) {
         this.send(ws, {
           type: "system",
@@ -328,6 +345,14 @@ export class BoggleRoom extends DurableObject {
     ws: WebSocket,
     options?: Partial<GameOptions>
   ) {
+    if (this.isPublicRoomV9D3()) {
+      this.send(ws, {
+        type: "system",
+        text: "Les règles des salons publics sont fixes.",
+      });
+      return;
+    }
+
     if (!this.isHost(ws)) {
       this.send(ws, {
         type: "system",
