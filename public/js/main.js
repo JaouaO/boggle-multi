@@ -97,6 +97,11 @@ endGameButton.addEventListener("click", () => {
 
 timerElement.insertAdjacentElement("afterend", endGameButton);
 
+const startButtonAnchorV9Q = document.createComment("F9Q start legacy action anchor");
+startButton?.parentNode?.insertBefore(startButtonAnchorV9Q, startButton);
+const endGameButtonAnchorV9Q = document.createComment("F9Q end legacy action anchor");
+endGameButton.parentNode?.insertBefore(endGameButtonAnchorV9Q, endGameButton);
+
 const rulesSummaryElement = document.createElement("section");
 rulesSummaryElement.id = "rules-summary";
 rulesSummaryElement.hidden = true;
@@ -198,10 +203,51 @@ function removePublicLegacyModeScreenV9K() {
   document.querySelector("#mode-controls")?.remove();
 }
 
+function setLegacyActionButtonMountedV9Q(button, anchor, shouldMount) {
+  if (!button || !anchor?.parentNode) {
+    return;
+  }
+
+  if (shouldMount) {
+    if (!button.isConnected) {
+      anchor.after(button);
+    }
+
+    return;
+  }
+
+  if (button.isConnected) {
+    button.remove();
+  }
+}
+
+function syncPublicLegacyActionButtonsV9Q() {
+  /*
+   * F9Q-PUBLIC-LEGACY-BUTTONS :
+   * en salon public, les boutons legacy interdits ne sont pas masqués,
+   * ils sont retirés du DOM. Ils restent restaurables pour le salon privé
+   * tant que celui-ci dépend encore de l'ancien flux.
+   * TODO V91 : supprimer #start / endGameButton quand le privé aura ses actions dédiées.
+   */
+  const shouldMountLegacyButtons = !isPublicRoomSessionV9K();
+
+  setLegacyActionButtonMountedV9Q(
+    startButton,
+    startButtonAnchorV9Q,
+    shouldMountLegacyButtons
+  );
+  setLegacyActionButtonMountedV9Q(
+    endGameButton,
+    endGameButtonAnchorV9Q,
+    shouldMountLegacyButtons
+  );
+}
+
 function refreshHomeVisibility() {
   const connected = isSocketConnected();
   const gameActive = state.gameStatus === "playing";
   const isPublicRoomSession = isPublicRoomSessionV9K();
+  syncPublicLegacyActionButtonsV9Q();
   const launchPanel = document.querySelector("#launch-panel");
 
   welcomePanel.hidden = isPublicRoomSession || connected || gameActive;
@@ -1305,6 +1351,7 @@ function isCurrentPlayerHost() {
 function updateHostControls() {
   const isHost = isCurrentPlayerHost();
   const isPublicRoomSession = isPublicRoomSessionV9K();
+  syncPublicLegacyActionButtonsV9Q();
   const canStartGame =
     Boolean(state.socket) &&
     state.gameStatus !== "playing" &&
@@ -1313,13 +1360,13 @@ function updateHostControls() {
   const canEndGame =
     state.gameStatus === "playing" && isHost && !isPublicRoomSession;
 
-  startButton.hidden = isPublicRoomSession || state.gameStatus === "playing";
+  startButton.hidden = state.gameStatus === "playing";
   startButton.disabled = !canStartGame;
   startButton.title = canStartGame
     ? "Lancer une grille aléatoire"
     : "Seul l’hébergeur de la salle peut lancer une partie.";
 
-  endGameButton.hidden = isPublicRoomSession || !canEndGame;
+  endGameButton.hidden = !canEndGame;
   endGameButton.disabled = !canEndGame;
   endGameButton.title = canEndGame
     ? "Terminer la partie"
@@ -2555,6 +2602,7 @@ function renderRulesSummary() {
 
 
 function renderModePanel() {
+  syncPublicLegacyActionButtonsV9Q();
   if (isPublicRoomSessionV9K()) {
     removePublicLegacyModeScreenV9K();
     return;
