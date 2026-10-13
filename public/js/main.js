@@ -879,8 +879,37 @@ function getTechnicalPlayerNameV901() {
   return getStoredPlayerNameV901();
 }
 
+
+/* G1-MODE-AUTOSTART-GUARD START */
+let pendingDailyAutoStartIntervalG1 = 0;
+let dailyAutoStartRunIdG1 = 0;
+
+function clearPendingDailyAutoStartIntervalG1(interval) {
+  if (pendingDailyAutoStartIntervalG1 === interval) {
+    pendingDailyAutoStartIntervalG1 = 0;
+  }
+
+  window.clearInterval(interval);
+}
+
+function cancelPendingDailyAutoStartG1() {
+  dailyAutoStartRunIdG1 += 1;
+
+  if (!pendingDailyAutoStartIntervalG1) {
+    return;
+  }
+
+  window.clearInterval(pendingDailyAutoStartIntervalG1);
+  pendingDailyAutoStartIntervalG1 = 0;
+}
+/* G1-MODE-AUTOSTART-GUARD END */
+
 function setSessionContextV901(context) {
   state.gameContext = context;
+
+  if (context !== GAME_CONTEXTS_V901.DAILY) {
+    cancelPendingDailyAutoStartG1();
+  }
 
   document.body.classList.toggle("game-context-solo", context === GAME_CONTEXTS_V901.SOLO);
   document.body.classList.toggle("game-context-daily", context === GAME_CONTEXTS_V901.DAILY);
@@ -3148,23 +3177,40 @@ function showGameFromHomeV87() {
 
 
 function waitAndStartDailyGridFromHomeV9() {
+  cancelPendingDailyAutoStartG1();
+
   let attempts = 0;
   const maxAttempts = 80;
+  const expectedRunId = dailyAutoStartRunIdG1;
+  const expectedRoomId = state.roomId;
 
   const interval = window.setInterval(() => {
     attempts += 1;
 
+    const isStillExpectedDailyAutoStart =
+      expectedRunId === dailyAutoStartRunIdG1 &&
+      state.gameContext === GAME_CONTEXTS_V901.DAILY &&
+      state.roomId === expectedRoomId &&
+      document.body.classList.contains("game-context-daily");
+
+    if (!isStillExpectedDailyAutoStart) {
+      clearPendingDailyAutoStartIntervalG1(interval);
+      return;
+    }
+
     if (startButton && !startButton.disabled) {
-      window.clearInterval(interval);
+      clearPendingDailyAutoStartIntervalG1(interval);
       startButton.click();
       return;
     }
 
     if (attempts >= maxAttempts) {
-      window.clearInterval(interval);
+      clearPendingDailyAutoStartIntervalG1(interval);
       setHomeNoticeV87("Ouverture de la partie : cliquez sur Lancer une grille si la partie ne démarre pas automatiquement.");
     }
   }, 100);
+
+  pendingDailyAutoStartIntervalG1 = interval;
 }
 
 function startDailyGridFromHomeV87() {
@@ -3189,6 +3235,8 @@ function openPrivateRoomFromHomeV87() {
 }
 
 function openSoloFromHomeV87() {
+  cancelPendingDailyAutoStartG1();
+
   /*
    * F1 :
    * Le mode solo ne doit plus dépendre d'un clic manuel sur l'ancien bouton de connexion.
@@ -3449,6 +3497,8 @@ function returnToHomeV87() {
     return;
   }
 
+  cancelPendingDailyAutoStartG1();
+
   leaveActiveGameSessionForHomeV9();
 
   document.body.classList.remove("v88-public-active");
@@ -3500,6 +3550,8 @@ function cleanupHomeTopButtonV88() {
 }
 
 function showHomeFromPublicV88() {
+  cancelPendingDailyAutoStartG1();
+
   document.body.classList.remove("v88-public-active");
   document.body.classList.remove("v87-game-active");
   document.body.classList.add("v87-home-active");
@@ -3508,6 +3560,8 @@ function showHomeFromPublicV88() {
 }
 
 function openPublicRoomsScreenV88() {
+  cancelPendingDailyAutoStartG1();
+
   setupPublicRoomsScreenV88();
 
   document.body.classList.remove("v87-home-active");
@@ -3708,6 +3762,8 @@ function fillPrivateFormFromExistingV89() {
 
 
 function showHomeFromPrivateV89() {
+  cancelPendingDailyAutoStartG1();
+
   document.body.classList.remove("v89-private-active");
   document.body.classList.remove("v88-public-active");
   document.body.classList.remove("v87-game-active");
@@ -3717,6 +3773,8 @@ function showHomeFromPrivateV89() {
 }
 
 function openPrivateRoomScreenV89() {
+  cancelPendingDailyAutoStartG1();
+
   setupPrivateRoomScreenV89();
   fillPrivateFormFromExistingV89();
 
