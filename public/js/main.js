@@ -37,7 +37,6 @@ import {
 import {
   getGameOptions,
   renderModeControls,
-  renderPlayerPreferencesPanel,
 } from "./ui/mode-ui.js";
 import { renderMouseInputPanel } from "./ui/mouse-input-ui.js";
 import { setupAppLayout } from "./ui/layout-ui.js";
@@ -133,7 +132,6 @@ startButton.textContent = "Lancer une grille aléatoire";
 updateInviteButton();
 
 renderModePanel();
-startPlayerIdentityOptionsObserverV902();
 
 renderMouseInputPanel(wordForm, {
   word: "",
@@ -143,7 +141,6 @@ renderMouseInputPanel(wordForm, {
 
 setupAppLayout();
 scheduleBoardFitV31();
-renderPlayerPreferences();
 refreshRightRulesPanel();
 
 resetGameUiToWaiting();
@@ -701,7 +698,6 @@ function savePlayerIdentityV902(identity) {
   saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
   saveLocalString(STORAGE_KEYS.playerName, normalized.pseudo);
 
-  updatePlayerIdentityOptionsV902();
 
   return normalized;
 }
@@ -864,122 +860,8 @@ function requestPlayerIdentityV902({ reason = "default" } = {}) {
   });
 }
 
-function getPlayerIdentityOptionsTargetV902() {
-  const panel = document.querySelector("#player-preferences");
 
-  if (!panel) {
-    return null;
-  }
 
-  const soundControl = panel.querySelector("#personal-sound-enabled");
-  const inferredBody = soundControl ? soundControl.closest("label")?.parentElement : null;
-
-  return inferredBody || panel;
-}
-
-function setupPlayerIdentityOptionsV902() {
-  const target = getPlayerIdentityOptionsTargetV902();
-
-  if (!target || target.querySelector("#player-identity-options-v902")) {
-    return;
-  }
-
-  const section = document.createElement("section");
-  section.id = "player-identity-options-v902";
-  section.className = "player-identity-options-v902";
-  section.innerHTML = [
-    '<h3>Joueur</h3>',
-    '<p class="player-identity-help-v902">Ce pseudo et ce fruit seront réutilisés pour les salons publics, les salons privés et les classements.</p>',
-    '<label class="player-identity-field-v902" for="player-identity-options-pseudo-v902">',
-      '<span>Pseudo</span>',
-      '<input id="player-identity-options-pseudo-v902" type="text" autocomplete="off" maxlength="24" placeholder="Votre pseudo">',
-    '</label>',
-    '<fieldset class="player-identity-fruits-v902">',
-      '<legend>Fruit</legend>',
-      '<div class="player-identity-options-fruit-list-v902"></div>',
-    '</fieldset>',
-    '<p id="player-identity-options-status-v902" class="player-identity-options-status-v902" aria-live="polite"></p>',
-  ].join("");
-
-  target.append(section);
-
-  const fruitList = section.querySelector(".player-identity-options-fruit-list-v902");
-
-  for (const fruit of PLAYER_FRUITS_V902) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "player-identity-fruit-v902";
-    button.dataset.fruit = fruit.value;
-    button.textContent = fruit.value;
-    button.setAttribute("aria-label", fruit.label);
-    button.setAttribute("aria-pressed", "false");
-
-    button.addEventListener("click", () => {
-      const input = section.querySelector("#player-identity-options-pseudo-v902");
-      const identity = savePlayerIdentityV902({
-        pseudo: input.value,
-        fruit: fruit.value,
-      });
-
-      if (!identity) {
-        section.dataset.selectedFruit = fruit.value;
-        updatePlayerIdentityOptionsV902();
-      }
-    });
-
-    fruitList.append(button);
-  }
-
-  const input = section.querySelector("#player-identity-options-pseudo-v902");
-
-  attachPseudoInputSanitizerV902(input);
-
-  input.addEventListener("input", () => {
-    const selectedFruit = section.dataset.selectedFruit || readPlayerIdentityV902()?.fruit || getDefaultFruitV902();
-
-    savePlayerIdentityV902({
-      pseudo: input.value,
-      fruit: selectedFruit,
-    });
-
-    updatePlayerIdentityOptionsV902();
-  });
-
-  updatePlayerIdentityOptionsV902();
-}
-
-function updatePlayerIdentityOptionsV902() {
-  const section = document.querySelector("#player-identity-options-v902");
-
-  if (!section) {
-    return;
-  }
-
-  const identity = readPlayerIdentityV902();
-  const input = section.querySelector("#player-identity-options-pseudo-v902");
-  const status = section.querySelector("#player-identity-options-status-v902");
-  const fallbackPseudo = getLegacyPseudoV902();
-  const selectedFruit = identity?.fruit || section.dataset.selectedFruit || getDefaultFruitV902();
-
-  section.dataset.selectedFruit = selectedFruit;
-
-  if (input && document.activeElement !== input) {
-    input.value = identity?.pseudo || fallbackPseudo || "";
-  }
-
-  for (const button of section.querySelectorAll("[data-fruit]")) {
-    const selected = button.dataset.fruit === selectedFruit;
-
-    button.setAttribute("aria-pressed", String(selected));
-    button.classList.toggle("is-selected", selected);
-  }
-
-  if (status) {
-    status.textContent = identity
-      ? "Identité enregistrée : " + formatPlayerNameV902(identity)
-      : "Aucune identité complète enregistrée.";
-  }
-}
 
 /* V90.2.1-PLAYER-IDENTITY-UI-FIXES START */
 
@@ -1003,68 +885,9 @@ function attachPseudoInputSanitizerV902(input) {
   });
 }
 
-function startPlayerIdentityOptionsObserverV902() {
-  if (window.__playerIdentityOptionsObserverV902) {
-    setupPlayerIdentityOptionsV902();
-    updatePlayerIdentityOptionsV902();
-    return;
-  }
-
-  let pending = false;
-
-  const setup = () => {
-    if (pending) {
-      return;
-    }
-
-    pending = true;
-
-    window.requestAnimationFrame(() => {
-      pending = false;
-      setupPlayerIdentityOptionsV902();
-      updatePlayerIdentityOptionsV902();
-    });
-  };
-
-  window.__playerIdentityOptionsObserverV902 = new MutationObserver(() => {
-    const panel = document.querySelector("#player-preferences");
-
-    if (panel && !panel.querySelector("#player-identity-options-v902")) {
-      setup();
-    }
-  });
-
-  window.__playerIdentityOptionsObserverV902.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-
-  document.addEventListener("click", (event) => {
-    const target = event.target instanceof Element ? event.target : null;
-    const button = target ? target.closest("button, [role='button']") : null;
-    const text = button ? button.textContent.trim().toLowerCase() : "";
-
-    if (text.includes("option") || text.includes("réglage")) {
-      setup();
-      window.setTimeout(setup, 80);
-    }
-  });
-
-  setup();
-}
 
 /* V90.2.1-PLAYER-IDENTITY-UI-FIXES END */
 
-/* V90.2.3-ROLLBACK-SHARED-OPTIONS START */
-
-/*
- * Rollback ciblé v90.2.2 :
- * - suppression des sélecteurs larges sur tous les panneaux d'options ;
- * - retour à une seule cible sûre : #player-preferences ;
- * - observer limité et sans écoute d'attributs pour éviter les boucles DOM.
- */
-
-/* V90.2.3-ROLLBACK-SHARED-OPTIONS END */
 
 /* V90.2-PLAYER-IDENTITY END */
 
@@ -2210,7 +2033,6 @@ function handleGameStarted(data) {
   updateGameStatus("playing");
 
   renderModePanel();
-  renderPlayerPreferences();
   renderRulesSummary();
   refreshRightRulesPanel();
 
@@ -2305,7 +2127,6 @@ function handleGameEnded(data) {
   }
 
   renderModePanel();
-  renderPlayerPreferences();
   renderRulesSummary();
   refreshRightRulesPanel();
 
@@ -2315,16 +2136,6 @@ function handleGameEnded(data) {
   );
 }
 
-function renderPlayerPreferences() {
-  /*
-   * V90.2.8D1b :
-   * L'ancien panneau Options joueur / Confort personnel n'est plus rendu.
-   * Les options joueur sont gérées par l'overlay global.
-   */
-  for (const panel of document.querySelectorAll("#player-preferences")) {
-    panel.remove();
-  }
-}
 
 
 
@@ -4111,6 +3922,12 @@ setupPrivateRoomScreenV89();
 /* V89-PRIVATE-ROOM-SCREEN END */
 
 /* V90.2.8C-GLOBAL-OPTIONS-CONTENT START */
+
+/*
+ * F9T-OLD-PLAYER-PREFERENCES-CLEANUP :
+ * l'ancien panneau #player-preferences a été supprimé.
+ * Les préférences joueur sont désormais gérées uniquement par l'overlay Options global.
+ */
 
 /*
  * Étape C : contenu réel de l'overlay Options global.
