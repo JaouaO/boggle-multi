@@ -1261,12 +1261,6 @@ section,
       flex-wrap: wrap;
     }
 
-.connection-control {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      min-height: 2.3rem;
-    }
 
 #boggle-top input,
     #boggle-top button {
@@ -1344,16 +1338,6 @@ section,
   font-variant-numeric: tabular-nums;
 }
 
-    .connection-field-label {
-      display: inline-flex;
-      align-items: center;
-      align-self: center;
-      margin: 0;
-      font-weight: 850;
-      color: #4b3322;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
 
     #boggle-top input,
     #boggle-top button {
@@ -1620,15 +1604,7 @@ section,
       opacity: 0.95;
       pointer-events: none;
     }
-    .connection-control {
 
-      z-index: 1;
-    }
-    .connection-control {
-      position: relative;
-    }
-
-    .connection-field-label,
     #players-panel > h2,
     #found-words-panel > h2,
     #launch-panel > h2,
@@ -2014,20 +1990,7 @@ section,
     .brand-dot-yellow { background: #f4c951 !important; }
     .brand-dot-green { background: #94b96d !important; }
 
-    .connection-control {
-      display: grid !important;
-      grid-template-rows: auto auto !important;
-      gap: 0.12rem !important;
-      min-height: 0 !important;
-      color: var(--mk-ink) !important;
-    }
 
-    .connection-field-label {
-      font-size: 0.82rem !important;
-      color: var(--mk-ink) !important;
-      font-weight: 900 !important;
-      padding-left: 0.18rem !important;
-    }
 
 button:not(.board-cell):hover,
     .ui-button:hover {
@@ -2746,13 +2709,6 @@ button:not(.board-cell):hover,
       margin-left: 0.1rem !important;
     }
 
-    .connection-field-label {
-      font-size: 0.92rem !important;
-      font-weight: 950 !important;
-      color: #6b3b1f !important;
-      padding-left: 0.25rem !important;
-      margin-bottom: 0.08rem !important;
-    }
 
 #boggle-layout {
       grid-template-columns: minmax(17rem, 22rem) minmax(34rem, 43rem) minmax(18rem, 22rem) !important;
@@ -2999,17 +2955,7 @@ button:not(.board-cell):hover,
       height: 0.62rem !important;
     }
 
-    .connection-control {
-      gap: 0.18rem !important;
-    }
 
-    .connection-field-label {
-      font-size: 1.02rem !important;
-      font-weight: 700 !important;
-      color: var(--brown) !important;
-      padding-left: 0.75rem !important;
-      line-height: 1 !important;
-    }
 
 #boggle-layout {
       grid-template-columns: minmax(18.5rem, 24.5rem) minmax(37rem, 49rem) minmax(19rem, 24.5rem) !important;
@@ -7967,3 +7913,5 @@ body.player-identity-modal-open-v902 {
   font-weight: 700;
   text-align: center;
 }
+
+/* F9V-LEGACY-CONNECTION-CSS : anciens styles Room/Pseudo/Connexion supprimés. */
