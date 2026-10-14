@@ -7,6 +7,7 @@ export function renderEndScreen(anchorElement, options) {
     durationSeconds,
         invalidCount = 0,
     helpLevel = 0,
+    dailyLeaderboard = null,
     restartMessage = "",
   } = options;
 
@@ -40,6 +41,7 @@ export function renderEndScreen(anchorElement, options) {
 
 
   updateEndScreenExtraStatsH6A(panel, currentPlayer, invalidCount, helpLevel);
+  updateDailyLeaderboardH9B(panel, dailyLeaderboard, currentPlayerId);
 
   panel.nextRound.textContent = restartMessage;
   panel.nextRound.hidden = !restartMessage;
@@ -191,4 +193,79 @@ function formatDuration(seconds) {
   }
 
   return `${minutes}min ${remainingSeconds}s`;
+}
+
+function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId) {
+  const section = ensureDailyLeaderboardSectionH9B(panel);
+
+  if (!leaderboardState) {
+    section.hidden = true;
+    section.innerHTML = "";
+    return;
+  }
+
+  section.hidden = false;
+
+  if (leaderboardState.status === "idle" || leaderboardState.status === "loading") {
+    section.innerHTML = "<h3>Classement du jour</h3><p>Enregistrement du score…</p>";
+    return;
+  }
+
+  if (leaderboardState.status === "error") {
+    section.innerHTML = "<h3>Classement du jour</h3><p>Classement indisponible pour le moment.</p>";
+    return;
+  }
+
+  const data = leaderboardState.data;
+  const entries = Array.isArray(data?.entries) ? data.entries : [];
+  const playerRank = data?.playerRank ?? data?.playerEntry?.rank ?? null;
+
+  const title = document.createElement("h3");
+  title.textContent = "Classement du jour";
+
+  const summary = document.createElement("p");
+  summary.className = "daily-leaderboard-summary-h9b";
+  summary.textContent = playerRank
+    ? `Votre rang : #${playerRank} sur ${Number(data?.totalEntries ?? entries.length)} joueur(s).`
+    : "Votre score est enregistré.";
+
+  const list = document.createElement("ol");
+  list.className = "daily-leaderboard-list-h9b";
+
+  for (const entry of entries) {
+    const item = document.createElement("li");
+    const isCurrentPlayer = entry.playerId === currentPlayerId || entry.playerId === data?.playerEntry?.playerId;
+    const name = document.createElement("strong");
+    const details = document.createElement("span");
+
+    item.className = isCurrentPlayer
+      ? "daily-leaderboard-entry-h9b daily-leaderboard-entry-current-h9b"
+      : "daily-leaderboard-entry-h9b";
+    name.textContent = `#${entry.rank} · ${entry.playerName || "Joueur"}`;
+    details.textContent = ` — ${Number(entry.score ?? 0)} pt(s), ${Number(entry.wordCount ?? 0)} mot(s)`;
+
+    item.append(name, details);
+    list.append(item);
+  }
+
+  if (!entries.length) {
+    const empty = document.createElement("p");
+    empty.textContent = "Aucun score enregistré pour le moment.";
+    section.replaceChildren(title, empty);
+    return;
+  }
+
+  section.replaceChildren(title, summary, list);
+}
+
+function ensureDailyLeaderboardSectionH9B(panel) {
+  let section = panel.element.querySelector(".daily-leaderboard-h9b");
+
+  if (!section) {
+    section = document.createElement("section");
+    section.className = "daily-leaderboard-h9b";
+    panel.extraStats.insertAdjacentElement("afterend", section);
+  }
+
+  return section;
 }

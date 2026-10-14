@@ -44,6 +44,8 @@ import { runSubmissionFeedback } from "./ui/feedback-ui.js";
 import { applyThemeStyles } from "./ui/theme-styles.js";
 
 const DEFAULT_DURATION_SECONDS = 180;
+const DAILY_LEADERBOARD_API_H9B = "/api/daily-leaderboard";
+
 const DEFAULT_GAME_OPTIONS = {
   durationMode: "timer",
   durationSeconds: DEFAULT_DURATION_SECONDS,
@@ -2242,6 +2244,8 @@ function handleGameEnded(data) {
     logElement,
     `Partie terminée à ${endDate.toLocaleTimeString()} — temps écoulé : ${getElapsedDurationSeconds()}s.`
   );
+
+  submitDailyLeaderboardScoreH9B();
 }
 
 
@@ -2719,6 +2723,13 @@ function renderMousePanel() {
 
 /* V9H-END-SCREEN-DISMISS START */
 let dismissedEndScreenGameKeyV9H = "";
+let dailyLeaderboardSubmittedGameKeyH9B = "";
+let dailyLeaderboardStateH9B = {
+  status: "idle",
+  data: null,
+  error: "",
+};
+
 
 function getEndScreenGameKeyV9H() {
   return state.startedAt ? String(state.startedAt) : "";
@@ -2967,6 +2978,87 @@ function getPublicRestartEndScreenMessageV9E() {
   return "Nouvelle partie publique dans 15 secondes.";
 }
 
+function getDailyLeaderboardEndScreenStateH9B() {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) {
+    return null;
+  }
+
+  return dailyLeaderboardStateH9B;
+}
+
+function getDailyLeaderboardGameKeyH9B() {
+  return [
+    getDailyDateKeyG6(),
+    state.playerId || getOrCreateClientId(),
+    state.startedAt || "",
+  ].join(":");
+}
+
+function getCurrentDailyLeaderboardPlayerH9B() {
+  return (state.players || []).find((player) => player.id === state.playerId) || null;
+}
+
+function getDailyLeaderboardPayloadH9B() {
+  const currentPlayer = getCurrentDailyLeaderboardPlayerH9B();
+
+  return {
+    playerId: getOrCreateClientId(),
+    playerName: state.playerName || getTechnicalPlayerNameV901(),
+    score: Number(currentPlayer?.score ?? state.score ?? 0),
+    wordCount: Number(currentPlayer?.wordCount ?? state.foundWords?.length ?? 0),
+    invalidCount: Number(currentPlayer?.invalidCount ?? state.invalidCount ?? 0),
+    helpLevel: Number(state.helpLevel ?? 0),
+    durationSeconds: getElapsedDurationSeconds(),
+  };
+}
+
+async function submitDailyLeaderboardScoreH9B() {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) {
+    return;
+  }
+
+  const gameKey = getDailyLeaderboardGameKeyH9B();
+
+  if (!gameKey || dailyLeaderboardSubmittedGameKeyH9B === gameKey) {
+    return;
+  }
+
+  dailyLeaderboardSubmittedGameKeyH9B = gameKey;
+  dailyLeaderboardStateH9B = { status: "loading", data: null, error: "" };
+
+  if (state.endScreenVisible) {
+    renderCurrentEndScreen();
+  }
+
+  try {
+    const date = getDailyDateKeyG6();
+    const response = await fetch(`${DAILY_LEADERBOARD_API_H9B}?date=${encodeURIComponent(date)}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(getDailyLeaderboardPayloadH9B()),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || data?.ok !== true) {
+      throw new Error(data?.error || "leaderboard indisponible");
+    }
+
+    dailyLeaderboardStateH9B = { status: "loaded", data, error: "" };
+  } catch {
+    dailyLeaderboardStateH9B = {
+      status: "error",
+      data: null,
+      error: "Classement indisponible pour le moment.",
+    };
+  }
+
+  if (state.endScreenVisible) {
+    renderCurrentEndScreen();
+  }
+}
 function renderCurrentEndScreen() {
   renderEndScreen(boardElement, {
     players: state.players,
@@ -2976,6 +3068,7 @@ function renderCurrentEndScreen() {
     durationSeconds: getElapsedDurationSeconds(),
         invalidCount: Number(state.invalidCount ?? 0),
     helpLevel: Number(state.helpLevel ?? 0),
+    dailyLeaderboard: getDailyLeaderboardEndScreenStateH9B(),
     restartMessage: getPublicRestartEndScreenMessageV9E(),
   });
 
