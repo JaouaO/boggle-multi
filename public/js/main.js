@@ -3200,7 +3200,13 @@ function waitAndStartDailyGridFromHomeV9() {
 
     if (startButton && !startButton.disabled) {
       clearPendingDailyAutoStartIntervalG1(interval);
-      startButton.click();
+
+      /*
+       * G2-DAILY-AUTOSTART-NO-DOM-CLICK :
+       * l'auto-start de la grille du jour appelle l'action métier,
+       * sans simuler un clic DOM sur #start.
+       */
+      startRandomTimedGame();
       return;
     }
 
