@@ -38,7 +38,7 @@ export function renderEndScreen(anchorElement, options) {
     `${maxScore ?? 0} point(s) maximum, ` +
     `durée ${formatDuration(durationSeconds)}.`;
 
-  
+
   updateEndScreenExtraStatsH6A(panel, currentPlayer, invalidCount, helpLevel);
 
   panel.nextRound.textContent = restartMessage;
@@ -176,7 +176,7 @@ function getPlayerInvalidCountH6A(player, fallbackInvalidCount) {
 function formatHelpLevelH6A(helpLevel) {
   const normalizedLevel = Math.max(
     0,
-    Math.min(3, Math.round(Number(helpLevel ?? 0)))
+    Math.min(2, Math.round(Number(helpLevel ?? 0)))
   );
 
   return `niveau ${normalizedLevel}`;

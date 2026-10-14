@@ -36,7 +36,7 @@ const DEFAULT_GAME_OPTIONS: GameOptions = {
   uniqueWords: false,
   penalizeInvalidWords: false,
   invalidWordPenalty: 1,
-  maxHelpLevel: 3,
+  maxHelpLevel: 2,
   targetScoreMode: "percentOfMaxScore",
   targetScorePercent: 70,
   targetScore: 50,
@@ -558,7 +558,7 @@ export class BoggleRoom extends DurableObject {
         durationMode: "noTimer",
         durationSeconds: 0,
         boardSize: normalizeBoardSize(options?.boardSize ?? DEFAULT_GAME_OPTIONS.boardSize),
-        maxHelpLevel: this.canUseHelpLevelsH7() ? 3 : 0,
+        maxHelpLevel: this.canUseHelpLevelsH7() ? 2 : 0,
         soundEnabled: DEFAULT_GAME_OPTIONS.soundEnabled,
         masterVolume: DEFAULT_GAME_OPTIONS.masterVolume,
         visualEffectsEnabled: DEFAULT_GAME_OPTIONS.visualEffectsEnabled,
@@ -621,7 +621,7 @@ export class BoggleRoom extends DurableObject {
       return DEFAULT_GAME_OPTIONS.maxHelpLevel;
     }
 
-    return Math.min(3, Math.max(0, Math.round(value)));
+    return Math.min(2, Math.max(0, Math.round(value)));
   }
 
   private clampTargetScorePercent(value: number) {

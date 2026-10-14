@@ -51,7 +51,7 @@ const DEFAULT_GAME_OPTIONS = {
   uniqueWords: false,
   penalizeInvalidWords: false,
   invalidWordPenalty: 1,
-  maxHelpLevel: 3,
+  maxHelpLevel: 2,
   targetScoreMode: "percentOfMaxScore",
   targetScorePercent: 70,
   targetScore: 50,
@@ -2040,16 +2040,7 @@ function getMaxHelpLevel() {
     return 0;
   }
 
-
-  const configuredLevel = Math.min(3, Math.max(0, state.gameOptions?.maxHelpLevel ?? 3));
-
-  // Le niveau intermédiaire "aide par lettre" est supprimé.
-  // Si la partie autorise au moins deux niveaux d'aide, le second niveau visible ouvre directement la solution complète.
-  if (configuredLevel <= 1) {
-    return configuredLevel;
-  }
-
-  return 3;
+  return Math.min(2, Math.max(0, Number(state.gameOptions?.maxHelpLevel ?? 2)));
 }
 
 
@@ -2371,7 +2362,7 @@ function renderRulesHelpCardV22(card, options) {
 
   content.append(title, details);
 
-  if (visibleHelpLevel >= 3 && maxHelpLevel >= 3) {
+  if (visibleHelpLevel >= 2 && maxHelpLevel >= 2) {
     content.append(createSolutionListV22());
   }
 

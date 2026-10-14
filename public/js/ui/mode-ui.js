@@ -160,7 +160,7 @@ function applyGameOptionsToControls(controls, gameOptions) {
   controls.uniqueWords.checked = Boolean(gameOptions.uniqueWords);
   controls.penalizeInvalidWords.checked = Boolean(gameOptions.penalizeInvalidWords);
   controls.invalidWordPenalty.value = String(gameOptions.invalidWordPenalty ?? 1);
-  controls.maxHelpLevel.value = String(gameOptions.maxHelpLevel ?? 3);
+  controls.maxHelpLevel.value = String(gameOptions.maxHelpLevel ?? 2);
   // Les préférences sonores/visuelles sont locales à chaque joueur.
 }
 
@@ -463,7 +463,6 @@ function ensureModeControls(anchorElement) {
       ["0", "Aucune aide"],
       ["1", "Compteurs seulement"],
       ["2", "Solution complète"],
-      ["3", "Solution complète"],
     ];
 
     for (const [value, label] of helpOptions) {
@@ -473,7 +472,7 @@ function ensureModeControls(anchorElement) {
       maxHelpLevel.append(option);
     }
 
-    maxHelpLevel.value = "3";
+    maxHelpLevel.value = "2";
     maxHelpLevelLabel.append(maxHelpLevel);
 
     rulesFieldset.append(
@@ -755,10 +754,10 @@ function clampPenalty(value) {
 
 function clampHelpLevel(value) {
   if (!Number.isFinite(value)) {
-    return 3;
+    return 2;
   }
 
-  return Math.min(3, Math.max(0, Math.round(value)));
+  return Math.min(2, Math.max(0, Math.round(value)));
 }
 
 function clampTargetScorePercent(value) {

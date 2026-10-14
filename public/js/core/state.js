@@ -13,7 +13,7 @@ export const state = {
     uniqueWords: false,
     penalizeInvalidWords: false,
     invalidWordPenalty: 1,
-    maxHelpLevel: 3,
+    maxHelpLevel: 2,
     targetScoreMode: "percentOfMaxScore",
     targetScorePercent: 70,
     targetScore: 50,
