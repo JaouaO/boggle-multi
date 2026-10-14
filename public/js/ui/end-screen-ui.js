@@ -264,7 +264,9 @@ function ensureDailyLeaderboardSectionH9B(panel) {
   if (!section) {
     section = document.createElement("section");
     section.className = "daily-leaderboard-h9b";
-    panel.extraStats.insertAdjacentElement("afterend", section);
+    const anchor = panel.nextRound instanceof HTMLElement ? panel.nextRound : panel.element;
+
+    anchor.insertAdjacentElement("beforebegin", section);
   }
 
   return section;
