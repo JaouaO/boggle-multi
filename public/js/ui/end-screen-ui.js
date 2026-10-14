@@ -5,6 +5,8 @@ export function renderEndScreen(anchorElement, options) {
     maxScore,
     totalWords,
     durationSeconds,
+        invalidCount = 0,
+    helpLevel = 0,
     restartMessage = "",
   } = options;
 
@@ -35,6 +37,9 @@ export function renderEndScreen(anchorElement, options) {
     `Grille : ${totalWords ?? 0} mot(s) possible(s), ` +
     `${maxScore ?? 0} point(s) maximum, ` +
     `durée ${formatDuration(durationSeconds)}.`;
+
+  
+  updateEndScreenExtraStatsH6A(panel, currentPlayer, invalidCount, helpLevel);
 
   panel.nextRound.textContent = restartMessage;
   panel.nextRound.hidden = !restartMessage;
@@ -124,6 +129,57 @@ function sortPlayers(a, b) {
   }
 
   return a.name.localeCompare(b.name, "fr");
+}
+
+function updateEndScreenExtraStatsH6A(panel, currentPlayer, fallbackInvalidCount, helpLevel) {
+  let extraStats = panel.element.querySelector(".end-screen-extra-stats-h6a");
+
+  if (!extraStats) {
+    extraStats = document.createElement("p");
+    extraStats.className = "end-screen-extra-stats-h6a";
+    panel.stats.insertAdjacentElement("afterend", extraStats);
+  }
+
+  if (!currentPlayer) {
+    extraStats.hidden = true;
+    extraStats.textContent = "";
+    return;
+  }
+
+  const invalidCount = getPlayerInvalidCountH6A(currentPlayer, fallbackInvalidCount);
+  const invalidLabel = `${invalidCount} erreur${invalidCount > 1 ? "s" : ""}`;
+
+  extraStats.hidden = false;
+  extraStats.textContent =
+    `Erreurs : ${invalidLabel}. Aide utilisée : ${formatHelpLevelH6A(helpLevel)}.`;
+}
+
+function getPlayerInvalidCountH6A(player, fallbackInvalidCount) {
+  const candidates = [
+    player?.invalidCount,
+    player?.invalidWordsCount,
+    player?.invalidWordCount,
+    fallbackInvalidCount,
+  ];
+
+  for (const value of candidates) {
+    const count = Number(value);
+
+    if (Number.isFinite(count) && count >= 0) {
+      return Math.floor(count);
+    }
+  }
+
+  return 0;
+}
+
+function formatHelpLevelH6A(helpLevel) {
+  const normalizedLevel = Math.max(
+    0,
+    Math.min(3, Math.round(Number(helpLevel ?? 0)))
+  );
+
+  return `niveau ${normalizedLevel}`;
 }
 
 function formatDuration(seconds) {

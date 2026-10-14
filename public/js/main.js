@@ -2949,6 +2949,8 @@ function renderCurrentEndScreen() {
     maxScore: state.solutionsStats?.maxScore ?? 0,
     totalWords: state.solutionsStats?.totalWords ?? 0,
     durationSeconds: getElapsedDurationSeconds(),
+        invalidCount: Number(state.invalidCount ?? 0),
+    helpLevel: Number(state.helpLevel ?? 0),
     restartMessage: getPublicRestartEndScreenMessageV9E(),
   });
 
