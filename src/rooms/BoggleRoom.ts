@@ -376,10 +376,11 @@ export class BoggleRoom extends DurableObject {
     this.broadcastGameOptions();
   }
 
-    /*
+  /*
    * Les rooms quotidiennes personnelles gardent une grille commune par date.
    * Les autres modes conservent la génération aléatoire historique.
-   */  private createGeneratedBoardG4C(options: GameOptions): Board {
+   */
+  private createGeneratedBoardG4C(options: GameOptions): Board {
     const dailyDateKey = this.getDailyDateKeyG4C();
 
     if (!dailyDateKey) {
@@ -397,7 +398,8 @@ export class BoggleRoom extends DurableObject {
 
     return match?.[1] ?? null;
   }
-  /* Verrou léger contre les relances normales de la grille du jour. */  private isDailyRoomG5() {
+  /* Verrou léger contre les relances normales de la grille du jour. */
+  private isDailyRoomG5() {
     return Boolean(this.getDailyDateKeyG4C());
   }
 

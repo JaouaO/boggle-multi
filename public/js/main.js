@@ -191,7 +191,8 @@ function syncPublicLegacyActionButtonsV9Q() {
    * Les salons publics sont pilotés par la boucle serveur.
    * Les boutons Start/Fin restent montés en solo/privé,
    * mais sont retirés du DOM en public pour éviter les actions manuelles interdites.
-   */  const shouldMountLegacyButtons = !isPublicRoomSessionV9K();
+   */
+  const shouldMountLegacyButtons = !isPublicRoomSessionV9K();
 
   setLegacyActionButtonMountedV9Q(
     startButton,
@@ -3186,7 +3187,8 @@ function getDailyRoomIdV87() {
   /*
    * La room quotidienne est personnelle par navigateur.
    * La date reste dans l'identifiant pour permettre une seed serveur commune.
-   */  return `grille-du-jour-${year}-${month}-${day}-${clientId}`;
+   */
+  return `grille-du-jour-${year}-${month}-${day}-${clientId}`;
 }
 
 function setHomeNoticeV87(message) {
@@ -3246,7 +3248,8 @@ function waitAndStartDailyGridFromHomeV9() {
     }
 
     if (canStartGameNowG3()) {
-      clearPendingDailyAutoStartIntervalG1(interval);      startRandomTimedGame();
+      clearPendingDailyAutoStartIntervalG1(interval);
+      startRandomTimedGame();
       return;
     }
 
@@ -3285,7 +3288,8 @@ function openSoloFromHomeV87() {
   /*
    * Le mode solo ouvre une session technique personnelle,
    * puis laisse l'écran règles / lancement s'afficher quand la socket est prête.
-   */  const clientId = getOrCreateClientId();
+   */
+  const clientId = getOrCreateClientId();
   const roomId = normalizeSessionRoomIdV901(
     `solo-${clientId}`,
     "solo"
