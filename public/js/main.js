@@ -1075,7 +1075,7 @@ function startRandomTimedGame() {
   send({
     type: "startGame",
     mode: "timed",
-    options: getGameOptions(),
+    options: sanitizeGameOptionsForCurrentContextH3D(getGameOptions()),
   });
 }
 
@@ -1092,7 +1092,7 @@ function startSolutionMode(board) {
     mode: "solution",
     board,
     options: {
-      ...getGameOptions(),
+      ...sanitizeGameOptionsForCurrentContextH3D(getGameOptions()),
       boardSize: board.length,
       durationMode: "noTimer",
     },
@@ -1120,15 +1120,58 @@ function saveLastBoardSuggestion(board) {
   }
 }
 
+function canUseUniqueWordsForCurrentContextH3D() {
+  return String(state.gameContext || "").toLowerCase() === "private";
+}
+
+function sanitizeGameOptionsForCurrentContextH3D(options) {
+  const scopedOptions = {
+    ...DEFAULT_GAME_OPTIONS,
+    ...options,
+  };
+
+  if (!canUseUniqueWordsForCurrentContextH3D()) {
+    scopedOptions.uniqueWords = false;
+  }
+
+  return scopedOptions;
+}
+
+function syncUniqueWordsOptionControlH3D() {
+  const input = document.querySelector("#unique-words");
+
+  if (!(input instanceof HTMLInputElement)) {
+    return;
+  }
+
+  const available = canUseUniqueWordsForCurrentContextH3D();
+  const panel = document.querySelector("#mode-controls");
+  const isLocked = panel?.dataset.controlsLocked === "true";
+  const label = input.closest("label");
+
+  if (!available) {
+    input.checked = false;
+  }
+
+  input.disabled = !available || isLocked;
+
+  if (label instanceof HTMLElement) {
+    label.hidden = false;
+    label.style.display = available ? "" : "none";
+    label.setAttribute(
+      "aria-hidden",
+      available ? "false" : "true"
+    );
+  }
+}
+
 function syncPendingGameOptions(options) {
   if (!isCurrentPlayerHost() || state.gameStatus === "playing") {
     return;
   }
 
-  state.gameOptions = {
-    ...DEFAULT_GAME_OPTIONS,
-    ...options,
-  };
+  state.gameOptions = sanitizeGameOptionsForCurrentContextH3D(options);
+  syncUniqueWordsOptionControlH3D();
 
   send({
     type: "updateGameOptions",
@@ -2468,6 +2511,7 @@ function renderModePanel() {
     onOptionsChange: syncPendingGameOptions,
     onStartSolution: startSolutionMode,
   });
+  syncUniqueWordsOptionControlH3D();
 }
 
 function refreshHelpDisplay() {
