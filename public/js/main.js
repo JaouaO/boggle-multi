@@ -1075,7 +1075,7 @@ function startRandomTimedGame() {
   send({
     type: "startGame",
     mode: "timed",
-    options: getGameOptions(),
+    options: normalizeGameOptionsForContextH3A(getGameOptions()),
   });
 }
 
@@ -1120,15 +1120,29 @@ function saveLastBoardSuggestion(board) {
   }
 }
 
+function canUseUniqueWordsOptionH3A() {
+  return state.gameContext === GAME_CONTEXTS_V901.PRIVATE;
+}
+
+function normalizeGameOptionsForContextH3A(options) {
+  const normalized = {
+    ...DEFAULT_GAME_OPTIONS,
+    ...options,
+  };
+
+  if (!canUseUniqueWordsOptionH3A()) {
+    normalized.uniqueWords = false;
+  }
+
+  return normalized;
+}
+
 function syncPendingGameOptions(options) {
   if (!isCurrentPlayerHost() || state.gameStatus === "playing") {
     return;
   }
 
-  state.gameOptions = {
-    ...DEFAULT_GAME_OPTIONS,
-    ...options,
-  };
+  state.gameOptions = normalizeGameOptionsForContextH3A(options);
 
   send({
     type: "updateGameOptions",
@@ -2464,7 +2478,8 @@ function renderModePanel() {
   renderModeControls(startButton, {
     visible: state.gameStatus !== "playing",
     disabled: !state.socket || !isCurrentPlayerHost(),
-    gameOptions: state.gameOptions,
+    gameOptions: normalizeGameOptionsForContextH3A(state.gameOptions),
+    uniqueWordsAvailable: canUseUniqueWordsOptionH3A(),
     onOptionsChange: syncPendingGameOptions,
     onStartSolution: startSolutionMode,
   });

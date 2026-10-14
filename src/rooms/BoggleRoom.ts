@@ -558,7 +558,7 @@ export class BoggleRoom extends DurableObject {
       durationMode,
       durationSeconds,
       boardSize: normalizeBoardSize(options?.boardSize ?? DEFAULT_GAME_OPTIONS.boardSize),
-      uniqueWords: Boolean(options?.uniqueWords),
+      uniqueWords: this.canUseUniqueWordsOptionH3A() && Boolean(options?.uniqueWords),
       penalizeInvalidWords: Boolean(options?.penalizeInvalidWords),
       invalidWordPenalty: this.clampPenalty(
         options?.invalidWordPenalty ?? DEFAULT_GAME_OPTIONS.invalidWordPenalty
@@ -900,6 +900,16 @@ export class BoggleRoom extends DurableObject {
 
   private isPublicRoomV9D3() {
     return PUBLIC_ROOM_IDS_V9D3.has(this.roomId.toUpperCase());
+  }
+
+  private canUseUniqueWordsOptionH3A() {
+    const roomId = this.roomId.toUpperCase();
+
+    return (
+      !this.isPublicRoomV9D3() &&
+      !roomId.startsWith("SOLO-") &&
+      !roomId.startsWith("GRILLE-DU-JOUR-")
+    );
   }
 
   private getPublicRoomGameOptionsV9D4(): GameOptions {

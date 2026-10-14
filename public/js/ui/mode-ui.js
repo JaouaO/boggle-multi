@@ -10,6 +10,8 @@ export function renderModeControls(anchorElement, options) {
 
   const disabled = Boolean(options.disabled);
 
+  setUniqueWordsAvailabilityH3A(controls, options.uniqueWordsAvailable === true);
+
   if (options.gameOptions) {
     applyGameOptionsToControls(controls, options.gameOptions);
   }
@@ -143,6 +145,28 @@ function setupOptionsDisclosure(controls) {
   sync();
 }
 
+function setUniqueWordsAvailabilityH3A(controls, available) {
+  controls.panel.dataset.uniqueWordsAvailable = available ? "true" : "false";
+
+  const uniqueWordsLabel = controls.uniqueWords?.closest("label");
+  const penaltyLabel = controls.penalizeInvalidWords?.closest("label");
+
+  if (!uniqueWordsLabel || !controls.rulesFieldset) {
+    return;
+  }
+
+  if (available) {
+    if (!uniqueWordsLabel.isConnected) {
+      controls.rulesFieldset.insertBefore(uniqueWordsLabel, penaltyLabel ?? null);
+    }
+
+    return;
+  }
+
+  controls.uniqueWords.checked = false;
+  uniqueWordsLabel.remove();
+}
+
 function applyGameOptionsToControls(controls, gameOptions) {
   if (!gameOptions) {
     return;
@@ -157,7 +181,8 @@ function applyGameOptionsToControls(controls, gameOptions) {
       : "percentOfMaxScore";
   controls.targetScorePercent.value = String(gameOptions.targetScorePercent ?? 70);
   controls.targetScore.value = String(gameOptions.targetScore ?? 50);
-  controls.uniqueWords.checked = Boolean(gameOptions.uniqueWords);
+  controls.uniqueWords.checked =
+    controls.panel.dataset.uniqueWordsAvailable === "true" && Boolean(gameOptions.uniqueWords);
   controls.penalizeInvalidWords.checked = Boolean(gameOptions.penalizeInvalidWords);
   controls.invalidWordPenalty.value = String(gameOptions.invalidWordPenalty ?? 1);
   controls.maxHelpLevel.value = String(gameOptions.maxHelpLevel ?? 3);
@@ -207,7 +232,9 @@ export function getGameOptions() {
     targetScoreInput.value = String(targetScore);
   }
 
-  const uniqueWords = Boolean(panel?.querySelector("#unique-words")?.checked);
+  const uniqueWords =
+    panel?.dataset.uniqueWordsAvailable === "true" &&
+    Boolean(panel?.querySelector("#unique-words")?.checked);
   const penalizeInvalidWords = Boolean(
     panel?.querySelector("#penalize-invalid-words")?.checked
   );
@@ -429,6 +456,7 @@ function ensureModeControls(anchorElement) {
     );
 
     const rulesFieldset = createFieldset("Règles");
+    rulesFieldset.id = "mode-rules-fieldset";
 
     const uniqueWordsLabel = createCheckboxLabel(
       "unique-words",
@@ -566,6 +594,7 @@ function ensureModeControls(anchorElement) {
     targetScorePercentLabel: panel.querySelector("#target-score-percent-label"),
     targetScore: panel.querySelector("#target-score"),
     targetScoreLabel: panel.querySelector("#target-score-label"),
+    rulesFieldset: panel.querySelector("#mode-rules-fieldset"),
     uniqueWords: panel.querySelector("#unique-words"),
     penalizeInvalidWords: panel.querySelector("#penalize-invalid-words"),
     invalidWordPenalty: panel.querySelector("#invalid-word-penalty"),
