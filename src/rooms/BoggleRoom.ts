@@ -544,6 +544,10 @@ export class BoggleRoom extends DurableObject {
     );
   }
 
+  private canUseHelpLevelsH7() {
+    return !this.isPublicRoomV9D3() && !this.isDailyRoomG5();
+  }
+
   private normalizeGameOptions(
     mode: GameMode,
     options?: Partial<GameOptions>
@@ -554,7 +558,7 @@ export class BoggleRoom extends DurableObject {
         durationMode: "noTimer",
         durationSeconds: 0,
         boardSize: normalizeBoardSize(options?.boardSize ?? DEFAULT_GAME_OPTIONS.boardSize),
-        maxHelpLevel: 3,
+        maxHelpLevel: this.canUseHelpLevelsH7() ? 3 : 0,
         soundEnabled: DEFAULT_GAME_OPTIONS.soundEnabled,
         masterVolume: DEFAULT_GAME_OPTIONS.masterVolume,
         visualEffectsEnabled: DEFAULT_GAME_OPTIONS.visualEffectsEnabled,
@@ -934,6 +938,7 @@ export class BoggleRoom extends DurableObject {
       durationSeconds,
       penalizeInvalidWords: true,
       invalidWordPenalty: 1,
+      maxHelpLevel: 0,
     };
   }
 

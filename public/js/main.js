@@ -2036,6 +2036,11 @@ function changeHelpLevel() {
 }
 
 function getMaxHelpLevel() {
+  if (isHelpRestrictedContextH7()) {
+    return 0;
+  }
+
+
   const configuredLevel = Math.min(3, Math.max(0, state.gameOptions?.maxHelpLevel ?? 3));
 
   // Le niveau intermédiaire "aide par lettre" est supprimé.
@@ -2048,7 +2053,34 @@ function getMaxHelpLevel() {
 }
 
 
+function isHelpRestrictedContextH7() {
+  const context = String(state.gameContext || "").toLowerCase();
+
+  return (
+    isPublicRoomSessionV9K() ||
+    context === "daily" ||
+    context === "grille-du-jour" ||
+    context === "grille_du_jour" ||
+    context === "daily-grid"
+  );
+}
+
+function enforceRestrictedHelpLevelH7() {
+  if (!isHelpRestrictedContextH7()) {
+    return false;
+  }
+
+  state.helpLevel = 0;
+  state.selectedHelpCell = null;
+
+  return true;
+}
+
 function clampCurrentHelpLevel() {
+  if (enforceRestrictedHelpLevelH7()) {
+    return;
+  }
+
   const maxHelpLevel = getMaxHelpLevel();
   const normalizedHelpLevel = normalizeSimplifiedHelpLevel(state.helpLevel, maxHelpLevel);
 
@@ -2515,6 +2547,8 @@ function renderModePanel() {
 }
 
 function refreshHelpDisplay() {
+  enforceRestrictedHelpLevelH7();
+
   const maxHelpLevel = getMaxHelpLevel();
   const helpPanel = document.querySelector("#help-panel");
 
