@@ -6583,35 +6583,32 @@ body.v87-home-active {
    ========================================================================== */
 
 /*
- * La structure v87 garde ses classes propres, mais les boutons utilisent aussi
- * .ui-button pour rester plus proches du style général du jeu.
+ * Les boutons de l'accueil et du salon public utilisent leurs classes dédiées,
+ * sans dépendre de .ui-button.
  */
 
 /* Correction du bouton Grille du jour : pas de blanc sur blanc. */
 #home-v87 .home-v87-primary-button,
-#home-v87 .home-v87-primary-button.ui-button,
 body.v87-home-active #home-v87 .home-v87-primary-button,
-body.v87-home-active #home-v87 .home-v87-primary-button.ui-button {
+body.v87-home-active #home-v87 .home-v87-primary-button {
   border: 1px solid rgba(122, 61, 24, 0.28) !important;
   background: #fb7827 !important;
   color: #ffffff !important;
   text-shadow: 0 0.08rem 0 rgba(90, 39, 13, 0.18) !important;
 }
 
-#home-v87 .home-v87-primary-button *,
-#home-v87 .home-v87-primary-button.ui-button * {
+#home-v87 .home-v87-primary-button * {
   color: inherit !important;
 }
 
-#home-v87 .home-v87-primary-button:hover,
-#home-v87 .home-v87-primary-button.ui-button:hover {
+#home-v87 .home-v87-primary-button:hover {
   background: #ee681e !important;
   color: #ffffff !important;
 }
 
 /* Boutons Compte / Options : proches des boutons existants, mais plus doux. */
-#home-v87 .home-v87-top-button.ui-button,
-#home-v87 .home-v87-secondary-button.ui-button {
+#home-v87 .home-v87-top-button,
+#home-v87 .home-v87-secondary-button {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -6623,7 +6620,7 @@ body.v87-home-active #home-v87 .home-v87-primary-button.ui-button {
 }
 
 /* Les grosses cartes restent des cartes, malgré .ui-button. */
-#home-v87 .home-v87-mode.ui-button {
+#home-v87 .home-v87-mode {
   display: grid !important;
   grid-template-columns: auto minmax(0, 1fr) auto !important;
   align-items: center !important;
@@ -6634,7 +6631,7 @@ body.v87-home-active #home-v87 .home-v87-primary-button.ui-button {
   text-decoration: none !important;
 }
 
-#home-v87 .home-v87-mode.ui-button:hover {
+#home-v87 .home-v87-mode:hover {
   transform: translateY(-1px) !important;
   box-shadow:
     0 0.42rem 1.25rem rgba(77, 50, 27, 0.12),
