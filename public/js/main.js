@@ -188,15 +188,10 @@ function setLegacyActionButtonMountedV9Q(button, anchor, shouldMount) {
 
 function syncPublicLegacyActionButtonsV9Q() {
   /*
-   * F9Q-PUBLIC-LEGACY-BUTTONS :
-   * en salon public, les actions manuelles sont pilotées par le serveur.
-   * Les boutons existants restent les actions privées/solo actuelles.
-   * En public, ils sont retirés du DOM pour éviter toute action interdite.
-   *
-   * F9U-LEGACY-CONNECTION-COMMENTS :
-   * ne pas supprimer #start / endGameButton tant que le flux privé actuel les utilise.
-   */
-  const shouldMountLegacyButtons = !isPublicRoomSessionV9K();
+   * Les salons publics sont pilotés par la boucle serveur.
+   * Les boutons Start/Fin restent montés en solo/privé,
+   * mais sont retirés du DOM en public pour éviter les actions manuelles interdites.
+   */  const shouldMountLegacyButtons = !isPublicRoomSessionV9K();
 
   setLegacyActionButtonMountedV9Q(
     startButton,
@@ -509,17 +504,8 @@ function takePendingSubmissionPath() {
 /*
  * V90.1 — session propre.
  *
- * Objectif :
- * - ne plus déclencher les connexions internes via l'ancien bouton de connexion ;
- * - ne plus utiliser les champs Room/Pseudo comme source de vérité des nouveaux parcours ;
- * - garder temporairement l'ancien DOM uniquement pour compatibilité manuelle ;
- * - préparer sa suppression complète en v90.2/v90.3.
- *
- * TODO v90-cleanup :
- * - les salons publics/privés passent désormais par les écrans V88/V89 ;
- * - supprimer moveConnectionControls() de layout-ui.js ;
- * - les anciennes règles CSS de connexion doivent être auditées par blocs avant suppression ;
- * - remplacer le mot "connexion" par "rejoindre une partie" côté UI.
+ * Les nouveaux parcours ouvrent une session via connectToSessionV901().
+ * Les anciens champs Room/Pseudo restent disponibles uniquement pour compatibilité manuelle.
  */
 
 const GAME_CONTEXTS_V901 = {
@@ -552,16 +538,8 @@ function getStoredPlayerNameV901() {
 /*
  * V90.2 — identité joueur locale.
  *
- * Objectif :
- * - pseudo + fruit enregistrés dans le navigateur ;
- * - identité modifiable dans Options ;
- * - identité réutilisée automatiquement pour les salons publics/privés ;
- * - demande uniquement si l'identité manque ;
- * - aucune dépendance à l'IP, aucun compte utilisateur.
- *
- * TODO v90-cleanup :
- * - champ privé #private-v89-name supprimé en E6c ;
- * - envoyer pseudo et fruit séparément au serveur si le protocole WebSocket évolue.
+ * Le pseudo et le fruit sont enregistrés dans le navigateur,
+ * puis réutilisés automatiquement dans les salons publics et privés.
  */
 
 const PLAYER_IDENTITY_STORAGE_KEY_V902 = "boggle.playerIdentity.v1";
@@ -879,8 +857,6 @@ function getTechnicalPlayerNameV901() {
   return getStoredPlayerNameV901();
 }
 
-
-/* G1-MODE-AUTOSTART-GUARD START */
 let pendingDailyAutoStartIntervalG1 = 0;
 let dailyAutoStartRunIdG1 = 0;
 
@@ -902,8 +878,6 @@ function cancelPendingDailyAutoStartG1() {
   window.clearInterval(pendingDailyAutoStartIntervalG1);
   pendingDailyAutoStartIntervalG1 = 0;
 }
-/* G1-MODE-AUTOSTART-GUARD END */
-
 function setSessionContextV901(context) {
   state.gameContext = context;
 
@@ -1179,13 +1153,9 @@ function isCurrentPlayerHost() {
 }
 
 /*
- * G5-DAILY-ONCE-GUARD :
- * une grille du jour personnelle ne doit pas être relancée après rechargement.
- */
-/*
- * G6-DAILY-LOCAL-LOCK :
- * verrou local léger par navigateur et par date.
- * Ce n'est pas une protection anti-triche, seulement un garde-fou d'usage normal.
+ * Verrou quotidien léger :
+ * - localStorage bloque la relance en usage normal ;
+ * - l'état serveur protège aussi la room personnelle.
  */
 function getDailyDateKeyG6() {
   const now = new Date();
@@ -1224,9 +1194,8 @@ function isDailyGameAlreadyStartedG5() {
 }
 
 /*
- * G3-START-READINESS-BUSINESS-RULE :
- * condition métier unique pour savoir si une partie peut être lancée.
- * startButton.disabled reste uniquement un état d'affichage / interaction manuelle.
+ * Condition métier unique pour savoir si une partie peut être lancée.
+ * Le bouton #start ne porte que l'état d'affichage / interaction manuelle.
  */
 function canStartGameNowG3() {
   return (
@@ -3214,13 +3183,10 @@ function getDailyRoomIdV87() {
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   const clientId = getOrCreateClientId();
-
   /*
-   * G4C-DAILY-PERSONAL-ROOM :
-   * la date reste commune pour la seed serveur,
-   * mais la room devient personnelle par navigateur.
-   */
-  return `grille-du-jour-${year}-${month}-${day}-${clientId}`;
+   * La room quotidienne est personnelle par navigateur.
+   * La date reste dans l'identifiant pour permettre une seed serveur commune.
+   */  return `grille-du-jour-${year}-${month}-${day}-${clientId}`;
 }
 
 function setHomeNoticeV87(message) {
@@ -3280,14 +3246,7 @@ function waitAndStartDailyGridFromHomeV9() {
     }
 
     if (canStartGameNowG3()) {
-      clearPendingDailyAutoStartIntervalG1(interval);
-
-      /*
-       * G2-DAILY-AUTOSTART-NO-DOM-CLICK :
-       * l'auto-start de la grille du jour appelle l'action métier,
-       * sans simuler un clic DOM sur #start.
-       */
-      startRandomTimedGame();
+      clearPendingDailyAutoStartIntervalG1(interval);      startRandomTimedGame();
       return;
     }
 
@@ -3323,16 +3282,10 @@ function openPrivateRoomFromHomeV87() {
 
 function openSoloFromHomeV87() {
   cancelPendingDailyAutoStartG1();
-
   /*
-   * F1 :
-   * Le mode solo ne doit plus dépendre d'un clic manuel sur l'ancien bouton de connexion.
-   * On ouvre une session technique solo, puis on laisse l'écran règles /
-   * lancement existant s'afficher quand la socket est prête.
-   *
-   * Aucun DOM legacy n'est supprimé dans cette étape.
-   */
-  const clientId = getOrCreateClientId();
+   * Le mode solo ouvre une session technique personnelle,
+   * puis laisse l'écran règles / lancement s'afficher quand la socket est prête.
+   */  const clientId = getOrCreateClientId();
   const roomId = normalizeSessionRoomIdV901(
     `solo-${clientId}`,
     "solo"
@@ -4021,13 +3974,8 @@ setupPrivateRoomScreenV89();
  */
 
 /*
- * Étape C : contenu réel de l'overlay Options global.
- *
- * F9U-LEGACY-CONNECTION-COMMENTS :
- * - l'ancien panneau #player-preferences a été supprimé en F9t ;
- * - l'overlay Options global est désormais la source de vérité pour le joueur,
- *   les sons, le volume et les effets visuels ;
- * - les IDs dédiés v908c évitent les collisions avec les anciens panneaux.
+ * Contenu réel de l'overlay Options global :
+ * source de vérité pour l'identité joueur, les sons, le volume et les effets visuels.
  */
 
 function renderGlobalOptionsContentV908C() {
@@ -4649,9 +4597,7 @@ function normalizeGlobalOptionsButtonV908L(button) {
 
 
 /*
- * F9Y-LEGACY-HOME-BUTTONS-CLEANUP :
- * la barre globale est l'unique source du bouton Accueil hors accueil.
- * Les anciens boutons Accueil public/privé/jeu ont été supprimés à la source.
+ * La barre globale fournit l'unique bouton Accueil hors écran d'accueil.
  */
 function syncGlobalActionsBarV908L() {
   cleanupOldGlobalActionsBarsV908L();

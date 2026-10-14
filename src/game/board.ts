@@ -21,7 +21,10 @@ const dice5x5 = [
   "GLENYU",
 ];
 
-/* G4C-SEEDED-DAILY-BOARD START */
+/*
+ * Générateur pseudo-aléatoire déterministe utilisé pour produire
+ * une même grille quotidienne à partir d'une seed.
+ */
 type RandomSourceG4C = () => number;
 
 function hashSeedG4C(seed: string) {
@@ -56,8 +59,6 @@ function randomUnitG4C(random: RandomSourceG4C) {
 
   return Math.min(0.999999999999, Math.max(0, value));
 }
-/* G4C-SEEDED-DAILY-BOARD END */
-
 function shuffle<T>(values: T[], random: RandomSourceG4C = Math.random) {
   const result = [...values];
 
