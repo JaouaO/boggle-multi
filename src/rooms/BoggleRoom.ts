@@ -528,6 +528,22 @@ export class BoggleRoom extends DurableObject {
     this.broadcastPlayers();
   }
 
+  /*
+   * H4A-UNIQUE-WORDS-SERVER-GUARD :
+   * "Mots uniques dans la salle" est une règle multijoueur privée.
+   * Le client masque déjà l’option hors salon privé, mais le serveur doit
+   * aussi refuser toute activation envoyée manuellement par WebSocket.
+   */
+  private canUseUniqueWordsOptionH4A() {
+    const roomId = this.roomId.toUpperCase();
+
+    return (
+      !this.isPublicRoomV9D3() &&
+      !roomId.startsWith("SOLO-") &&
+      !roomId.startsWith("GRILLE-DU-JOUR-")
+    );
+  }
+
   private normalizeGameOptions(
     mode: GameMode,
     options?: Partial<GameOptions>
@@ -558,7 +574,7 @@ export class BoggleRoom extends DurableObject {
       durationMode,
       durationSeconds,
       boardSize: normalizeBoardSize(options?.boardSize ?? DEFAULT_GAME_OPTIONS.boardSize),
-      uniqueWords: Boolean(options?.uniqueWords),
+      uniqueWords: this.canUseUniqueWordsOptionH4A() && Boolean(options?.uniqueWords),
       penalizeInvalidWords: Boolean(options?.penalizeInvalidWords),
       invalidWordPenalty: this.clampPenalty(
         options?.invalidWordPenalty ?? DEFAULT_GAME_OPTIONS.invalidWordPenalty
