@@ -1093,6 +1093,10 @@ function startRandomTimedGame() {
     return;
   }
 
+  if (state.gameContext === GAME_CONTEXTS_V901.DAILY) {
+    rememberDailyAttemptStartedG6();
+  }
+
   send({
     type: "startGame",
     mode: "timed",
@@ -1175,6 +1179,51 @@ function isCurrentPlayerHost() {
 }
 
 /*
+ * G5-DAILY-ONCE-GUARD :
+ * une grille du jour personnelle ne doit pas être relancée après rechargement.
+ */
+/*
+ * G6-DAILY-LOCAL-LOCK :
+ * verrou local léger par navigateur et par date.
+ * Ce n'est pas une protection anti-triche, seulement un garde-fou d'usage normal.
+ */
+function getDailyDateKeyG6() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function getDailyAttemptStorageKeyG6() {
+  return `boggle:daily-attempt:${getDailyDateKeyG6()}`;
+}
+
+function hasDailyAttemptLockG6() {
+  try {
+    return window.localStorage.getItem(getDailyAttemptStorageKeyG6()) === "started";
+  } catch {
+    return false;
+  }
+}
+
+function rememberDailyAttemptStartedG6() {
+  try {
+    window.localStorage.setItem(getDailyAttemptStorageKeyG6(), "started");
+  } catch {
+    // Stockage local indisponible : le verrou reste un confort, pas une sécurité.
+  }
+}
+
+function isDailyGameAlreadyStartedG5() {
+  return (
+    state.gameContext === GAME_CONTEXTS_V901.DAILY &&
+    (hasDailyAttemptLockG6() || state.gameStatus === "playing" || state.gameStatus === "ended" || Boolean(state.board) || Boolean(state.startedAt))
+  );
+}
+
+/*
  * G3-START-READINESS-BUSINESS-RULE :
  * condition métier unique pour savoir si une partie peut être lancée.
  * startButton.disabled reste uniquement un état d'affichage / interaction manuelle.
@@ -1184,6 +1233,7 @@ function canStartGameNowG3() {
     Boolean(state.socket) &&
     state.socket.readyState === WebSocket.OPEN &&
     state.gameStatus !== "playing" &&
+    !isDailyGameAlreadyStartedG5() &&
     isCurrentPlayerHost() &&
     !isPublicRoomSessionV9K()
   );
@@ -2009,6 +2059,10 @@ function handleGameStarted(data) {
   state.board = data.board;
   saveLastBoardSuggestion(data.board);
   state.startedAt = data.startedAt;
+
+  if (state.gameContext === GAME_CONTEXTS_V901.DAILY) {
+    rememberDailyAttemptStartedG6();
+  }
   state.endedAt = null;
   state.durationSeconds = data.durationSeconds;
   state.foundWords = [];
@@ -2112,6 +2166,10 @@ function handleGameEnded(data) {
   };
   state.board = data.board;
   state.startedAt = data.startedAt;
+
+  if (state.gameContext === GAME_CONTEXTS_V901.DAILY) {
+    rememberDailyAttemptStartedG6();
+  }
   state.endedAt = data.endedAt;
   state.durationSeconds = data.durationSeconds;
   state.endScreenVisible = shouldOpenEndPopup;
@@ -3212,6 +3270,12 @@ function waitAndStartDailyGridFromHomeV9() {
 
     if (!isStillExpectedDailyAutoStart) {
       clearPendingDailyAutoStartIntervalG1(interval);
+      return;
+    }
+
+    if (hasDailyAttemptLockG6()) {
+      clearPendingDailyAutoStartIntervalG1(interval);
+      setHomeNoticeV87("La grille du jour a déjà été jouée sur ce navigateur.");
       return;
     }
 

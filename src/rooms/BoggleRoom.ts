@@ -400,6 +400,18 @@ export class BoggleRoom extends DurableObject {
     return match?.[1] ?? null;
   }
 
+  /* G5-DAILY-ONCE-GUARD : verrou léger contre les relances normales. */
+  private isDailyRoomG5() {
+    return Boolean(this.getDailyDateKeyG4C());
+  }
+
+  private hasDailyGameAlreadyStartedG5() {
+    return (
+      this.isDailyRoomG5() &&
+      (this.status !== "waiting" || Boolean(this.board) || Boolean(this.startedAt))
+    );
+  }
+
   private async startGame(
     ws: WebSocket,
     mode: GameMode,
@@ -416,6 +428,15 @@ export class BoggleRoom extends DurableObject {
       this.send(ws, {
         type: "system",
         text: "Une partie chronométrée est déjà en cours.",
+      });
+
+      return;
+    }
+
+    if (this.hasDailyGameAlreadyStartedG5()) {
+      this.send(ws, {
+        type: "system",
+        text: "La grille du jour a déjà été jouée pour ce navigateur.",
       });
 
       return;
