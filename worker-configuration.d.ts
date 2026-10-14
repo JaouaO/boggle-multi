@@ -4,11 +4,12 @@
 interface __BaseEnv_Env {
 	ASSETS: Fetcher;
 	BOGGLE_ROOM: DurableObjectNamespace<import("./src/index").BoggleRoom>;
+        DAILY_LEADERBOARD: DurableObjectNamespace<import("./src/index").DailyLeaderboard>;
 }
 declare namespace Cloudflare {
 	interface GlobalProps {
 		mainModule: typeof import("./src/index");
-		durableNamespaces: "BoggleRoom";
+		durableNamespaces: "BoggleRoom" | "DailyLeaderboard";
 	}
 	interface Env extends __BaseEnv_Env {}
 }

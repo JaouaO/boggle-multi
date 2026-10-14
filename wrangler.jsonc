@@ -3,33 +3,38 @@
 	"name": "boggle-multi",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-09-16",
-
 	"migrations": [
 		{
 			"new_sqlite_classes": [
 				"BoggleRoom"
 			],
 			"tag": "v1"
+		},
+		{
+			"new_sqlite_classes": [
+				"DailyLeaderboard"
+			],
+			"tag": "v2"
 		}
 	],
-
 	"assets": {
 		"directory": "./public",
 		"binding": "ASSETS"
 	},
-
 	"durable_objects": {
 		"bindings": [
 			{
 				"class_name": "BoggleRoom",
 				"name": "BOGGLE_ROOM"
+			},
+			{
+				"class_name": "DailyLeaderboard",
+				"name": "DAILY_LEADERBOARD"
 			}
 		]
 	},
-
 	"observability": {
 		"enabled": true
 	},
-
 	"upload_source_maps": true
 }
