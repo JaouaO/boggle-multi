@@ -1174,15 +1174,26 @@ function isCurrentPlayerHost() {
   );
 }
 
+/*
+ * G3-START-READINESS-BUSINESS-RULE :
+ * condition métier unique pour savoir si une partie peut être lancée.
+ * startButton.disabled reste uniquement un état d'affichage / interaction manuelle.
+ */
+function canStartGameNowG3() {
+  return (
+    Boolean(state.socket) &&
+    state.socket.readyState === WebSocket.OPEN &&
+    state.gameStatus !== "playing" &&
+    isCurrentPlayerHost() &&
+    !isPublicRoomSessionV9K()
+  );
+}
+
 function updateHostControls() {
   const isHost = isCurrentPlayerHost();
   const isPublicRoomSession = isPublicRoomSessionV9K();
   syncPublicLegacyActionButtonsV9Q();
-  const canStartGame =
-    Boolean(state.socket) &&
-    state.gameStatus !== "playing" &&
-    isHost &&
-    !isPublicRoomSession;
+  const canStartGame = canStartGameNowG3();
   const canEndGame =
     state.gameStatus === "playing" && isHost && !isPublicRoomSession;
 
@@ -3198,7 +3209,7 @@ function waitAndStartDailyGridFromHomeV9() {
       return;
     }
 
-    if (startButton && !startButton.disabled) {
+    if (canStartGameNowG3()) {
       clearPendingDailyAutoStartIntervalG1(interval);
 
       /*
