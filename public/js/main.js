@@ -3155,8 +3155,14 @@ function getDailyRoomIdV87() {
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
+  const clientId = getOrCreateClientId();
 
-  return "grille-du-jour-" + year + "-" + month + "-" + day;
+  /*
+   * G4C-DAILY-PERSONAL-ROOM :
+   * la date reste commune pour la seed serveur,
+   * mais la room devient personnelle par navigateur.
+   */
+  return `grille-du-jour-${year}-${month}-${day}-${clientId}`;
 }
 
 function setHomeNoticeV87(message) {

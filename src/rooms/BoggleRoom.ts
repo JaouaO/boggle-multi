@@ -8,7 +8,7 @@ import {
   getMaxScore,
   isWordOnBoard,
 } from "../engine/solver";
-import { generateBoard, normalizeBoardSize } from "../game/board";
+import { generateBoard, generateSeededBoard, normalizeBoardSize } from "../game/board";
 import {
   DEFAULT_GAME_DURATION_SECONDS,
   getGameEndTime,
@@ -376,6 +376,30 @@ export class BoggleRoom extends DurableObject {
     this.broadcastGameOptions();
   }
 
+  /*
+   * G4C-SEEDED-DAILY-BOARD :
+   * les rooms quotidiennes personnelles gardent une grille commune par date.
+   * Les autres modes conservent la génération aléatoire historique.
+   */
+  private createGeneratedBoardG4C(options: GameOptions): Board {
+    const dailyDateKey = this.getDailyDateKeyG4C();
+
+    if (!dailyDateKey) {
+      return generateBoard(options.boardSize);
+    }
+
+    const boardSize = normalizeBoardSize(options.boardSize);
+    const seed = `daily:${dailyDateKey}:size:${boardSize}`;
+
+    return generateSeededBoard(seed, boardSize);
+  }
+
+  private getDailyDateKeyG4C() {
+    const match = this.roomId.match(/^GRILLE-DU-JOUR-(\d{4}-\d{2}-\d{2})(?:-|$)/u);
+
+    return match?.[1] ?? null;
+  }
+
   private async startGame(
     ws: WebSocket,
     mode: GameMode,
@@ -405,7 +429,7 @@ export class BoggleRoom extends DurableObject {
     const board =
       customBoard && customBoard.length > 0
         ? this.normalizeCustomBoard(customBoard)
-        : generateBoard(normalizedOptions.boardSize);
+        : this.createGeneratedBoardG4C(normalizedOptions);
 
     if (!board) {
       this.send(ws, {
