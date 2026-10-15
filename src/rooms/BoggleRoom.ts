@@ -896,6 +896,7 @@ export class BoggleRoom extends DurableObject {
       startedAt: this.startedAt,
       durationSeconds: this.durationSeconds,
       endedAt: this.endedAt,
+      ...this.getPublicIntermissionPayloadH9C(),
     });
 
     this.broadcastSolutionStats();
@@ -1057,7 +1058,7 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
-    const restartAt = Date.now() + PUBLIC_ROOM_RESTART_DELAY_MS_V9D3;
+    const restartAt = (this.endedAt ?? Date.now()) + PUBLIC_ROOM_RESTART_DELAY_MS_V9D3;
 
     await this.ctx.storage.setAlarm(restartAt);
     this.schedulePublicRoomWakeupV9N(restartAt);
@@ -1112,6 +1113,16 @@ export class BoggleRoom extends DurableObject {
     await this.saveRoomState();
   }
 
+  private getPublicIntermissionPayloadH9C(): { publicRestartAt?: number; serverNow?: number } {
+    if (!this.isPublicRoomV9D3() || this.status !== "ended" || this.endedAt === null) {
+      return {};
+    }
+    return {
+      publicRestartAt: this.endedAt + PUBLIC_ROOM_RESTART_DELAY_MS_V9D3,
+      serverNow: Date.now(),
+    };
+  }
+
   private async sendCurrentGameState(ws: WebSocket) {
     if (this.status === "playing") {
       await this.endGameIfNeeded();
@@ -1148,6 +1159,7 @@ export class BoggleRoom extends DurableObject {
         startedAt: this.startedAt,
         durationSeconds: this.durationSeconds,
         endedAt: this.endedAt,
+        ...this.getPublicIntermissionPayloadH9C(),
       });
 
       this.sendSolutionStats(ws);

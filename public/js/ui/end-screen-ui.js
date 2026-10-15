@@ -1,4 +1,4 @@
-export function renderEndScreen(anchorElement, options) {
+export function renderEndScreen(anchorElement, options, panelElement = null) {
   const {
     players,
     currentPlayerId,
@@ -11,7 +11,7 @@ export function renderEndScreen(anchorElement, options) {
     restartMessage = "",
   } = options;
 
-  const panel = ensureEndScreen(anchorElement);
+  const panel = panelElement ? getEndScreenParts(panelElement) : ensureEndScreen(anchorElement);
   const sortedPlayers = [...players].sort(sortPlayers);
   const currentPlayer = sortedPlayers.find((player) => player.id === currentPlayerId);
   const winnerScore = sortedPlayers[0]?.score ?? 0;
@@ -111,13 +111,20 @@ function ensureEndScreen(anchorElement) {
     anchorElement.insertAdjacentElement("afterend", panel);
   }
 
+  return getEndScreenParts(panel);
+}
+
+function getEndScreenParts(panel) {
+  const prefix = panel.id === "victory-modal-v16" ? "victory-" : "";
+  const part = (id) => panel.querySelector(`#${prefix}${id}`);
+
   return {
     element: panel,
-    title: panel.querySelector("#end-screen-title"),
-    message: panel.querySelector("#end-screen-message"),
-    stats: panel.querySelector("#end-screen-stats"),
-    nextRound: panel.querySelector("#end-screen-next-round"),
-    ranking: panel.querySelector("#end-screen-ranking"),
+    title: part("end-screen-title"),
+    message: part("end-screen-message"),
+    stats: part("end-screen-stats"),
+    nextRound: part("end-screen-next-round"),
+    ranking: part("end-screen-ranking"),
   };
 }
 

@@ -432,7 +432,8 @@ section,
   background: color-mix(in srgb, var(--success) 10%, var(--paper)) !important;
 }
 
-#end-screen-message {
+#end-screen-message,
+#victory-end-screen-message {
   color: var(--success-hover);
   font-size: 1.08rem;
   font-weight: 950;
@@ -3964,7 +3965,10 @@ button:not(.board-cell):hover,
       max-width: min(40rem, calc(100vw - 2rem)) !important;
       height: fit-content !important;
       max-height: calc(100vh - 2rem) !important;
-      overflow: visible !important;
+      max-height: calc(100dvh - 2rem) !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain;
 
       margin: auto !important;
       padding: 1.25rem !important;

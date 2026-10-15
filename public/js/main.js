@@ -65,6 +65,8 @@ const DEFAULT_GAME_OPTIONS = {
 let pendingSubmissionPath = [];
 let foundWordHoverTimer = null;
 let countdownWarningInterval = null;
+let endScreenReturnFocusH9D = null;
+let publicIntermissionRemainingH9C = null;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
 const startButton = document.querySelector("#start");
@@ -1050,6 +1052,7 @@ const clientId = getOrCreateClientId();
     startButton.disabled = true;
     renderRulesSummary();
     stopLocalTimer();
+    publicIntermissionRemainingH9C = null;
     addLog(logElement, "Session fermée.");
   });
 
@@ -2084,6 +2087,7 @@ function clampCurrentHelpLevel() {
 }
 
 function handleGameStarted(data) {
+  publicIntermissionRemainingH9C = null;
   clearDismissedEndScreenV9H();
   state.gameStatus = "playing";
   state.gameMode = data.mode ?? "timed";
@@ -2155,6 +2159,11 @@ function handleGameStarted(data) {
       startedAt: data.startedAt,
       durationSeconds: data.durationSeconds,
       onEnd: () => {
+        if (isPublicRoomSessionV9K()) {
+          // H9c : attendre le message gameEnded du serveur.
+          return;
+        }
+
         state.endedAt = Date.now();
         updateGameStatus("ended");
         showEndScreenNow();
@@ -2189,6 +2198,7 @@ function handleGameStarted(data) {
 }
 
 function handleGameEnded(data) {
+  publicIntermissionRemainingH9C = null;
   const shouldOpenEndPopup =
     state.gameStatus === "playing" || state.endScreenVisible === true;
   const shouldLaunchConfetti = state.gameStatus === "playing";
@@ -2239,6 +2249,23 @@ function handleGameEnded(data) {
   renderModePanel();
   renderRulesSummary();
   refreshRightRulesPanel();
+
+  if (isPublicRoomSessionV9K() && Number.isFinite(data.publicRestartAt) && Number.isFinite(data.serverNow)) {
+    const remainingMs = Math.max(0, Math.min(15_000, data.publicRestartAt - data.serverNow));
+    startLocalTimer({
+      timerElement,
+      startedAt: Date.now() - (15_000 - remainingMs),
+      durationSeconds: 15,
+      onTick: (remaining) => {
+        if (state.gameStatus !== "ended" || !isPublicRoomSessionV9K()) {
+          stopLocalTimer();
+          return;
+        }
+        publicIntermissionRemainingH9C = remaining;
+        refreshPublicEndScreenCountdownH9C();
+      },
+    });
+  }
 
   addLog(
     logElement,
@@ -2794,7 +2821,11 @@ function ensureEndScreenBackdrop() {
 }
 
 function renderVictoryModalV16() {
-  document.querySelector("#victory-modal-v16")?.remove();
+  if (document.querySelector("#victory-modal-v16")) return;
+
+  endScreenReturnFocusH9D = document.activeElement instanceof HTMLElement
+    ? document.activeElement
+    : null;
 
   const source = document.querySelector("#end-screen");
   const modal = document.createElement("section");
@@ -2821,6 +2852,11 @@ function renderVictoryModalV16() {
     const clonedSource = source.cloneNode(true);
 
     clonedSource.removeAttribute("id");
+    for (const node of clonedSource.querySelectorAll("[id]")) {
+      node.id = `victory-${node.id}`;
+    }
+    modal.setAttribute("aria-labelledby", "victory-end-screen-title");
+    modal.setAttribute("aria-describedby", "victory-end-screen-message");
     clonedSource.hidden = false;
     clonedSource.removeAttribute("hidden");
     clonedSource.removeAttribute("style");
@@ -2852,13 +2888,53 @@ function renderVictoryModalV16() {
 
 
 function closeEndScreenPopup() {
+  const previousFocus = endScreenReturnFocusH9D;
   rememberDismissedEndScreenV9H();
   state.endScreenVisible = false;
   hideEndScreen();
   hideEndScreenOverlay();
+
+  const fallback = document.querySelector(
+    "#global-home-button-v908l, .global-options-button-in-bar-v908l"
+  );
+  const target = previousFocus?.isConnected && !previousFocus.disabled &&
+    !previousFocus.closest("[hidden]") ? previousFocus : fallback;
+  target?.focus?.({ preventScroll: true });
 }
 
+function handleEndScreenDialogKeydownH9D(event) {
+  const modal = document.querySelector("#victory-modal-v16");
+  if (!modal) return;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeEndScreenPopup();
+    return;
+  }
+  if (event.key !== "Tab") return;
+
+  const controls = [...modal.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )].filter((node) => !node.closest("[hidden]") && node.getClientRects().length > 0);
+  const first = controls[0];
+  const last = controls[controls.length - 1];
+
+  if (!first) {
+    event.preventDefault();
+    modal.focus({ preventScroll: true });
+  } else if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) {
+    event.preventDefault();
+    last.focus({ preventScroll: true });
+  } else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) {
+    event.preventDefault();
+    first.focus({ preventScroll: true });
+  }
+}
+
+document.addEventListener("keydown", handleEndScreenDialogKeydownH9D);
+
 function hideEndScreenOverlay() {
+  endScreenReturnFocusH9D = null;
   document.body.classList.remove("boggle-end-screen-open");
   document.querySelector("#end-screen-backdrop")?.remove();
   document.querySelector("#victory-modal-v16")?.remove();
@@ -2975,7 +3051,20 @@ function getPublicRestartEndScreenMessageV9E() {
     return "";
   }
 
-  return "Nouvelle partie publique dans 15 secondes.";
+  const remaining = publicIntermissionRemainingH9C;
+  if (remaining === null) return "Prochaine partie publique en préparation…";
+  if (remaining === 0) return "Démarrage de la prochaine partie publique…";
+  return `Nouvelle partie publique dans ${remaining} seconde${remaining > 1 ? "s" : ""}.`;
+}
+
+function refreshPublicEndScreenCountdownH9C() {
+  const text = getPublicRestartEndScreenMessageV9E();
+  for (const node of document.querySelectorAll(
+    "#end-screen .boggle-end-screen-next-round, #victory-modal-v16 .boggle-end-screen-next-round"
+  )) {
+    node.textContent = text;
+    node.hidden = !text;
+  }
 }
 
 function getDailyLeaderboardEndScreenStateH9B() {
@@ -3070,11 +3159,7 @@ function renderCurrentEndScreen() {
     helpLevel: Number(state.helpLevel ?? 0),
     dailyLeaderboard: getDailyLeaderboardEndScreenStateH9B(),
     restartMessage: getPublicRestartEndScreenMessageV9E(),
-  });
-
-  if (document.body.classList.contains("boggle-end-screen-open")) {
-    renderVictoryModalV16();
-  }
+  }, document.querySelector("#victory-modal-v16"));
 }
 
 function startCountdownWarning(startedAt, durationSeconds) {
@@ -3199,6 +3284,7 @@ function updateGameStatus(status) {
   state.gameStatus = status;
 
   if (status === "waiting") {
+    publicIntermissionRemainingH9C = null;
     stopCountdownWarning();
     stopLocalTimer();
     hideEndScreenOverlay();
@@ -3271,6 +3357,7 @@ function updateGameStatus(status) {
 }
 
 function resetGameUiToWaiting() {
+  publicIntermissionRemainingH9C = null;
   state.gameStatus = "waiting";
   state.gameMode = "timed";
   state.gameOptions = { ...DEFAULT_GAME_OPTIONS };
@@ -3647,6 +3734,7 @@ setupHomeScreenV87();
  */
 
 function leaveActiveGameSessionForHomeV9() {
+  publicIntermissionRemainingH9C = null;
   const activeSocket = state.socket;
 
   stopLocalTimer();

@@ -65,6 +65,8 @@ export type ServerMessage =
       startedAt: number;
       durationSeconds: number;
       endedAt: number;
+      publicRestartAt?: number;
+      serverNow?: number;
     }
   | {
       type: "wordAccepted";

@@ -9,13 +9,20 @@ export function startLocalTimer({
 																	startedAt,
 																	durationSeconds,
 																	onEnd,
+																				onTick,
 																}) {
 	stopLocalTimer();
+	let lastTickSecond = null;
 
 	function tick() {
 		const remainingSeconds = getRemainingSeconds(startedAt, durationSeconds);
 
 		renderTimer(timerElement, remainingSeconds);
+
+		if (remainingSeconds !== lastTickSecond) {
+			lastTickSecond = remainingSeconds;
+			if (typeof onTick === "function") onTick(remainingSeconds);
+		}
 
 		if (remainingSeconds <= 0) {
 			stopLocalTimer();
@@ -27,7 +34,9 @@ export function startLocalTimer({
 	}
 
 	tick();
-	timerInterval = window.setInterval(tick, 250);
+	if (getRemainingSeconds(startedAt, durationSeconds) > 0) {
+	  timerInterval = window.setInterval(tick, 250);
+	}
 }
 
 export function stopLocalTimer() {
