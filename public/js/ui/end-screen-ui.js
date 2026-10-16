@@ -255,7 +255,16 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
     message.textContent = leaderboardState.status === "error"
       ? "Classement indisponible pour le moment."
       : "Classement en cours de chargement…";
+    message.setAttribute("role", "status");
     section.replaceChildren(heading, message);
+    if (leaderboardState.status === "error") {
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "boggle-end-switch-h9f2";
+      retry.setAttribute("data-daily-leaderboard-retry-s4", "");
+      retry.textContent = "Réessayer";
+      section.append(retry);
+    }
     return;
   }
   const data = leaderboardState.data;

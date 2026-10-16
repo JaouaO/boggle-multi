@@ -2213,7 +2213,8 @@ function handleGameEnded(data) {
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   const shouldOpenEndPopup =
-    state.gameStatus === "playing" || state.endScreenVisible === true;
+    state.gameStatus === "playing" || state.endScreenVisible === true ||
+    state.gameContext === GAME_CONTEXTS_V901.DAILY;
   const shouldLaunchConfetti = state.gameStatus === "playing";
 
   state.gameStatus = "ended";
@@ -2952,6 +2953,11 @@ function renderVictoryModalV16() {
 
   modal.append(closeButton);
   modal.addEventListener("click", (event) => {
+    const retryButton = event.target.closest?.("[data-daily-leaderboard-retry-s4]");
+    if (retryButton && modal.contains(retryButton)) {
+      void submitDailyLeaderboardScoreH9B();
+      return;
+    }
     const shareButton = event.target.closest?.("[data-end-share-h9g]");
     if (shareButton && modal.contains(shareButton)) {
       void shareEndResultH9G(shareButton);
@@ -3227,7 +3233,9 @@ async function submitDailyLeaderboardScoreH9B() {
 
   const gameKey = getDailyLeaderboardGameKeyH9B();
 
-  if (!gameKey || dailyLeaderboardSubmittedGameKeyH9B === gameKey) {
+  // S4 : la meme tentative ne peut etre relancee que suite a un echec.
+  if (!gameKey || (dailyLeaderboardSubmittedGameKeyH9B === gameKey &&
+      dailyLeaderboardStateH9B.status !== "error")) {
     return;
   }
 
@@ -3254,8 +3262,12 @@ async function submitDailyLeaderboardScoreH9B() {
       throw new Error(data?.error || "leaderboard indisponible");
     }
 
+    if (getDailyLeaderboardGameKeyH9B() !== gameKey ||
+        state.gameContext !== GAME_CONTEXTS_V901.DAILY) return;
     dailyLeaderboardStateH9B = { status: "loaded", data, error: "" };
   } catch {
+    if (getDailyLeaderboardGameKeyH9B() !== gameKey ||
+        state.gameContext !== GAME_CONTEXTS_V901.DAILY) return;
     dailyLeaderboardStateH9B = {
       status: "error",
       data: null,
@@ -3557,6 +3569,9 @@ function createHomePreviewLettersV87() {
 }
 
 /* S3 : cette valeur ne doit pas être l'ID public utilisé dans les salons. */
+/* S5 : conserver le même salon quotidien après fermeture de l'onglet.
+ * La valeur déjà présente dans sessionStorage est prioritaire afin de
+ * récupérer sans interruption les sessions ouvertes avant S5. */
 let dailyRoomTokenCacheS3 = { date: "", token: "" };
 function getDailyRoomTokenS3() {
   const date = getDailyDateKeyG6();
@@ -3564,12 +3579,20 @@ function getDailyRoomTokenS3() {
     return dailyRoomTokenCacheS3.token;
   }
   const key = `boggle:daily-room-token:${date}`;
-  let token = "";
-  try { token = window.sessionStorage.getItem(key) || ""; } catch { /* stockage optionnel */ }
-  if (!/^[A-Za-z0-9_-]{8,80}$/.test(token)) {
+  const isValidToken = (value) => /^[A-Za-z0-9_-]{8,80}$/.test(value);
+  let sessionToken = "";
+  let storedToken = "";
+  try { sessionToken = window.sessionStorage.getItem(key) || ""; } catch { /* stockage optionnel */ }
+  try { storedToken = window.localStorage.getItem(key) || ""; } catch { /* stockage optionnel */ }
+
+  let token = isValidToken(sessionToken) ? sessionToken : (isValidToken(storedToken) ? storedToken : "");
+  if (!token) {
     token = window.crypto?.randomUUID?.() || `daily-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
-    try { window.sessionStorage.setItem(key, token); } catch { /* cache en mémoire */ }
   }
+
+  // localStorage survit a une fermeture d'onglet ; sessionStorage reste un repli.
+  try { window.localStorage.setItem(key, token); } catch { /* stockage optionnel */ }
+  try { window.sessionStorage.setItem(key, token); } catch { /* stockage optionnel */ }
   dailyRoomTokenCacheS3 = { date, token };
   return token;
 }
