@@ -1217,8 +1217,17 @@ function getDailyDateKeyG6() {
   return `${year}-${month}-${day}`;
 }
 
+/* S7 : conserver la date et le jeton de la salle pour une partie traversant minuit. */
+function getActiveDailyRoomIdentityS7() {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) return null;
+  const match = String(state.roomId || "").match(
+    /^grille-du-jour-(\d{4}-\d{2}-\d{2})-([A-Za-z0-9_-]{8,80})$/i
+  );
+  return match ? { date: match[1], roomToken: match[2] } : null;
+}
+
 function getDailyAttemptStorageKeyG6() {
-  return `boggle:daily-attempt:${getDailyDateKeyG6()}`;
+  return `boggle:daily-attempt:${getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6()}`;
 }
 
 function hasDailyAttemptLockG6() {
@@ -3211,7 +3220,7 @@ function getDailyLeaderboardEndScreenStateH9B() {
 
 function getDailyLeaderboardGameKeyH9B() {
   return [
-    getDailyDateKeyG6(),
+    getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6(),
     state.playerId || getOrCreateClientId(),
     state.startedAt || "",
   ].join(":");
@@ -3222,7 +3231,7 @@ function getDailyLeaderboardGameKeyH9B() {
 function getDailyLeaderboardPayloadH9B() {
   return {
     playerId: getOrCreateClientId(),
-    roomToken: getDailyRoomTokenS3(),
+    roomToken: getActiveDailyRoomIdentityS7()?.roomToken || getDailyRoomTokenS3(),
   };
 }
 
@@ -3247,7 +3256,7 @@ async function submitDailyLeaderboardScoreH9B() {
   }
 
   try {
-    const date = getDailyDateKeyG6();
+    const date = getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6();
     const response = await fetch(`${DAILY_LEADERBOARD_API_H9B}?date=${encodeURIComponent(date)}`, {
       method: "POST",
       headers: {
@@ -3290,7 +3299,9 @@ function renderCurrentEndScreen() {
     helpLevel: Number(state.helpLevel ?? 0),
     gameContext: state.gameContext,
     gameKey: `${state.gameContext}:${state.startedAt || ""}`,
-    dailyDate: state.gameContext === GAME_CONTEXTS_V901.DAILY ? getDailyDateKeyG6() : "",
+    dailyDate: state.gameContext === GAME_CONTEXTS_V901.DAILY
+      ? getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6()
+      : "",
     dailyLeaderboard: getDailyLeaderboardEndScreenStateH9B(),
     restartMessage: getPublicRestartEndScreenMessageV9E(),
     wordCountsByLength: state.solutionsStats?.wordCountsByLength ?? null,

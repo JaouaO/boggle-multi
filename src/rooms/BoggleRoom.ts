@@ -958,7 +958,6 @@ export class BoggleRoom extends DurableObject {
 
     this.status = "ended";
     this.endedAt = Date.now();
-    this.playerSnapshots.clear();
     this.updateAllConnectedPlayerSnapshots();
 
     await this.saveRoomState();
