@@ -1,71 +1,94 @@
 export function renderEndScreen(anchorElement, options, panelElement = null) {
   const {
-    players,
-    currentPlayerId,
-    maxScore,
-    totalWords,
-    durationSeconds,
-        invalidCount = 0,
-    helpLevel = 0,
-    dailyLeaderboard = null,
-    restartMessage = "",
+    players = [], currentPlayerId, maxScore, totalWords, durationSeconds,
+    invalidCount = 0, helpLevel = 0, dailyLeaderboard = null,
+    restartMessage = "", wordCountsByLength = null,
+    foundWords = [], invalidWords = null,
+    gameContext = "solo", gameKey = "", dailyDate = "",
   } = options;
 
   const panel = panelElement ? getEndScreenParts(panelElement) : ensureEndScreen(anchorElement);
   const sortedPlayers = [...players].sort(sortPlayers);
   const currentPlayer = sortedPlayers.find((player) => player.id === currentPlayerId);
-  const winnerScore = sortedPlayers[0]?.score ?? 0;
-  const winners = sortedPlayers.filter((player) => player.score === winnerScore);
-  const hasMultiplePlayers = sortedPlayers.length > 1;
+  const solo = gameContext === "solo";
+  const daily = gameContext === "daily";
 
   panel.element.hidden = false;
   panel.title.textContent = "Fin de partie";
-
-  if (!currentPlayer) {
-    panel.message.textContent = "La partie est terminée.";
-  } else if (!hasMultiplePlayers) {
-    panel.message.textContent =
-      `Vous terminez avec ${currentPlayer.score} point(s) et ${currentPlayer.wordCount} mot(s).`;
-  } else if (currentPlayer.score === winnerScore && winners.length === 1) {
-    panel.message.textContent = "Vous avez gagné 🎉";
-  } else if (currentPlayer.score === winnerScore && winners.length > 1) {
-    panel.message.textContent = "Égalité en tête 🤝";
+  if (currentPlayer) {
+    const score = Number(currentPlayer.score ?? 0);
+    const count = Number(currentPlayer.wordCount ?? 0);
+    const scoreText = document.createElement("strong");
+    scoreText.className = "boggle-end-score-h9f2";
+    scoreText.textContent = String(score);
+    const wordsText = document.createElement("strong");
+    wordsText.className = "boggle-end-words-h9f2";
+    wordsText.textContent = String(count);
+    const intro = document.createElement("span");
+    intro.className = "boggle-end-intro-h9f2";
+    intro.textContent = "Vous terminez avec";
+    const scoreline = document.createElement("span");
+    scoreline.className = "boggle-end-scoreline-h9f2";
+    scoreline.append(scoreText, ` point${score !== 1 ? "s" : ""} et `,
+      wordsText, ` mot${count !== 1 ? "s" : ""}.`);
+    panel.message.replaceChildren(intro, scoreline);
   } else {
-    panel.message.textContent = "Vous avez perdu cette manche.";
+    panel.message.textContent = "La partie est terminée.";
   }
 
+  const possibleWords = Number(totalWords ?? 0);
   panel.stats.textContent =
-    `Grille : ${totalWords ?? 0} mot(s) possible(s), ` +
-    `${maxScore ?? 0} point(s) maximum, ` +
-    `durée ${formatDuration(durationSeconds)}.`;
-
+    `Grille : ${possibleWords} mot${possibleWords > 1 ? "s" : ""} possible${possibleWords > 1 ? "s" : ""} · ` +
+    `${Number(maxScore ?? 0)} points maximum · durée ${formatDuration(durationSeconds)}.`;
 
   updateEndScreenExtraStatsH6A(panel, currentPlayer, invalidCount, helpLevel);
-  updateDailyLeaderboardH9B(panel, dailyLeaderboard, currentPlayerId);
+  updateDetailedRoundStatsH9E(panel, {
+    currentPlayer, totalWords, durationSeconds,
+    wordCountsByLength, foundWords, invalidWords,
+  });
+  updateDailyLeaderboardH9B(panel, daily ? dailyLeaderboard : null, currentPlayerId, dailyDate);
 
   panel.nextRound.textContent = restartMessage;
   panel.nextRound.hidden = !restartMessage;
 
-  panel.ranking.innerHTML = "";
+  const rankingTitle = panel.element.querySelector(".boggle-end-ranking-title");
+  rankingTitle.textContent = "Classement de la partie";
+  rankingTitle.hidden = daily;
+  panel.ranking.hidden = daily;
+  const nativeColumns = panel.element.querySelector(".boggle-end-view-ranking-h9f2 > .boggle-end-ranking-columns-h9f2");
+  if (nativeColumns) nativeColumns.hidden = daily;
+  panel.ranking.replaceChildren();
 
-  sortedPlayers.forEach((player, index) => {
-    const item = document.createElement("li");
-    const isCurrentPlayer = player.id === currentPlayerId;
-    const isWinner = player.score === winnerScore && winnerScore > 0;
+  if (!daily) {
+    sortedPlayers.forEach((player, index) => {
+      const item = document.createElement("li");
+      const current = player.id === currentPlayerId;
+      item.className = "boggle-end-ranking-item";
+      item.classList.toggle("boggle-end-ranking-item-current", current);
+      const rank = document.createElement("span");
+      rank.className = "boggle-end-rank-number-h9f2";
+      rank.textContent = String(index + 1);
+      const name = document.createElement("strong");
+      name.className = "boggle-end-rank-name-h9f2";
+      name.textContent = player.name || "Joueur";
+      if (current) {
+        const you = document.createElement("span");
+        you.className = "boggle-end-you-h9f2";
+        you.textContent = "Vous";
+        name.append(" ", you);
+      }
+      const score = document.createElement("strong");
+      score.className = "boggle-end-rank-score-h9f2";
+      score.textContent = String(Number(player.score ?? 0));
+      const count = document.createElement("span");
+      count.className = "boggle-end-rank-words-h9f2";
+      count.textContent = String(Number(player.wordCount ?? 0));
+      item.append(rank, name, score, count);
+      panel.ranking.append(item);
+    });
+  }
 
-    item.classList.add("boggle-end-ranking-item");
-    item.classList.toggle("boggle-end-ranking-item-current", isCurrentPlayer);
-
-    const rank = index + 1;
-    const trophy = isWinner ? " 🏆" : "";
-    const you = isCurrentPlayer ? " — vous" : "";
-
-    item.textContent =
-      `${rank}. ${player.name}${you}${trophy} — ` +
-      `${player.score} point(s), ${player.wordCount} mot(s)`;
-
-    panel.ranking.appendChild(item);
-  });
+  ensureEndScreenViewsH9F2(panel, { solo, daily, gameKey });
 }
 
 export function hideEndScreen() {
@@ -102,6 +125,7 @@ function ensureEndScreen(anchorElement) {
     nextRound.hidden = true;
 
     const rankingTitle = document.createElement("h3");
+    rankingTitle.className = "boggle-end-ranking-title";
     rankingTitle.textContent = "Classement";
 
     const ranking = document.createElement("ol");
@@ -156,11 +180,11 @@ function updateEndScreenExtraStatsH6A(panel, currentPlayer, fallbackInvalidCount
   }
 
   const invalidCount = getPlayerInvalidCountH6A(currentPlayer, fallbackInvalidCount);
-  const invalidLabel = `${invalidCount} erreur${invalidCount > 1 ? "s" : ""}`;
+  const invalidLabel = String(invalidCount);
 
   extraStats.hidden = false;
   extraStats.textContent =
-    `Erreurs : ${invalidLabel}. Aide utilisée : ${formatHelpLevelH6A(helpLevel)}.`;
+    `Erreurs : ${invalidLabel} · Aide : ${formatHelpLevelH6A(helpLevel)}.`;
 }
 
 function getPlayerInvalidCountH6A(player, fallbackInvalidCount) {
@@ -202,67 +226,91 @@ function formatDuration(seconds) {
   return `${minutes}min ${remainingSeconds}s`;
 }
 
-function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId) {
+function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dateKey) {
   const section = ensureDailyLeaderboardSectionH9B(panel);
-
   if (!leaderboardState) {
     section.hidden = true;
-    section.innerHTML = "";
+    section.replaceChildren();
     return;
   }
-
   section.hidden = false;
-
-  if (leaderboardState.status === "idle" || leaderboardState.status === "loading") {
-    section.innerHTML = "<h3>Classement du jour</h3><p>Enregistrement du score…</p>";
-    return;
-  }
-
-  if (leaderboardState.status === "error") {
-    section.innerHTML = "<h3>Classement du jour</h3><p>Classement indisponible pour le moment.</p>";
-    return;
-  }
-
-  const data = leaderboardState.data;
-  const entries = Array.isArray(data?.entries) ? data.entries : [];
-  const playerRank = data?.playerRank ?? data?.playerEntry?.rank ?? null;
-
   const title = document.createElement("h3");
   title.textContent = "Classement du jour";
-
+  const heading = document.createElement("div");
+  heading.className = "boggle-end-daily-heading-h9f2";
+  heading.append(title);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
+    const date = new Date(`${dateKey}T12:00:00`);
+    if (Number.isFinite(date.getTime())) {
+      const text = document.createElement("span");
+      text.className = "boggle-end-daily-date-h9f2";
+      text.textContent = new Intl.DateTimeFormat("fr-FR", {
+        day: "numeric", month: "long", year: "numeric",
+      }).format(date);
+      heading.append(text);
+    }
+  }
+  if (leaderboardState.status !== "loaded") {
+    const message = document.createElement("p");
+    message.textContent = leaderboardState.status === "error"
+      ? "Classement indisponible pour le moment."
+      : "Classement en cours de chargement…";
+    section.replaceChildren(heading, message);
+    return;
+  }
+  const data = leaderboardState.data;
+  const entries = Array.isArray(data?.entries) ? data.entries.slice(0, 5) : [];
+  const playerRank = Number(data?.playerRank ?? data?.playerEntry?.rank ?? 0);
+  const total = Number(data?.totalEntries ?? entries.length);
   const summary = document.createElement("p");
   summary.className = "daily-leaderboard-summary-h9b";
   summary.textContent = playerRank
-    ? `Votre rang : #${playerRank} sur ${Number(data?.totalEntries ?? entries.length)} joueur(s).`
+    ? `Votre place : ${playerRank} sur ${total} joueur${total > 1 ? "s" : ""}.`
     : "Votre score est enregistré.";
 
   const list = document.createElement("ol");
   list.className = "daily-leaderboard-list-h9b";
-
-  for (const entry of entries) {
-    const item = document.createElement("li");
-    const isCurrentPlayer = entry.playerId === currentPlayerId || entry.playerId === data?.playerEntry?.playerId;
+  function addEntry(entry, outsideTop = false) {
+    const current = Boolean(
+      entry.playerId === data?.playerEntry?.playerId ||
+      entry.playerId === currentPlayerId
+    );
+    const row = document.createElement("li");
+    row.className = "boggle-end-ranking-item daily-leaderboard-entry-h9b";
+    row.classList.toggle("boggle-end-ranking-item-current", current);
+    if (outsideTop) row.classList.add("boggle-end-outside-top-h9f2");
+    const rank = document.createElement("span");
+    rank.className = "boggle-end-rank-number-h9f2";
+    rank.textContent = String(entry.rank || "—");
     const name = document.createElement("strong");
-    const details = document.createElement("span");
-
-    item.className = isCurrentPlayer
-      ? "daily-leaderboard-entry-h9b daily-leaderboard-entry-current-h9b"
-      : "daily-leaderboard-entry-h9b";
-    name.textContent = `#${entry.rank} · ${entry.playerName || "Joueur"}`;
-    details.textContent = ` — ${Number(entry.score ?? 0)} pt(s), ${Number(entry.wordCount ?? 0)} mot(s)`;
-
-    item.append(name, details);
-    list.append(item);
+    name.className = "boggle-end-rank-name-h9f2";
+    name.textContent = entry.playerName || "Joueur";
+    if (current) {
+      const you = document.createElement("span");
+      you.className = "boggle-end-you-h9f2";
+      you.textContent = "Vous";
+      name.append(" ", you);
+    }
+    const score = document.createElement("strong");
+    score.className = "boggle-end-rank-score-h9f2";
+    score.textContent = String(Number(entry.score ?? 0));
+    const words = document.createElement("span");
+    words.className = "boggle-end-rank-words-h9f2";
+    words.textContent = String(Number(entry.wordCount ?? 0));
+    row.append(rank, name, score, words);
+    list.append(row);
   }
-
-  if (!entries.length) {
+  entries.forEach((entry) => addEntry(entry));
+  if (data?.playerEntry && !entries.some((entry) => entry.playerId === data.playerEntry.playerId)) {
+    addEntry(data.playerEntry, true);
+  }
+  if (!list.children.length) {
     const empty = document.createElement("p");
     empty.textContent = "Aucun score enregistré pour le moment.";
-    section.replaceChildren(title, empty);
-    return;
+    section.replaceChildren(heading, empty);
+  } else {
+    section.replaceChildren(heading, summary, createEndRankingColumnsH9F2(), list);
   }
-
-  section.replaceChildren(title, summary, list);
 }
 
 function ensureDailyLeaderboardSectionH9B(panel) {
@@ -277,4 +325,206 @@ function ensureDailyLeaderboardSectionH9B(panel) {
   }
 
   return section;
+}
+
+function createEndRankingColumnsH9F2() {
+  const header = document.createElement("div");
+  header.className = "boggle-end-ranking-columns-h9f2";
+  for (const label of ["#", "Joueur", "Points", "Mots"]) {
+    const cell = document.createElement("span");
+    cell.textContent = label;
+    header.append(cell);
+  }
+  return header;
+}
+
+/* H9f2 — deux vues dans le même dialogue ; aucune illustration provisoire. */
+function ensureEndScreenViewsH9F2(panel, { solo, daily, gameKey }) {
+  const element = panel.element;
+  let overview = element.querySelector(".boggle-end-overview-h9f2");
+  if (!overview) {
+    overview = document.createElement("section");
+    overview.className = "boggle-end-overview-h9f2";
+    overview.setAttribute("aria-label", "Informations sur la grille");
+  }
+  const extra = element.querySelector(".end-screen-extra-stats-h6a");
+  overview.append(panel.stats);
+  if (extra) overview.append(extra);
+
+  let rankingView = element.querySelector(".boggle-end-view-ranking-h9f2");
+  if (!rankingView) {
+    rankingView = document.createElement("section");
+    rankingView.className = "boggle-end-view-ranking-h9f2";
+    rankingView.setAttribute("aria-label", "Classement");
+  }
+  const nativeTitle = element.querySelector(".boggle-end-ranking-title");
+  const dailySection = element.querySelector(".daily-leaderboard-h9b");
+  if (nativeTitle) rankingView.append(nativeTitle);
+  let columnHead = rankingView.querySelector(".boggle-end-ranking-columns-h9f2");
+  if (!columnHead) columnHead = createEndRankingColumnsH9F2();
+  rankingView.append(columnHead, panel.ranking);
+  columnHead.hidden = daily;
+  if (dailySection) rankingView.append(dailySection);
+
+  let statsView = element.querySelector(".boggle-end-view-stats-h9f2");
+  if (!statsView) {
+    statsView = document.createElement("section");
+    statsView.className = "boggle-end-view-stats-h9f2";
+    statsView.setAttribute("aria-label", "Mes statistiques");
+  }
+  const stats = element.querySelector(".boggle-round-stats-h9e");
+  if (stats) statsView.append(stats);
+
+  let actions = element.querySelector(".boggle-end-actions-h9f2");
+  if (!actions) {
+    actions = document.createElement("div");
+    actions.className = "boggle-end-actions-h9f2";
+    const showStats = document.createElement("button");
+    showStats.type = "button";
+    showStats.className = "boggle-end-switch-h9f2 boggle-end-switch-primary-h9f2";
+    showStats.dataset.endViewH9f2 = "stats";
+    showStats.textContent = "Voir mes stats";
+    const showRanking = document.createElement("button");
+    showRanking.type = "button";
+    showRanking.className = "boggle-end-switch-h9f2";
+    showRanking.dataset.endViewH9f2 = "ranking";
+    showRanking.textContent = "Retour au classement";
+    actions.append(showStats, showRanking);
+  }
+
+  element.append(panel.title, panel.message, overview, panel.nextRound, rankingView, statsView, actions);
+  const key = `${gameKey}:${solo ? "solo" : daily ? "daily" : "multi"}`;
+  if (element.dataset.endGameH9f2 !== key) {
+    element.dataset.endGameH9f2 = key;
+    element.dataset.endViewH9f2 = solo ? "stats" : "ranking";
+  }
+  setEndScreenViewH9F2(element, element.dataset.endViewH9f2, solo);
+}
+
+export function setEndScreenViewH9F2(element, view, solo = false) {
+  const normalized = solo ? "stats" : view === "stats" ? "stats" : "ranking";
+  element.dataset.endViewH9f2 = normalized;
+  const ranking = element.querySelector(".boggle-end-view-ranking-h9f2");
+  const stats = element.querySelector(".boggle-end-view-stats-h9f2");
+  if (ranking) ranking.hidden = normalized !== "ranking";
+  if (stats) stats.hidden = normalized !== "stats";
+  const actions = element.querySelector(".boggle-end-actions-h9f2");
+  if (actions) {
+    actions.hidden = solo;
+    for (const button of actions.querySelectorAll("[data-end-view-h9f2]")) {
+      button.hidden = button.dataset.endViewH9f2 === normalized;
+    }
+  }
+}
+
+/* H9e — une seule section de statistiques par panneau ; même rendu source et modale. */
+function updateDetailedRoundStatsH9E(panel, options) {
+  let section = panel.element.querySelector(".boggle-round-stats-h9e");
+  if (!section) {
+    section = document.createElement("section");
+    section.className = "boggle-round-stats-h9e";
+    section.setAttribute("aria-label", "Statistiques de la manche");
+    section.innerHTML = `
+      <h3>Statistiques</h3>
+      <div class="h9e-metrics">
+        <div><span>Score</span><strong data-h9e="score"></strong></div>
+        <div><span>Mots trouvés</span><strong data-h9e="found"></strong></div>
+        <div><span>Réussite</span><strong data-h9e="rate"></strong></div>
+        <div><span>Durée</span><strong data-h9e="duration"></strong></div>
+      </div>
+      <h3>Mots par longueur</h3>
+      <p class="h9e-chart-legend">
+        <span class="h9e-legend-found">Trouvés</span>
+        <span class="h9e-legend-possible">Possibles</span>
+      </p>
+      <div class="h9e-chart" role="group" aria-label="Comparaison des mots trouvés et possibles"></div>
+      <details class="h9e-invalid">
+        <summary>Mots erronés <span class="h9e-invalid-count"></span></summary>
+        <div class="h9e-invalid-body"></div>
+      </details>`;
+    const anchor = panel.element.querySelector(".end-screen-extra-stats-h6a") || panel.stats;
+    anchor.insertAdjacentElement("afterend", section);
+  }
+
+  const { currentPlayer, totalWords, durationSeconds, wordCountsByLength, foundWords, invalidWords } = options;
+  const count = Number(currentPlayer?.wordCount ?? foundWords?.length ?? 0);
+  const available = Number(totalWords);
+  const text = (key, value) => {
+    section.querySelector(`[data-h9e="${key}"]`).textContent = value;
+  };
+  text("score", `${Number(currentPlayer?.score ?? 0)} points`);
+  text("found", String(count));
+  text("rate", available > 0 ? `${(100 * count / available).toFixed(1).replace(".", ",")} %` : "—");
+  text("duration", formatDuration(durationSeconds));
+
+  const chart = section.querySelector(".h9e-chart");
+  if (!Array.isArray(wordCountsByLength)) {
+    chart.textContent = "Répartition en cours de chargement…";
+  } else {
+    const possible = new Map();
+    for (const item of wordCountsByLength) {
+      const length = Number(item?.length);
+      const value = Number(item?.count);
+      if (!Number.isInteger(length) || length < 3 || !Number.isFinite(value) || value < 0) continue;
+      const bucket = Math.min(length, 8);
+      possible.set(bucket, (possible.get(bucket) || 0) + value);
+    }
+    const found = new Map();
+    for (const item of Array.isArray(foundWords) ? foundWords : []) {
+      const word = typeof item === "string" ? item : item?.word;
+      if (typeof word !== "string" || word.length < 3) continue;
+      const bucket = Math.min(word.length, 8);
+      found.set(bucket, (found.get(bucket) || 0) + 1);
+    }
+    const max = Math.max(1, ...possible.values());
+    const rows = [];
+    for (let length = 3; length <= 8; length++) {
+      const label = length === 8 ? "8+" : String(length);
+      const valid = found.get(length) || 0;
+      const all = possible.get(length) || 0;
+      const row = document.createElement("div");
+      row.className = "h9e-chart-row";
+      row.setAttribute("aria-label", `${label} lettres : ${valid} trouvés sur ${all} possibles`);
+      const heading = document.createElement("span");
+      heading.className = "h9e-chart-length";
+      heading.textContent = label;
+      const bars = document.createElement("div");
+      bars.className = "h9e-chart-bars";
+      for (const [kind, amount] of [["possible", all], ["found", valid]]) {
+        const track = document.createElement("div");
+        track.className = "h9e-chart-track";
+        const bar = document.createElement("span");
+        bar.className = `h9e-chart-bar h9e-chart-bar-${kind}`;
+        bar.style.width = `${100 * amount / max}%`;
+        track.append(bar);
+        bars.append(track);
+      }
+      const numbers = document.createElement("span");
+      numbers.className = "h9e-chart-numbers";
+      numbers.textContent = `${valid} / ${all}`;
+      row.append(heading, bars, numbers);
+      rows.push(row);
+    }
+    chart.replaceChildren(...rows);
+  }
+
+  const invalidBody = section.querySelector(".h9e-invalid-body");
+  const invalidCount = section.querySelector(".h9e-invalid-count");
+  if (!Array.isArray(invalidWords)) {
+    invalidCount.textContent = "";
+    invalidBody.textContent = "Liste en cours de récupération…";
+  } else {
+    invalidCount.textContent = `(${invalidWords.length})`;
+    if (!invalidWords.length) {
+      invalidBody.textContent = "Aucun mot erroné.";
+    } else {
+      const list = document.createElement("ul");
+      for (const word of invalidWords) {
+        const item = document.createElement("li");
+        item.textContent = word;
+        list.append(item);
+      }
+      invalidBody.replaceChildren(list);
+    }
+  }
 }

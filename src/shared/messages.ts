@@ -84,9 +84,14 @@ export type ServerMessage =
       invalidCount?: number;
     }
   | {
+      type: "playerRoundStats";
+      invalidWords: string[];
+    }
+  | {
       type: "solutionsStats";
       totalWords: number;
       maxScore: number;
+      wordCountsByLength: { length: number; count: number }[];
       cellCounts: number[][];
       cellWords: string[][][];
       solveDurationMs: number;

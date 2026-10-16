@@ -901,6 +901,10 @@ export class BoggleRoom extends DurableObject {
 
     this.broadcastSolutionStats();
     this.broadcastPlayers();
+    // H9e : les essais invalides restent privés à leur auteur.
+    for (const socket of this.ctx.getWebSockets()) {
+      this.sendPlayerRoundStatsH9E(socket);
+    }
 
     if (this.isPublicRoomV9D3()) {
       await this.scheduleNextPublicRoomRoundV9D3();
@@ -1163,6 +1167,7 @@ export class BoggleRoom extends DurableObject {
       });
 
       this.sendSolutionStats(ws);
+      this.sendPlayerRoundStatsH9E(ws);
 
       return;
     }
@@ -1428,6 +1433,25 @@ export class BoggleRoom extends DurableObject {
     }
   }
 
+  // H9e : n’envoyer la liste des mots erronés qu’au joueur concerné,
+  // et uniquement après la fin de la manche (également pour un retour tardif).
+  private sendPlayerRoundStatsH9E(ws: WebSocket) {
+    if (this.status !== "ended") {
+      return;
+    }
+
+    const attachment = this.getPlayerAttachment(ws);
+    if (!attachment.joined) {
+      return;
+    }
+
+    const snapshot = this.playerSnapshots.get(attachment.id);
+    this.send(ws, {
+      type: "playerRoundStats",
+      invalidWords: [...(snapshot?.invalidWords ?? attachment.invalidWords)],
+    });
+  }
+
   private sendSolutionStats(ws: WebSocket) {
     if (!this.board) {
       return;
@@ -1450,16 +1474,26 @@ export class BoggleRoom extends DurableObject {
         type: "solutionsStats",
         totalWords: 0,
         maxScore: 0,
+        wordCountsByLength: [],
         cellCounts: [],
         cellWords: [],
         solveDurationMs: 0,
       };
     }
 
+    const lengths = new Map<number, number>();
+    for (const solution of this.solutions) {
+      const length = solution.word.length;
+      lengths.set(length, (lengths.get(length) ?? 0) + 1);
+    }
+
     return {
       type: "solutionsStats",
       totalWords: this.solutions.length,
       maxScore: getMaxScore(this.solutions),
+      wordCountsByLength: [...lengths]
+        .sort(([a], [b]) => a - b)
+        .map(([length, count]) => ({ length, count })),
       cellCounts: createCellSolutionCounts(this.board, this.solutions),
       cellWords: createCellSolutionWords(this.board, this.solutions),
       solveDurationMs: this.solveDurationMs,

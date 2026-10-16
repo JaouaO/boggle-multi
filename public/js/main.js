@@ -33,6 +33,7 @@ import { renderHelpPanel } from "./ui/help-ui.js";
 import {
   hideEndScreen,
   renderEndScreen,
+  setEndScreenViewH9F2,
 } from "./ui/end-screen-ui.js";
 import {
   getGameOptions,
@@ -66,6 +67,7 @@ let pendingSubmissionPath = [];
 let foundWordHoverTimer = null;
 let countdownWarningInterval = null;
 let endScreenReturnFocusH9D = null;
+let personalInvalidWordsH9E = null;
 let publicIntermissionRemainingH9C = null;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
@@ -1431,6 +1433,15 @@ function handleServerMessage(data) {
     return;
   }
 
+  if (data.type === "playerRoundStats") {
+    if (state.gameStatus !== "ended") return;
+    personalInvalidWordsH9E = Array.isArray(data.invalidWords)
+      ? data.invalidWords.filter((word) => typeof word === "string")
+      : [];
+    if (state.endScreenVisible) renderCurrentEndScreen();
+    return;
+  }
+
   if (data.type === "solutionsStats") {
     handleSolutionsStats(data);
     return;
@@ -2087,6 +2098,7 @@ function clampCurrentHelpLevel() {
 }
 
 function handleGameStarted(data) {
+  personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   clearDismissedEndScreenV9H();
   state.gameStatus = "playing";
@@ -2198,6 +2210,7 @@ function handleGameStarted(data) {
 }
 
 function handleGameEnded(data) {
+  personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   const shouldOpenEndPopup =
     state.gameStatus === "playing" || state.endScreenVisible === true;
@@ -2847,9 +2860,21 @@ function renderVictoryModalV16() {
   };
 
   modal.append(closeButton);
+  modal.addEventListener("click", (event) => {
+    const button = event.target.closest?.("[data-end-view-h9f2]");
+    if (!button || !modal.contains(button)) return;
+    const view = button.dataset.endViewH9f2;
+    setEndScreenViewH9F2(modal, view);
+    const sourcePanel = document.querySelector("#end-screen");
+    if (sourcePanel) setEndScreenViewH9F2(sourcePanel, view);
+    const nextButton = modal.querySelector(`[data-end-view-h9f2="${view === "stats" ? "ranking" : "stats"}"]`);
+    nextButton?.focus({ preventScroll: true });
+  });
 
   if (source) {
     const clonedSource = source.cloneNode(true);
+    modal.dataset.endGameH9f2 = source.dataset.endGameH9f2 || "";
+    modal.dataset.endViewH9f2 = source.dataset.endViewH9f2 || "";
 
     clonedSource.removeAttribute("id");
     for (const node of clonedSource.querySelectorAll("[id]")) {
@@ -3157,8 +3182,14 @@ function renderCurrentEndScreen() {
     durationSeconds: getElapsedDurationSeconds(),
         invalidCount: Number(state.invalidCount ?? 0),
     helpLevel: Number(state.helpLevel ?? 0),
+    gameContext: state.gameContext,
+    gameKey: `${state.gameContext}:${state.startedAt || ""}`,
+    dailyDate: state.gameContext === GAME_CONTEXTS_V901.DAILY ? getDailyDateKeyG6() : "",
     dailyLeaderboard: getDailyLeaderboardEndScreenStateH9B(),
     restartMessage: getPublicRestartEndScreenMessageV9E(),
+    wordCountsByLength: state.solutionsStats?.wordCountsByLength ?? null,
+    foundWords: (state.players || []).find((player) => player.id === state.playerId)?.foundWords ?? state.foundWords,
+    invalidWords: personalInvalidWordsH9E,
   }, document.querySelector("#victory-modal-v16"));
 }
 
@@ -3284,6 +3315,7 @@ function updateGameStatus(status) {
   state.gameStatus = status;
 
   if (status === "waiting") {
+    personalInvalidWordsH9E = null;
     publicIntermissionRemainingH9C = null;
     stopCountdownWarning();
     stopLocalTimer();
@@ -3357,6 +3389,7 @@ function updateGameStatus(status) {
 }
 
 function resetGameUiToWaiting() {
+  personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   state.gameStatus = "waiting";
   state.gameMode = "timed";
@@ -3734,6 +3767,7 @@ setupHomeScreenV87();
  */
 
 function leaveActiveGameSessionForHomeV9() {
+  personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   const activeSocket = state.socket;
 
