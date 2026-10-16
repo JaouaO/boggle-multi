@@ -20,6 +20,7 @@ import { Board, BoardSize, BoardSolution, GameMode, GameOptions, Player, PlayerF
 import { ClientMessage, ServerMessage } from "../shared/messages";
 
 const ROOM_STATE_KEY = "roomState";
+const DAILY_ROOM_NAME_KEY_S3 = "dailyRoomNameS3";
 
 const PUBLIC_ROOM_IDS_V9D3 = new Set([
   "PUBLIC-RAPIDE",
@@ -28,6 +29,9 @@ const PUBLIC_ROOM_IDS_V9D3 = new Set([
 ]);
 
 const PUBLIC_ROOM_RESTART_DELAY_MS_V9D3 = 15_000;
+/* S3 : conditions identiques pour tous les participants au classement quotidien. */
+const DAILY_DURATION_SECONDS_S3 = DEFAULT_GAME_DURATION_SECONDS;
+const DAILY_BOARD_SIZE_S3 = 4;
 
 const DEFAULT_GAME_OPTIONS: GameOptions = {
   durationMode: "timer",
@@ -111,6 +115,17 @@ export class BoggleRoom extends DurableObject {
 
     if (roomName) {
       this.roomId = roomName;
+      if (this.isDailyRoomG5()) {
+        // Sans cela, un réveil du Durable Object après hibernation perdrait
+        // le nom de salle et donc le verrou quotidien côté serveur.
+        await this.ctx.storage.put(DAILY_ROOM_NAME_KEY_S3, roomName);
+      }
+    }
+
+    // Cet endpoint est accessible uniquement via le binding BOGGLE_ROOM du Worker.
+    // Le Worker public ne transfère jamais les requêtes HTTP /ws/ vers ce chemin.
+    if (request.method === "GET" && new URL(request.url).pathname === "/__internal/daily-score-s3") {
+      return this.getVerifiedDailyScoreS3(new URL(request.url));
     }
 
     const upgradeHeader = request.headers.get("Upgrade");
@@ -245,6 +260,10 @@ export class BoggleRoom extends DurableObject {
     }
 
     if (data.type === "endGame") {
+      if (this.isDailyRoomG5()) {
+        this.send(ws, { type: "system", text: "La grille du jour se termine à la fin du chronomètre." });
+        return;
+      }
       if (this.isPublicRoomV9D3()) {
         this.send(ws, {
           type: "system",
@@ -345,6 +364,11 @@ export class BoggleRoom extends DurableObject {
     ws: WebSocket,
     options?: Partial<GameOptions>
   ) {
+    if (this.isDailyRoomG5()) {
+      this.send(ws, { type: "system", text: "Les règles de la grille du jour sont fixes." });
+      this.broadcastGameOptions();
+      return;
+    }
     if (this.isPublicRoomV9D3()) {
       this.send(ws, {
         type: "system",
@@ -410,6 +434,59 @@ export class BoggleRoom extends DurableObject {
     );
   }
 
+  private getDailyGameOptionsS3(): GameOptions {
+    return {
+      ...DEFAULT_GAME_OPTIONS,
+      boardSize: DAILY_BOARD_SIZE_S3,
+      durationMode: "timer",
+      durationSeconds: DAILY_DURATION_SECONDS_S3,
+      maxHelpLevel: 0,
+    };
+  }
+
+  private async getVerifiedDailyScoreS3(url: URL): Promise<Response> {
+    const date = url.searchParams.get("date") ?? "";
+    const playerId = url.searchParams.get("playerId") ?? "";
+    const roomToken = url.searchParams.get("roomToken") ?? "";
+    const expectedRoomId = `GRILLE-DU-JOUR-${date}-${roomToken}`.toUpperCase();
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(date) ||
+        !this.normalizeClientId(playerId) || !this.normalizeClientId(roomToken) ||
+        expectedRoomId !== this.roomId.toUpperCase()) {
+      return Response.json({ ok: false }, { status: 400 });
+    }
+
+    await this.endGameIfNeeded();
+    const fixed = this.getDailyGameOptionsS3();
+    // Refuser aussi les salles démarrées avant S3 avec des règles manipulées.
+    const expectedBoard = this.createGeneratedBoardG4C(fixed);
+    if (this.status !== "ended" || this.mode !== "timed" ||
+        !this.board || !this.startedAt || !this.endedAt ||
+        this.gameOptions.durationMode !== fixed.durationMode ||
+        this.gameOptions.durationSeconds !== fixed.durationSeconds ||
+        this.durationSeconds !== fixed.durationSeconds ||
+        this.gameOptions.boardSize !== fixed.boardSize ||
+        this.gameOptions.penalizeInvalidWords !== false ||
+        this.gameOptions.maxHelpLevel !== 0 ||
+        JSON.stringify(this.board) !== JSON.stringify(expectedBoard)) {
+      return Response.json({ ok: false }, { status: 409 });
+    }
+    const player = this.playerSnapshots.get(playerId);
+    if (!player) return Response.json({ ok: false }, { status: 404 });
+
+    // Ces valeurs proviennent exclusivement de mots validés par le moteur serveur.
+    return Response.json({
+      ok: true,
+      date,
+      playerId: player.id,
+      playerName: player.name,
+      score: player.score,
+      wordCount: player.foundWords.length,
+      invalidCount: player.invalidWords.length,
+      helpLevel: 0,
+      durationSeconds: fixed.durationSeconds,
+    });
+  }
+
   private async startGame(
     ws: WebSocket,
     mode: GameMode,
@@ -440,10 +517,14 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
-    const normalizedOptions = this.normalizeGameOptions(
-      mode,
-      options ?? this.gameOptions
-    );
+    if (this.isDailyRoomG5() && (mode !== "timed" || customBoard !== undefined)) {
+      this.send(ws, { type: "system", text: "La grille du jour utilise une grille et un chronomètre fixes." });
+      return;
+    }
+
+    const normalizedOptions = this.isDailyRoomG5()
+      ? this.getDailyGameOptionsS3()
+      : this.normalizeGameOptions(mode, options ?? this.gameOptions);
 
     const board =
       customBoard && customBoard.length > 0
@@ -1188,6 +1269,8 @@ export class BoggleRoom extends DurableObject {
       return;
     }
 
+    const dailyRoomName = await this.ctx.storage.get<string>(DAILY_ROOM_NAME_KEY_S3);
+    if (dailyRoomName) this.roomId = dailyRoomName;
     const stored = await this.ctx.storage.get<StoredRoomState>(ROOM_STATE_KEY);
 
     if (stored) {
@@ -1495,7 +1578,10 @@ export class BoggleRoom extends DurableObject {
         .sort(([a], [b]) => a - b)
         .map(([length, count]) => ({ length, count })),
       cellCounts: createCellSolutionCounts(this.board, this.solutions),
-      cellWords: createCellSolutionWords(this.board, this.solutions),
+      // La grille du jour n'envoie jamais la liste des solutions en cours de jeu.
+      cellWords: this.isDailyRoomG5() && this.status === "playing"
+        ? []
+        : createCellSolutionWords(this.board, this.solutions),
       solveDurationMs: this.solveDurationMs,
     };
   }

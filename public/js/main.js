@@ -1265,7 +1265,7 @@ function updateHostControls() {
   syncPublicLegacyActionButtonsV9Q();
   const canStartGame = canStartGameNowG3();
   const canEndGame =
-    state.gameStatus === "playing" && isHost && !isPublicRoomSession;
+    state.gameStatus === "playing" && isHost && !isPublicRoomSession && state.gameContext !== GAME_CONTEXTS_V901.DAILY;
 
   startButton.hidden = state.gameStatus === "playing";
   startButton.disabled = !canStartGame;
@@ -2833,6 +2833,97 @@ function ensureEndScreenBackdrop() {
   backdrop.onclick = closeEndScreenPopup;
 }
 
+/* H9g — partage explicite du seul résultat personnel (sans identifiants ni lien de salle). */
+function getEndResultShareTextH9G() {
+  const modeNames = {
+    solo: "Solo",
+    daily: "Grille du jour",
+    public: "Salon public",
+    private: "Salon privé",
+  };
+  const context = state.gameContext;
+  const player = (state.players || []).find((item) => item.id === state.playerId);
+  const scoreValue = Number(player?.score ?? state.score ?? 0);
+  const wordsValue = Number(player?.wordCount ?? state.foundWords?.length ?? 0);
+  const score = Number.isFinite(scoreValue) ? scoreValue : 0;
+  const words = Number.isFinite(wordsValue) ? wordsValue : 0;
+  const lines = [
+    `Boggle — ${modeNames[context] || "Partie"}`,
+    `${score} point${score === 1 ? "" : "s"} · ${words} mot${words === 1 ? "" : "s"} trouvé${words === 1 ? "" : "s"}`,
+  ];
+
+  if (context === GAME_CONTEXTS_V901.DAILY && dailyLeaderboardStateH9B.status === "loaded") {
+    const data = dailyLeaderboardStateH9B.data;
+    const rank = Number(data?.playerRank ?? data?.playerEntry?.rank);
+    const total = Number(data?.totalEntries);
+    if (Number.isInteger(rank) && rank > 0) {
+      lines.push(`Classement du jour : ${rank}${Number.isInteger(total) && total > 0 ? `/${total}` : ""}`);
+    }
+  } else if (context === GAME_CONTEXTS_V901.PUBLIC || context === GAME_CONTEXTS_V901.PRIVATE) {
+    const players = rankPlayers(state.players || []);
+    const index = players.findIndex((item) => item.id === state.playerId);
+    if (index >= 0) lines.push(`Classement de la manche : ${index + 1}/${players.length}`);
+  }
+  return lines.join("\n");
+}
+
+async function copyEndResultTextH9G(text) {
+  if (typeof navigator.clipboard?.writeText === "function") {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Un navigateur peut refuser l'accès au presse-papiers.
+    }
+  }
+
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.readOnly = true;
+  field.style.position = "fixed";
+  field.style.opacity = "0";
+  document.body.append(field);
+  field.select();
+  try {
+    return document.execCommand("copy");
+  } catch {
+    return false;
+  } finally {
+    field.remove();
+  }
+}
+
+async function shareEndResultH9G(button) {
+  if (button.disabled) return;
+  const text = getEndResultShareTextH9G();
+  button.disabled = true;
+  try {
+    let shared = false;
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ text });
+        shared = true;
+      } catch (error) {
+        if (error?.name === "AbortError") return; // Annulation volontaire.
+      }
+    }
+    if (!shared && !(await copyEndResultTextH9G(text))) {
+      window.prompt("Copiez votre résultat :", text);
+      return;
+    }
+
+    if (button.isConnected) {
+      button.textContent = shared ? "Résultat partagé !" : "Résultat copié !";
+      window.setTimeout(() => {
+        if (button.isConnected) button.textContent = "Partager mon résultat";
+      }, 2400);
+    }
+  } finally {
+    button.disabled = false;
+    if (button.isConnected) button.focus({ preventScroll: true });
+  }
+}
+
 function renderVictoryModalV16() {
   if (document.querySelector("#victory-modal-v16")) return;
 
@@ -2861,6 +2952,11 @@ function renderVictoryModalV16() {
 
   modal.append(closeButton);
   modal.addEventListener("click", (event) => {
+    const shareButton = event.target.closest?.("[data-end-share-h9g]");
+    if (shareButton && modal.contains(shareButton)) {
+      void shareEndResultH9G(shareButton);
+      return;
+    }
     const button = event.target.closest?.("[data-end-view-h9f2]");
     if (!button || !modal.contains(button)) return;
     const view = button.dataset.endViewH9f2;
@@ -3046,12 +3142,15 @@ function playVictoryTone(ctx, startAt, frequency, duration, gainValue) {
 }
 
 function launchConfetti() {
-  if (state.playerPreferences?.visualEffectsEnabled === false) {
+  if (state.playerPreferences?.visualEffectsEnabled === false ||
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
     return;
   }
 
   const colors = ["#f8e6af", "#b42318", "#7a4a1f", "#4b3322", "#f6d58c"];
   const count = 216;
+  const fragment = document.createDocumentFragment();
+  const pieces = [];
 
   for (let index = 0; index < count; index++) {
     const piece = document.createElement("span");
@@ -3061,10 +3160,14 @@ function launchConfetti() {
     piece.style.animationDelay = `${Math.random() * 1.4}s`;
     piece.style.setProperty("--confetti-drift", `${(Math.random() - 0.5) * 18}rem`);
 
-    document.body.append(piece);
-
-    window.setTimeout(() => piece.remove(), 5600);
+    fragment.append(piece);
+    pieces.push(piece);
   }
+
+  document.body.append(fragment);
+  window.setTimeout(() => {
+    for (const piece of pieces) piece.remove();
+  }, 5600);
 }
 
 function getPublicRestartEndScreenMessageV9E() {
@@ -3108,21 +3211,12 @@ function getDailyLeaderboardGameKeyH9B() {
   ].join(":");
 }
 
-function getCurrentDailyLeaderboardPlayerH9B() {
-  return (state.players || []).find((player) => player.id === state.playerId) || null;
-}
-
+// S3 : ne jamais transmettre les scores calculés par le navigateur.
+// Le Worker les récupère directement depuis la partie quotidienne serveur.
 function getDailyLeaderboardPayloadH9B() {
-  const currentPlayer = getCurrentDailyLeaderboardPlayerH9B();
-
   return {
     playerId: getOrCreateClientId(),
-    playerName: state.playerName || getTechnicalPlayerNameV901(),
-    score: Number(currentPlayer?.score ?? state.score ?? 0),
-    wordCount: Number(currentPlayer?.wordCount ?? state.foundWords?.length ?? 0),
-    invalidCount: Number(currentPlayer?.invalidCount ?? state.invalidCount ?? 0),
-    helpLevel: Number(state.helpLevel ?? 0),
-    durationSeconds: getElapsedDurationSeconds(),
+    roomToken: getDailyRoomTokenS3(),
   };
 }
 
@@ -3462,17 +3556,27 @@ function createHomePreviewLettersV87() {
   return letters.slice(0, 16);
 }
 
+/* S3 : cette valeur ne doit pas être l'ID public utilisé dans les salons. */
+let dailyRoomTokenCacheS3 = { date: "", token: "" };
+function getDailyRoomTokenS3() {
+  const date = getDailyDateKeyG6();
+  if (dailyRoomTokenCacheS3.date === date && dailyRoomTokenCacheS3.token) {
+    return dailyRoomTokenCacheS3.token;
+  }
+  const key = `boggle:daily-room-token:${date}`;
+  let token = "";
+  try { token = window.sessionStorage.getItem(key) || ""; } catch { /* stockage optionnel */ }
+  if (!/^[A-Za-z0-9_-]{8,80}$/.test(token)) {
+    token = window.crypto?.randomUUID?.() || `daily-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
+    try { window.sessionStorage.setItem(key, token); } catch { /* cache en mémoire */ }
+  }
+  dailyRoomTokenCacheS3 = { date, token };
+  return token;
+}
+
 function getDailyRoomIdV87() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  const clientId = getOrCreateClientId();
-  /*
-   * La room quotidienne est personnelle par navigateur.
-   * La date reste dans l'identifiant pour permettre une seed serveur commune.
-   */
-  return `grille-du-jour-${year}-${month}-${day}-${clientId}`;
+  // Même graine par date, mais une salle privée non devinable par le pseudo/ID public.
+  return `grille-du-jour-${getDailyDateKeyG6()}-${getDailyRoomTokenS3()}`;
 }
 
 function setHomeNoticeV87(message) {
@@ -3615,6 +3719,78 @@ function openSoloFromHomeV87() {
 }
 
 
+// S2 — le Top de l'accueil provient de la même API que le classement quotidien.
+let homeDailyLeaderboardRequestS2 = 0;
+
+function showHomeDailyLeaderboardStatusS2(message) {
+  const ranking = document.querySelector("#home-v87 .home-v87-ranking");
+  if (!ranking) return;
+
+  const item = document.createElement("li");
+  item.className = "home-v87-ranking-message";
+  item.textContent = message;
+  ranking.replaceChildren(item);
+}
+
+function renderHomeDailyLeaderboardS2(entries) {
+  const ranking = document.querySelector("#home-v87 .home-v87-ranking");
+  if (!ranking) return;
+
+  const topFive = entries.slice(0, 5);
+  if (!topFive.length) {
+    showHomeDailyLeaderboardStatusS2("Aucun résultat pour le moment.");
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  for (const [index, entry] of topFive.entries()) {
+    const rank = Number.isInteger(entry.rank) && entry.rank > 0 ? entry.rank : index + 1;
+    const item = document.createElement("li");
+    const rankElement = document.createElement("span");
+    rankElement.className = `home-v87-rank${rank === 1 ? " home-v87-gold" : rank === 2 ? " home-v87-silver" : rank === 3 ? " home-v87-bronze" : ""}`;
+    rankElement.textContent = String(rank);
+
+    const nameElement = document.createElement("strong");
+    nameElement.textContent = typeof entry.playerName === "string" && entry.playerName.trim()
+      ? entry.playerName : "Joueur";
+
+    const scoreElement = document.createElement("span");
+    scoreElement.textContent = `${Number(entry.score) || 0} pts`;
+    item.append(rankElement, nameElement, scoreElement);
+    fragment.append(item);
+  }
+
+  ranking.replaceChildren(fragment);
+}
+
+async function refreshHomeDailyLeaderboardS2() {
+  if (!document.querySelector("#home-v87 .home-v87-ranking")) return;
+
+  const requestId = ++homeDailyLeaderboardRequestS2;
+  const date = getDailyDateKeyG6();
+  showHomeDailyLeaderboardStatusS2("Chargement du classement…");
+
+  try {
+    const response = await fetch(`${DAILY_LEADERBOARD_API_H9B}?date=${encodeURIComponent(date)}`);
+    if (!response.ok) throw new Error("Classement indisponible");
+    const data = await response.json();
+    if (data?.ok !== true || data.date !== date || !Array.isArray(data.entries)) {
+      throw new Error("Réponse de classement invalide");
+    }
+
+    if (requestId !== homeDailyLeaderboardRequestS2) return;
+    if (date !== getDailyDateKeyG6()) {
+      void refreshHomeDailyLeaderboardS2();
+      return;
+    }
+    renderHomeDailyLeaderboardS2(data.entries);
+  } catch {
+    if (requestId === homeDailyLeaderboardRequestS2) {
+      showHomeDailyLeaderboardStatusS2("Classement indisponible pour le moment.");
+    }
+  }
+}
+
 function setupHomeScreenV87() {
   if (document.querySelector("#home-v87")) {
     return;
@@ -3664,14 +3840,9 @@ function setupHomeScreenV87() {
           '<div class="home-v87-card-heading">',
             '<span aria-hidden="true">🏆</span>',
             '<h2 id="home-v87-top-title">Top du jour</h2>',
-            '<button class="home-v87-secondary-button" type="button" data-home-action="top">Voir tout</button>',
           '</div>',
-          '<ol class="home-v87-ranking">',
-            '<li><span class="home-v87-rank home-v87-gold">1</span><span class="home-v87-avatar">🍊</span><strong>Lulu</strong><span>1457</span></li>',
-            '<li><span class="home-v87-rank home-v87-silver">2</span><span class="home-v87-avatar">🍑</span><strong>Mango</strong><span>1120</span></li>',
-            '<li><span class="home-v87-rank home-v87-bronze">3</span><span class="home-v87-avatar">🥝</span><strong>Kiwi</strong><span>1054</span></li>',
-            '<li><span class="home-v87-rank">4</span><span class="home-v87-avatar">🍇</span><strong>Noisette</strong><span>628</span></li>',
-            '<li><span class="home-v87-rank">5</span><span class="home-v87-avatar">🍋</span><strong>Citron</strong><span>522</span></li>',
+          '<ol class="home-v87-ranking" aria-label="Cinq premiers joueurs du jour" aria-live="polite">',
+            '<li class="home-v87-ranking-message">Chargement du classement…</li>',
           '</ol>',
         '</aside>',
 
@@ -3745,13 +3916,10 @@ function setupHomeScreenV87() {
       return;
     }
 
-    if (action === "top") {
-      setHomeNoticeV87("Le classement complet sera ajouté avec la grille du jour.");
-      return;
-    }
   });
 
   document.body.classList.add("v87-home-active");
+  void refreshHomeDailyLeaderboardS2();
 }
 
 setupHomeScreenV87();
@@ -3837,6 +4005,7 @@ function returnToHomeV87() {
   document.body.classList.remove("v87-game-active");
 
   const home = document.querySelector("#home-v87");
+  void refreshHomeDailyLeaderboardS2();
 
   if (home) {
     home.scrollIntoView({ block: "start" });
@@ -3873,18 +4042,13 @@ const PUBLIC_ROOMS_V88 = {
   },
 };
 
-function cleanupHomeTopButtonV88() {
-  document.querySelectorAll('#home-v87 [data-home-action="top"]').forEach((button) => {
-    button.remove();
-  });
-}
-
 function showHomeFromPublicV88() {
   cancelPendingDailyAutoStartG1();
 
   document.body.classList.remove("v88-public-active");
   document.body.classList.remove("v87-game-active");
   document.body.classList.add("v87-home-active");
+  void refreshHomeDailyLeaderboardS2();
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -4013,7 +4177,6 @@ function setupPublicRoomsScreenV88() {
   document.body.insertBefore(screen, document.body.firstChild);
 }
 
-cleanupHomeTopButtonV88();
 setupPublicRoomsScreenV88();
 
 /* V88-PUBLIC-ROOMS-SCREEN END */
@@ -4098,6 +4261,7 @@ function showHomeFromPrivateV89() {
   document.body.classList.remove("v88-public-active");
   document.body.classList.remove("v87-game-active");
   document.body.classList.add("v87-home-active");
+  void refreshHomeDailyLeaderboardS2();
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }

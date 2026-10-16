@@ -4339,6 +4339,8 @@ button:not(.board-cell):hover,
     #victory-modal-v16 .boggle-end-actions-h9f2 {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
       margin-top: 1rem;
     }
     #victory-modal-v16 .boggle-end-switch-h9f2 {
@@ -6270,7 +6272,7 @@ body.v87-home-active #home-v87 {
 
 .home-v87-ranking li {
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.6rem;
   min-height: 2.95rem;
@@ -6279,6 +6281,11 @@ body.v87-home-active #home-v87 {
   background: rgba(255, 242, 203, 0.56);
   color: #512715;
   font-weight: 800;
+}
+
+.home-v87-ranking li.home-v87-ranking-message {
+  display: block;
+  text-align: center;
 }
 
 .home-v87-rank {

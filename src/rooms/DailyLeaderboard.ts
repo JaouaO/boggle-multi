@@ -14,7 +14,8 @@ type RankedDailyLeaderboardEntry = DailyLeaderboardEntry & {
   rank: number;
 };
 
-const STORAGE_KEY = "entries";
+// S3 : les entrées antérieures restent archivées, jamais mêlées aux scores vérifiés.
+const STORAGE_KEY = "verifiedEntriesS3";
 const MAX_STORED_ENTRIES = 200;
 const PUBLIC_TOP_LIMIT = 10;
 
@@ -63,6 +64,7 @@ export class DailyLeaderboard {
 
   private async handlePost(date: string, request: Request) {
     const payload = await readJsonBody(request);
+    // Le Worker n'envoie ici que la réponse vérifiée du Durable Object de jeu.
     const entry = normalizeSubmission(date, payload);
 
     if (!entry) {
@@ -109,7 +111,8 @@ function buildLeaderboardResponse(
   playerId = ""
 ) {
   const rankedEntries = rankEntries(Object.values(entries));
-  const topEntries = rankedEntries.slice(0, PUBLIC_TOP_LIMIT);
+  // Ne pas divulguer publiquement les identifiants des navigateurs / salles.
+  const topEntries = rankedEntries.slice(0, PUBLIC_TOP_LIMIT).map(({ playerId: _privateId, ...entry }) => entry);
   const playerEntry = playerId
     ? rankedEntries.find((entry) => entry.playerId === playerId) ?? null
     : null;
@@ -187,7 +190,10 @@ function normalizeSubmission(date: string, payload: unknown): DailyLeaderboardEn
   const data = payload as Record<string, unknown>;
   const playerId = normalizePlayerId(data.playerId);
 
-  if (!playerId) {
+  if (data.ok !== true || data.date !== date || !playerId ||
+      typeof data.score !== "number" || !Number.isInteger(data.score) ||
+      typeof data.wordCount !== "number" || !Number.isInteger(data.wordCount) ||
+      typeof data.invalidCount !== "number" || !Number.isInteger(data.invalidCount)) {
     return null;
   }
 

@@ -27,6 +27,58 @@ function getDailyLeaderboardDateFromUrl(url: URL) {
 	return /^\d{4}-\d{2}-\d{2}$/u.test(date) ? date : null;
 }
 
+/* S3 : vérifier les scores dans la salle serveur, jamais depuis le POST public. */
+function normalizeDailyPlayerId(value: unknown) {
+  const id = String(value ?? "").trim();
+  return /^[A-Za-z0-9_-]{8,80}$/u.test(id) ? id : "";
+}
+
+async function verifyDailyLeaderboardSubmission(request: Request, env: Env, date: string) {
+  let input: unknown;
+  try {
+    input = await request.json();
+  } catch {
+    return json({ ok: false, error: "requête invalide" }, { status: 400 });
+  }
+  const fields = input && typeof input === "object" ? input as Record<string, unknown> : {};
+  const playerId = normalizeDailyPlayerId(fields.playerId);
+  const roomToken = normalizeDailyPlayerId(fields.roomToken);
+  if (!playerId || !roomToken) {
+    return json({ ok: false, error: "joueur ou salle invalide" }, { status: 400 });
+  }
+
+  // Le token de salle est distinct de l'identifiant visible dans les salons.
+  const roomId = `GRILLE-DU-JOUR-${date}-${roomToken}`.toUpperCase();
+  const room = env.BOGGLE_ROOM.get(env.BOGGLE_ROOM.idFromName(roomId));
+  const scoreUrl = new URL("https://boggle.internal/__internal/daily-score-s3");
+  scoreUrl.searchParams.set("date", date);
+  scoreUrl.searchParams.set("playerId", playerId);
+  scoreUrl.searchParams.set("roomToken", roomToken);
+  const roomResponse = await room.fetch(new Request(scoreUrl, {
+    headers: { "X-Room-Name": roomId },
+  }));
+  if (!roomResponse.ok) {
+    return json(
+      { ok: false, error: "partie quotidienne non terminée ou non conforme" },
+      { status: 409 }
+    );
+  }
+  const verified: unknown = await roomResponse.json();
+  if (
+    !verified ||
+    typeof verified !== "object" ||
+    !("ok" in verified) ||
+    !("playerId" in verified) ||
+    !("date" in verified) ||
+    verified.ok !== true ||
+    verified.playerId !== playerId ||
+    verified.date !== date
+  ) {
+    return json({ ok: false, error: "résultat quotidien invalide" }, { status: 409 });
+  }
+  return verified;
+}
+
 function createDailyLeaderboardRequest(request: Request, date: string) {
 	const headers = new Headers(request.headers);
 	headers.set("X-Daily-Leaderboard-Date", date);
@@ -57,6 +109,19 @@ export default {
 			const id = env.DAILY_LEADERBOARD.idFromName(date);
 			const stub = env.DAILY_LEADERBOARD.get(id);
 
+            if (request.method === "POST") {
+              const verified = await verifyDailyLeaderboardSubmission(request, env, date);
+              if (verified instanceof Response) return verified;
+              const verifiedRequest = new Request(request.url, {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                  "X-Daily-Leaderboard-Date": date,
+                },
+                body: JSON.stringify(verified),
+              });
+              return stub.fetch(verifiedRequest);
+            }
 			return stub.fetch(createDailyLeaderboardRequest(request, date));
 		}
 		if (url.pathname.startsWith("/ws/")) {

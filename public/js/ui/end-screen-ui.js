@@ -271,10 +271,7 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
   const list = document.createElement("ol");
   list.className = "daily-leaderboard-list-h9b";
   function addEntry(entry, outsideTop = false) {
-    const current = Boolean(
-      entry.playerId === data?.playerEntry?.playerId ||
-      entry.playerId === currentPlayerId
-    );
+    const current = playerRank > 0 && Number(entry.rank) === playerRank;
     const row = document.createElement("li");
     row.className = "boggle-end-ranking-item daily-leaderboard-entry-h9b";
     row.classList.toggle("boggle-end-ranking-item-current", current);
@@ -301,7 +298,7 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
     list.append(row);
   }
   entries.forEach((entry) => addEntry(entry));
-  if (data?.playerEntry && !entries.some((entry) => entry.playerId === data.playerEntry.playerId)) {
+  if (data?.playerEntry && !entries.some((entry) => Number(entry.rank) === playerRank)) {
     addEntry(data.playerEntry, true);
   }
   if (!list.children.length) {
@@ -389,7 +386,13 @@ function ensureEndScreenViewsH9F2(panel, { solo, daily, gameKey }) {
     showRanking.className = "boggle-end-switch-h9f2";
     showRanking.dataset.endViewH9f2 = "ranking";
     showRanking.textContent = "Retour au classement";
-    actions.append(showStats, showRanking);
+    const shareResult = document.createElement("button");
+    shareResult.type = "button";
+    shareResult.className = "boggle-end-switch-h9f2";
+    shareResult.setAttribute("data-end-share-h9g", "");
+    shareResult.textContent = "Partager mon résultat";
+    shareResult.setAttribute("aria-live", "polite");
+    actions.append(showStats, showRanking, shareResult);
   }
 
   element.append(panel.title, panel.message, overview, panel.nextRound, rankingView, statsView, actions);
@@ -410,9 +413,9 @@ export function setEndScreenViewH9F2(element, view, solo = false) {
   if (stats) stats.hidden = normalized !== "stats";
   const actions = element.querySelector(".boggle-end-actions-h9f2");
   if (actions) {
-    actions.hidden = solo;
+    actions.hidden = false;
     for (const button of actions.querySelectorAll("[data-end-view-h9f2]")) {
-      button.hidden = button.dataset.endViewH9f2 === normalized;
+      button.hidden = solo || button.dataset.endViewH9f2 === normalized;
     }
   }
 }
@@ -484,6 +487,7 @@ function updateDetailedRoundStatsH9E(panel, options) {
       const all = possible.get(length) || 0;
       const row = document.createElement("div");
       row.className = "h9e-chart-row";
+      row.setAttribute("role", "img");
       row.setAttribute("aria-label", `${label} lettres : ${valid} trouvés sur ${all} possibles`);
       const heading = document.createElement("span");
       heading.className = "h9e-chart-length";
