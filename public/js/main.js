@@ -4231,10 +4231,10 @@ function setupPublicRoomsScreenV88() {
   screen.innerHTML = [
     '<div class="home-v87-shell public-v88-shell">',
       '<header class="home-v87-header public-v88-header">',
-        '<div class="home-v87-logo" aria-label="Boggle">',
+        '<a href="/" class="home-v87-logo" data-home-logo aria-label="Retour à l’accueil">',
           '<span class="home-v87-logo-text">Boggle</span>',
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
-        '</div>',
+        '</a>',
         '<nav class="home-v87-actions public-v88-actions" aria-label="Actions rapides">',
         '</nav>',
       '</header>',
@@ -4470,10 +4470,10 @@ function setupPrivateRoomScreenV89() {
   screen.innerHTML = [
     '<div class="home-v87-shell private-v89-shell">',
       '<header class="home-v87-header private-v89-header">',
-        '<div class="home-v87-logo" aria-label="Boggle">',
+        '<a href="/" class="home-v87-logo" data-home-logo aria-label="Retour à l’accueil">',
           '<span class="home-v87-logo-text">Boggle</span>',
           '<span class="home-v87-logo-dots" aria-hidden="true"><span></span><span></span><span></span></span>',
-        '</div>',
+        '</a>',
         '<nav class="home-v87-actions private-v89-actions" aria-label="Actions rapides">',
         '</nav>',
       '</header>',
@@ -5075,6 +5075,52 @@ function getCurrentGlobalScreenV908L() {
 }
 
 
+function navigateHomeViaGlobalActionV908L() {
+  const screen = getCurrentGlobalScreenV908L();
+
+  if (screen === "private") {
+    if (typeof showHomeFromPrivateV89 === "function") {
+      showHomeFromPrivateV89();
+    } else {
+      document.querySelector("#private-v89")?.remove();
+      document.body.classList.add("v87-home-active");
+      document.body.classList.remove("v87-game-active");
+    }
+
+    syncGlobalActionsBarV908L();
+    return;
+  }
+
+  if (screen === "public") {
+    if (typeof showHomeFromPublicV88 === "function") {
+      showHomeFromPublicV88();
+    } else {
+      document.querySelector("#public-v88")?.remove();
+      document.body.classList.add("v87-home-active");
+      document.body.classList.remove("v87-game-active");
+    }
+
+    syncGlobalActionsBarV908L();
+    return;
+  }
+
+  if (screen === "game" && typeof returnToHomeV87 === "function") {
+    returnToHomeV87();
+  }
+
+  syncGlobalActionsBarV908L();
+}
+
+// Les logos natifs utilisent exactement la navigation du bouton « Accueil ».
+function handleLogoHomeClickV908L(event) {
+  const element = event.target;
+  if (!(element instanceof Element) || !element.closest("[data-home-logo]")) return;
+  event.preventDefault();
+  navigateHomeViaGlobalActionV908L();
+}
+
+document.addEventListener("click", handleLogoHomeClickV908L);
+
 function ensureGlobalHomeButtonV908L() {
   let button = document.querySelector("#global-home-button-v908l");
 
@@ -5088,40 +5134,7 @@ function ensureGlobalHomeButtonV908L() {
     button.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-
-      const screen = getCurrentGlobalScreenV908L();
-
-      if (screen === "private") {
-        if (typeof showHomeFromPrivateV89 === "function") {
-          showHomeFromPrivateV89();
-        } else {
-          document.querySelector("#private-v89")?.remove();
-          document.body.classList.add("v87-home-active");
-          document.body.classList.remove("v87-game-active");
-        }
-
-        syncGlobalActionsBarV908L();
-        return;
-      }
-
-      if (screen === "public") {
-        if (typeof showHomeFromPublicV88 === "function") {
-          showHomeFromPublicV88();
-        } else {
-          document.querySelector("#public-v88")?.remove();
-          document.body.classList.add("v87-home-active");
-          document.body.classList.remove("v87-game-active");
-        }
-
-        syncGlobalActionsBarV908L();
-        return;
-      }
-
-      if (screen === "game" && typeof returnToHomeV87 === "function") {
-        returnToHomeV87();
-      }
-
-      syncGlobalActionsBarV908L();
+      navigateHomeViaGlobalActionV908L();
     });
   }
 

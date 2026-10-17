@@ -82,3 +82,23 @@ assert.ok(server.includes('this.sendPlayerProgressA1(ws);'), 'Envoi progression 
 assert.ok(server.includes('foundWords: this.getPlayerFoundWords(attachment.foundWords)'),
   'Progression limitée au joueur authentifié');
 console.log('[ok] A1 : accueil 6 états, verrou quotidien, reconnexion progressive, annulation, progression privée');
+
+// M1a : toutes les voies du logo réutilisent la navigation Accueil existante.
+const navigateHomeFn = extract('function navigateHomeViaGlobalActionV908L() {', 'function ensureGlobalHomeButtonV908L() {');
+for (const [screen, expected] of [['private', 'private'], ['public', 'public'], ['game', 'game'], ['home', 'none']]) {
+  const calls = [];
+  vm.runInNewContext(`${navigateHomeFn.slice(0, navigateHomeFn.indexOf('// Les logos natifs'))}\nnavigateHomeViaGlobalActionV908L();`, {
+    getCurrentGlobalScreenV908L: () => screen,
+    showHomeFromPrivateV89: () => calls.push('private'),
+    showHomeFromPublicV88: () => calls.push('public'),
+    returnToHomeV87: () => calls.push('game'),
+    syncGlobalActionsBarV908L: () => calls.push('sync'),
+  });
+  assert.equal(calls[0] === 'sync' ? 'none' : calls[0], expected, `Navigation logo ${screen}`);
+  assert.equal(calls.at(-1), 'sync', `Barre d’actions actualisée ${screen}`);
+}
+assert.ok(main.includes('document.addEventListener("click", handleLogoHomeClickV908L);'));
+assert.ok(main.includes('data-home-logo aria-label="Retour à l’accueil"'));
+const layout = fs.readFileSync(new URL('../public/js/ui/layout-ui.js', import.meta.url), 'utf8');
+assert.ok(layout.includes('brand = document.createElement("a")'));
+console.log('[ok] M1a : logo accessible, retour accueil commun et scénarios de navigation');

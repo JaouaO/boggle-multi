@@ -155,9 +155,11 @@ function ensureBrand(parent) {
   let brand = document.querySelector("#boggle-brand");
 
   if (!brand) {
-    brand = document.createElement("div");
+    brand = document.createElement("a");
     brand.id = "boggle-brand";
-    brand.setAttribute("aria-label", "Boggle");
+    brand.href = "/";
+    brand.dataset.homeLogo = "";
+    brand.setAttribute("aria-label", "Retour à l’accueil");
 
     const mark = document.createElement("span");
     mark.className = "boggle-brand-mark";

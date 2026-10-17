@@ -8158,3 +8158,16 @@ body.player-identity-modal-open-v902 {
 
 
 /* F9Z3-OLD-WELCOME-SCREEN-CLEANUP : ancien accueil et ancien bouton retour supprimés. */
+
+/* M1a : logos de navigation — styles explicites et focus clavier. */
+#boggle-brand[data-home-logo],
+.home-v87-logo[data-home-logo] {
+  text-decoration: none;
+  cursor: pointer;
+}
+#boggle-brand[data-home-logo]:focus-visible,
+.home-v87-logo[data-home-logo]:focus-visible {
+  outline: 3px solid #7d581a;
+  outline-offset: 4px;
+  border-radius: 0.35rem;
+}
