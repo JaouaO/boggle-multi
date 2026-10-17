@@ -98,7 +98,7 @@ function syncLayout() {
 
 
     const launchPanel = ensurePanel(center, "launch-panel", "Lancer une grille");
-    launchPanel.hidden = !isConnected() || isGridActive();
+    // main.js est seul responsable de la visibilité du panneau selon le mode.
     moveNode("#start", launchPanel);
     moveDirect("#mode-controls", launchPanel);
 
@@ -281,27 +281,6 @@ function createMockupInfoCard({ id, modifier, icon, title, body, items = [] }) {
   }
 
   return card;
-}
-
-
-function isConnected() {
-  /*
-   * F2/F4d :
-   * L'état connecté est porté par main.js sur <body>,
-   * sans dépendre d'un ancien badge DOM.
-   */
-  return document.body.classList.contains("boggle-session-connected");
-}
-
-
-function isGridActive() {
-  const statusText = document
-    .querySelector("#game-status")
-    ?.textContent
-    ?.trim()
-    ?.toLowerCase() ?? "";
-
-  return statusText.includes("partie en cours") || statusText.includes("mode solution");
 }
 
 

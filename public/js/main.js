@@ -227,7 +227,7 @@ function refreshHomeVisibility() {
 
 
   if (launchPanel) {
-    launchPanel.hidden = isPublicRoomSession || !connected || gameActive;
+    launchPanel.hidden = isPublicRoomSession || state.gameContext === "daily" || !connected || gameActive;
   }
 }
 
