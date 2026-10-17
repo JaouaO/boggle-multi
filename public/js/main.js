@@ -69,6 +69,11 @@ let countdownWarningInterval = null;
 let endScreenReturnFocusH9D = null;
 let personalInvalidWordsH9E = null;
 let publicIntermissionRemainingH9C = null;
+// A1 : une seule session active peut programmer des reconnexions.
+let activeSessionForReconnectA1 = null;
+let reconnectTimerA1 = 0;
+let reconnectAttemptsA1 = 0;
+let dailyRestartAfterReconnectA1 = false;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
 const startButton = document.querySelector("#start");
@@ -329,10 +334,13 @@ function submitWord(event) {
     flashKeyboardWordImpossible();
   }
 
-  send({
+  if (!send({
     type: "submitWord",
     word,
-  });
+  })) {
+    // Conserver la saisie lorsque la connexion vient de tomber.
+    return;
+  }
 
   wordInput.value = "";
   clearSelectedLetters();
@@ -346,10 +354,12 @@ function submitSelectedWord() {
 
   pendingSubmissionPath = [...state.selectedPath];
 
-  send({
+  if (!send({
     type: "submitWord",
     word: state.selectedWord,
-  });
+  })) {
+    return;
+  }
 
   wordInput.value = "";
   clearSelectedLetters();
@@ -973,6 +983,35 @@ function validatePrivateSessionV901({ createIfMissing = false } = {}) {
 
 /* V90.1-CLEAN-SESSION END */
 
+// A1 : une fermeture volontaire (Accueil / changement de salle) annule toute relance.
+function cancelReconnectA1() {
+  if (reconnectTimerA1) window.clearTimeout(reconnectTimerA1);
+  reconnectTimerA1 = 0;
+  reconnectAttemptsA1 = 0;
+  dailyRestartAfterReconnectA1 = false;
+  activeSessionForReconnectA1 = null;
+}
+
+function scheduleReconnectA1(session) {
+  if (session !== activeSessionForReconnectA1 || reconnectTimerA1 ||
+      !document.body.classList.contains("v87-game-active")) return;
+
+  const delay = Math.min(8000, 500 * (2 ** Math.min(reconnectAttemptsA1++, 4)));
+  reconnectTimerA1 = window.setTimeout(() => {
+    reconnectTimerA1 = 0;
+    if (session !== activeSessionForReconnectA1) return;
+    connectToRoom({ ...session, reconnectingA1: true });
+  }, delay);
+}
+
+window.addEventListener("online", () => {
+  if (!activeSessionForReconnectA1 || isSocketConnected() || !reconnectTimerA1) return;
+  window.clearTimeout(reconnectTimerA1);
+  reconnectTimerA1 = 0;
+  reconnectAttemptsA1 = 0;
+  scheduleReconnectA1(activeSessionForReconnectA1);
+});
+
 function connectToRoom(options = {}) {
   const roomId = normalizeSessionRoomIdV901(options.roomId, "TEST");
   const playerName = normalizeSessionPlayerNameV901(options.playerName, "joueur");
@@ -980,6 +1019,7 @@ function connectToRoom(options = {}) {
   const shouldPersistRoom = options.persistRoom === true;
   const shouldPersistPlayerName = options.persistPlayerName !== false;
   const shouldUpdateUrl = options.updateUrl !== false;
+  const reconnectingA1 = options.reconnectingA1 === true;
 
 const clientId = getOrCreateClientId();
 
@@ -996,12 +1036,25 @@ const clientId = getOrCreateClientId();
     return state.socket;
   }
 
-  if (state.socket) {
-    state.socket.close();
+  if (!reconnectingA1) {
+    cancelReconnectA1();
+    activeSessionForReconnectA1 = {
+      roomId, playerName, context,
+      persistRoom: shouldPersistRoom,
+      persistPlayerName: shouldPersistPlayerName,
+      updateUrl: shouldUpdateUrl,
+    };
+  } else if (!activeSessionForReconnectA1 || activeSessionForReconnectA1.roomId !== roomId) {
+    return null;
   }
+  const reconnectSessionA1 = activeSessionForReconnectA1;
 
-  stopLocalTimer();
-  resetGameUiToWaiting();
+  if (state.socket) state.socket.close();
+
+  if (!reconnectingA1) {
+    stopLocalTimer();
+    resetGameUiToWaiting();
+  }
 
   state.roomId = roomId;
   state.playerName = playerName;
@@ -1012,7 +1065,15 @@ const clientId = getOrCreateClientId();
 
   updateInviteButton();
 
-  const { socket, url } = createRoomSocket(roomId);
+  let connection;
+  try {
+    connection = createRoomSocket(roomId);
+  } catch {
+    addLog(logElement, "Impossible d’ouvrir la connexion. Nouvelle tentative…");
+    scheduleReconnectA1(reconnectSessionA1);
+    return null;
+  }
+  const { socket, url } = connection;
   state.socket = socket;
   renderRulesSummary();
 
@@ -1021,6 +1082,9 @@ const clientId = getOrCreateClientId();
       return;
     }
 
+    if (reconnectingA1 && state.gameContext === GAME_CONTEXTS_V901.DAILY) {
+      dailyRestartAfterReconnectA1 = true;
+    }
     updateInviteButton();
     updateHostControls();
     renderRulesSummary();
@@ -1052,10 +1116,15 @@ const clientId = getOrCreateClientId();
     state.socket = null;
     updateInviteButton();
     startButton.disabled = true;
+    wordInput.disabled = true;
+    wordSubmitButton.disabled = true;
     renderRulesSummary();
-    stopLocalTimer();
     publicIntermissionRemainingH9C = null;
-    addLog(logElement, "Session fermée.");
+    if (state.gameStatus === "playing") {
+      setWordFeedback(wordFeedbackElement, "Connexion interrompue. Reconnexion automatique…");
+    }
+    addLog(logElement, "Connexion interrompue.");
+    scheduleReconnectA1(reconnectSessionA1);
   });
 
   socket.addEventListener("error", () => {
@@ -1075,10 +1144,7 @@ function startRandomTimedGame() {
     return;
   }
 
-  if (state.gameContext === GAME_CONTEXTS_V901.DAILY) {
-    rememberDailyAttemptStartedG6();
-  }
-
+  // A1 : ne verrouiller la tentative qu'après le message gameStarted du serveur.
   send({
     type: "startGame",
     mode: "timed",
@@ -1195,6 +1261,7 @@ function send(data) {
   if (!sent) {
     addLog(logElement, "Socket non connectée.");
   }
+  return sent;
 }
 
 function isCurrentPlayerHost() {
@@ -1389,6 +1456,7 @@ function handleServerMessage(data) {
   }
 
   if (data.type === "players") {
+    reconnectAttemptsA1 = 0;
     state.players = data.players;
 
     ensureSelectedFoundWordsPlayer();
@@ -1419,6 +1487,26 @@ function handleServerMessage(data) {
 
   if (data.type === "gameStatus") {
     updateGameStatus(data.status);
+    if (dailyRestartAfterReconnectA1 && state.gameContext === GAME_CONTEXTS_V901.DAILY) {
+      dailyRestartAfterReconnectA1 = false;
+      if (data.status === "waiting" && !hasDailyAttemptLockG6()) {
+        waitAndStartDailyGridFromHomeV9();
+      }
+    }
+    return;
+  }
+
+  if (data.type === "playerProgress") {
+    // Envoi privé par le serveur, après gameStarted/gameEnded lors d'une jonction.
+    if (state.startedAt !== data.startedAt ||
+        (state.gameStatus !== "playing" && state.gameStatus !== "ended")) return;
+    state.score = Number(data.score) || 0;
+    state.invalidCount = Number(data.invalidCount) || 0;
+    state.foundWords = Array.isArray(data.foundWords) ? data.foundWords : [];
+    renderFoundWords(foundWordsElement, state.foundWords);
+    refreshHelpDisplay();
+    if (state.board) renderCurrentBoardWithHelp();
+    if (state.endScreenVisible) renderCurrentEndScreen();
     return;
   }
 
@@ -2107,6 +2195,7 @@ function clampCurrentHelpLevel() {
 }
 
 function handleGameStarted(data) {
+  dailyRestartAfterReconnectA1 = false;
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   clearDismissedEndScreenV9H();
@@ -2219,6 +2308,7 @@ function handleGameStarted(data) {
 }
 
 function handleGameEnded(data) {
+  dailyRestartAfterReconnectA1 = false;
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   const shouldOpenEndPopup =
@@ -3969,6 +4059,7 @@ setupHomeScreenV87();
  */
 
 function leaveActiveGameSessionForHomeV9() {
+  cancelReconnectA1();
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   const activeSocket = state.socket;

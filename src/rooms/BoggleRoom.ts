@@ -1224,6 +1224,7 @@ export class BoggleRoom extends DurableObject {
       });
 
       this.sendSolutionStats(ws);
+      this.sendPlayerProgressA1(ws);
 
       return;
     }
@@ -1248,6 +1249,7 @@ export class BoggleRoom extends DurableObject {
 
       this.sendSolutionStats(ws);
       this.sendPlayerRoundStatsH9E(ws);
+      this.sendPlayerProgressA1(ws);
 
       return;
     }
@@ -1260,6 +1262,19 @@ export class BoggleRoom extends DurableObject {
     this.send(ws, {
       type: "gameOptionsUpdated",
       gameOptions: this.gameOptions,
+    });
+  }
+
+  // A1 : progression privée de ce joueur uniquement, sans exposer les mots des autres.
+  private sendPlayerProgressA1(ws: WebSocket) {
+    const attachment = this.getPlayerAttachment(ws);
+    if (!attachment.joined || this.startedAt === null) return;
+    this.send(ws, {
+      type: "playerProgress",
+      startedAt: this.startedAt,
+      score: attachment.score,
+      invalidCount: attachment.invalidWords.length,
+      foundWords: this.getPlayerFoundWords(attachment.foundWords),
     });
   }
 

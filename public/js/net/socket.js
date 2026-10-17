@@ -13,6 +13,10 @@ export function sendMessage(socket, data) {
 		return false;
 	}
 
-	socket.send(JSON.stringify(data));
-	return true;
+	try {
+		socket.send(JSON.stringify(data));
+		return true;
+	} catch {
+		return false;
+	}
 }

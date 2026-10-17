@@ -88,6 +88,13 @@ export type ServerMessage =
       invalidWords: string[];
     }
   | {
+      type: "playerProgress";
+      startedAt: number;
+      score: number;
+      invalidCount: number;
+      foundWords: { word: string; points: number; path?: { row: number; col: number }[] }[];
+    }
+  | {
       type: "solutionsStats";
       totalWords: number;
       maxScore: number;
