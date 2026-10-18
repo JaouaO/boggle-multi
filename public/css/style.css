@@ -8200,3 +8200,67 @@ body.player-identity-modal-open-v902 {
   outline-offset: 4px;
   border-radius: 0.35rem;
 }
+
+/* M1c2 : classement complet défilant dans le panneau central uniquement. */
+#end-screen.boggle-end-inline-m1b .boggle-daily-scroll-m1c2 {
+  max-height: min(48vh, 32rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-pager-m1c2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.4rem 0 0.8rem;
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-page-label-m1c2 {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-pager-m1c2 .boggle-end-switch-h9f2,
+#end-screen.boggle-end-inline-m1b .boggle-daily-my-rank-m1c2 {
+  min-height: 2.4rem;
+  padding: 0.35rem 0.8rem;
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-page-status-m1c2 {
+  margin: 0.4rem 0;
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-my-rank-m1c2 {
+  margin-bottom: 0.6rem;
+}
+#end-screen.boggle-end-inline-m1b .daily-leaderboard-h9b > .boggle-end-ranking-columns-h9f2,
+#end-screen.boggle-end-inline-m1b .boggle-daily-scroll-m1c2 .boggle-end-ranking-item {
+  grid-template-columns: 3.4rem minmax(0, 1fr) 4rem 3.3rem;
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-scroll-m1c2 .boggle-end-rank-number-h9f2 {
+  width: auto;
+  min-width: 2.6rem;
+  padding-inline: 0.18rem;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+@media (max-width: 540px) {
+  #end-screen.boggle-end-inline-m1b .boggle-daily-pager-m1c2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  #end-screen.boggle-end-inline-m1b .boggle-daily-page-label-m1c2 {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    text-align: center;
+  }
+  #end-screen.boggle-end-inline-m1b .daily-leaderboard-h9b > .boggle-end-ranking-columns-h9f2,
+  #end-screen.boggle-end-inline-m1b .boggle-daily-scroll-m1c2 .boggle-end-ranking-item {
+    grid-template-columns: 2.8rem minmax(0, 1fr) 2.9rem 2.4rem;
+  }
+  #end-screen.boggle-end-inline-m1b .boggle-daily-scroll-m1c2 .boggle-end-rank-number-h9f2 {
+    min-width: 2.35rem;
+    font-size: 0.78rem;
+  }
+}
+#end-screen.boggle-end-inline-m1b .boggle-daily-page-after-first-m1c2 .boggle-end-ranking-item:nth-child(-n+3) .boggle-end-rank-number-h9f2 {
+  background: #f0dfc3;
+}

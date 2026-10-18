@@ -5,7 +5,7 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
     restartMessage = "", wordCountsByLength = null,
     foundWords = [], invalidWords = null,
     gameContext = "solo", gameKey = "", dailyDate = "",
-    dailyHistoryOnly = false,
+    dailyHistoryOnly = false, dailyPage = null,
   } = options;
 
   const panel = panelElement ? getEndScreenParts(panelElement) : ensureEndScreen(anchorElement);
@@ -58,7 +58,8 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
     currentPlayer, totalWords, durationSeconds,
     wordCountsByLength, foundWords, invalidWords,
   });
-  updateDailyLeaderboardH9B(panel, daily ? dailyLeaderboard : null, currentPlayerId, dailyDate, dailyHistoryOnly);
+  updateDailyLeaderboardH9B(panel, daily ? dailyLeaderboard : null, currentPlayerId, dailyDate, dailyHistoryOnly,
+    daily && !panelElement ? dailyPage : null);
 
   panel.nextRound.textContent = restartMessage;
   panel.nextRound.hidden = !restartMessage;
@@ -251,7 +252,7 @@ function formatDuration(seconds) {
   return `${minutes}min ${remainingSeconds}s`;
 }
 
-function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dateKey, dailyHistoryOnly = false) {
+function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dateKey, dailyHistoryOnly = false, dailyPage = null) {
   const section = ensureDailyLeaderboardSectionH9B(panel);
   if (!leaderboardState) {
     section.hidden = true;
@@ -293,7 +294,10 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
     return;
   }
   const data = leaderboardState.data;
-  const entries = Array.isArray(data?.entries) ? data.entries.slice(0, 5) : [];
+  const paged = dailyPage !== null && Array.isArray(data?.pageEntries);
+  const pageData = paged && dailyPage?.data ? dailyPage.data : data;
+  const entries = paged ? (Array.isArray(pageData?.pageEntries) ? pageData.pageEntries : [])
+    : (Array.isArray(data?.entries) ? data.entries.slice(0, 5) : []);
   const playerRank = Number(data?.playerRank ?? data?.playerEntry?.rank ?? 0);
   const total = Number(data?.totalEntries ?? entries.length);
   const summary = document.createElement("p");
@@ -332,13 +336,68 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
     list.append(row);
   }
   entries.forEach((entry) => addEntry(entry));
-  if (data?.playerEntry && !entries.some((entry) => Number(entry.rank) === playerRank)) {
+  if (!paged && data?.playerEntry && !entries.some((entry) => Number(entry.rank) === playerRank)) {
     addEntry(data.playerEntry, true);
   }
-  if (!list.children.length) {
+  if (!list.children.length && !paged) {
     const empty = document.createElement("p");
     empty.textContent = "Aucun score enregistré pour le moment.";
     section.replaceChildren(heading, empty);
+    return;
+  }
+  if (paged) {
+    const page = Math.max(1, Number(pageData.page) || 1);
+    const pageSize = Math.max(1, Number(pageData.pageSize) || 25);
+    const totalPages = Math.max(1, Number(pageData.totalPages) || 1);
+    const pager = document.createElement("nav");
+    pager.className = "boggle-daily-pager-m1c2";
+    pager.setAttribute("aria-label", "Pages du classement quotidien");
+    const pageInfo = document.createElement("span");
+    pageInfo.className = "boggle-daily-page-label-m1c2";
+    pageInfo.tabIndex = -1;
+    pageInfo.textContent = `Page ${page} sur ${totalPages}`;
+    const makeButton = (action, text, disabled) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "boggle-end-switch-h9f2";
+      button.dataset.dailyPageM1c2 = action;
+      button.textContent = text;
+      button.disabled = disabled || dailyPage?.status === "loading";
+      return button;
+    };
+    pager.append(
+      makeButton("previous", "← Précédent", page <= 1),
+      pageInfo,
+      makeButton("next", "Suivant →", page >= totalPages)
+    );
+    const content = [heading, summary];
+    if (Number.isInteger(playerRank) && playerRank > 0 &&
+        Math.ceil(playerRank / pageSize) !== page) {
+      const personalButton = makeButton("mine", `Voir ma place (n° ${playerRank})`, false);
+      personalButton.classList.add("boggle-daily-my-rank-m1c2");
+      content.push(personalButton);
+    }
+    if (dailyPage?.status === "loading" || dailyPage?.status === "error") {
+      const status = document.createElement("p");
+      status.className = "boggle-daily-page-status-m1c2";
+      status.setAttribute("role", "status");
+      status.textContent = dailyPage.status === "error"
+        ? "Impossible de charger cette page. Le classement précédent reste affiché."
+        : "Chargement de la page…";
+      content.push(status);
+      if (dailyPage.status === "error") content.push(makeButton("retry", "Réessayer", false));
+    }
+    if (!list.children.length) {
+      const empty = document.createElement("p");
+      empty.textContent = "Aucun score enregistré pour le moment.";
+      content.push(empty);
+    } else {
+      list.classList.add("boggle-daily-scroll-m1c2");
+      list.classList.toggle("boggle-daily-page-after-first-m1c2", page > 1);
+      content.push(createEndRankingColumnsH9F2(), list);
+    }
+    content.push(pager);
+    section.replaceChildren(...content);
   } else {
     section.replaceChildren(heading, summary, createEndRankingColumnsH9F2(), list);
   }

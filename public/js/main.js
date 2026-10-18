@@ -3032,9 +3032,13 @@ async function shareEndResultH9G(button) {
 // M1b: one interaction flow for both presentations of the same results.
 function handleEndResultsActionM1B(event, container) {
   const button = event.target.closest?.(
-    "[data-daily-leaderboard-retry-s4], [data-daily-history-retry-m1b], [data-end-share-h9g], [data-end-view-h9f2]"
+    "[data-daily-page-m1c2], [data-daily-leaderboard-retry-s4], [data-daily-history-retry-m1b], [data-end-share-h9g], [data-end-view-h9f2]"
   );
   if (!button || !container.contains(button)) return;
+  if (button.hasAttribute("data-daily-page-m1c2")) {
+    if (container.id === "end-screen") void changeDailyLeaderboardPageM1C2(button.dataset.dailyPageM1c2);
+    return;
+  }
   if (button.hasAttribute("data-daily-history-retry-m1b")) {
     void refreshDailyHistoryFallbackM1B();
     return;
@@ -3336,6 +3340,81 @@ function refreshPublicEndScreenCountdownH9C() {
   }
 }
 
+// M1c2 : pagination du classement central seulement. La modale garde le top 5 + vous.
+const DAILY_PAGE_SIZE_M1C2 = 25;
+let dailyPageRequestM1C2 = 0;
+let dailyPageStateM1C2 = { status: "idle", data: null, page: 1, error: "", date: "" };
+
+function clearDailyPageM1C2() {
+  dailyPageRequestM1C2 += 1;
+  dailyPageStateM1C2 = { status: "idle", data: null, page: 1, error: "", date: "" };
+}
+
+function getDailyPageForEndScreenM1C2(date) {
+  return dailyPageStateM1C2.date === date ? dailyPageStateM1C2
+    : { status: "idle", data: null, page: 1, error: "", date };
+}
+
+function renderDailyPageM1C2() {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) return;
+  if (dailyHistoryFallbackM1B && state.gameStatus === "waiting") {
+    renderDailyHistoryFallbackM1B();
+  } else if (state.gameStatus === "ended") {
+    renderCurrentEndScreen();
+  }
+}
+
+async function changeDailyLeaderboardPageM1C2(action) {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY ||
+      !(state.gameStatus === "ended" || dailyHistoryFallbackM1B)) return;
+  if (dailyPageStateM1C2.status === "loading") return;
+  const base = dailyHistoryFallbackM1B ? dailyHistoryLeaderboardM1B : dailyLeaderboardStateH9B;
+  if (base.status !== "loaded" || !Array.isArray(base.data?.pageEntries)) return;
+  const date = getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6();
+  const visible = dailyPageStateM1C2.date === date && dailyPageStateM1C2.data
+    ? dailyPageStateM1C2.data : base.data;
+  const currentPage = Math.max(1, Number(visible.page) || 1);
+  const totalPages = Math.max(1, Number(visible.totalPages) || 1);
+  const playerRank = Number(base.data.playerRank ?? base.data.playerEntry?.rank);
+  let target = currentPage;
+  if (action === "previous") target--;
+  else if (action === "next") target++;
+  else if (action === "mine" && Number.isInteger(playerRank) && playerRank > 0) {
+    target = Math.ceil(playerRank / DAILY_PAGE_SIZE_M1C2);
+  } else if (action === "retry") target = dailyPageStateM1C2.page;
+  else return;
+  if (target < 1 || target > totalPages ||
+      (target === currentPage && action !== "retry")) return;
+
+  const requestId = ++dailyPageRequestM1C2;
+  const roomId = state.roomId;
+  const playerId = getOrCreateClientId();
+  dailyPageStateM1C2 = { status: "loading", data: visible, page: target, error: "", date };
+  renderDailyPageM1C2();
+  try {
+    const params = new URLSearchParams({ date, playerId,
+      page: String(target), pageSize: String(DAILY_PAGE_SIZE_M1C2) });
+    const response = await fetch(`${DAILY_LEADERBOARD_API_H9B}?${params}`);
+    if (!response.ok) throw new Error("Classement indisponible");
+    const data = await response.json();
+    if (data?.ok !== true || data.date !== date || !Array.isArray(data.pageEntries) ||
+        data.page !== target || data.pageSize !== DAILY_PAGE_SIZE_M1C2) {
+      throw new Error("Réponse de pagination invalide");
+    }
+    if (requestId !== dailyPageRequestM1C2 || state.roomId !== roomId ||
+        state.gameContext !== GAME_CONTEXTS_V901.DAILY) return;
+    dailyPageStateM1C2 = { status: "loaded", data, page: target, error: "", date };
+  } catch {
+    if (requestId !== dailyPageRequestM1C2 || state.roomId !== roomId ||
+        state.gameContext !== GAME_CONTEXTS_V901.DAILY) return;
+    dailyPageStateM1C2 = { status: "error", data: visible, page: target,
+      error: "Impossible de charger cette page.", date };
+  }
+  renderDailyPageM1C2();
+  document.querySelector("#end-screen.boggle-end-inline-m1b .boggle-daily-page-label-m1c2")
+    ?.focus({ preventScroll: true });
+}
+
 // M1b : relecture de la grille quotidienne déjà lancée, sans fabriquer de score.
 // Si le salon ne possède plus sa manche, le GET public renvoie le top et notre
 // entrée éventuelle ; les statistiques détaillées restent indisponibles.
@@ -3344,6 +3423,7 @@ let dailyHistoryRequestM1B = 0;
 let dailyHistoryLeaderboardM1B = { status: "idle", data: null, error: "" };
 
 function clearDailyHistoryFallbackM1B() {
+  clearDailyPageM1C2();
   dailyHistoryRequestM1B += 1;
   dailyHistoryFallbackM1B = false;
 }
@@ -3358,6 +3438,7 @@ function renderDailyHistoryFallbackM1B() {
     gameKey: `daily-history:${state.roomId}`,
     dailyDate: getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6(),
     dailyLeaderboard: dailyHistoryLeaderboardM1B,
+    dailyPage: getDailyPageForEndScreenM1C2(getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6()),
     dailyHistoryOnly: true,
   });
   showInlineEndResultsM1B();
@@ -3369,6 +3450,7 @@ async function refreshDailyHistoryFallbackM1B() {
   if (!dailyHistoryFallbackM1B || state.gameContext !== GAME_CONTEXTS_V901.DAILY ||
       state.gameStatus !== "waiting") return;
   const requestId = ++dailyHistoryRequestM1B;
+  clearDailyPageM1C2();
   const roomId = state.roomId;
   const date = getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6();
   dailyHistoryLeaderboardM1B = { status: "loading", data: null, error: "" };
@@ -3496,6 +3578,9 @@ function renderCurrentEndScreen() {
       ? getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6()
       : "",
     dailyLeaderboard: getDailyLeaderboardEndScreenStateH9B(),
+    dailyPage: state.gameContext === GAME_CONTEXTS_V901.DAILY
+      ? getDailyPageForEndScreenM1C2(getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6())
+      : null,
     restartMessage: getPublicRestartEndScreenMessageV9E(),
     wordCountsByLength: state.solutionsStats?.wordCountsByLength ?? null,
     foundWords: (state.players || []).find((player) => player.id === state.playerId)?.foundWords ?? state.foundWords,

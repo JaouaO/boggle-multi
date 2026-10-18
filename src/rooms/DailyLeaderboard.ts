@@ -15,133 +15,180 @@ type RankedDailyLeaderboardEntry = DailyLeaderboardEntry & {
 };
 
 // S3 : les entrées antérieures restent archivées, jamais mêlées aux scores vérifiés.
-const STORAGE_KEY = "verifiedEntriesS3";
-const MAX_STORED_ENTRIES = 200;
-const PUBLIC_TOP_LIMIT = 10;
+// M1c : SQLite conserve chaque score vérifié, sans évincer les joueurs hors top 200.
+// Les deux clés historiques sont conservées pour permettre une migration non destructive.
+const LEGACY_STORAGE_KEY = "verifiedEntriesS3";
+const MIGRATION_KEY = "verifiedEntriesMigratedM1C";
+const PUBLIC_TOP_LIMIT = 10; // Contrat existant : accueil et modale inchangés.
+const PAGE_SIZE = 25;
+const MAX_PAGE_SIZE = 50;
+const SORT_ORDER = `score DESC, word_count DESC, invalid_count ASC,
+                    duration_seconds ASC, submitted_at ASC, player_id ASC`;
+
+type StoredRow = {
+  playerId: string;
+  playerName: string;
+  score: number;
+  wordCount: number;
+  invalidCount: number;
+  helpLevel: number;
+  durationSeconds: number;
+  submittedAt: number;
+};
 
 export class DailyLeaderboard {
-  constructor(private readonly ctx: DurableObjectState) {}
+  private readonly ready: Promise<void>;
+
+  constructor(private readonly ctx: DurableObjectState) {
+    this.ready = ctx.blockConcurrencyWhile(async () => {
+      ctx.storage.sql.exec(`
+        CREATE TABLE IF NOT EXISTS verified_daily_scores_m1c (
+          player_id TEXT PRIMARY KEY NOT NULL,
+          player_name TEXT NOT NULL,
+          score INTEGER NOT NULL,
+          word_count INTEGER NOT NULL,
+          invalid_count INTEGER NOT NULL,
+          help_level INTEGER NOT NULL,
+          duration_seconds INTEGER NOT NULL,
+          submitted_at INTEGER NOT NULL
+        )
+      `);
+      ctx.storage.sql.exec(`
+        CREATE INDEX IF NOT EXISTS verified_daily_scores_rank_m1c
+        ON verified_daily_scores_m1c (${SORT_ORDER})
+      `);
+      // La clé S3 ne contenait que les 200 meilleurs scores. On récupère ceux qui
+      // existent encore une fois, sans écraser d'éventuels scores déjà migrés.
+      if (await ctx.storage.get<boolean>(MIGRATION_KEY)) return;
+      const previous = await ctx.storage.get<Record<string, DailyLeaderboardEntry>>(LEGACY_STORAGE_KEY);
+      for (const entry of Object.values(previous ?? {})) {
+        ctx.storage.sql.exec(`
+          INSERT OR IGNORE INTO verified_daily_scores_m1c
+          (player_id, player_name, score, word_count, invalid_count, help_level, duration_seconds, submitted_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `, entry.playerId, entry.playerName, entry.score, entry.wordCount,
+          entry.invalidCount, entry.helpLevel, entry.durationSeconds, entry.submittedAt);
+      }
+      await ctx.storage.put(MIGRATION_KEY, true);
+    });
+  }
 
   async fetch(request: Request): Promise<Response> {
+    await this.ready;
     const url = new URL(request.url);
     const date = normalizeDateKey(
       request.headers.get("X-Daily-Leaderboard-Date") ?? url.searchParams.get("date")
     );
-
-    if (!date) {
-      return json(
-        {
-          ok: false,
-          error: "date invalide",
-        },
-        { status: 400 }
-      );
-    }
-
-    if (request.method === "GET") {
-      return this.handleGet(date, url);
-    }
-
-    if (request.method === "POST") {
-      return this.handlePost(date, request);
-    }
-
-    return json(
-      {
-        ok: false,
-        error: "méthode non autorisée",
-      },
-      { status: 405 }
-    );
+    if (!date) return json({ ok: false, error: "date invalide" }, { status: 400 });
+    if (request.method === "GET") return this.handleGet(date, url);
+    if (request.method === "POST") return this.handlePost(date, request);
+    return json({ ok: false, error: "méthode non autorisée" }, { status: 405 });
   }
 
-  private async handleGet(date: string, url: URL) {
+  private handleGet(date: string, url: URL) {
     const playerId = normalizePlayerId(url.searchParams.get("playerId"));
-    const entries = await this.readEntries();
-
-    return json(buildLeaderboardResponse(date, entries, playerId));
+    const page = parsePage(url.searchParams.get("page"));
+    const pageSize = parsePageSize(url.searchParams.get("pageSize"));
+    return json(this.buildResponse(date, playerId, page, pageSize));
   }
 
   private async handlePost(date: string, request: Request) {
     const payload = await readJsonBody(request);
-    // Le Worker n'envoie ici que la réponse vérifiée du Durable Object de jeu.
+    // Le Worker envoie uniquement un résultat vérifié par la salle de jeu.
     const entry = normalizeSubmission(date, payload);
+    if (!entry) return json({ ok: false, error: "score invalide" }, { status: 400 });
 
-    if (!entry) {
-      return json(
-        {
-          ok: false,
-          error: "score invalide",
-        },
-        { status: 400 }
-      );
-    }
-
-    const entries = await this.readEntries();
-    const previousEntry = entries[entry.playerId];
-    const stored = !previousEntry || shouldReplaceEntry(entry, previousEntry);
-
+    const previous = this.readPlayer(entry.playerId, date);
+    const stored = !previous || shouldReplaceEntry(entry, previous);
     if (stored) {
-      entries[entry.playerId] = entry;
-      await this.ctx.storage.put(STORAGE_KEY, trimStoredEntries(entries));
+      this.ctx.storage.sql.exec(`
+        INSERT INTO verified_daily_scores_m1c
+        (player_id, player_name, score, word_count, invalid_count, help_level, duration_seconds, submitted_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(player_id) DO UPDATE SET
+          player_name = excluded.player_name,
+          score = excluded.score,
+          word_count = excluded.word_count,
+          invalid_count = excluded.invalid_count,
+          help_level = excluded.help_level,
+          duration_seconds = excluded.duration_seconds,
+          submitted_at = excluded.submitted_at
+      `, entry.playerId, entry.playerName, entry.score, entry.wordCount,
+        entry.invalidCount, entry.helpLevel, entry.durationSeconds, entry.submittedAt);
     }
-
-    const updatedEntries = stored ? entries : { ...entries, [entry.playerId]: previousEntry };
-
-    return json({
-      ...buildLeaderboardResponse(date, updatedEntries, entry.playerId),
-      stored,
-    });
+    return json({ ...this.buildResponse(date, entry.playerId, 1, PAGE_SIZE), stored });
   }
 
-  private async readEntries() {
-    const entries = await this.ctx.storage.get<Record<string, DailyLeaderboardEntry>>(STORAGE_KEY);
+  private readPlayer(playerId: string, date: string): DailyLeaderboardEntry | null {
+    const rows = this.ctx.storage.sql.exec<StoredRow>(`
+      SELECT player_id AS playerId, player_name AS playerName, score,
+             word_count AS wordCount, invalid_count AS invalidCount,
+             help_level AS helpLevel, duration_seconds AS durationSeconds,
+             submitted_at AS submittedAt
+      FROM verified_daily_scores_m1c WHERE player_id = ?
+    `, playerId).toArray();
+    return rows[0] ? { ...rows[0], date } : null;
+  }
 
-    if (!entries || typeof entries !== "object") {
-      return {};
-    }
+  private readPage(date: string, limit: number, offset: number) {
+    const rows = this.ctx.storage.sql.exec<StoredRow>(`
+      SELECT player_id AS playerId, player_name AS playerName, score,
+             word_count AS wordCount, invalid_count AS invalidCount,
+             help_level AS helpLevel, duration_seconds AS durationSeconds,
+             submitted_at AS submittedAt
+      FROM verified_daily_scores_m1c ORDER BY ${SORT_ORDER}
+      LIMIT ? OFFSET ?
+    `, limit, offset).toArray();
+    return rows.map((entry, index) => ({ ...entry, date, rank: offset + index + 1 }));
+  }
 
-    return entries;
+  private readPlayerRank(date: string, playerId: string): RankedDailyLeaderboardEntry | null {
+    if (!playerId) return null;
+    const rows = this.ctx.storage.sql.exec<StoredRow & { rank: number }>(`
+      SELECT * FROM (
+        SELECT player_id AS playerId, player_name AS playerName, score,
+               word_count AS wordCount, invalid_count AS invalidCount,
+               help_level AS helpLevel, duration_seconds AS durationSeconds,
+               submitted_at AS submittedAt,
+               ROW_NUMBER() OVER (ORDER BY ${SORT_ORDER}) AS rank
+        FROM verified_daily_scores_m1c
+      ) WHERE playerId = ?
+    `, playerId).toArray();
+    return rows[0] ? { ...rows[0], date } : null;
+  }
+
+  private buildResponse(date: string, playerId: string, requestedPage: number, pageSize: number) {
+    const count = this.ctx.storage.sql.exec<{ total: number }>(
+      "SELECT COUNT(*) AS total FROM verified_daily_scores_m1c"
+    ).toArray()[0]?.total ?? 0;
+    const totalPages = Math.max(1, Math.ceil(count / pageSize));
+    const page = Math.min(requestedPage, totalPages);
+    const topEntries = this.readPage(date, PUBLIC_TOP_LIMIT, 0).map(publicEntry);
+    const pageEntries = this.readPage(date, pageSize, (page - 1) * pageSize).map(publicEntry);
+    const playerEntry = this.readPlayerRank(date, playerId);
+    return {
+      ok: true, date, totalEntries: count,
+      entries: topEntries, // Ne pas modifier le comportement S2/H9b/M1b.
+      pageEntries, page, pageSize, totalPages,
+      playerEntry, playerRank: playerEntry?.rank ?? null,
+    };
   }
 }
 
-function buildLeaderboardResponse(
-  date: string,
-  entries: Record<string, DailyLeaderboardEntry>,
-  playerId = ""
-) {
-  const rankedEntries = rankEntries(Object.values(entries));
-  // Ne pas divulguer publiquement les identifiants des navigateurs / salles.
-  const topEntries = rankedEntries.slice(0, PUBLIC_TOP_LIMIT).map(({ playerId: _privateId, ...entry }) => entry);
-  const playerEntry = playerId
-    ? rankedEntries.find((entry) => entry.playerId === playerId) ?? null
-    : null;
-
-  return {
-    ok: true,
-    date,
-    totalEntries: rankedEntries.length,
-    entries: topEntries,
-    playerEntry,
-    playerRank: playerEntry?.rank ?? null,
-  };
+function publicEntry({ playerId: _privateId, ...entry }: RankedDailyLeaderboardEntry) {
+  return entry;
 }
 
-function trimStoredEntries(entries: Record<string, DailyLeaderboardEntry>) {
-  return Object.fromEntries(
-    rankEntries(Object.values(entries))
-      .slice(0, MAX_STORED_ENTRIES)
-      .map((entry) => [entry.playerId, withoutRank(entry)])
-  );
+function parsePage(value: string | null) {
+  const parsed = Number(value);
+  return value && /^\d{1,7}$/.test(value) && Number.isSafeInteger(parsed)
+    ? Math.max(1, parsed) : 1;
 }
 
-function rankEntries(entries: DailyLeaderboardEntry[]): RankedDailyLeaderboardEntry[] {
-  return [...entries]
-    .sort(compareEntries)
-    .map((entry, index) => ({
-      ...entry,
-      rank: index + 1,
-    }));
+function parsePageSize(value: string | null) {
+  const parsed = Number(value);
+  return value && /^\d{1,3}$/.test(value) && Number.isSafeInteger(parsed)
+    ? Math.max(1, Math.min(MAX_PAGE_SIZE, parsed)) : PAGE_SIZE;
 }
 
 function compareEntries(a: DailyLeaderboardEntry, b: DailyLeaderboardEntry) {
@@ -166,12 +213,6 @@ function compareEntries(a: DailyLeaderboardEntry, b: DailyLeaderboardEntry) {
 
 function shouldReplaceEntry(candidate: DailyLeaderboardEntry, previous: DailyLeaderboardEntry) {
   return compareEntries(candidate, previous) < 0;
-}
-
-function withoutRank(entry: RankedDailyLeaderboardEntry | DailyLeaderboardEntry) {
-  const { rank: _rank, ...entryWithoutRank } = entry as RankedDailyLeaderboardEntry;
-
-  return entryWithoutRank;
 }
 
 async function readJsonBody(request: Request) {

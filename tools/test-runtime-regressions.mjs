@@ -168,6 +168,8 @@ const historyCtx = {
   GAME_CONTEXTS_V901: { DAILY: 'daily' },
   URLSearchParams,
   getOrCreateClientId: () => 'mine',
+  clearDailyPageM1C2: () => {},
+  getDailyPageForEndScreenM1C2: (date) => ({status: "idle", data: null, date}),
   getDailyDateKeyG6: () => '2026-10-17',
   getActiveDailyRoomIdentityS7: () => ({date:'2026-10-17'}),
   hasDailyAttemptLockG6: () => allowDailyLock,
@@ -225,3 +227,75 @@ assert.ok(main.includes('    if (data.status === "waiting" && state.gameContext 
 assert.ok(endUi.includes('dailyHistoryOnly'), 'Le rendu existant gère le classement historique');
 assert.ok(endUi.includes('data-daily-history-retry-m1b'), 'Réessayer le GET et non le POST');
 console.log('[ok] M1b reprise quotidienne : score récupéré, classement sans score, erreur, GET, réponse périmée');
+
+// M1c2 : GET paginé du panneau central ; le résultat personnel est toujours conservé.
+const pageFnsM1C2 = extract('// M1c2 : pagination du classement central seulement.', '// M1b : relecture de la grille quotidienne déjà lancée,');
+let pageFetchM1C2 = async () => { throw new Error('fetch non configuré'); };
+let renderedM1C2 = 0;
+const pageBaseDataM1C2 = {
+  ok: true, date: '2026-10-17', totalEntries: 225, playerRank: 218,
+  playerEntry: {rank: 218, score: 4, wordCount: 4},
+  entries: Array.from({length: 10}, (_, i) => ({rank: i+1, score: 225-i})),
+  pageEntries: Array.from({length:25}, (_,i)=>({rank:i+1,score:225-i})),
+  page:1, pageSize:25, totalPages:9,
+};
+const contextM1C2 = {
+  state: { gameContext: 'daily', gameStatus: 'ended', roomId: 'daily-room' },
+  GAME_CONTEXTS_V901: {DAILY:'daily'},
+  getDailyDateKeyG6: ()=> '2026-10-17',
+  getActiveDailyRoomIdentityS7: ()=>({date:'2026-10-17'}),
+  getOrCreateClientId: ()=> 'mine',
+  renderCurrentEndScreen: ()=> { renderedM1C2++; },
+  renderDailyHistoryFallbackM1B: ()=> { renderedM1C2++; },
+  URLSearchParams,
+  document: {querySelector: () => ({focus: () => {}})},
+  fetch: (...args)=>pageFetchM1C2(...args),
+  DAILY_LEADERBOARD_API_H9B:'/api/daily-leaderboard',
+};
+vm.createContext(contextM1C2);
+vm.runInContext(`let dailyHistoryFallbackM1B = false;
+let dailyHistoryLeaderboardM1B = {status:'idle',data:null};
+let dailyLeaderboardStateH9B = {status:'loaded',data:${JSON.stringify(pageBaseDataM1C2)}};
+${pageFnsM1C2}`, contextM1C2);
+assert.equal(vm.runInContext('getDailyPageForEndScreenM1C2("2026-10-17").status',contextM1C2),'idle');
+let requestedM1C2 = [];
+pageFetchM1C2 = async (url, options)=> {
+  assert.equal(options,undefined,'Classement demandé par GET seulement');
+  const params = new URL(url,'https://boggle.test').searchParams;
+  const n = Number(params.get('page'));
+  requestedM1C2.push(n);
+  assert.equal(params.get('date'),'2026-10-17');
+  assert.equal(params.get('playerId'),'mine');
+  assert.equal(params.get('pageSize'),'25');
+  return {ok:true,json:async()=>({...pageBaseDataM1C2,page:n,pageEntries:[{rank:(n-1)*25+1,score:5}]})};
+};
+await vm.runInContext('changeDailyLeaderboardPageM1C2("next")',contextM1C2);
+assert.equal(requestedM1C2.at(-1),2);
+assert.equal(vm.runInContext('dailyPageStateM1C2.data.page',contextM1C2),2);
+await vm.runInContext('changeDailyLeaderboardPageM1C2("mine")',contextM1C2);
+assert.equal(requestedM1C2.at(-1),9,'Aller directement à la page de notre rang');
+assert.equal(vm.runInContext('dailyPageStateM1C2.data.pageEntries[0].rank',contextM1C2),201);
+await vm.runInContext('changeDailyLeaderboardPageM1C2("next")',contextM1C2);
+assert.equal(requestedM1C2.length,2,'Pas de dépassement après la dernière page');
+pageFetchM1C2= async ()=>({ok:false,json:async()=>({ok:false})});
+await vm.runInContext('changeDailyLeaderboardPageM1C2("previous")',contextM1C2);
+assert.equal(vm.runInContext('dailyPageStateM1C2.status',contextM1C2),'error');
+assert.equal(vm.runInContext('dailyPageStateM1C2.data.page',contextM1C2),9,'Échec conserve la page précédente');
+pageFetchM1C2=async (url)=>({ok:true,json:async()=>({...pageBaseDataM1C2,page:8,pageEntries:[]})});
+await vm.runInContext('changeDailyLeaderboardPageM1C2("retry")',contextM1C2);
+assert.equal(vm.runInContext('dailyPageStateM1C2.data.page',contextM1C2),8,'Nouvel essai de la page échouée');
+let resolveLateM1C2;
+pageFetchM1C2=()=>new Promise((resolve)=>{resolveLateM1C2=resolve;});
+const pendingM1C2=vm.runInContext('changeDailyLeaderboardPageM1C2("previous")',contextM1C2);
+vm.runInContext('clearDailyPageM1C2()',contextM1C2);
+const rendersBeforeLateM1C2=renderedM1C2;
+resolveLateM1C2({ok:true,json:async()=>({...pageBaseDataM1C2,page:7})});
+await pendingM1C2;
+assert.equal(renderedM1C2,rendersBeforeLateM1C2,'Réponse tardive ignorée après changement de partie');
+assert.equal(vm.runInContext('dailyPageStateM1C2.status',contextM1C2),'idle');
+assert.ok(main.includes('if (container.id === "end-screen") void changeDailyLeaderboardPageM1C2'),
+  'Modale non paginée : événements réservés au panneau central');
+assert.ok(endUi.includes('daily && !panelElement ? dailyPage : null'),
+  'Le panneau et la modale se partagent une source avec deux politiques de classement');
+assert.ok(endUi.includes('boggle-daily-scroll-m1c2'), 'Liste centrale déroulante');
+console.log('[ok] M1c2 : pages 25, aller à mon rang, limite, erreur/reprise, anti-réponse tardive, modale intacte');
