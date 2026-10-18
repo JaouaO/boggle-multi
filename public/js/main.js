@@ -1466,7 +1466,7 @@ function handleServerMessage(data) {
     renderRulesSummary();
     refreshRightRulesPanel();
 
-    if (state.endScreenVisible) {
+    if (state.gameStatus === "ended") {
       renderCurrentEndScreen();
     }
 
@@ -1487,6 +1487,9 @@ function handleServerMessage(data) {
 
   if (data.type === "gameStatus") {
     updateGameStatus(data.status);
+    if (data.status === "waiting" && state.gameContext === GAME_CONTEXTS_V901.DAILY) {
+      openDailyHistoryFallbackM1B();
+    }
     if (dailyRestartAfterReconnectA1 && state.gameContext === GAME_CONTEXTS_V901.DAILY) {
       dailyRestartAfterReconnectA1 = false;
       if (data.status === "waiting" && !hasDailyAttemptLockG6()) {
@@ -1506,7 +1509,7 @@ function handleServerMessage(data) {
     renderFoundWords(foundWordsElement, state.foundWords);
     refreshHelpDisplay();
     if (state.board) renderCurrentBoardWithHelp();
-    if (state.endScreenVisible) renderCurrentEndScreen();
+    if (state.gameStatus === "ended") renderCurrentEndScreen();
     return;
   }
 
@@ -1535,7 +1538,7 @@ function handleServerMessage(data) {
     personalInvalidWordsH9E = Array.isArray(data.invalidWords)
       ? data.invalidWords.filter((word) => typeof word === "string")
       : [];
-    if (state.endScreenVisible) renderCurrentEndScreen();
+    if (state.gameStatus === "ended") renderCurrentEndScreen();
     return;
   }
 
@@ -1915,7 +1918,7 @@ function handleSolutionsStats(data) {
   renderRulesSummary();
   refreshRightRulesPanel();
 
-  if (state.endScreenVisible) {
+  if (state.gameStatus === "ended") {
     renderCurrentEndScreen();
   }
 
@@ -2195,6 +2198,7 @@ function clampCurrentHelpLevel() {
 }
 
 function handleGameStarted(data) {
+  clearDailyHistoryFallbackM1B();
   dailyRestartAfterReconnectA1 = false;
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
@@ -2308,12 +2312,12 @@ function handleGameStarted(data) {
 }
 
 function handleGameEnded(data) {
+  clearDailyHistoryFallbackM1B();
   dailyRestartAfterReconnectA1 = false;
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   const shouldOpenEndPopup =
-    state.gameStatus === "playing" || state.endScreenVisible === true ||
-    state.gameContext === GAME_CONTEXTS_V901.DAILY;
+    state.gameStatus === "playing" || state.endScreenVisible === true;
   const shouldLaunchConfetti = state.gameStatus === "playing";
 
   state.gameStatus = "ended";
@@ -2355,7 +2359,7 @@ function handleGameEnded(data) {
   if (shouldOpenEndPopup) {
     showEndScreenNow({ withConfetti: shouldLaunchConfetti });
   } else {
-    hideEndScreen();
+    renderCurrentEndScreen();
     hideEndScreenOverlay();
   }
 
@@ -2900,6 +2904,7 @@ function clearDismissedEndScreenV9H() {
 
 function showEndScreenNow({ withConfetti = true } = {}) {
   if (shouldSuppressEndScreenV9H()) {
+    if (state.gameStatus === "ended") renderCurrentEndScreen();
     return;
   }
 
@@ -3024,6 +3029,53 @@ async function shareEndResultH9G(button) {
   }
 }
 
+// M1b: one interaction flow for both presentations of the same results.
+function handleEndResultsActionM1B(event, container) {
+  const button = event.target.closest?.(
+    "[data-daily-leaderboard-retry-s4], [data-daily-history-retry-m1b], [data-end-share-h9g], [data-end-view-h9f2]"
+  );
+  if (!button || !container.contains(button)) return;
+  if (button.hasAttribute("data-daily-history-retry-m1b")) {
+    void refreshDailyHistoryFallbackM1B();
+    return;
+  }
+  if (button.hasAttribute("data-daily-leaderboard-retry-s4")) {
+    void submitDailyLeaderboardScoreH9B();
+    return;
+  }
+  if (button.hasAttribute("data-end-share-h9g")) {
+    void shareEndResultH9G(button);
+    return;
+  }
+  const view = button.dataset.endViewH9f2;
+  const source = document.querySelector("#end-screen");
+  const modal = document.querySelector("#victory-modal-v16");
+  if (source) setEndScreenViewH9F2(source, view);
+  if (modal) setEndScreenViewH9F2(modal, view);
+  const nextButton = container.querySelector(
+    `[data-end-view-h9f2="${view === "stats" ? "ranking" : "stats"}"]`
+  );
+  nextButton?.focus({ preventScroll: true });
+}
+
+document.addEventListener("click", (event) => {
+  const source = document.querySelector("#end-screen.boggle-end-inline-m1b");
+  if (source?.contains(event.target)) handleEndResultsActionM1B(event, source);
+});
+
+function showInlineEndResultsM1B() {
+  if (state.gameStatus !== "ended" && !dailyHistoryFallbackM1B) return;
+  const source = document.querySelector("#end-screen");
+  if (!source) return;
+  source.classList.add("boggle-end-inline-m1b");
+  source.hidden = false;
+  source.removeAttribute("aria-hidden");
+  source.setAttribute("role", "region");
+  source.setAttribute("aria-labelledby", "end-screen-title");
+  source.tabIndex = -1;
+  document.body.classList.add("boggle-results-inline-m1b");
+}
+
 function renderVictoryModalV16() {
   if (document.querySelector("#victory-modal-v16")) return;
 
@@ -3051,26 +3103,7 @@ function renderVictoryModalV16() {
   };
 
   modal.append(closeButton);
-  modal.addEventListener("click", (event) => {
-    const retryButton = event.target.closest?.("[data-daily-leaderboard-retry-s4]");
-    if (retryButton && modal.contains(retryButton)) {
-      void submitDailyLeaderboardScoreH9B();
-      return;
-    }
-    const shareButton = event.target.closest?.("[data-end-share-h9g]");
-    if (shareButton && modal.contains(shareButton)) {
-      void shareEndResultH9G(shareButton);
-      return;
-    }
-    const button = event.target.closest?.("[data-end-view-h9f2]");
-    if (!button || !modal.contains(button)) return;
-    const view = button.dataset.endViewH9f2;
-    setEndScreenViewH9F2(modal, view);
-    const sourcePanel = document.querySelector("#end-screen");
-    if (sourcePanel) setEndScreenViewH9F2(sourcePanel, view);
-    const nextButton = modal.querySelector(`[data-end-view-h9f2="${view === "stats" ? "ranking" : "stats"}"]`);
-    nextButton?.focus({ preventScroll: true });
-  });
+  modal.addEventListener("click", (event) => handleEndResultsActionM1B(event, modal));
 
   if (source) {
     const clonedSource = source.cloneNode(true);
@@ -3117,14 +3150,17 @@ function closeEndScreenPopup() {
   const previousFocus = endScreenReturnFocusH9D;
   rememberDismissedEndScreenV9H();
   state.endScreenVisible = false;
-  hideEndScreen();
   hideEndScreenOverlay();
+  // The dialog is temporary; the same results remain in the central play area.
+  if (state.gameStatus === "ended") showInlineEndResultsM1B();
 
   const fallback = document.querySelector(
     "#global-home-button-v908l, .global-options-button-in-bar-v908l"
   );
-  const target = previousFocus?.isConnected && !previousFocus.disabled &&
-    !previousFocus.closest("[hidden]") ? previousFocus : fallback;
+  const inlineResults = document.querySelector("#end-screen.boggle-end-inline-m1b");
+  const target = inlineResults && !inlineResults.hidden ? inlineResults :
+    (previousFocus?.isConnected && !previousFocus.disabled &&
+    !previousFocus.closest("[hidden]") ? previousFocus : fallback);
   target?.focus?.({ preventScroll: true });
 }
 
@@ -3300,6 +3336,73 @@ function refreshPublicEndScreenCountdownH9C() {
   }
 }
 
+// M1b : relecture de la grille quotidienne déjà lancée, sans fabriquer de score.
+// Si le salon ne possède plus sa manche, le GET public renvoie le top et notre
+// entrée éventuelle ; les statistiques détaillées restent indisponibles.
+let dailyHistoryFallbackM1B = false;
+let dailyHistoryRequestM1B = 0;
+let dailyHistoryLeaderboardM1B = { status: "idle", data: null, error: "" };
+
+function clearDailyHistoryFallbackM1B() {
+  dailyHistoryRequestM1B += 1;
+  dailyHistoryFallbackM1B = false;
+}
+
+function renderDailyHistoryFallbackM1B() {
+  if (!dailyHistoryFallbackM1B || state.gameContext !== GAME_CONTEXTS_V901.DAILY ||
+      state.gameStatus !== "waiting") return;
+  renderEndScreen(boardElement, {
+    players: [],
+    currentPlayerId: state.playerId || getOrCreateClientId(),
+    gameContext: GAME_CONTEXTS_V901.DAILY,
+    gameKey: `daily-history:${state.roomId}`,
+    dailyDate: getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6(),
+    dailyLeaderboard: dailyHistoryLeaderboardM1B,
+    dailyHistoryOnly: true,
+  });
+  showInlineEndResultsM1B();
+  gameStatusElement.textContent = "Grille du jour déjà jouée";
+  timerElement.textContent = "Résultats";
+}
+
+async function refreshDailyHistoryFallbackM1B() {
+  if (!dailyHistoryFallbackM1B || state.gameContext !== GAME_CONTEXTS_V901.DAILY ||
+      state.gameStatus !== "waiting") return;
+  const requestId = ++dailyHistoryRequestM1B;
+  const roomId = state.roomId;
+  const date = getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6();
+  dailyHistoryLeaderboardM1B = { status: "loading", data: null, error: "" };
+  renderDailyHistoryFallbackM1B();
+  try {
+    const params = new URLSearchParams({ date, playerId: getOrCreateClientId() });
+    const response = await fetch(`${DAILY_LEADERBOARD_API_H9B}?${params}`);
+    if (!response.ok) throw new Error("Classement indisponible");
+    const data = await response.json();
+    if (data?.ok !== true || data.date !== date) throw new Error("Classement invalide");
+    if (requestId !== dailyHistoryRequestM1B || !dailyHistoryFallbackM1B ||
+        state.roomId !== roomId || state.gameStatus !== "waiting") return;
+    dailyHistoryLeaderboardM1B = { status: "loaded", data, error: "" };
+  } catch {
+    if (requestId !== dailyHistoryRequestM1B || !dailyHistoryFallbackM1B ||
+        state.roomId !== roomId || state.gameStatus !== "waiting") return;
+    dailyHistoryLeaderboardM1B = {
+      status: "error", data: null, error: "Impossible de charger le classement du jour.",
+    };
+  }
+  renderDailyHistoryFallbackM1B();
+}
+
+function openDailyHistoryFallbackM1B() {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY ||
+      state.gameStatus !== "waiting" || !hasDailyAttemptLockG6()) return;
+  if (dailyHistoryFallbackM1B) {
+    renderDailyHistoryFallbackM1B();
+    return;
+  }
+  dailyHistoryFallbackM1B = true;
+  void refreshDailyHistoryFallbackM1B();
+}
+
 function getDailyLeaderboardEndScreenStateH9B() {
   if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) {
     return null;
@@ -3341,7 +3444,7 @@ async function submitDailyLeaderboardScoreH9B() {
   dailyLeaderboardSubmittedGameKeyH9B = gameKey;
   dailyLeaderboardStateH9B = { status: "loading", data: null, error: "" };
 
-  if (state.endScreenVisible) {
+  if (state.gameStatus === "ended") {
     renderCurrentEndScreen();
   }
 
@@ -3374,7 +3477,7 @@ async function submitDailyLeaderboardScoreH9B() {
     };
   }
 
-  if (state.endScreenVisible) {
+  if (state.gameStatus === "ended") {
     renderCurrentEndScreen();
   }
 }
@@ -3398,6 +3501,7 @@ function renderCurrentEndScreen() {
     foundWords: (state.players || []).find((player) => player.id === state.playerId)?.foundWords ?? state.foundWords,
     invalidWords: personalInvalidWordsH9E,
   }, document.querySelector("#victory-modal-v16"));
+  showInlineEndResultsM1B();
 }
 
 function startCountdownWarning(startedAt, durationSeconds) {
@@ -3789,6 +3893,7 @@ function startDailyGridFromHomeV87() {
   });
 
   waitAndStartDailyGridFromHomeV9();
+  openDailyHistoryFallbackM1B();
 }
 
 function openPrivateRoomFromHomeV87() {
@@ -4059,6 +4164,7 @@ setupHomeScreenV87();
  */
 
 function leaveActiveGameSessionForHomeV9() {
+  clearDailyHistoryFallbackM1B();
   cancelReconnectA1();
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;

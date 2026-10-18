@@ -102,3 +102,126 @@ assert.ok(main.includes('data-home-logo aria-label="Retour à l’accueil"'));
 const layout = fs.readFileSync(new URL('../public/js/ui/layout-ui.js', import.meta.url), 'utf8');
 assert.ok(layout.includes('brand = document.createElement("a")'));
 console.log('[ok] M1a : logo accessible, retour accueil commun et scénarios de navigation');
+
+// M1b : la modale est temporaire ; le même écran reste accessible après fermeture.
+const endUi = fs.readFileSync(new URL('../public/js/ui/end-screen-ui.js', import.meta.url), 'utf8');
+const sourceClasses = new Set();
+const bodyClasses = new Set();
+const sourcePanel = {
+  hidden: true,
+  classList: { add: (name) => sourceClasses.add(name), remove: (name) => sourceClasses.delete(name) },
+  removeAttribute: () => {}, setAttribute: () => {}, contains: () => false,
+};
+const m1bContext = {
+  state: { gameStatus: 'ended' },
+  document: {
+    body: { classList: { add: (name) => bodyClasses.add(name), remove: (name) => bodyClasses.delete(name) } },
+    querySelector: (selector) => selector.startsWith('#end-screen') ? sourcePanel : null,
+    addEventListener: () => {},
+  },
+};
+vm.createContext(m1bContext);
+vm.runInContext(extract('function handleEndResultsActionM1B(', 'function renderVictoryModalV16() {'), m1bContext);
+vm.runInContext('showInlineEndResultsM1B();', m1bContext);
+assert.equal(sourcePanel.hidden, false, 'Panneau permanent visible en fin de partie');
+assert.ok(sourceClasses.has('boggle-end-inline-m1b'));
+assert.ok(bodyClasses.has('boggle-results-inline-m1b'));
+const uiHide = endUi.slice(endUi.indexOf('export function hideEndScreen() {'), endUi.indexOf('function ensureEndScreen(')).replace('export function', 'function');
+vm.runInContext(`${uiHide}\nhideEndScreen();`, m1bContext);
+assert.equal(sourcePanel.hidden, true, 'Ancien écran masqué à la manche suivante');
+assert.ok(!bodyClasses.has('boggle-results-inline-m1b'), 'Plateau rétabli après masquage');
+assert.ok(!sourceClasses.has('boggle-end-inline-m1b'));
+
+const closePopup = extract('function closeEndScreenPopup() {', 'function handleEndScreenDialogKeydownH9D(');
+let restored = 0;
+vm.runInNewContext(`let endScreenReturnFocusH9D = null;\n${closePopup}\ncloseEndScreenPopup();`, {
+  state: { gameStatus: 'ended', endScreenVisible: true },
+  rememberDismissedEndScreenV9H: () => {},
+  hideEndScreenOverlay: () => {},
+  showInlineEndResultsM1B: () => { restored++; },
+  hideEndScreen: () => { throw Error('Ne pas cacher les résultats à la fermeture'); },
+  document: { querySelector: (selector) => selector.includes('#end-screen') ?
+    { hidden: false, focus: () => {} } : null },
+});
+assert.equal(restored, 1);
+assert.ok(main.replaceAll('\r\n','\n').includes('if (state.gameStatus === "ended") {\n    renderCurrentEndScreen();\n  }'),
+  'Actualiser les résultats même quand la modale est fermée');
+assert.ok(endUi.includes('sortedPlayers.slice(0, 5)'), 'Classement limité au top cinq');
+assert.ok(endUi.includes('personalIndex >= 5'), 'Résultat personnel hors top cinq');
+console.log('[ok] M1b : résultats persistants, retour au plateau, fermeture modale, top 5 + vous');
+
+// M1b / reprise quotidienne : retour sur une tentative bloquée = classement
+// vérifié par GET, sans POST ni faux zéro de statistiques.
+const dailyHistoryFns = extract('// M1b : relecture de la grille quotidienne déjà lancée,', 'function getDailyLeaderboardEndScreenStateH9B() {');
+let allowDailyLock = true;
+let fetchResult = {ok: true, json: async () => ({
+  ok: true, date: '2026-10-17', totalEntries: 12,
+  playerRank: 8, playerEntry: {rank: 8, playerId: 'mine', score: 42, wordCount: 9},
+  entries: [{rank: 1, score: 90, wordCount: 20}],
+})};
+const historyCalls = [];
+const historyRenders = [];
+const historyState = {gameContext: 'daily', gameStatus: 'waiting', roomId: 'grille-du-jour-2026-10-17-abcxyz001',playerId:'mine'};
+const historyCtx = {
+  state: historyState,
+  DAILY_LEADERBOARD_API_H9B: '/api/daily-leaderboard',
+  GAME_CONTEXTS_V901: { DAILY: 'daily' },
+  URLSearchParams,
+  getOrCreateClientId: () => 'mine',
+  getDailyDateKeyG6: () => '2026-10-17',
+  getActiveDailyRoomIdentityS7: () => ({date:'2026-10-17'}),
+  hasDailyAttemptLockG6: () => allowDailyLock,
+  renderEndScreen: (_, args) => historyRenders.push(args),
+  boardElement: {},
+  gameStatusElement: {textContent:'En attente de lancement'},
+  timerElement: {textContent:'03:00'},
+  showInlineEndResultsM1B: () => historyCalls.push('inline'),
+  fetch: async (url, options) => {
+    assert.ok(url.startsWith('/api/daily-leaderboard?date=2026-10-17&playerId=mine'));
+    assert.equal(options, undefined, 'Le repli de classement est un GET, jamais un POST');
+    historyCalls.push('fetch');
+    return fetchResult;
+  },
+};
+vm.createContext(historyCtx);
+vm.runInContext(dailyHistoryFns, historyCtx);
+const flushHistory = () => new Promise((resolve) => setImmediate(resolve));
+allowDailyLock = false;
+vm.runInContext('openDailyHistoryFallbackM1B();', historyCtx);
+assert.equal(historyCalls.length, 0, 'Aucun fallback sans tentative quotidienne commencée');
+allowDailyLock = true;
+vm.runInContext('openDailyHistoryFallbackM1B();', historyCtx);
+await flushHistory();
+assert.equal(historyCalls.filter((x) => x === 'fetch').length, 1);
+assert.equal(historyRenders.at(-1).dailyHistoryOnly, true);
+assert.equal(historyRenders.at(-1).dailyLeaderboard.data.playerEntry.score, 42);
+assert.ok(historyCalls.includes('inline'));
+assert.equal(historyCtx.gameStatusElement.textContent, 'Grille du jour déjà jouée');
+assert.equal(historyState.gameStatus, 'waiting', 'Ne pas forcer une fausse fin de partie');
+
+// Un historique absent affiche tout de même les autres joueurs.
+fetchResult = {ok:true,json:async()=>({ok:true,date:'2026-10-17',entries:[{rank:1,score:95}],totalEntries:8,playerEntry:null,playerRank:null})};
+await vm.runInContext('refreshDailyHistoryFallbackM1B();',historyCtx);
+assert.equal(historyRenders.at(-1).dailyLeaderboard.status,'loaded');
+assert.equal(historyRenders.at(-1).dailyLeaderboard.data.playerEntry,null);
+
+// API inaccessible : écran et bouton Réessayer disponibles.
+fetchResult={ok:false,json:async()=>({ok:false})};
+await vm.runInContext('refreshDailyHistoryFallbackM1B();',historyCtx);
+assert.equal(historyRenders.at(-1).dailyLeaderboard.status,'error');
+
+// Réponse tardive : ne jamais réafficher le fallback après reprise du vrai jeu.
+let delayedResolve;
+historyCtx.fetch=()=>new Promise((resolve)=>{delayedResolve=resolve;});
+const pending = vm.runInContext('refreshDailyHistoryFallbackM1B();',historyCtx);
+vm.runInContext('clearDailyHistoryFallbackM1B();',historyCtx);
+const countBefore=historyRenders.length;
+delayedResolve({ok:true,json:async()=>({ok:true,date:'2026-10-17',entries:[]})});
+await pending;
+assert.equal(historyRenders.length,countBefore);
+assert.ok(main.includes('  openDailyHistoryFallbackM1B();'), 'Retour quotidien appelle le fallback');
+assert.ok(main.includes('    if (data.status === "waiting" && state.gameContext === GAME_CONTEXTS_V901.DAILY)'),
+  'La réponse waiting serveur restaure le fallback');
+assert.ok(endUi.includes('dailyHistoryOnly'), 'Le rendu existant gère le classement historique');
+assert.ok(endUi.includes('data-daily-history-retry-m1b'), 'Réessayer le GET et non le POST');
+console.log('[ok] M1b reprise quotidienne : score récupéré, classement sans score, erreur, GET, réponse périmée');

@@ -5,6 +5,7 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
     restartMessage = "", wordCountsByLength = null,
     foundWords = [], invalidWords = null,
     gameContext = "solo", gameKey = "", dailyDate = "",
+    dailyHistoryOnly = false,
   } = options;
 
   const panel = panelElement ? getEndScreenParts(panelElement) : ensureEndScreen(anchorElement);
@@ -14,8 +15,19 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
   const daily = gameContext === "daily";
 
   panel.element.hidden = false;
-  panel.title.textContent = "Fin de partie";
-  if (currentPlayer) {
+  panel.title.textContent = dailyHistoryOnly ? "Grille du jour" : "Fin de partie";
+  if (dailyHistoryOnly) {
+    const entry = dailyLeaderboard?.status === "loaded" ? dailyLeaderboard.data?.playerEntry : null;
+    const score = Number(entry?.score);
+    const words = Number(entry?.wordCount);
+    panel.message.textContent = entry && Number.isFinite(score) && Number.isFinite(words)
+      ? `Votre résultat retrouvé : ${score} point${score !== 1 ? "s" : ""} et ${words} mot${words !== 1 ? "s" : ""}. Les statistiques détaillées ne sont plus disponibles.`
+      : dailyLeaderboard?.status === "loaded"
+        ? "Votre tentative a déjà été lancée, mais votre score n'a pas pu être retrouvé. Voici le classement du jour."
+        : dailyLeaderboard?.status === "error"
+          ? "Votre tentative a déjà été lancée. Impossible de retrouver votre résultat ou le classement pour le moment."
+          : "Votre tentative a déjà été lancée. Recherche de votre résultat et du classement…";
+  } else if (currentPlayer) {
     const score = Number(currentPlayer.score ?? 0);
     const count = Number(currentPlayer.wordCount ?? 0);
     const scoreText = document.createElement("strong");
@@ -42,11 +54,11 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
     `${Number(maxScore ?? 0)} points maximum · durée ${formatDuration(durationSeconds)}.`;
 
   updateEndScreenExtraStatsH6A(panel, currentPlayer, invalidCount, helpLevel);
-  updateDetailedRoundStatsH9E(panel, {
+  if (!dailyHistoryOnly) updateDetailedRoundStatsH9E(panel, {
     currentPlayer, totalWords, durationSeconds,
     wordCountsByLength, foundWords, invalidWords,
   });
-  updateDailyLeaderboardH9B(panel, daily ? dailyLeaderboard : null, currentPlayerId, dailyDate);
+  updateDailyLeaderboardH9B(panel, daily ? dailyLeaderboard : null, currentPlayerId, dailyDate, dailyHistoryOnly);
 
   panel.nextRound.textContent = restartMessage;
   panel.nextRound.hidden = !restartMessage;
@@ -60,9 +72,14 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
   panel.ranking.replaceChildren();
 
   if (!daily) {
-    sortedPlayers.forEach((player, index) => {
+    // Modale et résultat permanent : cinq premiers, puis votre ligne si hors top 5.
+    const displayed = sortedPlayers.slice(0, 5).map((player, index) => ({ player, index }));
+    const personalIndex = sortedPlayers.findIndex((player) => player.id === currentPlayerId);
+    if (personalIndex >= 5) displayed.push({ player: sortedPlayers[personalIndex], index: personalIndex });
+    displayed.forEach(({ player, index }) => {
       const item = document.createElement("li");
       const current = player.id === currentPlayerId;
+      if (index >= 5) item.classList.add("boggle-end-outside-top-h9f2");
       item.className = "boggle-end-ranking-item";
       item.classList.toggle("boggle-end-ranking-item-current", current);
       const rank = document.createElement("span");
@@ -89,6 +106,12 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
   }
 
   ensureEndScreenViewsH9F2(panel, { solo, daily, gameKey });
+  const overview = panel.element.querySelector(".boggle-end-overview-h9f2");
+  if (overview) overview.hidden = dailyHistoryOnly;
+  const actions = panel.element.querySelector(".boggle-end-actions-h9f2");
+  if (actions) actions.hidden = dailyHistoryOnly;
+  const statsView = panel.element.querySelector(".boggle-end-view-stats-h9f2");
+  if (statsView && dailyHistoryOnly) statsView.hidden = true;
 }
 
 export function hideEndScreen() {
@@ -96,7 +119,9 @@ export function hideEndScreen() {
 
   if (panel) {
     panel.hidden = true;
+    panel.classList.remove("boggle-end-inline-m1b");
   }
+  document.body.classList.remove("boggle-results-inline-m1b");
 }
 
 function ensureEndScreen(anchorElement) {
@@ -226,7 +251,7 @@ function formatDuration(seconds) {
   return `${minutes}min ${remainingSeconds}s`;
 }
 
-function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dateKey) {
+function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dateKey, dailyHistoryOnly = false) {
   const section = ensureDailyLeaderboardSectionH9B(panel);
   if (!leaderboardState) {
     section.hidden = true;
@@ -261,7 +286,7 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
       const retry = document.createElement("button");
       retry.type = "button";
       retry.className = "boggle-end-switch-h9f2";
-      retry.setAttribute("data-daily-leaderboard-retry-s4", "");
+      retry.setAttribute(dailyHistoryOnly ? "data-daily-history-retry-m1b" : "data-daily-leaderboard-retry-s4", "");
       retry.textContent = "Réessayer";
       section.append(retry);
     }
@@ -275,7 +300,7 @@ function updateDailyLeaderboardH9B(panel, leaderboardState, currentPlayerId, dat
   summary.className = "daily-leaderboard-summary-h9b";
   summary.textContent = playerRank
     ? `Votre place : ${playerRank} sur ${total} joueur${total > 1 ? "s" : ""}.`
-    : "Votre score est enregistré.";
+    : "Votre score n’a pas été retrouvé dans le classement du jour.";
 
   const list = document.createElement("ol");
   list.className = "daily-leaderboard-list-h9b";
