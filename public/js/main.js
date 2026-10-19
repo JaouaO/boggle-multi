@@ -75,6 +75,7 @@ let activeSessionForReconnectA1 = null;
 let reconnectTimerA1 = 0;
 let reconnectAttemptsA1 = 0;
 let dailyRestartAfterReconnectA1 = false;
+let dailyHomeActionTimerM3C = null;
 let lastCountdownTickSecond = null;
 let countdownAudioContext = null;
 const startButton = document.querySelector("#start");
@@ -1304,6 +1305,70 @@ function getDailyDateKeyG6() {
   return `${year}-${month}-${day}`;
 }
 
+// M3c : état lisible de la grille quotidienne, sans jamais suspendre le temps serveur.
+// Une tentative commence uniquement après le message gameStarted confirmé.
+function getDailyHomeActionLabelM3C(date, now = Date.now()) {
+  let started = false;
+  try { started = window.localStorage.getItem(`boggle:daily-attempt:${date}`) === "started"; }
+  catch { /* Stockage facultatif : le serveur garde les règles de tentative. */ }
+  if (!started) return "Jouer";
+
+  const deadline = getStoredDailyDeadlineM3C(date);
+  return deadline > 0 && now >= deadline ? "Voir le classement" : "Reprendre";
+}
+
+function getStoredDailyDeadlineM3C(date) {
+  try {
+    const deadline = Number(window.localStorage.getItem(`boggle:daily-deadline:${date}`));
+    return Number.isFinite(deadline) && deadline > 0 ? deadline : 0;
+  } catch { return 0; }
+}
+
+function rememberDailyDeadlineM3C(startedAt, durationSeconds, endedAt = null) {
+  if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) return;
+  const start = Number(startedAt);
+  const duration = Number(durationSeconds);
+  if (!Number.isFinite(start) || start <= 0 || !Number.isFinite(duration) || duration <= 0) return;
+  const officialDeadline = start + duration * 1000;
+  // Une manche close avant son échéance reste terminée.
+  const ended = Number(endedAt);
+  const deadline = endedAt != null && Number.isFinite(ended) && ended > 0
+    ? Math.min(officialDeadline, ended) : officialDeadline;
+  const date = getActiveDailyRoomIdentityS7()?.date || getDailyDateKeyG6();
+  try { window.localStorage.setItem(`boggle:daily-deadline:${date}`, String(deadline)); }
+  catch { /* L'état officiel reste côté serveur. */ }
+  refreshDailyHomeActionM3C();
+}
+
+function refreshDailyHomeActionM3C() {
+  const button = document.querySelector('#home-v87 [data-home-action="daily"]');
+  if (!button) return;
+  const date = getDailyDateKeyG6();
+  const label = getDailyHomeActionLabelM3C(date);
+  const text = button.querySelector('[data-daily-action-label-m3c]');
+  if (text) text.textContent = label;
+  button.setAttribute('aria-label', label === 'Reprendre' ? 'Reprendre la grille du jour, sans pause du chronomètre' : label);
+
+  if (dailyHomeActionTimerM3C !== null) window.clearTimeout(dailyHomeActionTimerM3C);
+  const now = Date.now();
+  const nextMidnight = new Date();
+  nextMidnight.setHours(24, 0, 0, 0);
+  let nextRefresh = nextMidnight.getTime();
+  const deadline = getStoredDailyDeadlineM3C(date);
+  if (label === 'Reprendre' && deadline > now) nextRefresh = Math.min(nextRefresh, deadline);
+  // Un seul rappel pour l'expiration ou le changement de jour, sans boucle périodique.
+  dailyHomeActionTimerM3C = window.setTimeout(refreshDailyHomeActionM3C,
+    Math.max(100, Math.min(2147483647, nextRefresh - now + 100)));
+}
+
+window.addEventListener('storage', (event) => {
+  if (event.key?.startsWith('boggle:daily-attempt:') ||
+      event.key?.startsWith('boggle:daily-deadline:')) refreshDailyHomeActionM3C();
+});
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) refreshDailyHomeActionM3C();
+});
+
 /* S7 : conserver la date et le jeton de la salle pour une partie traversant minuit. */
 function getActiveDailyRoomIdentityS7() {
   if (state.gameContext !== GAME_CONTEXTS_V901.DAILY) return null;
@@ -2241,6 +2306,7 @@ function handleGameStarted(data) {
 
   if (state.gameContext === GAME_CONTEXTS_V901.DAILY) {
     rememberDailyAttemptStartedG6();
+    rememberDailyDeadlineM3C(data.startedAt, data.durationSeconds);
   }
   state.endedAt = null;
   state.durationSeconds = data.durationSeconds;
@@ -2358,6 +2424,7 @@ function handleGameEnded(data) {
 
   if (state.gameContext === GAME_CONTEXTS_V901.DAILY) {
     rememberDailyAttemptStartedG6();
+    rememberDailyDeadlineM3C(data.startedAt, data.durationSeconds, data.endedAt);
   }
   state.endedAt = data.endedAt;
   state.durationSeconds = data.durationSeconds;
@@ -4171,7 +4238,7 @@ function setupHomeScreenV87() {
             '<p class="home-v87-subtitle">Trouvez un maximum de mots dans la grille du jour&nbsp;!</p>',
             '<button class="home-v87-primary-button" type="button" data-home-action="daily">',
               '<span aria-hidden="true">▶</span>',
-              '<span>Jouer</span>',
+              '<span data-daily-action-label-m3c>Jouer</span>',
             '</button>',
           '</div>',
           '<div class="home-v87-board-wrap" aria-hidden="true">',
@@ -4264,6 +4331,7 @@ function setupHomeScreenV87() {
   });
 
   document.body.classList.add("v87-home-active");
+  refreshDailyHomeActionM3C();
   void refreshHomeDailyLeaderboardS2();
 }
 
@@ -4353,6 +4421,7 @@ function returnToHomeV87() {
   document.body.classList.remove("v87-game-active");
 
   const home = document.querySelector("#home-v87");
+  refreshDailyHomeActionM3C();
   void refreshHomeDailyLeaderboardS2();
 
   if (home) {

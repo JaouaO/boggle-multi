@@ -472,3 +472,74 @@ const cssM3b = fs.readFileSync(new URL('../public/css/style.css', import.meta.ur
 assert.match(cssM3b, /#play-status-panel :is\(#timer, #end-game\)\[hidden\]\s*\{\s*display:\s*none\s*!important;/,
   'L attribut hidden doit prevaloir sur les boutons affiches par CSS');
 console.log('[ok] M3b : attente sans chrono officiel ni bouton arret, chrono restaure au lancement');
+
+// M3c : libellés quotidiens fondés sur l'heure de fin confirmée par le serveur.
+// Revenir sur la page ne doit ni remettre le chrono à zéro ni permettre une nouvelle tentative.
+const dailyHomeFnsM3C = extract('// M3c : état lisible de la grille quotidienne', '/* S7 : conserver la date');
+const dailyStoreM3C = new Map();
+const todayM3C = '2026-10-19';
+const dailyLabelM3C = { textContent: 'Jouer' };
+const dailyAttrsM3C = new Map();
+const dailyButtonM3C = {
+  querySelector: (sel) => sel === '[data-daily-action-label-m3c]' ? dailyLabelM3C : null,
+  setAttribute: (key, value) => dailyAttrsM3C.set(key, value),
+};
+let dailyTimerIdM3C = 0;
+const dailyTimersM3C = new Map();
+const dailyEventsM3C = new Map();
+const dailyContextM3C = {
+  window: {
+    localStorage: {
+      getItem: (key) => dailyStoreM3C.has(key) ? dailyStoreM3C.get(key) : null,
+      setItem: (key, value) => dailyStoreM3C.set(key, value),
+    },
+    setTimeout: (fn, delay) => { const id = ++dailyTimerIdM3C; dailyTimersM3C.set(id, {fn, delay}); return id; },
+    clearTimeout: (id) => dailyTimersM3C.delete(id),
+    addEventListener: (name, fn) => dailyEventsM3C.set(name, fn),
+  },
+  document: {
+    querySelector: (sel) => sel === '#home-v87 [data-home-action="daily"]' ? dailyButtonM3C : null,
+    addEventListener: (name, fn) => dailyEventsM3C.set(name, fn),
+    hidden: false,
+  },
+  state: {gameContext: 'daily'},
+  GAME_CONTEXTS_V901: {DAILY:'daily'},
+  getDailyDateKeyG6: () => todayM3C,
+  getActiveDailyRoomIdentityS7: () => ({date:todayM3C}),
+  Date,
+};
+vm.createContext(dailyContextM3C);
+vm.runInContext(`let dailyHomeActionTimerM3C = null;\n${dailyHomeFnsM3C}`, dailyContextM3C);
+const labelM3C = (date, now) => vm.runInContext(`getDailyHomeActionLabelM3C(${JSON.stringify(date)}, ${now})`, dailyContextM3C);
+const nowM3C = Date.now();
+assert.equal(labelM3C(todayM3C, nowM3C), 'Jouer', 'Première visite sans tentative');
+dailyStoreM3C.set(`boggle:daily-attempt:${todayM3C}`, 'started');
+assert.equal(labelM3C(todayM3C, nowM3C), 'Reprendre', 'Ancien verrou sans métadonnée : récupérer la session');
+vm.runInContext(`rememberDailyDeadlineM3C(${nowM3C - 60_000}, 180)`, dailyContextM3C);
+assert.equal(Number(dailyStoreM3C.get(`boggle:daily-deadline:${todayM3C}`)), nowM3C + 120_000);
+assert.equal(labelM3C(todayM3C, nowM3C), 'Reprendre', 'Temps restant conservé après une sortie');
+assert.equal(labelM3C(todayM3C, nowM3C + 121_000), 'Voir le classement', 'Le délai expire même hors du jeu');
+assert.equal(dailyLabelM3C.textContent, 'Reprendre');
+assert.match(dailyAttrsM3C.get('aria-label'), /sans pause/);
+assert.equal(dailyTimersM3C.size, 1, 'Un seul rafraîchissement programmé');
+assert.equal(labelM3C('2026-10-20', nowM3C + 86_400_000), 'Jouer', 'Nouvelle journée, nouvelle tentative');
+// Un résultat terminé avant son échéance est définitivement terminé.
+vm.runInContext(`rememberDailyDeadlineM3C(${nowM3C - 60_000}, 180, ${nowM3C - 5_000})`, dailyContextM3C);
+assert.equal(labelM3C(todayM3C, nowM3C), 'Voir le classement');
+assert.equal(dailyLabelM3C.textContent, 'Voir le classement');
+assert.equal(dailyTimersM3C.size, 1, 'Pas de minuteries concurrentes');
+// Les mutations provenant d'un deuxième onglet mettent l'accueil à jour.
+dailyStoreM3C.delete(`boggle:daily-attempt:${todayM3C}`);
+dailyEventsM3C.get('storage')({key:`boggle:daily-attempt:${todayM3C}`});
+assert.equal(dailyLabelM3C.textContent, 'Jouer');
+assert.ok(main.replaceAll('\r\n', '\n').includes('refreshDailyHomeActionM3C();\n  void refreshHomeDailyLeaderboardS2();'),
+  'Retour accueil / chargement actualisent le bouton');
+assert.ok(extract('function handleGameStarted(data) {', 'function handleGameEnded(data) {')
+  .includes('rememberDailyDeadlineM3C(data.startedAt, data.durationSeconds);'));
+assert.ok(extract('function handleGameEnded(data) {', 'function refreshRightRulesPanel() {')
+  .includes('rememberDailyDeadlineM3C(data.startedAt, data.durationSeconds, data.endedAt);'));
+const timerSourceM3C = fs.readFileSync(new URL('../public/js/ui/timer-ui.js', import.meta.url), 'utf8');
+assert.ok(timerSourceM3C.includes('Date.now() - startedAt'), 'Chrono calculé sur le temps réel, pas la session ouverte');
+assert.ok(server.includes('await this.ctx.storage.setAlarm(gameEndAt);'), 'Alarme serveur indépendante du client');
+assert.ok(server.includes('await this.endGameIfNeeded();'), 'Session réouverte : état de fin recontrôlé');
+console.log('[ok] M3c : jouer/reprendre/classement, heure serveur, expiration hors page, minuit et multi-onglet');
