@@ -3740,6 +3740,7 @@ function getFoundWordList() {
 
 function updateGameStatus(status) {
   state.gameStatus = status;
+  timerElement.hidden = status === "waiting";
   if (status !== "waiting") waitingPracticeM2.stop();
 
   if (status === "waiting") {
@@ -3836,6 +3837,7 @@ function resetGameUiToWaiting() {
 
   boardElement.innerHTML = "";
   gameStatusElement.textContent = "En attente de lancement";
+  timerElement.hidden = true;
   renderTimer(timerElement, DEFAULT_DURATION_SECONDS);
 
   startButton.disabled = !state.socket;

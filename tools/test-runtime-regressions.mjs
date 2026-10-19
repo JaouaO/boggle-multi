@@ -424,3 +424,51 @@ assert.ok(homeMarkupM3a.includes("'</nav>',"), 'Navigation des cartes correcteme
 assert.equal((homeMarkupM3a.match(/data-home-action="(?:public|private|solo)"/g) || []).length, 3,
   'Les trois boutons de mode doivent être conservés');
 console.log('[ok] M3a : accueil sans encadrement parasite, trois cartes et navigation conservées');
+
+// M3b : le statut en attente masque le chrono officiel et le bouton d'arret.
+// Le lancement de la vraie manche doit restaurer le chrono, sans modifier ses calculs.
+const controlsM3b = extract('function updateHostControls() {', 'function renderPlayersWithHostBadges(');
+const statusM3b = extract('function updateGameStatus(status) {', '/* V87-HOME-SCREEN START */');
+const timerM3b = { textContent: '03:00', hidden: false };
+const stopM3b = { hidden: false, disabled: false, title: '' };
+const startM3b = { hidden: false, disabled: false, title: '' };
+const fakeStateM3b = {gameStatus: 'waiting', gameContext: 'private', playerId:'me', roomId:'room'};
+const noopM3b = () => {};
+const ctxM3b = {
+  state: fakeStateM3b,
+  GAME_CONTEXTS_V901: { DAILY: 'daily' }, DEFAULT_DURATION_SECONDS: 180,
+  DEFAULT_GAME_OPTIONS: {durationMode:'timer'},
+  timerElement: timerM3b, endGameButton: stopM3b, startButton: startM3b,
+  gameStatusElement: {textContent:''}, boardElement: {innerHTML:''},
+  wordInput: {disabled:false}, wordSubmitButton: {disabled:false},
+  foundWordsElement:{}, wordFeedbackElement:{},
+  waitingPracticeM2: {start:noopM3b, stop:noopM3b},
+  isCurrentPlayerHost: () => true,
+  isPublicRoomSessionV9K: () => false,
+  canStartGameNowG3: () => true,
+  hasDailyAttemptLockG6: () => false,
+  syncPublicLegacyActionButtonsV9Q: noopM3b,
+  stopCountdownWarning: noopM3b, stopLocalTimer: noopM3b,
+  hideEndScreenOverlay: noopM3b, hideEndScreen:noopM3b,
+  renderFoundWords: noopM3b, setWordFeedback:noopM3b,
+  refreshHelpDisplay:noopM3b, renderMousePanel:noopM3b,
+  renderRulesSummary:noopM3b, refreshHomeVisibility:noopM3b,
+  refreshRightRulesPanel:noopM3b, renderModePanel:noopM3b,
+  renderTimer: (el, sec) => {el.textContent = `0${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;},
+};
+vm.createContext(ctxM3b);
+vm.runInContext(`${controlsM3b}\n${statusM3b}\nresetGameUiToWaiting();`, ctxM3b);
+assert.equal(timerM3b.hidden, true, 'Chrono officiel masque au demarrage');
+assert.equal(stopM3b.hidden, true, 'Terminer masque avant lancement');
+vm.runInContext('updateGameStatus("playing");', ctxM3b);
+assert.equal(timerM3b.hidden, false, 'Chrono officiel restaure lors du lancement');
+assert.equal(stopM3b.hidden, false, 'Hote peut terminer une vraie partie');
+vm.runInContext('updateGameStatus("waiting");', ctxM3b);
+assert.equal(timerM3b.hidden, true, 'Chrono masque lors de la manche suivante en attente');
+assert.equal(stopM3b.hidden, true, 'Arret masque lors de la manche suivante en attente');
+vm.runInContext('updateGameStatus("ended");', ctxM3b);
+assert.equal(stopM3b.hidden, true, 'Arret masque apres la fin');
+const cssM3b = fs.readFileSync(new URL('../public/css/style.css', import.meta.url), 'utf8');
+assert.match(cssM3b, /#play-status-panel :is\(#timer, #end-game\)\[hidden\]\s*\{\s*display:\s*none\s*!important;/,
+  'L attribut hidden doit prevaloir sur les boutons affiches par CSS');
+console.log('[ok] M3b : attente sans chrono officiel ni bouton arret, chrono restaure au lancement');

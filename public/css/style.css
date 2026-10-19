@@ -5370,6 +5370,11 @@ body {
   white-space: nowrap !important;
 }
 
+/* Les actions masquees ne doivent pas reapparaitre via les styles de bouton. */
+#play-status-panel :is(#timer, #end-game)[hidden] {
+  display: none !important;
+}
+
 /* --------------------------------------------------------------------------
    Règles canonique
    -------------------------------------------------------------------------- */
