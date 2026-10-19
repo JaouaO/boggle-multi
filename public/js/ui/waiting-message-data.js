@@ -1,0 +1,60 @@
+// M2 — mots calculés depuis src/engine/generated-dictionary.ts.
+// Une grille-message ne doit jamais exposer la future grille officielle.
+export const WAITING_MESSAGE_GRIDS = [
+  {
+    message: "UNE BONNE PARTIE",
+    rows: ["UNE_", "NNOB", "EPAR", "_EIT"],
+    words: [
+      "ABONNE", "ABONNEE", "ABRI", "ABRIE", "ABRIEE", "AIE", "AIR", "ANE",
+      "ANEE", "ANNEE", "ANON", "ANONE", "ANONNE", "ANONNEE", "APE", "APNEE",
+      "APORIE", "AROBE", "ART", "ATROPE", "BAI", "BAIE", "BAN", "BANNE",
+      "BANNEE", "BANON", "BAR", "BARI", "BARON", "BARONNE", "BARONNEE", "BAT",
+      "BATI", "BATIE", "BATIR", "BEN", "BENE", "BENNE", "BENNEE", "BOA",
+      "BOAT", "BON", "BONNE", "BOP", "BORA", "BORANE", "BORANNE", "BORIE",
+      "BORT", "BRAI", "BRAIE", "BRAIT", "BRAN", "BRI", "BRIE", "BRIEE",
+      "EBAT", "EBRIE", "EBRIEE", "ENA", "ENOPE", "ENOPEE", "EON", "EPAIR",
+      "EPANNE", "EPAR", "EPART", "EPARTI", "EPARTIE", "EPI", "EPIE", "IRONE",
+      "NAOPE", "NAPE", "NAPEE", "NATRON", "NEBRIE", "NEE", "NENE", "NEO",
+      "NEON", "NEPE", "NON", "NONE", "NONNE", "NONNEE", "NOPE", "NOPEE",
+      "NORIA", "OBA", "ONE", "ONNE", "OPE", "OPEN", "OPIAT", "ORBE",
+      "ORIA", "ORT", "ORTIE", "ORTIEE", "PAIE", "PAIR", "PAN", "PANE",
+      "PANEE", "PANNE", "PANNEE", "PAON", "PAONE", "PAONEE", "PAONNE", "PAONNEE",
+      "PAR", "PARI", "PARIE", "PARIEE", "PART", "PARTI", "PARTIE", "PAT",
+      "PATI", "PATIE", "PATIR", "PATRIE", "PATRO", "PATRON", "PATRONNE", "PATRONNEE",
+      "PEAN", "PENE", "PENNE", "PENNON", "PENO", "PENON", "PIAN", "PIANO",
+      "PIAT", "PIE", "POA", "PORT", "RAB", "RABE", "RAI", "RAIE",
+      "RAIT", "RAN", "RAP", "RAPE", "RAPEE", "RAT", "RIA", "RIE",
+      "RIPE", "RIPEE", "RIT", "ROB", "ROBE", "TABOR", "TAIE", "TAIRO",
+      "TAN", "TANNE", "TANNEE", "TAO", "TAON", "TAPE", "TAPEE", "TAPI",
+      "TAPIE", "TAPIR", "TAPON", "TAPONNE", "TAPONNEE", "TARI", "TARIE", "TARO",
+      "TIAN", "TIR", "TRABE", "TRAP", "TRI", "TRIANON", "TRIE", "TRIEE",
+      "TRIP", "TRIPE", "TRIPEE", "TRIPENNE", "TROENE", "TRONA", "TRONE", "TRONEE",
+      "TROP", "TROPANE", "TROPE", "TROPENE", "TROPIE", "UNE",
+    ],
+  },
+  {
+    message: "TROUVE DES MOTS",
+    rows: ["TROU", "D_EV", "ES_M", "_STO"],
+    words: [
+      "DES", "DESERT", "DESSERT", "DRESS", "DRESSE", "ESSE", "EST", "ESTS",
+      "MER", "MERDE", "MERDES", "MEROU", "MES", "MESS", "MESSE", "MOT",
+      "MOTS", "ORD", "ORDE", "ORDES", "ORDS", "ORE", "ORES", "ORT",
+      "OUEST", "OUESTS", "OUVERT", "OVE", "OVES", "REM", "RES", "RESTO",
+      "REU", "REVU", "ROUE", "ROUES", "TMESE", "TMESES", "TOME", "TOMER",
+      "TOMES", "TRES", "TRESSE", "TROU", "TROUE", "TROUES", "TROUVE", "TROUVES",
+      "VER", "VERT", "VES", "VESSE", "VEST", "VOEU", "VOUE", "VOUER",
+      "VOUES", "VUE", "VUES",
+    ],
+  },
+  {
+    message: "AMUSEZ-VOUS BIEN",
+    rows: ["AMUS", "EZVO", "USBI", "EN__"],
+    words: [
+      "AME", "AMES", "AZE", "AZES", "BIO", "BIOS", "BOS", "BOUM",
+      "BOUME", "BOUMES", "EMU", "EMUS", "EUE", "EUES", "EUS", "EUSE",
+      "MAZE", "MAZES", "MES", "MUS", "NES", "NUE", "NUES", "NUS",
+      "OBI", "SEN", "SOI", "SOU", "SUE", "UNE", "UNES", "UNS",
+      "USE", "VUS", "ZUNE"
+    ],
+  },
+];

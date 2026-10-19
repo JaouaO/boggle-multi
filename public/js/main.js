@@ -22,6 +22,7 @@ import {
 } from "./core/storage.js";
 import { createRoomSocket, sendMessage } from "./net/socket.js";
 import { renderBoard } from "./ui/board-ui.js";
+import { createWaitingPractice } from "./ui/waiting-practice-ui.js";
 import { addLog } from "./ui/log-ui.js";
 import { setWordFeedback } from "./ui/words-ui.js";
 import {
@@ -149,6 +150,13 @@ renderMouseInputPanel(wordForm, {
 });
 
 setupAppLayout();
+const waitingPracticeM2 = createWaitingPractice({
+  boardElement, wordInput, wordSubmitButton, feedbackElement: wordFeedbackElement, timerElement,
+  onFoundWordsChange: (words) => renderFoundWords(foundWordsElement, words, { practice: true }),
+  onFeedback: ({ type, label, path }) => runSubmissionFeedback(wordForm, {
+    type, label, options: state.playerPreferences, boardElement, path,
+  }),
+});
 scheduleBoardFitV31();
 refreshRightRulesPanel();
 
@@ -321,6 +329,10 @@ function finishCurrentDragSelection() {
 
 function submitWord(event) {
   event.preventDefault();
+  if (waitingPracticeM2.isActive()) {
+    waitingPracticeM2.submit(wordInput.value);
+    return;
+  }
 
   const word = wordInput.value.trim();
 
@@ -348,6 +360,10 @@ function submitWord(event) {
 }
 
 function submitSelectedWord() {
+  if (waitingPracticeM2.isActive()) {
+    waitingPracticeM2.submit(wordInput.value);
+    return;
+  }
   if (!state.selectedWord || state.selectedWord.length < 3) {
     return;
   }
@@ -366,6 +382,10 @@ function submitSelectedWord() {
 }
 
 function handleKeyboardWordInput() {
+  if (waitingPracticeM2.isActive()) {
+    waitingPracticeM2.onInput();
+    return;
+  }
   if (state.gameStatus !== "playing" || !state.board || state.isDraggingLetters) {
     return;
   }
@@ -1583,7 +1603,8 @@ function renderFoundWords(element, words, options = {}) {
   const viewer = document.createElement("div");
   viewer.className = "found-words-viewer";
 
-  const canSelectPlayer = canSelectFoundWordsPlayer();
+  const isPractice = options.practice === true;
+  const canSelectPlayer = !isPractice && canSelectFoundWordsPlayer();
 
   // V83 : marque le mode live/end du panneau mots trouvés
   element.classList.toggle("found-words-live-mode", !canSelectPlayer);
@@ -1611,13 +1632,14 @@ function renderFoundWords(element, words, options = {}) {
   const summaryLabel = document.createElement("span");
   summaryLabel.textContent = canSelectPlayer && selectedPlayer
     ? `${selectedPlayer.id === state.playerId ? "Vous" : selectedPlayer.name}`
-    : "Vos mots";
+    : isPractice ? "Échauffement" : "Vos mots";
 
   const summaryScore = document.createElement("strong");
-  summaryScore.textContent =
-    `${displayedWords.length} mot${displayedWords.length > 1 ? "s" : ""}` +
-    ` · ${totalScore} pt${totalScore > 1 ? "s" : ""}` +
-    ` · ${invalidCount} faute${invalidCount > 1 ? "s" : ""}`;
+  summaryScore.textContent = isPractice
+    ? `${displayedWords.length} mot${displayedWords.length > 1 ? "s" : ""} · sans points`
+    : `${displayedWords.length} mot${displayedWords.length > 1 ? "s" : ""}` +
+      ` · ${totalScore} pt${totalScore > 1 ? "s" : ""}` +
+      ` · ${invalidCount} faute${invalidCount > 1 ? "s" : ""}`;
 
   summary.append(summaryLabel, summaryScore);
   viewer.append(summary);
@@ -1648,7 +1670,7 @@ function renderFoundWords(element, words, options = {}) {
     const row = document.createElement("div");
     row.className = `found-words-row found-word-score-${getFoundWordScoreClass(item.points)}`;
 
-    if (Array.isArray(item.path) && item.path.length) {
+    if (!isPractice && Array.isArray(item.path) && item.path.length) {
       row.classList.add("has-hover-path");
       bindFoundWordHover(row, item.path);
     }
@@ -1668,7 +1690,7 @@ function renderFoundWords(element, words, options = {}) {
     const points = document.createElement("span");
     points.className = "found-words-points";
     const score = Number(item.points ?? 0);
-    points.textContent = String(score);
+    points.textContent = isPractice ? "—" : String(score);
 
     row.append(word, points);
     table.append(row);
@@ -2198,6 +2220,7 @@ function clampCurrentHelpLevel() {
 }
 
 function handleGameStarted(data) {
+  waitingPracticeM2.stop();
   clearDailyHistoryFallbackM1B();
   dailyRestartAfterReconnectA1 = false;
   personalInvalidWordsH9E = null;
@@ -2312,6 +2335,7 @@ function handleGameStarted(data) {
 }
 
 function handleGameEnded(data) {
+  waitingPracticeM2.stop();
   clearDailyHistoryFallbackM1B();
   dailyRestartAfterReconnectA1 = false;
   personalInvalidWordsH9E = null;
@@ -2829,6 +2853,10 @@ function updateBoardFitV31() {
 
 
 function renderCurrentBoardWithHelp() {
+  if (waitingPracticeM2.isActive()) {
+    waitingPracticeM2.render();
+    return;
+  }
   const activePath = state.hoveredFoundWordPath?.length
     ? state.hoveredFoundWordPath
     : state.isDraggingLetters
@@ -3482,6 +3510,9 @@ function openDailyHistoryFallbackM1B() {
     return;
   }
   dailyHistoryFallbackM1B = true;
+  waitingPracticeM2.stop();
+  wordInput.disabled = true;
+  wordSubmitButton.disabled = true;
   void refreshDailyHistoryFallbackM1B();
 }
 
@@ -3709,6 +3740,7 @@ function getFoundWordList() {
 
 function updateGameStatus(status) {
   state.gameStatus = status;
+  if (status !== "waiting") waitingPracticeM2.stop();
 
   if (status === "waiting") {
     personalInvalidWordsH9E = null;
@@ -3755,6 +3787,9 @@ function updateGameStatus(status) {
     updateHostControls();
     renderRulesSummary();
     refreshHomeVisibility();
+    if (!(state.gameContext === "daily" && hasDailyAttemptLockG6())) {
+      waitingPracticeM2.start({ roomId: state.roomId, context: state.gameContext });
+    }
 
     return;
   }
@@ -3785,6 +3820,7 @@ function updateGameStatus(status) {
 }
 
 function resetGameUiToWaiting() {
+  waitingPracticeM2.stop();
   personalInvalidWordsH9E = null;
   publicIntermissionRemainingH9C = null;
   state.gameStatus = "waiting";
@@ -3832,6 +3868,9 @@ function resetGameUiToWaiting() {
   updateHostControls();
   refreshRightRulesPanel();
   refreshHomeVisibility();
+  if (!(state.gameContext === "daily" && hasDailyAttemptLockG6())) {
+    waitingPracticeM2.start({ roomId: state.roomId, context: state.gameContext });
+  }
 }
 
 /* V87-HOME-SCREEN START */
@@ -3844,18 +3883,8 @@ function resetGameUiToWaiting() {
  */
 
 function createHomePreviewLettersV87() {
-  const pool = "AAAAABBCCDDEEEEEEEFFGHIJKLMNOOOPQRSTUUVV";
-  const letters = pool.split("");
-
-  for (let index = letters.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    const current = letters[index];
-
-    letters[index] = letters[swapIndex];
-    letters[swapIndex] = current;
-  }
-
-  return letters.slice(0, 16);
+  // Message de bienvenue décoratif, jamais les lettres de la grille quotidienne.
+  return [..."UNE_BONNE_PARTIE"];
 }
 
 /* S3 : cette valeur ne doit pas être l'ID public utilisé dans les salons. */
@@ -4307,6 +4336,7 @@ function confirmLeaveActiveGameForHomeV9() {
 }
 
 function returnToHomeV87() {
+  waitingPracticeM2.stop();
   if (!confirmLeaveActiveGameForHomeV9()) {
     return;
   }

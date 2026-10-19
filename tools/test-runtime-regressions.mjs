@@ -163,6 +163,9 @@ const historyCalls = [];
 const historyRenders = [];
 const historyState = {gameContext: 'daily', gameStatus: 'waiting', roomId: 'grille-du-jour-2026-10-17-abcxyz001',playerId:'mine'};
 const historyCtx = {
+  waitingPracticeM2: { stop() {} },
+  wordInput: { disabled: false },
+  wordSubmitButton: { disabled: false },
   state: historyState,
   DAILY_LEADERBOARD_API_H9B: '/api/daily-leaderboard',
   GAME_CONTEXTS_V901: { DAILY: 'daily' },
@@ -299,3 +302,112 @@ assert.ok(endUi.includes('daily && !panelElement ? dailyPage : null'),
   'Le panneau et la modale se partagent une source avec deux politiques de classement');
 assert.ok(endUi.includes('boggle-daily-scroll-m1c2'), 'Liste centrale déroulante');
 console.log('[ok] M1c2 : pages 25, aller à mon rang, limite, erreur/reprise, anti-réponse tardive, modale intacte');
+
+// M2 : vérifier les imports ESM réels (une erreur de nom empêche tout démarrage).
+const practiceModuleM2 = await import(new URL('../public/js/ui/waiting-practice-ui.js', import.meta.url));
+assert.equal(typeof practiceModuleM2.createWaitingPractice, 'function');
+assert.equal(practiceModuleM2.getWaitingPracticeGrids().length, 3);
+console.log('[ok] M2 : graphe ESM charge et noms exportes valides');
+
+// M2 : grilles-message réellement jouables, mais validation 100 % locale.
+const practiceSrc = fs.readFileSync(new URL('../public/js/ui/waiting-practice-ui.js', import.meta.url), 'utf8');
+const practiceDataSrc = fs.readFileSync(new URL('../public/js/ui/waiting-message-data.js', import.meta.url), 'utf8');
+const practiceVm = {
+  document: {
+    body: { classList: { contains: (name) => name === 'v87-game-active' } },
+    addEventListener: () => {},
+  },
+  normalizeComparableWord: (word) => String(word).toUpperCase(),
+  renderBoard: (_element, _board, options) => { practiceVm.handlers = options; },
+};
+vm.createContext(practiceVm);
+const practiceCode = practiceSrc.replace(/^import .*;\r?\n/gm, '').replace(/export (function|const) /g, '$1 ');
+vm.runInContext(practiceDataSrc.replace(/export /g, ""), practiceVm);
+vm.runInContext(practiceCode, practiceVm);
+const fakeBoard = { querySelectorAll: () => [] };
+const fakeInput = { disabled: true, value: '' };
+const fakeSubmit = { disabled: true };
+const fakeFeedback = { textContent: '' };
+const fakeTimer = { textContent: '03:00' };
+const practiceWords = [];
+const practiceEffects = [];
+const practice = practiceVm.createWaitingPractice({
+  boardElement: fakeBoard, wordInput: fakeInput, wordSubmitButton: fakeSubmit,
+  feedbackElement: fakeFeedback, timerElement: fakeTimer,
+  onFoundWordsChange: (words) => practiceWords.push(words),
+  onFeedback: (feedback) => practiceEffects.push(feedback),
+});
+const practiceGrids = practiceVm.getWaitingPracticeGrids();
+assert.equal(practiceGrids.length, 3);
+// Les mots du message sont décoratifs : la validation reste liée aux vrais
+// chemins de lettres de la grille, pas aux mots écrits dans le message.
+function isTraceableOnGrid(grid, word) {
+  function visit(row, col, at, used) {
+    if (row < 0 || row >= 4 || col < 0 || col >= 4 || used.has(`${row}:${col}`) ||
+        grid.rows[row][col] !== word[at]) return false;
+    if (at === word.length - 1) return true;
+    const next = new Set([...used, `${row}:${col}`]);
+    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+      if ((dr || dc) && visit(row+dr, col+dc, at+1, next)) return true;
+    }
+    return false;
+  }
+  for (let row = 0; row < 4; row++) for (let col = 0; col < 4; col++) {
+    if (visit(row, col, 0, new Set())) return true;
+  }
+  return false;
+}
+assert.equal(practiceGrids[2].message, 'AMUSEZ-VOUS BIEN');
+assert.deepEqual([...practiceGrids[2].rows].join(''), 'AMUSEZVOUSBIEN__');
+for (const grid of practiceGrids) {
+  assert.equal(grid.rows.length, 4);
+  assert.ok(grid.rows.every((row) => row.length === 4));
+  assert.ok(grid.words.length >= 20, 'Un échauffement propose plusieurs mots');
+  assert.ok(grid.words.every((word) => isTraceableOnGrid(grid, word)),
+    'Aucun mot impossible ne figure dans les listes de validation');
+}
+
+practice.start({roomId: 'practice-room', context: 'private'});
+assert.equal(practice.isActive(), true);
+assert.equal(fakeTimer.textContent, 'Sans chrono');
+assert.equal(fakeInput.disabled, false);
+assert.equal(fakeSubmit.disabled, false);
+assert.equal(practiceVm.handlers.canClickCells, true);
+const exampleWord = practiceGrids.reduce((entry, grid) => grid === practiceGrids[0] ? grid : entry, null).words[0];
+// Une entrée issue du vrai dictionnaire est validée localement ; aucune requête serveur.
+const activeWords = practiceGrids[[...'practice-room'].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 3].words;
+fakeInput.value = activeWords[0];
+assert.equal(practice.submit(fakeInput.value), true);
+assert.match(fakeFeedback.textContent, /trouvé/);
+assert.equal(practiceWords.at(-1).length, 1, 'Le mot apparaît dans Mots trouvés');
+assert.equal(practiceWords.at(-1)[0].word, activeWords[0]);
+assert.equal(practiceWords.at(-1)[0].points, 0, 'Aucun point officiel');
+assert.equal(practiceEffects.at(-1).type, 'accepted');
+assert.ok(practiceEffects.at(-1).path.length >= 3, 'Effet sur les vraies cases du mot');
+practice.submit(activeWords[0]);
+assert.match(fakeFeedback.textContent, /déjà trouvé/);
+assert.equal(practiceWords.at(-1).length, 1, 'Doublon sans nouvelle ligne');
+assert.equal(practiceEffects.at(-1).type, 'duplicate');
+practice.submit('ZZZZZZZZ');
+assert.match(fakeFeedback.textContent, /ne figure pas/);
+assert.equal(practiceEffects.at(-1).type, 'invalid');
+// Cliquez sur une case, puis une case adjacente (pas de reset à chaque clic).
+practiceVm.handlers.onCellClick({ row: 0, col: 0, letter: practiceGrids[0].rows[0][0] });
+assert.equal(fakeInput.value.length, 1);
+practiceVm.handlers.onCellClick({ row: 0, col: 1, letter: practiceGrids[0].rows[0][1] });
+assert.equal(fakeInput.value.length, 2);
+fakeInput.value = 'MOTENATTENTE';
+practice.stop();
+assert.equal(practice.isActive(), false);
+assert.equal(practiceWords.at(-1).length, 0, 'Mots d’échauffement effacés pour la vraie manche');
+assert.equal(fakeInput.value, '', 'Le mot d’entraînement ne fuit pas dans la vraie partie');
+assert.ok(!practiceSrc.includes('sendMessage(') && !practiceSrc.includes('fetch('), 'Entraînement hors ligne');
+assert.ok(main.includes('waitingPracticeM2.stop();'), 'Fin officielle arrête l’entraînement');
+assert.ok(main.includes('waitingPracticeM2.submit(wordInput.value)'), 'Le formulaire attend son verdict local');
+assert.ok(main.includes('onFoundWordsChange: (words) => renderFoundWords(foundWordsElement, words, { practice: true })'),
+  'Réutiliser le rendu habituel de Mots trouvés');
+assert.ok(main.includes('onFeedback: ({ type, label, path }) => runSubmissionFeedback(wordForm'),
+  'Réutiliser les sons et effets configurés par le joueur');
+assert.ok(main.includes('points.textContent = isPractice ? "—" : String(score)'),
+  'Ne pas afficher de faux points en échauffement');
+console.log('[ok] M2 : trois grilles-message, saisie, validation locale, doublons, fin de session, aucun score serveur');
