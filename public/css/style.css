@@ -7382,8 +7382,11 @@ body.v89-private-active #private-v89 {
     font-size: clamp(2.05rem, 10vw, 2.9rem);
   }
 
+  /* Un seul contour visible sur mobile : celui de la carte privée. */
   .private-v89-form {
-    padding: 0.9rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
   }
 }
 
@@ -8158,19 +8161,31 @@ body.player-identity-modal-open-v902 {
   order: 2;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 620px) {
+  /* Mobile : petits contrôles verticaux, sans chevauchement avec le logo. */
   #global-actions-bar-v908l {
-    top: max(0.5rem, env(safe-area-inset-top));
-    right: max(0.5rem, env(safe-area-inset-right));
-    gap: 0.35rem;
+    top: max(0.55rem, env(safe-area-inset-top));
+    right: max(0.55rem, env(safe-area-inset-right));
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.28rem;
   }
 
   #global-actions-bar-v908l > .global-action-button-v908l,
   #global-actions-bar-v908l > button,
   #global-actions-bar-v908l > a {
-    min-height: 2.25rem !important;
-    min-width: auto;
-    padding-inline: 0.6rem !important;
+    width: 5.4rem;
+    min-width: 0;
+    min-height: 2.1rem !important;
+    padding: 0.4rem 0.45rem !important;
+    font-size: 0.79rem !important;
+    box-shadow: 0 0.15rem 0.4rem rgba(75, 51, 34, 0.13) !important;
+  }
+
+  /* La pile verticale ne doit pas recouvrir la première carte. */
+  .public-v88-header,
+  .private-v89-header {
+    min-height: 4.8rem;
   }
 }
 

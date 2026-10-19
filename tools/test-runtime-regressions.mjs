@@ -612,3 +612,28 @@ for (const {id, duration, pill} of expectedPublicRoomsM3D) {
 }
 assert.ok(server.includes('alreadyTriedByThisPlayer'), 'Une répétition du même mot rejeté ne reçoit pas une deuxième pénalité');
 console.log('[ok] M3d : Rapide/Normal/Lent, boutons et salons historiques, durées 1/3/5 min, pénalité conservée');
+
+// M4a/M4b : aucun cadre générique autour des écrans / grilles de navigation,
+// boutons globaux mobiles superposés et champ de mot nommé pour l'accessibilité.
+const rootHomeM4 = extract('function setupHomeScreenV87() {', 'setupHomeScreenV87();');
+const rootPrivateM4 = extract('function setupPrivateRoomScreenV89() {', 'setupPrivateRoomScreenV89();');
+assert.match(rootHomeM4, /const home = document\.createElement\("div"\);/);
+assert.match(rootHomeM4, /home\.setAttribute\("role", "region"\);/);
+assert.match(rootHomeM4, /<nav class="home-v87-modes" aria-label="Modes de jeu">/);
+assert.match(setupPublicRoomSourceM3D, /const screen = document\.createElement\("div"\);/);
+assert.match(setupPublicRoomSourceM3D, /<div class="public-v88-grid" role="group" aria-label="Choix du salon public">/);
+assert.doesNotMatch(setupPublicRoomSourceM3D, /<section class="public-v88-grid"/);
+assert.match(rootPrivateM4, /const screen = document\.createElement\("div"\);/);
+assert.match(rootPrivateM4, /screen\.setAttribute\("role", "region"\);/);
+const cssM4 = fs.readFileSync(new URL('../public/css/style.css', import.meta.url), 'utf8');
+const mobileGlobalM4 = cssM4.split('/* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME START */')[1]
+  .split('/* V90.2.8D1L-HOME-ONLY-OUTSIDE-HOME END */')[0];
+assert.match(mobileGlobalM4, /@media \(max-width: 620px\)/);
+assert.match(mobileGlobalM4, /flex-direction:\s*column;/);
+assert.match(mobileGlobalM4, /\.public-v88-header,\s*\.private-v89-header\s*\{\s*min-height:\s*4\.8rem;/);
+assert.match(cssM4, /\.private-v89-form\s*\{\s*padding:\s*0;\s*border:\s*0;\s*background:\s*transparent;/);
+const htmlM4 = fs.readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+assert.match(htmlM4, /<input id="word-input" aria-label="Votre mot" placeholder="Votre mot"/);
+assert.match(cssM4, /\.home-v87-top\s*\{\s*display:\s*none\s*!important;/,
+  'Top du jour volontairement masqué sur mobile');
+console.log('[ok] M4 : conteneurs sans cadre parasite, actions mobiles verticales, saisie accessible, Top mobile préservé');

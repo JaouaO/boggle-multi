@@ -4208,10 +4208,11 @@ function setupHomeScreenV87() {
     return;
   }
 
-  const home = document.createElement("section");
+  const home = document.createElement("div");
 
   home.id = "home-v87";
   home.className = "home-v87";
+  home.setAttribute("role", "region");
   home.setAttribute("aria-label", "Accueil Boggle");
 
   home.innerHTML = [
@@ -4516,10 +4517,11 @@ function setupPublicRoomsScreenV88() {
     return;
   }
 
-  const screen = document.createElement("section");
+  const screen = document.createElement("div");
 
   screen.id = "public-v88";
   screen.className = "home-v87 public-v88";
+  screen.setAttribute("role", "region");
   screen.setAttribute("aria-label", "Salons publics");
 
   screen.innerHTML = [
@@ -4540,7 +4542,7 @@ function setupPublicRoomsScreenV88() {
           '<p>Choisissez une durée : 1, 3 ou 5 minutes. Les règles sont identiques : chaque nouveau mot invalide coûte 1 point.</p>',
         '</section>',
 
-        '<section class="public-v88-grid" aria-label="Choix du salon public">',
+        '<div class="public-v88-grid" role="group" aria-label="Choix du salon public">',
           '<button class="home-v87-mode public-v88-room public-v88-room-rapid" type="button" data-public-mode="rapid">',
             '<span class="home-v87-mode-icon" aria-hidden="true">⚡</span>',
             '<span class="home-v87-mode-text">',
@@ -4570,7 +4572,7 @@ function setupPublicRoomsScreenV88() {
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
-        '</section>',
+        '</div>',
       '</main>',
     '</div>',
   ].join("");
@@ -4755,10 +4757,11 @@ function setupPrivateRoomScreenV89() {
     return;
   }
 
-  const screen = document.createElement("section");
+  const screen = document.createElement("div");
 
   screen.id = "private-v89";
   screen.className = "home-v87 private-v89";
+  screen.setAttribute("role", "region");
   screen.setAttribute("aria-label", "Salon privé");
 
   screen.innerHTML = [
