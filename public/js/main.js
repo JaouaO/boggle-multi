@@ -5513,6 +5513,16 @@ function syncGlobalActionsBarV908L() {
     }
   }
 
+  // L'ordre DOM suit l'affichage et la navigation clavier, sur mobile comme sur desktop.
+  const homeButton = bar.querySelector("#global-home-button-v908l");
+  if (homeButton && optionsButton?.parentElement === bar) {
+    const mobile = window.matchMedia("(max-width: 620px)").matches;
+    const firstButton = mobile ? optionsButton : homeButton;
+    if (bar.firstElementChild !== firstButton) {
+      bar.prepend(firstButton);
+    }
+  }
+
   bar.hidden = !optionsButton && screen === "home";
 }
 

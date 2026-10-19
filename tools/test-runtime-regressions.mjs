@@ -637,3 +637,46 @@ assert.match(htmlM4, /<input id="word-input" aria-label="Votre mot" placeholder=
 assert.match(cssM4, /\.home-v87-top\s*\{\s*display:\s*none\s*!important;/,
   'Top du jour volontairement masqué sur mobile');
 console.log('[ok] M4 : conteneurs sans cadre parasite, actions mobiles verticales, saisie accessible, Top mobile préservé');
+
+// M4c : ordre visuel et ordre clavier cohérents, sans CSS "order".
+const globalSyncM4C = extract('function syncGlobalActionsBarV908L() {', 'function setupGlobalActionsBarV908L() {');
+const globalCssM4C = cssM4.replaceAll('\r\n', '\n');
+assert.doesNotMatch(globalCssM4C, /#global-home-button-v908l\s*\{\s*order:/);
+assert.doesNotMatch(globalCssM4C, /#global-actions-bar-v908l \.global-options-button-in-bar-v908l\s*\{\s*order:/);
+for (const mobile of [false, true]) {
+  const home = { id: 'home' };
+  const options = { id: 'options' };
+  const bar = {
+    children: [],
+    get firstElementChild() { return this.children[0] ?? null; },
+    appendChild(node) {
+      this.children = this.children.filter((value) => value !== node);
+      this.children.push(node);
+      node.parentElement = this;
+    },
+    prepend(node) {
+      this.children = this.children.filter((value) => value !== node);
+      this.children.unshift(node);
+      node.parentElement = this;
+    },
+    querySelector(selector) {
+      return selector === '#global-home-button-v908l'
+        ? this.children.find((node) => node === home) ?? null : null;
+    },
+  };
+  bar.appendChild(home);
+  bar.appendChild(options);
+  vm.runInNewContext(`${globalSyncM4C}\nsyncGlobalActionsBarV908L();`, {
+    cleanupOldGlobalActionsBarsV908L() {},
+    ensureGlobalActionsBarV908L: () => bar,
+    getGlobalOptionsButtonV908L: () => options,
+    getCurrentGlobalScreenV908L: () => 'game',
+    ensureGlobalHomeButtonV908L: () => home,
+    normalizeGlobalOptionsButtonV908L() {},
+    window: { matchMedia: () => ({ matches: mobile }) },
+  });
+  assert.deepEqual(bar.children.map((node) => node.id),
+    mobile ? ['options', 'home'] : ['home', 'options'],
+    `Ordre DOM ${mobile ? 'mobile' : 'desktop'}`);
+}
+console.log('[ok] M4c : Options au-dessus sur mobile, Accueil d’abord sur desktop, ordre clavier respecté');

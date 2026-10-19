@@ -8153,14 +8153,6 @@ body.player-identity-modal-open-v902 {
   text-shadow: none !important;
 }
 
-#global-home-button-v908l {
-  order: 1;
-}
-
-#global-actions-bar-v908l .global-options-button-in-bar-v908l {
-  order: 2;
-}
-
 @media (max-width: 620px) {
   /* Mobile : petits contrôles verticaux, sans chevauchement avec le logo. */
   #global-actions-bar-v908l {
