@@ -411,3 +411,16 @@ assert.ok(main.includes('onFeedback: ({ type, label, path }) => runSubmissionFee
 assert.ok(main.includes('points.textContent = isPractice ? "—" : String(score)'),
   'Ne pas afficher de faux points en échauffement');
 console.log('[ok] M2 : trois grilles-message, saisie, validation locale, doublons, fin de session, aucun score serveur');
+
+
+// M3a : les trois cartes sont des actions de navigation, sans panneau générique.
+// Le sélecteur global CSS `section` ajoute un fond et une bordure non désirés.
+const homeMarkupM3a = extract('function setupHomeScreenV87() {', 'setupHomeScreenV87();');
+assert.ok(homeMarkupM3a.includes('<nav class="home-v87-modes" aria-label="Modes de jeu">'),
+  'Les cartes d’accueil doivent être regroupées dans une navigation');
+assert.ok(!homeMarkupM3a.includes('<section class="home-v87-modes"'),
+  'Ne pas réintroduire le conteneur section encadré par les styles globaux');
+assert.ok(homeMarkupM3a.includes("'</nav>',"), 'Navigation des cartes correctement fermée');
+assert.equal((homeMarkupM3a.match(/data-home-action="(?:public|private|solo)"/g) || []).length, 3,
+  'Les trois boutons de mode doivent être conservés');
+console.log('[ok] M3a : accueil sans encadrement parasite, trois cartes et navigation conservées');

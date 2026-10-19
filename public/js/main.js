@@ -4189,7 +4189,7 @@ function setupHomeScreenV87() {
           '</ol>',
         '</aside>',
 
-        '<section class="home-v87-modes" aria-label="Modes de jeu">',
+        '<nav class="home-v87-modes" aria-label="Modes de jeu">',
           '<button class="home-v87-mode home-v87-mode-public" type="button" data-home-action="public">',
             '<span class="home-v87-mode-icon" aria-hidden="true">🌐</span>',
             '<span class="home-v87-mode-text">',
@@ -4214,7 +4214,7 @@ function setupHomeScreenV87() {
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
-        '</section>',
+        '</nav>',
       '</main>',
     '</div>',
   ].join("");
