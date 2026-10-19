@@ -543,3 +543,72 @@ assert.ok(timerSourceM3C.includes('Date.now() - startedAt'), 'Chrono calculé su
 assert.ok(server.includes('await this.ctx.storage.setAlarm(gameEndAt);'), 'Alarme serveur indépendante du client');
 assert.ok(server.includes('await this.endGameIfNeeded();'), 'Session réouverte : état de fin recontrôlé');
 console.log('[ok] M3c : jouer/reprendre/classement, heure serveur, expiration hors page, minuit et multi-onglet');
+
+// M3d : noms publics, correspondance avec les salons existants, durées/pénalités
+// contrôlées en exécutant le code métier du serveur sans le modifier.
+const publicRoomsSourceM3D = extract('const PUBLIC_ROOMS_V88 = {', 'function showHomeFromPublicV88() {');
+const startPublicRoomSourceM3D = extract('async function startPublicRoomV88(modeKey) {', 'function setupPublicRoomsScreenV88() {');
+const setupPublicRoomSourceM3D = extract('function setupPublicRoomsScreenV88() {', 'setupPublicRoomsScreenV88();');
+const expectedPublicRoomsM3D = [
+  { key: 'rapid', id: 'public-rapide', name: 'Partie rapide', pill: 'Rapide', duration: 60 },
+  { key: 'classic', id: 'public-classique', name: 'Partie normale', pill: 'Normal', duration: 180 },
+  { key: 'relaxed', id: 'public-detente', name: 'Partie lente', pill: 'Lent', duration: 300 },
+];
+const publicConfigM3D = vm.runInNewContext(`${publicRoomsSourceM3D}\nPUBLIC_ROOMS_V88;`);
+const publicClicksM3D = [];
+let publicScreenM3D = null;
+const publicDocumentM3D = {
+  querySelector: (selector) => selector === '#public-v88' ? publicScreenM3D : null,
+  createElement: () => ({
+    setAttribute() {},
+    addEventListener(type, fn) { if (type === 'click') this.clickHandler = fn; },
+    innerHTML: '',
+  }),
+  body: { firstChild: null, insertBefore(screen) { publicScreenM3D = screen; } },
+};
+vm.runInNewContext(`${setupPublicRoomSourceM3D}\nsetupPublicRoomsScreenV88();`, {
+  document: publicDocumentM3D,
+  startPublicRoomV88: (key) => publicClicksM3D.push(key),
+});
+assert.ok(publicScreenM3D, 'Écran de choix des salons monté');
+const publicHtmlM3D = publicScreenM3D.innerHTML;
+assert.match(publicHtmlM3D, /chaque nouveau mot invalide coûte 1 point/);
+const publicButtonsM3D = [...publicHtmlM3D.matchAll(/<button[^>]+data-public-mode="([^"]+)"[^>]*>([\s\S]*?)<\/button>/g)];
+assert.equal(publicButtonsM3D.length, 3, 'Trois boutons de salons publics');
+for (const [index, expected] of expectedPublicRoomsM3D.entries()) {
+  const [, key, contents] = publicButtonsM3D[index];
+  assert.equal(key, expected.key, `Clé de salon ${expected.pill}`);
+  assert.equal(publicConfigM3D[key].room, expected.id, 'Identifiant historique inchangé');
+  assert.equal(publicConfigM3D[key].title, expected.name);
+  assert.ok(contents.includes(`<strong>${expected.name}</strong>`));
+  assert.ok(contents.includes(`<span>${expected.pill}</span><span>${expected.duration / 60} min</span>`));
+  publicScreenM3D.clickHandler({target:{closest: () => ({dataset:{publicMode:key}})}});
+  assert.equal(publicClicksM3D.at(-1), key, `Clic sur le bouton ${expected.pill}`);
+}
+assert.doesNotMatch(publicHtmlM3D, /Partie classique|Partie détente|<span>Classique<\/span>|<span>Détente<\/span>/);
+const publicConnectionsM3D = [];
+await vm.runInNewContext(`${publicRoomsSourceM3D}\n${startPublicRoomSourceM3D}\nPromise.all(['rapid','classic','relaxed'].map(startPublicRoomV88));`, {
+  requestPlayerIdentityV902: async () => ({pseudo: 'Essai', fruit: '🍎'}),
+  document: {body:{classList:{remove(){}}}},
+  showGameFromHomeV87() {},
+  formatPlayerNameV902: () => 'Essai',
+  connectToSessionV901: (info) => publicConnectionsM3D.push(info),
+  GAME_CONTEXTS_V901: {PUBLIC:'public'},
+});
+assert.deepEqual(publicConnectionsM3D.map(({roomId}) => roomId), expectedPublicRoomsM3D.map(({id}) => id));
+const publicOptionsStartM3D = server.indexOf('private getPublicRoomGameOptionsV9D4(): GameOptions {');
+const publicOptionsEndM3D = server.indexOf('private getConnectedJoinedSocketsV9D3(', publicOptionsStartM3D);
+assert.ok(publicOptionsStartM3D >= 0 && publicOptionsEndM3D > publicOptionsStartM3D);
+const publicOptionsJsM3D = server.slice(publicOptionsStartM3D, publicOptionsEndM3D)
+  .trim().replace('private getPublicRoomGameOptionsV9D4(): GameOptions {', 'function getPublicRoomGameOptionsV9D4() {');
+for (const {id, duration, pill} of expectedPublicRoomsM3D) {
+  const options = vm.runInNewContext(`${publicOptionsJsM3D}\ngetPublicRoomGameOptionsV9D4.call({roomId:${JSON.stringify(id.toUpperCase())}});`, {
+    DEFAULT_GAME_OPTIONS: {durationMode:'noTimer', durationSeconds:0, penalizeInvalidWords:false, invalidWordPenalty:0},
+  });
+  assert.equal(options.durationMode, 'timer', `Chrono serveur ${pill}`);
+  assert.equal(options.durationSeconds, duration, `Durée réelle ${pill}`);
+  assert.equal(options.penalizeInvalidWords, true, `Pénalité active ${pill}`);
+  assert.equal(options.invalidWordPenalty, 1, `Pénalité à 1 point ${pill}`);
+}
+assert.ok(server.includes('alreadyTriedByThisPlayer'), 'Une répétition du même mot rejeté ne reçoit pas une deuxième pénalité');
+console.log('[ok] M3d : Rapide/Normal/Lent, boutons et salons historiques, durées 1/3/5 min, pénalité conservée');

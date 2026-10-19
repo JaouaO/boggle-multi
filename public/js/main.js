@@ -4444,6 +4444,8 @@ function returnToHomeV87() {
  * Le vrai matchmaking / file d'attente pourra être ajouté ensuite.
  */
 
+// Les clés et identifiants historiques restent stables pour garder les mêmes salons.
+// Seuls les libellés visibles changent ; les règles sont imposées par le serveur.
 const PUBLIC_ROOMS_V88 = {
   rapid: {
     room: "public-rapide",
@@ -4451,11 +4453,11 @@ const PUBLIC_ROOMS_V88 = {
   },
   classic: {
     room: "public-classique",
-    title: "Partie classique",
+    title: "Partie normale",
   },
   relaxed: {
     room: "public-detente",
-    title: "Partie détente",
+    title: "Partie lente",
   },
 };
 
@@ -4535,7 +4537,7 @@ function setupPublicRoomsScreenV88() {
         '<section class="public-v88-intro">',
           '<p class="home-v87-eyebrow"><span aria-hidden="true">🌐</span><span>Multijoueur en ligne</span></p>',
           '<h1>Salon public</h1>',
-          '<p>Choisissez un type de partie et rejoignez une room publique. Pour l’instant, ces salons sont des rooms fixes temporaires.</p>',
+          '<p>Choisissez une durée : 1, 3 ou 5 minutes. Les règles sont identiques : chaque nouveau mot invalide coûte 1 point.</p>',
         '</section>',
 
         '<section class="public-v88-grid" aria-label="Choix du salon public">',
@@ -4543,8 +4545,8 @@ function setupPublicRoomsScreenV88() {
             '<span class="home-v87-mode-icon" aria-hidden="true">⚡</span>',
             '<span class="home-v87-mode-text">',
               '<strong>Partie rapide</strong>',
-              '<span>Un format court pour lancer une partie sans attendre.</span>',
-              '<span class="public-v88-chips"><span>Rapide</span><span>Room publique</span></span>',
+              '<span>Une manche d’une minute pour trouver un maximum de mots.</span>',
+              '<span class="public-v88-chips"><span>Rapide</span><span>1 min</span></span>',
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
@@ -4552,9 +4554,9 @@ function setupPublicRoomsScreenV88() {
           '<button class="home-v87-mode public-v88-room public-v88-room-classic" type="button" data-public-mode="classic">',
             '<span class="home-v87-mode-icon" aria-hidden="true">🏆</span>',
             '<span class="home-v87-mode-text">',
-              '<strong>Partie classique</strong>',
-              '<span>Le mode standard pour jouer contre d’autres joueurs.</span>',
-              '<span class="public-v88-chips"><span>Classique</span><span>Room publique</span></span>',
+              '<strong>Partie normale</strong>',
+              '<span>Le format standard de trois minutes.</span>',
+              '<span class="public-v88-chips"><span>Normal</span><span>3 min</span></span>',
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
@@ -4562,9 +4564,9 @@ function setupPublicRoomsScreenV88() {
           '<button class="home-v87-mode public-v88-room public-v88-room-relaxed" type="button" data-public-mode="relaxed">',
             '<span class="home-v87-mode-icon" aria-hidden="true">🌿</span>',
             '<span class="home-v87-mode-text">',
-              '<strong>Partie détente</strong>',
-              '<span>Un salon plus tranquille, pensé pour jouer sans pression.</span>',
-              '<span class="public-v88-chips"><span>Détente</span><span>Room publique</span></span>',
+              '<strong>Partie lente</strong>',
+              '<span>Une manche plus longue de cinq minutes, avec les mêmes règles.</span>',
+              '<span class="public-v88-chips"><span>Lent</span><span>5 min</span></span>',
             '</span>',
             '<span class="home-v87-mode-arrow" aria-hidden="true">›</span>',
           '</button>',
