@@ -680,3 +680,156 @@ for (const mobile of [false, true]) {
     `Ordre DOM ${mobile ? 'mobile' : 'desktop'}`);
 }
 console.log('[ok] M4c : Options au-dessus sur mobile, Accueil d’abord sur desktop, ordre clavier respecté');
+
+// Aide initiale : vérifier le lancement réel, le plafond et la carte des règles.
+// Aucun changement de logique métier : test de non-régression uniquement.
+const helpCoreSource = fs.readFileSync(new URL('../public/js/core/help-levels.js', import.meta.url), 'utf8');
+const helpCoreForVm = helpCoreSource.replaceAll('export ', '');
+const helpStartFns = extract('function getMaxHelpLevel() {', 'function handleGameEnded(data) {');
+const helpRulesFn = extract('function renderRulesHelpCardV22(card, options) {', 'function handleRulesHelpButtonClickV22(event) {');
+const helpDetailsFn = extract('function getRulesHelpDetailsV22(level, maxLevel) {', 'function createSolutionListV22() {');
+
+for (const [context, maxExpected] of [
+  ['solo', 2], ['private', 2], ['public', 0], ['daily', 0],
+]) {
+  const calls = [];
+  const state = {gameContext: context, helpLevel: 3, playerId: 'p1'};
+  const silent = () => {};
+  const contextForHelp = {
+    state,
+    DEFAULT_GAME_OPTIONS: {maxHelpLevel: 2, durationMode: 'noTimer'},
+    GAME_CONTEXTS_V901: {DAILY: 'daily'},
+    isPublicRoomSessionV9K: () => context === 'public',
+    waitingPracticeM2: {stop: silent},
+    clearDailyHistoryFallbackM1B: silent,
+    clearDismissedEndScreenV9H: silent,
+    rememberDailyAttemptStartedG6: silent,
+    rememberDailyDeadlineM3C: silent,
+    saveLastBoardSuggestion: silent,
+    hideEndScreen: silent,
+    hideEndScreenOverlay: silent,
+    stopCountdownWarning: silent,
+    renderFoundWords: silent,
+    foundWordsElement: {},
+    setWordFeedback: silent,
+    wordFeedbackElement: {},
+    wordInput: {}, wordSubmitButton: {},
+    updateHostControls: silent,
+    refreshHelpDisplay: () => calls.push({point: 'help', level: state.helpLevel}),
+    renderCurrentBoardWithHelp: () => calls.push({point: 'board', level: state.helpLevel}),
+    renderMousePanel: silent,
+    updateGameStatus: silent,
+    renderModePanel: silent,
+    renderRulesSummary: silent,
+    refreshRightRulesPanel: () => calls.push({point: 'rules', level: state.helpLevel}),
+    stopLocalTimer: silent,
+    renderTimer: silent,
+    timerElement: {},
+    renderTargetScoreStatus: silent,
+    startButton: {},
+    addLog: silent,
+    logElement: {},
+  };
+  vm.createContext(contextForHelp);
+  vm.runInContext(`${helpCoreForVm}\n${helpStartFns}\n`, contextForHelp);
+  const data = {
+    mode: 'timed',
+    gameOptions: {durationMode: 'noTimer', maxHelpLevel: 2},
+    board: [['A', 'B', 'C'], ['D', 'E', 'F'], ['G', 'H', 'I']],
+    startedAt: 1_000_000, durationSeconds: 0,
+  };
+  vm.runInContext(`handleGameStarted(${JSON.stringify(data)});`, contextForHelp);
+  assert.equal(state.helpLevel, 0, `Niveau initial ${context}`);
+  assert.equal(vm.runInContext('getMaxHelpLevel()', contextForHelp), maxExpected,
+    `Plafond inchangé ${context}`);
+  assert.ok(calls.filter(({point}) => ['help', 'board', 'rules'].includes(point))
+    .every(({level}) => level === 0), `Aide à zéro lors des affichages ${context}`);
+
+  if (maxExpected > 0) {
+    assert.equal(vm.runInContext('getNextSimplifiedHelpLevel(0, 2)', contextForHelp), 1);
+    assert.equal(vm.runInContext('getNextSimplifiedHelpLevel(1, 2)', contextForHelp), 3);
+    assert.equal(vm.runInContext('getNextSimplifiedHelpLevel(3, 2)', contextForHelp), 0);
+  }
+  if (context === 'solo' || context === 'private') {
+    class TestNode {
+      constructor(tag) { this.tag = tag; this.children = []; this.textContent = ''; }
+      append(...nodes) { this.children.push(...nodes); }
+      querySelector(selector) { return selector === 'p' ? this.body : selector === 'h2' ? this.title : null; }
+      querySelectorAll() { return []; }
+      addEventListener() {}
+    }
+    const card = new TestNode('card');
+    card.body = new TestNode('p');
+    card.title = new TestNode('h2');
+    const fakeDocument = {createElement: (tag) => new TestNode(tag)};
+    contextForHelp.document = fakeDocument;
+    contextForHelp.handleRulesHelpButtonClickV22 = silent;
+    vm.runInContext(`${helpRulesFn}\n${helpDetailsFn}\nrenderRulesHelpCardV22(card, state.gameOptions);`,
+      Object.assign(contextForHelp, {card}));
+    const panel = card.children.at(-1);
+    const actions = panel.children[0];
+    const content = panel.children[1];
+    assert.equal(actions.children[0].textContent, 'Aide 0 — règles');
+    assert.equal(actions.children[1].textContent, 'Aide');
+    assert.equal(actions.children[1].disabled, false, 'Aide activable volontairement');
+    assert.equal(content.children[0].textContent, 'Rappel des règles');
+    assert.equal(content.children.length, 2, 'Pas de solution au niveau initial');
+    assert.equal(content.children[1].children.length, 3, 'Trois rappels de règles');
+  }
+}
+assert.match(fs.readFileSync(new URL('../public/js/ui/layout-ui.js', import.meta.url), 'utf8'),
+  /helpSlot\.hidden = true;/, 'Ancien panneau d’aide masqué');
+assert.match(cssM4, /#help-slot\s*\{\s*display:\s*none\s*!important;/,
+  'Ancien panneau masqué également en CSS');
+console.log('[ok] Aide initiale : solo/privé à 0, maximum 2, règles seules, aide volontaire et modes restreints');
+
+// Aide par defaut : aucun acces sans choix explicite, plafonds 1/2 disponibles.
+// Garder ce test dans la suite existante, sans nouveau moteur de tests.
+const defaultMainOptionsAide0 = main.split('const DEFAULT_GAME_OPTIONS = {')[1]?.split('};')[0];
+const defaultServerOptionsAide0 = server.split('const DEFAULT_GAME_OPTIONS: GameOptions = {')[1]?.split('};')[0];
+const stateSourceAide0 = fs.readFileSync(new URL('../public/js/core/state.js', import.meta.url), 'utf8');
+const modeSourceAide0 = fs.readFileSync(new URL('../public/js/ui/mode-ui.js', import.meta.url), 'utf8');
+assert.match(defaultMainOptionsAide0 ?? '', /^\s*maxHelpLevel:\s*0,/m, 'Defaut client');
+assert.match(defaultServerOptionsAide0 ?? '', /^\s*maxHelpLevel:\s*0,/m, 'Defaut serveur');
+assert.match(stateSourceAide0, /maxHelpLevel:\s*0,/, 'Etat local initial');
+assert.match(modeSourceAide0, /maxHelpLevel\.value = "0";/, 'Selecteur initial');
+assert.match(modeSourceAide0, /controls\.maxHelpLevel\.value = String\(gameOptions\.maxHelpLevel \?\? 0\);/, 'Repli de rendu');
+assert.match(server, /options\?\.maxHelpLevel \?\? DEFAULT_GAME_OPTIONS\.maxHelpLevel/, 'Choix hote respecte');
+assert.match(server, /maxHelpLevel: this\.canUseHelpLevelsH7\(\) \? 2 : 0/, 'Mode solution explicite inchange');
+
+const maxHelpFnAide0 = extract('function getMaxHelpLevel() {', 'function isHelpRestrictedContextH7() {');
+for (const [context, requested, expected] of [
+  ['solo', undefined, 0], ['private', undefined, 0],
+  ['solo', 2, 2], ['private', 1, 1],
+  ['public', 2, 0], ['daily', 2, 0],
+]) {
+  const result = vm.runInNewContext(`${maxHelpFnAide0}\ngetMaxHelpLevel()`, {
+    state: {gameOptions: requested === undefined ? {} : {maxHelpLevel: requested}},
+    isHelpRestrictedContextH7: () => context === 'public' || context === 'daily',
+  });
+  assert.equal(result, expected, `Plafond ${context} configure ${requested}`);
+}
+
+const gameOptionsStartAide0 = modeSourceAide0.indexOf('export function getGameOptions() {');
+const gameOptionsEndAide0 = modeSourceAide0.indexOf('function readLastBoardSuggestion()', gameOptionsStartAide0);
+const clampStartAide0 = modeSourceAide0.indexOf('function clampHelpLevel(value) {');
+const clampEndAide0 = modeSourceAide0.indexOf('function clampTargetScorePercent(value) {', clampStartAide0);
+assert.ok(gameOptionsStartAide0 !== -1 && gameOptionsEndAide0 > gameOptionsStartAide0);
+assert.ok(clampStartAide0 !== -1 && clampEndAide0 > clampStartAide0);
+const readGameOptionsFnAide0 = modeSourceAide0.slice(gameOptionsStartAide0, gameOptionsEndAide0).replace('export function', 'function');
+const clampHelpFnAide0 = modeSourceAide0.slice(clampStartAide0, clampEndAide0);
+for (const [requested, expected] of [
+  [null, 0], ['0', 0], ['1', 1], ['2', 2], ['999', 2], ['invalide', 0],
+]) {
+  const panel = {querySelector: (selector) => selector === '#max-help-level' && requested !== null ? {value: requested} : null};
+  const options = vm.runInNewContext(`${readGameOptionsFnAide0}\n${clampHelpFnAide0}\ngetGameOptions()`, {
+    document: {querySelector: () => panel},
+    clampBoardSize: (v) => v,
+    clampDuration: (v) => v,
+    clampTargetScorePercent: (v) => v,
+    clampTargetScore: (v) => v,
+    clampPenalty: (v) => v,
+  });
+  assert.equal(options.maxHelpLevel, expected, `Option saisie ${requested}`);
+}
+console.log('[ok] Aide desactivee par defaut client/serveur, options volontaires 1/2 et mode solution conserve');

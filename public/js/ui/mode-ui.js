@@ -160,7 +160,7 @@ function applyGameOptionsToControls(controls, gameOptions) {
   controls.uniqueWords.checked = Boolean(gameOptions.uniqueWords);
   controls.penalizeInvalidWords.checked = Boolean(gameOptions.penalizeInvalidWords);
   controls.invalidWordPenalty.value = String(gameOptions.invalidWordPenalty ?? 1);
-  controls.maxHelpLevel.value = String(gameOptions.maxHelpLevel ?? 2);
+  controls.maxHelpLevel.value = String(gameOptions.maxHelpLevel ?? 0);
   // Les préférences sonores/visuelles sont locales à chaque joueur.
 }
 
@@ -220,7 +220,7 @@ export function getGameOptions() {
   }
 
   const maxHelpLevel = clampHelpLevel(
-    Number(panel?.querySelector("#max-help-level")?.value ?? 3)
+    Number(panel?.querySelector("#max-help-level")?.value ?? 0)
   );
 
   return {
@@ -472,7 +472,7 @@ function ensureModeControls(anchorElement) {
       maxHelpLevel.append(option);
     }
 
-    maxHelpLevel.value = "2";
+    maxHelpLevel.value = "0";
     maxHelpLevelLabel.append(maxHelpLevel);
 
     rulesFieldset.append(
@@ -754,7 +754,7 @@ function clampPenalty(value) {
 
 function clampHelpLevel(value) {
   if (!Number.isFinite(value)) {
-    return 2;
+    return 0;
   }
 
   return Math.min(2, Math.max(0, Math.round(value)));

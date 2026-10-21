@@ -1996,9 +1996,8 @@ section,
     }
 
     body {
-      background-image:
-        url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27220%27%20height%3D%27180%27%20viewBox%3D%270%200%20220%20180%27%3E%0A%3Crect%20width%3D%27220%27%20height%3D%27180%27%20fill%3D%27none%27/%3E%0A%3Cg%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%0A%3Cpath%20d%3D%27M30%2048c15-11%2028-10%2040%202-13%200-24%205-33%2017%27%20stroke%3D%27%239eb779%27%20stroke-width%3D%277%27%20opacity%3D%27.12%27/%3E%0A%3Cpath%20d%3D%27M47%2066c-7%209-8%2017-3%2026%27%20stroke%3D%27%239eb779%27%20stroke-width%3D%275%27%20opacity%3D%27.10%27/%3E%0A%3Cpath%20d%3D%27M162%2038c8%200%2015%205%2018%2013-8-1-15%201-21%207%27%20stroke%3D%27%239eb779%27%20stroke-width%3D%277%27%20opacity%3D%27.11%27/%3E%0A%3Ccircle%20cx%3D%27145%27%20cy%3D%27114%27%20r%3D%275%27%20fill%3D%27%23f1aa62%27%20opacity%3D%27.11%27/%3E%0A%3Ccircle%20cx%3D%27160%27%20cy%3D%27126%27%20r%3D%274%27%20fill%3D%27%23e8c560%27%20opacity%3D%27.10%27/%3E%0A%3Cpath%20d%3D%27M82%20143h31%27%20stroke%3D%27%23d19a63%27%20stroke-width%3D%274%27%20opacity%3D%27.08%27/%3E%0A%3Cpath%20d%3D%27M90%20132h31%27%20stroke%3D%27%23d19a63%27%20stroke-width%3D%274%27%20opacity%3D%27.07%27/%3E%0A%3Cpath%20d%3D%27M95%2063l5%205%205-5%205%205%205-5%27%20stroke%3D%27%23f0ad6e%27%20stroke-width%3D%273.5%27%20opacity%3D%27.09%27/%3E%0A%3C/g%3E%0A%3C/svg%3E") !important;
-      background-size: 220px 180px !important;
+      background-image: url("../images/fond-feuilles-creme-v1.webp") !important;
+      background-size: 960px 960px !important;
       background-repeat: repeat !important;
       background-attachment: fixed !important;
     }
@@ -4214,7 +4213,47 @@ button:not(.board-cell):hover,
       text-align: center !important;
       letter-spacing: 0.01em;
     }
-    :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) > .boggle-end-screen-message {
+    /* B1c2 : balanced modal header, with one decorative image on the right. */
+    #victory-modal-v16 > .boggle-end-hero-b1c2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+      align-items: center;
+      min-height: 10.25rem;
+      margin-bottom: 0.55rem;
+    }
+    #victory-modal-v16 .boggle-end-hero-copy-b1c2 {
+      grid-column: 2;
+      grid-row: 1;
+      min-width: 0;
+      text-align: center;
+    }
+    #victory-modal-v16 .boggle-end-hero-copy-b1c2 > .boggle-end-screen-title {
+      margin: 0 0 0.65rem !important;
+      font-size: clamp(1.65rem, 2.8vw, 2rem) !important;
+      font-weight: 900;
+      line-height: 1.15 !important;
+      text-align: center;
+      color: #6e3d1d;
+    }
+    #victory-modal-v16 > .boggle-end-hero-b1c2::after {
+      content: "";
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: end;
+      width: 100%;
+      max-width: 12rem;
+      height: 9.5rem;
+      margin-top: 0.85rem;
+      background: center / contain no-repeat;
+    }
+    #victory-modal-v16[data-end-art-b1c="multi"] > .boggle-end-hero-b1c2::after {
+      background-image: url("../images/end/podium-fruits.webp");
+    }
+    #victory-modal-v16[data-end-art-b1c="single"] > .boggle-end-hero-b1c2::after {
+      max-width: 9.5rem;
+      background-image: url("../images/end/orange-coupe.webp");
+    }
+    :is(#victory-modal-v16 .boggle-end-hero-copy-b1c2, #end-screen.boggle-end-inline-m1b) > .boggle-end-screen-message {
       max-width: 33rem;
       margin: 0.4rem auto 1rem !important;
       color: #64391d !important;
@@ -4222,6 +4261,30 @@ button:not(.board-cell):hover,
       font-size: clamp(1.15rem, 2.7vw, 1.6rem) !important;
       font-weight: 800;
       line-height: 1.5 !important;
+    }
+    #victory-modal-v16 .boggle-end-hero-copy-b1c2 > .boggle-end-screen-message {
+      margin: 0 !important;
+    }
+    @media (max-width: 40rem) {
+      #victory-modal-v16 > .boggle-end-hero-b1c2 {
+        grid-template-columns: minmax(0, 1fr) minmax(5.5rem, 0.45fr);
+        column-gap: 0.4rem;
+        min-height: 8rem;
+      }
+      #victory-modal-v16 .boggle-end-hero-copy-b1c2 {
+        grid-column: 1;
+      }
+      #victory-modal-v16 .boggle-end-hero-copy-b1c2 > .boggle-end-screen-title {
+        font-size: clamp(1.4rem, 5vw, 1.75rem) !important;
+      }
+      #victory-modal-v16 .boggle-end-hero-copy-b1c2 > .boggle-end-screen-message {
+        font-size: clamp(0.95rem, 3.4vw, 1.15rem) !important;
+      }
+      #victory-modal-v16 > .boggle-end-hero-b1c2::after {
+        grid-column: 2;
+        height: 7rem;
+        margin-top: 1.3rem;
+      }
     }
     :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-intro-h9f2,
     :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-scoreline-h9f2 {
@@ -4286,7 +4349,6 @@ button:not(.board-cell):hover,
       margin: 0 0 0.7rem;
       list-style: none;
       background: #fffaf0;
-      border: 1px solid #f0dfbd;
       border-radius: 1rem;
     }
     :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-ranking-columns-h9f2 {
@@ -4394,12 +4456,18 @@ button:not(.board-cell):hover,
       outline: 3px solid #7d581a;
       outline-offset: 3px;
     }
-    /* H9f.3 - les sections internes de statistiques ne sont pas des panneaux.
+    /* H9f.3 - les sous-vues de résultats ne sont pas des panneaux.
        Le style global `section` reste applicable ailleurs dans le jeu. */
+    :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-view-ranking-h9f2,
+    :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .daily-leaderboard-h9b,
     :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-view-stats-h9f2,
     :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-view-stats-h9f2 .boggle-round-stats-h9e {
       border: 0 !important;
       background: transparent !important;
+    }
+    :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-view-ranking-h9f2,
+    :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-view-stats-h9f2 {
+      padding: 0.65rem 0.85rem;
     }
     :is(#victory-modal-v16, #end-screen.boggle-end-inline-m1b) .boggle-end-view-stats-h9f2 .boggle-round-stats-h9e {
       margin-block: 0.3rem;
@@ -6608,10 +6676,7 @@ body.v87-home-active {
   padding: clamp(0.85rem, 1.6vw, 1.35rem) !important;
 
   color: #4b3322 !important;
-  background:
-    radial-gradient(circle at 15% 12%, rgba(244, 196, 96, 0.08), transparent 13rem),
-    radial-gradient(circle at 86% 22%, rgba(126, 163, 91, 0.08), transparent 16rem),
-    #f7edd3 !important;
+  background: url("../images/fond-feuilles-creme-v1.webp") 0 0 / 960px 960px repeat !important;
 
   font-family: "Fredoka", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
@@ -6837,10 +6902,32 @@ body.v87-home-active {
   display: none !important;
 }
 
-.home-v87-mode-public,
-.home-v87-mode-private,
-.home-v87-mode-solo {
-  background: rgba(255, 248, 232, 0.92) !important;
+button.home-v87-mode-public,
+button.home-v87-mode-private,
+button.home-v87-mode-solo {
+  background-color: rgba(255, 248, 232, 0.92) !important;
+  background-position: right bottom !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+/* B1b : scenes decoratives integrees aux cartes existantes. */
+button.home-v87-mode-public {
+  background-image:
+    linear-gradient(90deg, rgba(255, 248, 232, 0.95) 0%, rgba(255, 248, 232, 0.70) 35%, rgba(255, 248, 232, 0) 70%),
+    url("../images/scenes/salon-public.webp") !important;
+}
+
+button.home-v87-mode-private {
+  background-image:
+    linear-gradient(90deg, rgba(255, 248, 232, 0.95) 0%, rgba(255, 248, 232, 0.70) 35%, rgba(255, 248, 232, 0) 70%),
+    url("../images/scenes/salon-prive.webp") !important;
+}
+
+button.home-v87-mode-solo {
+  background-image:
+    linear-gradient(90deg, rgba(255, 248, 232, 0.95) 0%, rgba(255, 248, 232, 0.70) 35%, rgba(255, 248, 232, 0) 70%),
+    url("../images/scenes/jouer-seul.webp") !important;
 }
 
 .home-v87-mode-icon {
@@ -7025,7 +7112,8 @@ body.v87-home-active #home-v87 .home-v87-primary-button {
 #home-v87 .home-v87-mode {
   display: grid !important;
   grid-template-columns: auto minmax(0, 1fr) auto !important;
-  align-items: center !important;
+  align-items: start !important;
+  min-height: clamp(10rem, 30vw, 11.5rem) !important;
 
   width: 100% !important;
   border-color: rgba(114, 78, 48, 0.16) !important;

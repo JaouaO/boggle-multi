@@ -55,7 +55,7 @@ const DEFAULT_GAME_OPTIONS = {
   uniqueWords: false,
   penalizeInvalidWords: false,
   invalidWordPenalty: 1,
-  maxHelpLevel: 2,
+  maxHelpLevel: 0,
   targetScoreMode: "percentOfMaxScore",
   targetScorePercent: 70,
   targetScore: 50,
@@ -2243,7 +2243,7 @@ function getMaxHelpLevel() {
     return 0;
   }
 
-  return Math.min(2, Math.max(0, Number(state.gameOptions?.maxHelpLevel ?? 2)));
+  return Math.min(2, Math.max(0, Number(state.gameOptions?.maxHelpLevel ?? 0)));
 }
 
 
@@ -3186,6 +3186,12 @@ function renderVictoryModalV16() {
   const modal = document.createElement("section");
 
   modal.id = "victory-modal-v16";
+  // B1c : decoration de la modale, sans modifier les resultats du jeu.
+  const multipleEndPlayersB1c = (state.players?.length ?? 0) > 1 &&
+    state.gameContext !== GAME_CONTEXTS_V901.SOLO &&
+    state.gameContext !== GAME_CONTEXTS_V901.DAILY;
+  modal.dataset.endArtB1c = multipleEndPlayersB1c ? "multi" : "single";
+
   modal.setAttribute("role", "dialog");
   modal.setAttribute("aria-modal", "true");
   modal.setAttribute("aria-label", "Écran de fin de partie");
@@ -3237,6 +3243,20 @@ function renderVictoryModalV16() {
     const fallbackText = document.createElement("p");
     fallbackText.textContent = "La partie est terminée.";
     modal.append(fallbackText);
+  }
+
+  // B1c2 : a dedicated header keeps the title, result and artwork side by side.
+  // Move the existing nodes to retain their IDs, content and ARIA references.
+  const headingTitleB1c2 = modal.querySelector(":scope > .boggle-end-screen-title");
+  const headingMessageB1c2 = modal.querySelector(":scope > .boggle-end-screen-message");
+  if (headingTitleB1c2 && headingMessageB1c2) {
+    const hero = document.createElement("div");
+    hero.className = "boggle-end-hero-b1c2";
+    const copy = document.createElement("div");
+    copy.className = "boggle-end-hero-copy-b1c2";
+    headingTitleB1c2.before(hero);
+    copy.append(headingTitleB1c2, headingMessageB1c2);
+    hero.append(copy);
   }
 
   document.body.append(modal);

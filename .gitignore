@@ -170,3 +170,13 @@ dist
 .idea/
 .vscode/
 dist/
+
+# Artefacts locaux des installations manuelles Boggle
+/.boggle-backups/
+/.h9c-backup-*/
+/boggle_*.zip
+/boggle-sources-actuelles.zip
+/installer_boggle_*.ps1
+/preparer_boggle_*.ps1
+/nettoyer_et_commiter_stabilisation_B1c2.ps1
+/rapport_boggle_*.md
