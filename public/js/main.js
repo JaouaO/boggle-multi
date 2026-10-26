@@ -3187,9 +3187,8 @@ function renderVictoryModalV16() {
 
   modal.id = "victory-modal-v16";
   // B1c : decoration de la modale, sans modifier les resultats du jeu.
-  const multipleEndPlayersB1c = (state.players?.length ?? 0) > 1 &&
-    state.gameContext !== GAME_CONTEXTS_V901.SOLO &&
-    state.gameContext !== GAME_CONTEXTS_V901.DAILY;
+  const multipleEndPlayersB1c = state.gameContext === GAME_CONTEXTS_V901.DAILY ||
+    ((state.players?.length ?? 0) > 1 && state.gameContext !== GAME_CONTEXTS_V901.SOLO);
   modal.dataset.endArtB1c = multipleEndPlayersB1c ? "multi" : "single";
 
   modal.setAttribute("role", "dialog");

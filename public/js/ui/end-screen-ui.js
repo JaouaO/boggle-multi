@@ -13,6 +13,8 @@ export function renderEndScreen(anchorElement, options, panelElement = null) {
   const currentPlayer = sortedPlayers.find((player) => player.id === currentPlayerId);
   const solo = gameContext === "solo";
   const daily = gameContext === "daily";
+  // The daily ranking shares the multi-player podium; other results keep their own mascot.
+  panel.element.dataset.endArtB1c = daily || (!solo && sortedPlayers.length > 1) ? "multi" : "single";
 
   panel.element.hidden = false;
   panel.title.textContent = dailyHistoryOnly ? "Grille du jour" : "Fin de partie";
@@ -429,6 +431,18 @@ function createEndRankingColumnsH9F2() {
 }
 
 /* H9f2 — deux vues dans le même dialogue ; aucune illustration provisoire. */
+function ensureInlineEndHeroB1c7(element) {
+  let copy = element.querySelector(":scope > .boggle-end-hero-b1c2 > .boggle-end-hero-copy-b1c2");
+  if (copy) return copy;
+  const hero = document.createElement("div");
+  hero.className = "boggle-end-hero-b1c2";
+  copy = document.createElement("div");
+  copy.className = "boggle-end-hero-copy-b1c2";
+  hero.append(copy);
+  element.prepend(hero);
+  return copy;
+}
+
 function ensureEndScreenViewsH9F2(panel, { solo, daily, gameKey }) {
   const element = panel.element;
   let overview = element.querySelector(".boggle-end-overview-h9f2");
@@ -488,7 +502,13 @@ function ensureEndScreenViewsH9F2(panel, { solo, daily, gameKey }) {
     actions.append(showStats, showRanking, shareResult);
   }
 
-  element.append(panel.title, panel.message, overview, panel.nextRound, rankingView, statsView, actions);
+  // Keep the same illustrated header in the inline results and the modal.
+  const heroCopy = element.id === "end-screen"
+    ? ensureInlineEndHeroB1c7(element)
+    : element.querySelector(":scope > .boggle-end-hero-b1c2 > .boggle-end-hero-copy-b1c2");
+  if (heroCopy) heroCopy.append(panel.title, panel.message);
+  else element.append(panel.title, panel.message);
+  element.append(overview, panel.nextRound, rankingView, statsView, actions);
   const key = `${gameKey}:${solo ? "solo" : daily ? "daily" : "multi"}`;
   if (element.dataset.endGameH9f2 !== key) {
     element.dataset.endGameH9f2 = key;

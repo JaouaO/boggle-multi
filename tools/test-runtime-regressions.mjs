@@ -150,6 +150,78 @@ assert.ok(endUi.includes('sortedPlayers.slice(0, 5)'), 'Classement limité au to
 assert.ok(endUi.includes('personalIndex >= 5'), 'Résultat personnel hors top cinq');
 console.log('[ok] M1b : résultats persistants, retour au plateau, fermeture modale, top 5 + vous');
 
+// B1c7 : la modale ET les résultats intégrés partagent l'en-tête illustré.
+const sourceHeroB1c7 = endUi.slice(
+  endUi.indexOf('function ensureInlineEndHeroB1c7('),
+  endUi.indexOf('function ensureEndScreenViewsH9F2(')
+);
+const headerRefreshB1c5 = endUi.slice(
+  endUi.indexOf('function ensureEndScreenViewsH9F2('),
+  endUi.indexOf('export function setEndScreenViewH9F2(')
+);
+assert.ok(headerRefreshB1c5.startsWith('function ensureEndScreenViewsH9F2('));
+for (const illustrated of [true, false]) {
+  const moves = [];
+  let inlineHeroCreated = false;
+  let createdNodes = 0;
+  const title = { id: 'title' }, message = { id: 'message' };
+  const stats = { id: 'stats' }, nextRound = { id: 'nextRound' }, ranking = { id: 'ranking' };
+  const headerCopy = { append: (...nodes) => moves.push(['header', ...nodes]) };
+  const hero = { append: (copy) => assert.equal(copy, headerCopy) };
+  const overview = { append: (...nodes) => moves.push(['overview', ...nodes]) };
+  const heading = { id: 'heading' }, columns = { hidden: false };
+  const rankingView = {
+    append: (...nodes) => moves.push(['ranking', ...nodes]),
+    querySelector: () => columns,
+  };
+  const statsView = { append: () => {} };
+  const actions = { hidden: false };
+  const element = {
+    id: illustrated ? 'victory-modal-v16' : 'end-screen',
+    dataset: { endGameH9f2: 'test:multi', endViewH9f2: 'ranking' },
+    querySelector: (selector) => ({
+      '.boggle-end-overview-h9f2': overview,
+      '.end-screen-extra-stats-h6a': null,
+      '.boggle-end-view-ranking-h9f2': rankingView,
+      '.boggle-end-ranking-title': heading,
+      '.daily-leaderboard-h9b': null,
+      '.boggle-end-view-stats-h9f2': statsView,
+      '.boggle-round-stats-h9e': null,
+      '.boggle-end-actions-h9f2': actions,
+      ':scope > .boggle-end-hero-b1c2 > .boggle-end-hero-copy-b1c2':
+        illustrated || inlineHeroCreated ? headerCopy : null,
+    })[selector] ?? null,
+    prepend: (node) => { inlineHeroCreated = true; assert.equal(node, hero); },
+    append: (...nodes) => moves.push(['root', ...nodes]),
+  };
+  const panel = { element, title, message, stats, nextRound, ranking };
+  vm.runInNewContext(`${sourceHeroB1c7}${headerRefreshB1c5}
+ensureEndScreenViewsH9F2(panel, {solo:false, daily:false, gameKey:'test'});
+ensureEndScreenViewsH9F2(panel, {solo:false, daily:false, gameKey:'test'});`, {
+    panel,
+    document: { createElement() { return ++createdNodes === 1 ? hero : headerCopy; } },
+    createEndRankingColumnsH9F2: () => columns,
+    setEndScreenViewH9F2: () => {},
+  });
+  const heroElements = moves.filter(([target]) => target === 'header').flatMap(([, ...nodes]) => nodes);
+  const rootElements = moves.filter(([target]) => target === 'root').flatMap(([, ...nodes]) => nodes);
+  assert.deepEqual(heroElements, [title, message, title, message],
+    'Titre et score conservés dans le bandeau illustré à chaque rendu');
+  assert.ok(!rootElements.includes(title) && !rootElements.includes(message),
+    'Aucun retour du titre ou du score à la racine');
+  assert.equal(createdNodes, illustrated ? 0 : 2, 'Un seul en-tête ajouté au résultat permanent');
+}
+const b1c7Css = fs.readFileSync(new URL('../public/css/style.css', import.meta.url), 'utf8');
+assert.match(b1c7Css, /body\.boggle-results-inline-m1b #play-status-panel\s*\{\s*display: none !important;/,
+  'Ne plus afficher le bandeau Partie terminée/00:00 lorsque les résultats sont visibles');
+assert.match(b1c7Css, /#end-screen\.boggle-end-inline-m1b\)\[data-end-art-b1c="multi"\]/,
+  'Illustration podium présente aussi sur le résultat permanent');
+assert.match(endUi, /panel\.element\.dataset\.endArtB1c = daily \|\|/,
+  'Grille quotidienne illustrée par le podium, indépendamment du nombre de joueurs');
+assert.match(main, /state\.gameContext === GAME_CONTEXTS_V901\.DAILY \|\|/,
+  'Modale éventuelle du quotidien illustrée par le podium');
+console.log('[ok] B1c7 : image en classement quotidien, stats et résultat permanent, bandeau redondant masqué');
+
 // M1b / reprise quotidienne : retour sur une tentative bloquée = classement
 // vérifié par GET, sans POST ni faux zéro de statistiques.
 const dailyHistoryFns = extract('// M1b : relecture de la grille quotidienne déjà lancée,', 'function getDailyLeaderboardEndScreenStateH9B() {');
